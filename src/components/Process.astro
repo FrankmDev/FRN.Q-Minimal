@@ -1,0 +1,198 @@
+---
+const steps = [
+  {
+    number: "01",
+    title: "Descubrimiento",
+    description: "Entiendo tus objetivos, audiencia y necesidades para definir el alcance del proyecto."
+  },
+  {
+    number: "02",
+    title: "Diseño",
+    description: "Creo wireframes y prototipos que equilibran estética y funcionalidad."
+  },
+  {
+    number: "03",
+    title: "Desarrollo",
+    description: "Escribo código limpio, semántico y optimizado para rendimiento."
+  },
+  {
+    number: "04",
+    title: "Lanzamiento",
+    description: "Despliego, pruebo y entrego listo para producción con documentación."
+  }
+];
+---
+
+<section id="proceso" class="process" aria-labelledby="process-title">
+  <div class="container">
+    <header class="section-header">
+      <span class="section-eyebrow font-mono">Proceso</span>
+      <h2 id="process-title" class="section-title">Cómo trabajo</h2>
+    </header>
+    
+    <ol class="process-steps" role="list" aria-label="Pasos del proceso">
+      {steps.map((step, index) => (
+        <li class="step reveal" style={`transition-delay: ${index * 0.1}s`} role="listitem">
+          <span class="step-number font-mono" aria-hidden="true">{step.number}</span>
+          <h3 class="step-title">{step.title}</h3>
+          <p class="step-description">{step.description}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+<style>
+  .process {
+    background: var(--bg);
+    padding: var(--space-4xl) 0;
+    position: relative;
+  }
+  
+  .process::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--border) 0,
+      var(--border) 20px,
+      transparent 20px,
+      transparent 40px
+    );
+  }
+
+  .section-header {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .section-eyebrow {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: var(--space-sm);
+    font-family: var(--font-mono);
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+
+  .process-steps {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+    list-style: none;
+    padding: 0;
+    counter-reset: step;
+  }
+
+  @media (min-width: 640px) {
+    .process-steps {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .process-steps {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-lg);
+    }
+  }
+
+  .step {
+    padding: var(--space-lg);
+    border: 2px solid var(--border);
+    background: var(--bg);
+    transition: 
+      border-color var(--transition-base),
+      background var(--transition-base),
+      transform var(--transition-base);
+    position: relative;
+  }
+  
+  .step::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--border);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-base);
+  }
+
+  .step:hover {
+    border-color: var(--text);
+    background: var(--bg-alt);
+    transform: translateY(-4px);
+  }
+  
+  .step:hover::before {
+    transform: scaleX(1);
+  }
+
+  .step-number {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: var(--space-sm);
+    font-family: var(--font-mono);
+  }
+
+  .step-title {
+    font-size: clamp(1.125rem, 2.5vw, 1.25rem);
+    font-weight: 700;
+    margin-bottom: var(--space-sm);
+  }
+
+  .step-description {
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+  
+  /* Reveal animation base */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity var(--transition-slow), transform var(--transition-slow);
+    will-change: opacity, transform;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,227 @@
+---
+---
+
+<section id="contact" class="final-cta" aria-labelledby="final-cta-title">
+  <div class="contact-bg" aria-hidden="true">
+    <div class="bg-text">FRN.Q</div>
+  </div>
+  
+  <div class="container">
+    <div class="contact-content">
+      <span class="contact-eyebrow reveal">Let's work together</span>
+      
+      <h2 id="final-cta-title" class="contact-title">
+        <span class="title-line reveal">Have a project</span>
+        <span class="title-line reveal">in mind?</span>
+      </h2>
+      
+      <p class="contact-desc reveal">
+        Estoy disponible para nuevos proyectos. Cuéntame tu idea y veamos 
+        cómo puedo ayudarte a hacerla realidad.
+      </p>
+      
+      <div class="contact-actions reveal">
+        <a href="mailto:hola@frnq.es" class="contact-btn btn-primary">
+          <span>hola@frnq.es</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        
+        <div class="social-links" role="list" aria-label="Redes sociales">
+          <a href="#" class="social-link" role="listitem" aria-label="GitHub">GH</a>
+          <a href="#" class="social-link" role="listitem" aria-label="LinkedIn">LI</a>
+          <a href="#" class="social-link" role="listitem" aria-label="Twitter">TW</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+<style>
+  .final-cta {
+    position: relative;
+    padding: var(--space-4xl) 0;
+    background: var(--text);
+    color: var(--bg);
+    overflow: hidden;
+    min-height: 80vh;
+    min-height: 80dvh;
+    display: flex;
+    align-items: center;
+  }
+
+  .contact-bg {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+  
+  .bg-text {
+    font-size: clamp(15vw, 30vw, 25rem);
+    font-weight: 800;
+    opacity: 0.03;
+    letter-spacing: -0.05em;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  .contact-content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+  }
+
+  .contact-eyebrow {
+    display: block;
+    font-size: 0.875rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: var(--space-md);
+  }
+
+  .contact-title {
+    margin-bottom: var(--space-lg);
+  }
+  
+  .title-line {
+    display: block;
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .contact-desc {
+    font-size: clamp(1rem, 2vw, 1.125rem);
+    opacity: 0.7;
+    line-height: 1.6;
+    max-width: 480px;
+    margin-bottom: var(--space-xl);
+  }
+
+  .contact-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+  
+  @media (min-width: 640px) {
+    .contact-actions {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  .contact-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-xl);
+    font-size: 1.125rem;
+    font-weight: 600;
+    background: var(--bg);
+    color: var(--text);
+    border: 2px solid var(--bg);
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.15);
+    transition: 
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast);
+    width: fit-content;
+  }
+  
+  .contact-btn:hover {
+    transform: translate(-6px, -6px);
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.15);
+  }
+  
+  .contact-btn:hover svg {
+    transform: translateX(8px);
+  }
+  
+  .contact-btn:focus-visible {
+    outline: 3px solid var(--bg);
+    outline-offset: 3px;
+  }
+  
+  /* En modo oscuro, sombra clara */
+  [data-theme="dark"] .contact-btn {
+    box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.15);
+  }
+  
+  [data-theme="dark"] .contact-btn:hover {
+    box-shadow: 6px 6px 0 rgba(255, 255, 255, 0.15);
+  }
+  
+  .contact-btn svg {
+    transition: transform var(--transition-fast);
+  }
+
+  .social-links {
+    display: flex;
+    gap: var(--space-sm);
+  }
+
+  .social-link {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border: 1px solid rgba(255,255,255,0.3);
+    transition: 
+      background var(--transition-fast),
+      color var(--transition-fast),
+      border-color var(--transition-fast);
+  }
+  
+  .social-link:hover {
+    background: var(--bg);
+    color: var(--text);
+    border-color: var(--bg);
+  }
+  
+  .social-link:focus-visible {
+    outline: 3px solid var(--bg);
+    outline-offset: 3px;
+  }
+  
+  /* Reveal animation */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity var(--transition-slow), transform var(--transition-slow);
+    will-change: opacity, transform;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,474 @@
+---
+const projects = [
+  {
+    name: "Asercord Energy",
+    category: "Sector Energético",
+    year: "2025",
+    image: "https://placehold.co/600x400/0a0a0a/ffffff?text=Asercord+Energy&font=playfair-display",
+    highlight: "Claridad en complejidad",
+  },
+  {
+    name: "Nexus Commerce",
+    category: "E-commerce Premium",
+    year: "2025",
+    image: "https://placehold.co/600x400/ffffff/0a0a0a?text=Nexus+Commerce&font=playfair-display",
+    highlight: "2M€ en transacciones",
+  },
+  {
+    name: "The Last Experience",
+    category: "Entretenimiento",
+    year: "2024",
+    image: "https://placehold.co/600x400/1a1a1a/f5f5f5?text=The+Last+Experience&font=playfair-display",
+    highlight: "Inmersión total",
+  },
+  {
+    name: "Horizon Capital",
+    category: "Consultoría Financiera",
+    year: "2024",
+    image: "https://placehold.co/600x400/f5f5f5/0a0a0a?text=Horizon+Capital&font=playfair-display",
+    highlight: "Autoridad digital",
+  },
+];
+---
+
+<section class="projects" id="proyectos" aria-labelledby="projects-title">
+  <div class="section-accent" aria-hidden="true">
+    <div class="accent-shape"></div>
+  </div>
+
+  <div class="container">
+    <div class="section-header">
+      <div class="header-label">
+        <span class="label-line" aria-hidden="true"></span>
+        <span class="label-text">Arquitecturas Digitales</span>
+      </div>
+      <h2 class="section-title" id="projects-title">
+        Proyectos<br />
+        <span class="title-highlight">Seleccionados</span>
+      </h2>
+    </div>
+
+    <div class="projects-list" role="list" aria-label="Lista de proyectos">
+      {projects.map((project, i) => (
+        <article 
+          class="project-item" 
+          data-image={project.image} 
+          data-index={i}
+          role="listitem"
+          tabindex="0"
+        >
+          <div class="item-number" aria-hidden="true">
+            <span>0{i + 1}</span>
+          </div>
+
+          <div class="item-content">
+            <div class="item-meta">
+              <span class="meta-year">{project.year}</span>
+              <span class="meta-sep" aria-hidden="true">/</span>
+              <span class="meta-cat">{project.category}</span>
+            </div>
+            <h3 class="item-title">{project.name}</h3>
+          </div>
+
+          <div class="item-highlight">
+            <span class="highlight-dot" aria-hidden="true" />
+            <span class="highlight-text">{project.highlight}</span>
+          </div>
+
+          <div class="item-action" aria-hidden="true">
+            <span class="action-icon">↗</span>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="projects-footer">
+      <a href="#contacto" class="footer-cta">
+        <span>Tu proyecto merece este nivel</span>
+        <span class="cta-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Mockup flotante que sigue al cursor -->
+  <div class="cursor-mockup" id="cursor-mockup" aria-hidden="true">
+    <div class="mockup-frame">
+      <img src="" alt="" class="mockup-img" id="mockup-img" loading="lazy" decoding="async" />
+    </div>
+  </div>
+</section>
+
+<script>
+  // Only enable cursor mockup on devices that support hover
+  const hoverQuery = window.matchMedia("(hover: hover)");
+  
+  function initCursorMockup() {
+    if (!hoverQuery.matches) return;
+    
+    const projectItems = document.querySelectorAll(".project-item");
+    const cursorMockup = document.getElementById("cursor-mockup");
+    const mockupImg = document.getElementById("mockup-img") as HTMLImageElement | null;
+    const projectsSection = document.querySelector(".projects");
+
+    if (!cursorMockup || !mockupImg) return;
+
+    let mouseX = 0, mouseY = 0;
+    let mockupX = 0, mockupY = 0;
+    let isHovering = false;
+    let rafId: number | null = null;
+
+    function lerp(start: number, end: number, factor: number) {
+      return start + (end - start) * factor;
+    }
+
+    function updateMockupPosition() {
+      if (!isHovering) {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = null;
+        return;
+      }
+
+      mockupX = lerp(mockupX, mouseX, 0.12);
+      mockupY = lerp(mockupY, mouseY, 0.12);
+
+      const offsetX = 20;
+      const offsetY = -150;
+
+      cursorMockup.style.transform = `translate3d(${mockupX + offsetX}px, ${mockupY + offsetY}px, 0)`;
+
+      rafId = requestAnimationFrame(updateMockupPosition);
+    }
+
+    document.addEventListener(
+      "mousemove",
+      (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      },
+      { passive: true },
+    );
+
+    projectItems.forEach((item) => {
+      const imageUrl = item.getAttribute("data-image");
+      
+      const handleEnter = () => {
+        if (imageUrl && mockupImg) {
+          mockupImg.src = imageUrl;
+          cursorMockup.classList.add("active");
+          isHovering = true;
+          document.body.style.cursor = "none";
+
+          if (!rafId) {
+            rafId = requestAnimationFrame(updateMockupPosition);
+          }
+        }
+      };
+
+      const handleLeave = () => {
+        cursorMockup.classList.remove("active");
+        isHovering = false;
+        document.body.style.cursor = "";
+      };
+
+      item.addEventListener("mouseenter", handleEnter);
+      item.addEventListener("mouseleave", handleLeave);
+      item.addEventListener("focus", handleEnter);
+      item.addEventListener("blur", handleLeave);
+    });
+
+    // Safety: restore cursor if mouse leaves the entire section
+    projectsSection?.addEventListener("mouseleave", () => {
+      cursorMockup.classList.remove("active");
+      isHovering = false;
+      document.body.style.cursor = "";
+    });
+  }
+  
+  // Initialize
+  initCursorMockup();
+  
+  // Re-check on resize
+  hoverQuery.addEventListener("change", initCursorMockup);
+</script>
+
+<style>
+  .projects {
+    position: relative;
+    padding: var(--space-4xl) 0;
+    min-height: 100vh;
+  }
+
+  .projects::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--border) 0,
+      var(--border) 20px,
+      transparent 20px,
+      transparent 40px
+    );
+  }
+
+  .section-accent {
+    position: absolute;
+    top: var(--space-4xl);
+    right: 5%;
+    width: clamp(100px, 15vw, 200px);
+    height: clamp(100px, 15vw, 200px);
+    pointer-events: none;
+    opacity: 0.05;
+  }
+
+  @media (max-width: 768px) {
+    .section-accent {
+      display: none;
+    }
+  }
+
+  .accent-shape {
+    width: 100%;
+    height: 100%;
+    border: clamp(20px, 4vw, 40px) solid var(--border);
+    border-radius: 50%;
+  }
+
+  .section-header {
+    margin-bottom: var(--space-3xl);
+  }
+
+  .header-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+  }
+
+  .label-line {
+    width: 60px;
+    height: 2px;
+    background: var(--border);
+  }
+
+  .label-text {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 6vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .title-highlight {
+    font-weight: 800;
+  }
+
+  .projects-list {
+    border-top: 2px solid var(--border);
+  }
+
+  .project-item {
+    display: grid;
+    grid-template-columns: 60px 1fr auto auto;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-xl) 0;
+    border-bottom: 2px solid var(--border);
+    cursor: pointer;
+    position: relative;
+    transition: 
+      background var(--transition-base),
+      padding var(--transition-base);
+  }
+  
+  .project-item:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: -3px;
+  }
+
+  @media (max-width: 768px) {
+    .project-item {
+      grid-template-columns: 40px 1fr;
+      grid-template-rows: auto auto;
+      gap: var(--space-sm) var(--space-md);
+      padding: var(--space-lg) 0;
+    }
+  }
+
+  .project-item:hover {
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+    background: var(--bg-alt);
+  }
+
+  .project-item:hover .item-title {
+    transform: translateX(var(--space-sm));
+  }
+
+  .project-item:hover .action-icon {
+    transform: translate(4px, -4px);
+  }
+
+  .item-number {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 700;
+    opacity: 0.3;
+  }
+
+  .item-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 0.8125rem;
+    margin-bottom: var(--space-xs);
+    opacity: 0.6;
+    font-family: var(--font-mono);
+  }
+
+  .meta-sep {
+    opacity: 0.5;
+  }
+
+  .item-title {
+    font-size: clamp(1.75rem, 5vw, 4rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    transition: transform var(--transition-base);
+  }
+
+  .item-highlight {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-xs) var(--space-md);
+    border: 2px solid var(--border);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    font-family: var(--font-mono);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 768px) {
+    .item-highlight {
+      display: none;
+    }
+  }
+
+  .highlight-dot {
+    width: 6px;
+    height: 6px;
+    background: #22c55e;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .item-action {
+    width: 50px;
+    height: 50px;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .item-action {
+      display: none;
+    }
+  }
+
+  .action-icon {
+    transition: transform var(--transition-base);
+  }
+
+  .projects-footer {
+    margin-top: var(--space-2xl);
+    text-align: center;
+  }
+
+  .footer-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-xl);
+    font-weight: 600;
+    border: 2px dashed var(--border);
+    opacity: 0.6;
+    transition: 
+      opacity var(--transition-base),
+      border-style var(--transition-base),
+      background var(--transition-base);
+  }
+
+  .footer-cta:hover {
+    opacity: 1;
+    border-style: solid;
+    background: var(--bg-alt);
+  }
+  
+  .footer-cta:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 3px;
+    opacity: 1;
+  }
+
+  /* Mockup que sigue al cursor */
+  .cursor-mockup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: var(--z-tooltip, 700);
+    opacity: 0;
+    transform: translate3d(-100%, -100%, 0);
+    transition: opacity 0.2s ease;
+    will-change: transform;
+  }
+
+  .cursor-mockup.active {
+    opacity: 1;
+  }
+
+  .mockup-frame {
+    width: clamp(250px, 30vw, 350px);
+    height: auto;
+    aspect-ratio: 3/2;
+    background: var(--bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--shadow-brutal-lg);
+    padding: var(--space-sm);
+    overflow: hidden;
+  }
+
+  .mockup-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 1px solid var(--border);
+  }
+  
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .project-item,
+    .item-title,
+    .action-icon,
+    .footer-cta,
+    .cursor-mockup {
+      transition: none !important;
+    }
+  }
+</style>

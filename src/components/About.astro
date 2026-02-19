@@ -1,0 +1,694 @@
+---
+const results = [
+  { num: "+45%", label: "Conversión", desc: "promedio en sitios rediseñados" },
+  { num: "-60%", label: "Tiempo carga", desc: "con optimización técnica" },
+  { num: "100%", label: "Satisfacción", desc: "clientes recomiendan" },
+];
+
+const steps = [
+  {
+    num: "01",
+    title: "Diagnóstico",
+    desc: "Auditoría completa de tu infraestructura actual y mapeo de oportunidades",
+  },
+  {
+    num: "02",
+    title: "Arquitectura",
+    desc: "Diseño de sistemas escalables con enfoque en rendimiento y conversión",
+  },
+  {
+    num: "03",
+    title: "Ejecución",
+    desc: "Construcción artesanal sin plantillas ni atajos. Código puro, píxel perfecto",
+  },
+  {
+    num: "04",
+    title: "Entrega",
+    desc: "Deploy optimizado con métricas garantizadas y documentación técnica",
+  },
+];
+
+const testimonials = [
+  {
+    quote:
+      "Pasamos de una web que nos avergonzaba mostrar a una infraestructura que ahora es nuestro principal activo comercial. El ROI fue inmediato.",
+    author: "María García",
+    role: "Directora, Asercord Energy",
+  },
+  {
+    quote:
+      "No es solo diseño. Es entender el negocio primero, luego construir la tecnología que lo hace crecer. Un nivel de profesionalismo raro de encontrar.",
+    author: "Carlos Ruiz",
+    role: "CEO, Nexus Commerce",
+  },
+];
+---
+
+<section class="about" id="sobre-mi" aria-labelledby="about-title">
+  <div class="container">
+    <div class="about-intro">
+      <div class="intro-visual" aria-hidden="true">
+        <div class="visual-box"></div>
+        <div class="visual-box visual-box-small"></div>
+        <div class="visual-line"></div>
+      </div>
+
+      <div class="intro-content">
+        <h2 class="intro-title" id="about-title">
+          No construimos webs.
+          <span class="title-emphasis">Diseñamos legados digitales.</span>
+        </h2>
+        <p class="intro-text">
+          FRN.Q Studio es un estudio de Ingeniería y Diseño Web de Alto
+          Rendimiento. No usamos plantillas. No dependemos de terceros. Creamos
+          infraestructuras digitales a medida que funcionan hoy, mañana y dentro
+          de diez años.
+        </p>
+        <a href="#contacto" class="intro-cta">
+          <span>Consulta de valoración</span>
+          <span class="cta-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="results-section">
+      <div class="section-label">
+        <span class="label-num" aria-hidden="true">[01]</span>
+        <span class="label-text">Resultados Medibles</span>
+      </div>
+
+      <dl class="results-grid" role="list" aria-label="Resultados clave">
+        {results.map((r) => (
+          <div class="result-card" role="listitem">
+            <div class="result-graphic" aria-hidden="true">
+              <div class="graphic-bar" />
+              <div class="graphic-bar graphic-bar-mid" />
+              <div class="graphic-bar graphic-bar-tall" />
+            </div>
+            <dt class="sr-only">{r.label}</dt>
+            <dd class="result-value">
+              <span class="result-num">{r.num}</span>
+              <span class="result-label">{r.label}</span>
+              <span class="result-desc">{r.desc}</span>
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+
+    <div class="method-section">
+      <div class="section-label">
+        <span class="label-num" aria-hidden="true">[02]</span>
+        <span class="label-text">Proceso de Ingeniería</span>
+      </div>
+
+      <div class="method-grid">
+        <div class="method-visual" aria-hidden="true">
+          <div class="method-line"></div>
+          <div class="method-dots">
+            {steps.map((_, i) => (
+              <span class="method-dot" data-active={i === 0 ? "true" : undefined} />
+            ))}
+          </div>
+        </div>
+
+        <ol class="steps-list" role="list" aria-label="Pasos del proceso">
+          {steps.map((step) => (
+            <li class="step-item" role="listitem">
+              <span class="step-num" aria-hidden="true">{step.num}</span>
+              <div class="step-content">
+                <h3 class="step-title">{step.title}</h3>
+                <p class="step-desc">{step.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+
+    <div class="testimonials-section">
+      <div class="section-label">
+        <span class="label-num" aria-hidden="true">[03]</span>
+        <span class="label-text">Clientes</span>
+      </div>
+
+      <div class="testimonials-grid" role="list" aria-label="Testimonios de clientes">
+        {testimonials.map((t, i) => (
+          <blockquote class="testimonial-card" role="listitem">
+            <div class="quote-mark" aria-hidden="true">"</div>
+            <p class="quote-text">{t.quote}</p>
+            <footer class="quote-author">
+              <cite class="author-name">{t.author}</cite>
+              <span class="author-role">{t.role}</span>
+            </footer>
+          </blockquote>
+        ))}
+      </div>
+    </div>
+
+    <div class="cta-section">
+      <div class="cta-box">
+        <div class="cta-content">
+          <h3 class="cta-title">La web que necesitas vs. la que tienes</h3>
+          <p class="cta-desc">
+            La diferencia entre una infraestructura que escala y una que te
+            obliga a reinvertir cada año. Descubre cuál es tu situación actual.
+          </p>
+        </div>
+        <a href="#contacto" class="cta-btn">
+          <span>Solicitar auditoría</span>
+          <span class="btn-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    padding: var(--space-4xl) 0;
+    position: relative;
+  }
+
+  .about::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--border) 0,
+      var(--border) 20px,
+      transparent 20px,
+      transparent 40px
+    );
+  }
+
+  .about-intro {
+    display: grid;
+    gap: var(--space-2xl);
+    margin-bottom: var(--space-4xl);
+  }
+
+  @media (min-width: 768px) {
+    .about-intro {
+      grid-template-columns: 200px 1fr;
+      gap: var(--space-3xl);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .intro-visual {
+      display: none;
+    }
+  }
+
+  .intro-visual {
+    position: relative;
+    height: 200px;
+  }
+
+  .visual-box {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border: 2px solid var(--border);
+    background: var(--text);
+    box-shadow: 6px 6px 0 var(--border);
+  }
+
+  .visual-box-small {
+    width: 60px;
+    height: 60px;
+    top: 80px;
+    left: 100px;
+    background: var(--bg);
+    z-index: 1;
+  }
+
+  .visual-line {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--border);
+    opacity: 0.3;
+  }
+
+  .intro-title {
+    font-size: clamp(1.75rem, 5vw, 3.5rem);
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: var(--space-lg);
+  }
+
+  .title-emphasis {
+    display: block;
+    font-weight: 800;
+    margin-top: 0.25rem;
+    position: relative;
+  }
+
+  .title-emphasis::before {
+    content: "";
+    position: absolute;
+    left: -1rem;
+    top: 0.5em;
+    width: 4px;
+    height: 0.8em;
+    background: var(--text);
+  }
+
+  .intro-text {
+    font-size: clamp(1rem, 2vw, 1.125rem);
+    line-height: 1.8;
+    opacity: 0.7;
+    max-width: 500px;
+    margin-bottom: var(--space-xl);
+  }
+
+  .intro-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-lg);
+    font-weight: 600;
+    border: 2px solid var(--border);
+    background: var(--bg);
+    box-shadow: var(--shadow-brutal);
+    transition: 
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+
+  .intro-cta:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 7px 7px 0 var(--border);
+  }
+  
+  .intro-cta:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 3px;
+  }
+
+  .cta-arrow {
+    transition: transform var(--transition-base);
+  }
+
+  .intro-cta:hover .cta-arrow {
+    transform: translateX(4px);
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-md);
+    border-bottom: 2px solid var(--border);
+    opacity: 0.6;
+  }
+
+  .label-num {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .label-text {
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .results-section,
+  .method-section,
+  .testimonials-section {
+    margin-bottom: var(--space-3xl);
+  }
+
+  .results-grid {
+    display: grid;
+    gap: var(--space-lg);
+  }
+
+  @media (min-width: 640px) {
+    .results-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .results-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .result-card {
+    border: 2px solid var(--border);
+    padding: var(--space-xl);
+    background: var(--bg);
+    box-shadow: var(--shadow-brutal);
+    transition: 
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .result-card:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0 var(--border);
+  }
+
+  [data-theme="dark"] .result-card {
+    box-shadow: none;
+    border-color: var(--border);
+  }
+
+  [data-theme="dark"] .result-card:hover {
+    box-shadow: var(--shadow-brutal-hover);
+  }
+
+  .result-graphic {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    margin-bottom: var(--space-lg);
+    height: 40px;
+  }
+
+  .graphic-bar {
+    width: 8px;
+    height: 20px;
+    background: var(--border);
+    opacity: 0.3;
+  }
+
+  .graphic-bar-mid {
+    height: 30px;
+    opacity: 0.5;
+  }
+  .graphic-bar-tall {
+    height: 40px;
+    opacity: 1;
+  }
+
+  .result-value {
+    margin: 0;
+  }
+
+  .result-num {
+    display: block;
+    font-size: clamp(2.5rem, 5vw, 3rem);
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: var(--space-xs);
+  }
+
+  .result-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .result-desc {
+    font-size: 0.875rem;
+    opacity: 0.6;
+  }
+
+  .method-grid {
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 768px) {
+    .method-grid {
+      grid-template-columns: 60px 1fr;
+    }
+  }
+
+  .method-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  @media (max-width: 767px) {
+    .method-visual {
+      display: none;
+    }
+  }
+
+  .method-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+    opacity: 0.2;
+  }
+
+  .method-dots {
+    display: flex;
+    flex-direction: column;
+    gap: calc((100% - 40px) / 3);
+    position: relative;
+    height: 100%;
+    padding: 20px 0;
+  }
+
+  .method-dot {
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    background: var(--bg);
+    flex-shrink: 0;
+  }
+
+  .method-dot[data-active="true"] {
+    background: var(--text);
+  }
+
+  .steps-list {
+    display: grid;
+    gap: var(--space-md);
+    list-style: none;
+    padding: 0;
+    counter-reset: step;
+  }
+
+  @media (min-width: 768px) {
+    .steps-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .step-item {
+    display: flex;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    border: 2px solid var(--border);
+    background: var(--bg);
+    transition: 
+      transform var(--transition-fast),
+      background var(--transition-fast);
+  }
+
+  .step-item:hover {
+    transform: translateX(4px);
+    background: var(--bg-alt);
+  }
+
+  .step-num {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 700;
+    opacity: 0.4;
+    flex-shrink: 0;
+  }
+
+  .step-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: var(--space-xs);
+  }
+
+  .step-desc {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    opacity: 0.7;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    gap: var(--space-lg);
+  }
+
+  @media (min-width: 768px) {
+    .testimonials-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .testimonial-card {
+    border: 2px solid var(--border);
+    padding: var(--space-xl);
+    background: var(--bg);
+    box-shadow: var(--shadow-brutal);
+    position: relative;
+    margin: 0;
+    transition: 
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+
+  .testimonial-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 7px 7px 0 var(--border);
+  }
+
+  [data-theme="dark"] .testimonial-card {
+    box-shadow: none;
+  }
+
+  [data-theme="dark"] .testimonial-card:hover {
+    box-shadow: var(--shadow-brutal-hover);
+  }
+
+  .quote-mark {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 4rem;
+    line-height: 1;
+    font-weight: 300;
+    opacity: 0.15;
+    font-family: Georgia, serif;
+  }
+
+  .quote-text {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    font-style: italic;
+    margin-bottom: var(--space-lg);
+  }
+
+  .quote-author {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .author-name {
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  .author-role {
+    font-size: 0.875rem;
+    opacity: 0.6;
+  }
+
+  .cta-section {
+    margin-top: var(--space-3xl);
+  }
+
+  .cta-box {
+    background: var(--text);
+    color: var(--bg);
+    padding: var(--space-2xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.15);
+    border: 2px solid var(--text);
+    transition: 
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+
+  [data-theme="dark"] .cta-box {
+    box-shadow: 8px 8px 0 rgba(255, 255, 255, 0.1);
+    border-color: var(--text);
+  }
+
+  @media (min-width: 768px) {
+    .cta-box {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-3xl);
+    }
+  }
+
+  .cta-title {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 300;
+    margin-bottom: var(--space-sm);
+  }
+
+  .cta-desc {
+    opacity: 0.8;
+    max-width: 400px;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-xl);
+    font-weight: 600;
+    background: var(--bg);
+    color: var(--text);
+    border: 2px solid var(--bg);
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+    transition: 
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast);
+    flex-shrink: 0;
+  }
+
+  .cta-btn:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.2);
+  }
+  
+  .cta-btn:focus-visible {
+    outline: 3px solid var(--bg);
+    outline-offset: 3px;
+  }
+  
+  /* En modo oscuro, el botón es oscuro sobre caja clara - necesita borde visible */
+  [data-theme="dark"] .cta-btn {
+    border-color: var(--text);
+    box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.15);
+  }
+  
+  [data-theme="dark"] .cta-btn:hover {
+    box-shadow: 7px 7px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  .btn-arrow {
+    transition: transform var(--transition-base);
+  }
+
+  .cta-btn:hover .btn-arrow {
+    transform: translate(4px, -4px);
+  }
+  
+  /* Responsive */
+  @media (max-width: 640px) {
+    .results-grid,
+    .steps-list,
+    .testimonials-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

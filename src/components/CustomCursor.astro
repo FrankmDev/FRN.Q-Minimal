@@ -1,0 +1,110 @@
+---
+---
+
+<!-- Custom cursor - hidden on touch devices -->
+<div class="custom-cursor" aria-hidden="true">
+  <div class="cursor-dot"></div>
+</div>
+
+<script is:inline>
+  (function() {
+    // Only initialize on devices with fine pointer (mouse)
+    if (window.matchMedia('(hover: none)').matches || 
+        window.matchMedia('(pointer: coarse)').matches ||
+        window.innerWidth <= 768) {
+      return;
+    }
+
+    var cursor = document.querySelector('.custom-cursor');
+    if (!cursor) return;
+
+    var mouseX = 0;
+    var mouseY = 0;
+    var cursorX = 0;
+    var cursorY = 0;
+    var isActive = false;
+    var rafId = null;
+
+    // Smooth follow animation
+    function animate() {
+      var ease = 0.15;
+      
+      cursorX += (mouseX - cursorX) * ease;
+      cursorY += (mouseY - cursorY) * ease;
+      
+      if (cursor) {
+        cursor.style.left = cursorX + 'px';
+        cursor.style.top = cursorY + 'px';
+      }
+      
+      rafId = requestAnimationFrame(animate);
+    }
+
+    // Show cursor on first mouse move
+    function onFirstMove(e) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursorX = mouseX;
+      cursorY = mouseY;
+      
+      if (cursor) {
+        cursor.style.left = mouseX + 'px';
+        cursor.style.top = mouseY + 'px';
+        cursor.classList.add('visible');
+      }
+      
+      isActive = true;
+      rafId = requestAnimationFrame(animate);
+      
+      document.removeEventListener('mousemove', onFirstMove);
+    }
+
+    document.addEventListener('mousemove', onFirstMove);
+
+    // Update mouse position
+    document.addEventListener('mousemove', function(e) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    // Handle mouse leaving/entering window
+    document.addEventListener('mouseleave', function() {
+      if (cursor) cursor.classList.remove('visible');
+    });
+
+    document.addEventListener('mouseenter', function() {
+      if (cursor && isActive) cursor.classList.add('visible');
+    });
+
+    // Hover effect on interactive elements
+    var hoverSelectors = 'a, button, [role="button"], input[type="submit"], input[type="button"], label[for], select, summary, [data-cursor-hover]';
+    
+    document.addEventListener('mouseover', function(e) {
+      var target = e.target;
+      if (target.closest(hoverSelectors)) {
+        if (cursor) cursor.classList.add('hovering');
+      }
+    });
+
+    document.addEventListener('mouseout', function(e) {
+      var target = e.target;
+      if (target.closest(hoverSelectors)) {
+        if (cursor) cursor.classList.remove('hovering');
+      }
+    });
+
+    // Click effects
+    document.addEventListener('mousedown', function() {
+      if (cursor) cursor.classList.add('clicking');
+    });
+
+    document.addEventListener('mouseup', function() {
+      if (cursor) cursor.classList.remove('clicking');
+    });
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', function() {
+      if (rafId) cancelAnimationFrame(rafId);
+    });
+  })();
+</script>

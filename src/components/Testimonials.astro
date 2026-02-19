@@ -1,0 +1,185 @@
+---
+const testimonials = [
+  {
+    quote: "Francisco transformó nuestra visión en realidad. Su atención al detalle es incomparable.",
+    author: "María G.",
+    role: "CEO, Nexus"
+  },
+  {
+    quote: "El mejor desarrollador con el que he trabajado. Código limpio, diseño impecable.",
+    author: "Carlos R.",
+    role: "Product Lead"
+  },
+  {
+    quote: "Nuestra web carga en 0.8s y las conversiones subieron 40%. Increíble trabajo.",
+    author: "Ana M.",
+    role: "Marketing Dir."
+  }
+];
+---
+
+<section class="testimonials" id="testimonios" aria-labelledby="testimonials-title">
+  <div class="container">
+    <header class="section-header reveal">
+      <span class="section-label">Testimonials</span>
+      <h2 id="testimonials-title" class="section-title">Client Words</h2>
+    </header>
+    
+    <div class="testimonials-grid" role="list">
+      {testimonials.map((t, i) => (
+        <blockquote class="testimonial reveal" style={`transition-delay: ${i * 0.15}s`} role="listitem">
+          <div class="quote-mark" aria-hidden="true">"</div>
+          <p class="quote-text">{t.quote}</p>
+          <footer class="quote-footer">
+            <cite class="quote-author">{t.author}</cite>
+            <span class="quote-role">{t.role}</span>
+          </footer>
+        </blockquote>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+<style>
+  .testimonials {
+    background: var(--bg);
+    padding: var(--space-4xl) 0;
+    position: relative;
+  }
+  
+  .testimonials::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--border) 0,
+      var(--border) 20px,
+      transparent 20px,
+      transparent 40px
+    );
+  }
+
+  .section-header {
+    margin-bottom: var(--space-2xl);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .section-label {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  @media (min-width: 768px) {
+    .testimonials-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .testimonial {
+    margin: 0;
+    padding: var(--space-xl);
+    background: var(--bg-alt);
+    border: 2px solid var(--border);
+    position: relative;
+    transition: 
+      transform var(--transition-base),
+      box-shadow var(--transition-base);
+  }
+
+  .testimonial:hover {
+    transform: translateY(-8px);
+    box-shadow: 8px 8px 0 0 var(--border);
+  }
+
+  .quote-mark {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    font-family: Georgia, serif;
+    font-size: 4rem;
+    line-height: 1;
+    color: var(--text);
+    opacity: 0.1;
+  }
+
+  .quote-text {
+    font-size: clamp(1rem, 2vw, 1.0625rem);
+    line-height: 1.6;
+    color: var(--text);
+    margin-bottom: var(--space-lg);
+    font-style: normal;
+  }
+
+  .quote-footer {
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border);
+  }
+
+  .quote-author {
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    font-style: normal;
+    margin-bottom: 0.25rem;
+  }
+
+  .quote-role {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+  
+  /* Reveal animation */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity var(--transition-slow), transform var(--transition-slow);
+    will-change: opacity, transform;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
