@@ -353,16 +353,47 @@ const testimonials = [
     padding: var(--space-xl);
     background: var(--bg);
     box-shadow: var(--shadow-brutal);
-    transition: 
-      transform var(--transition-fast),
-      box-shadow var(--transition-fast);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
+    isolation: isolate;
   }
 
   .result-card:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 8px 8px 0 var(--border);
+    transform: translate(-6px, -6px);
+    box-shadow: 6px 6px 0 var(--border);
+  }
+
+  /* Hover frame for result cards */
+  .result-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    border: 2px solid transparent;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .result-card:hover::before {
+    border-color: var(--text);
+  }
+
+  /* Animated corner accents */
+  .result-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--text);
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 3;
+  }
+
+  .result-card:hover::after {
+    width: 100%;
   }
 
   [data-theme="dark"] .result-card {
@@ -387,6 +418,7 @@ const testimonials = [
     height: 20px;
     background: var(--border);
     opacity: 0.3;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .graphic-bar-mid {
@@ -396,6 +428,19 @@ const testimonials = [
   .graphic-bar-tall {
     height: 40px;
     opacity: 1;
+  }
+
+  .result-card:hover .graphic-bar {
+    background: var(--text);
+    opacity: 0.4;
+  }
+
+  .result-card:hover .graphic-bar-mid {
+    opacity: 0.6;
+  }
+
+  .result-card:hover .graphic-bar-tall {
+    opacity: 0.8;
   }
 
   .result-value {
@@ -408,17 +453,33 @@ const testimonials = [
     font-weight: 800;
     line-height: 1;
     margin-bottom: var(--space-xs);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .result-card:hover .result-num {
+    transform: translateX(8px);
   }
 
   .result-label {
     display: block;
     font-weight: 600;
     margin-bottom: 0.25rem;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .result-card:hover .result-label {
+    transform: translateX(4px);
   }
 
   .result-desc {
     font-size: 0.875rem;
     opacity: 0.6;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .result-card:hover .result-desc {
+    opacity: 0.9;
+    transform: translateX(4px);
   }
 
   .method-grid {
@@ -496,14 +557,48 @@ const testimonials = [
     padding: var(--space-lg);
     border: 2px solid var(--border);
     background: var(--bg);
-    transition: 
-      transform var(--transition-fast),
-      background var(--transition-fast);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
   }
 
   .step-item:hover {
-    transform: translateX(4px);
+    transform: translate(-4px, -4px);
+    box-shadow: 4px 4px 0 var(--border);
     background: var(--bg-alt);
+  }
+
+  /* Hover frame - top line */
+  .step-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--text);
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 3;
+  }
+
+  .step-item:hover::before {
+    width: 100%;
+  }
+
+  /* Border overlay on hover */
+  .step-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid transparent;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .step-item:hover::after {
+    border-color: var(--text);
   }
 
   .step-num {
@@ -512,18 +607,35 @@ const testimonials = [
     font-weight: 700;
     opacity: 0.4;
     flex-shrink: 0;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .step-item:hover .step-num {
+    opacity: 0.8;
+    transform: translateX(4px);
   }
 
   .step-title {
     font-size: 1.125rem;
     font-weight: 700;
     margin-bottom: var(--space-xs);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .step-item:hover .step-title {
+    transform: translateX(4px);
   }
 
   .step-desc {
     font-size: 0.875rem;
     line-height: 1.6;
     opacity: 0.7;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .step-item:hover .step-desc {
+    opacity: 0.9;
+    transform: translateX(4px);
   }
 
   .testimonials-grid {
@@ -544,14 +656,14 @@ const testimonials = [
     box-shadow: var(--shadow-brutal);
     position: relative;
     margin: 0;
-    transition: 
-      transform var(--transition-fast),
-      box-shadow var(--transition-fast);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+    isolation: isolate;
   }
 
   .testimonial-card:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 7px 7px 0 var(--border);
+    transform: translate(-6px, -6px);
+    box-shadow: 6px 6px 0 var(--border);
   }
 
   [data-theme="dark"] .testimonial-card {
@@ -560,6 +672,38 @@ const testimonials = [
 
   [data-theme="dark"] .testimonial-card:hover {
     box-shadow: var(--shadow-brutal-hover);
+  }
+
+  /* Hover frame animation */
+  .testimonial-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--text);
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 3;
+  }
+
+  .testimonial-card:hover::before {
+    width: 100%;
+  }
+
+  /* Animated border overlay */
+  .testimonial-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid transparent;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .testimonial-card:hover::after {
+    border-color: var(--text);
   }
 
   .quote-mark {
@@ -571,6 +715,12 @@ const testimonials = [
     font-weight: 300;
     opacity: 0.15;
     font-family: Georgia, serif;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .testimonial-card:hover .quote-mark {
+    opacity: 0.25;
+    transform: scale(1.1) translateY(-4px);
   }
 
   .quote-text {
@@ -578,12 +728,22 @@ const testimonials = [
     line-height: 1.7;
     font-style: italic;
     margin-bottom: var(--space-lg);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .testimonial-card:hover .quote-text {
+    transform: translateX(6px);
   }
 
   .quote-author {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .testimonial-card:hover .quote-author {
+    transform: translateX(6px);
   }
 
   .author-name {

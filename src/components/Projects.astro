@@ -1,32 +1,44 @@
 ---
 const projects = [
   {
-    name: "Asercord Energy",
-    category: "Sector Energético",
-    year: "2025",
-    image: "https://placehold.co/600x400/0a0a0a/ffffff?text=Asercord+Energy&font=playfair-display",
-    highlight: "Claridad en complejidad",
+    name: "Urban Loft",
+    category: "Branding",
+    year: "2023",
+    image: "/projects/urban.avif",
+    highlight: "Astro / Figma",
+    url: "https://urban-loft.vercel.app/",
   },
   {
-    name: "Nexus Commerce",
-    category: "E-commerce Premium",
-    year: "2025",
-    image: "https://placehold.co/600x400/ffffff/0a0a0a?text=Nexus+Commerce&font=playfair-display",
-    highlight: "2M€ en transacciones",
-  },
-  {
-    name: "The Last Experience",
-    category: "Entretenimiento",
+    name: "Bar Caracalla",
+    category: "Experiment",
     year: "2024",
-    image: "https://placehold.co/600x400/1a1a1a/f5f5f5?text=The+Last+Experience&font=playfair-display",
-    highlight: "Inmersión total",
+    image: "/projects/caracalla.avif",
+    highlight: "Astro / GLSL",
+    url: "https://barcaracalla.com/",
   },
   {
-    name: "Horizon Capital",
-    category: "Consultoría Financiera",
+    name: "Fernando Feijoo",
+    category: "Interactive",
+    year: "2025",
+    image: "/projects/fernando-feijoo.avif",
+    highlight: "Astro / WebGL / GSAP",
+    url: "https://fernando-feijoo.vercel.app/",
+  },
+  {
+    name: "Asercord Energia",
+    category: "Corporate",
     year: "2024",
-    image: "https://placehold.co/600x400/f5f5f5/0a0a0a?text=Horizon+Capital&font=playfair-display",
-    highlight: "Autoridad digital",
+    image: "/projects/asercord.avif",
+    highlight: "Astro / Tailwind / Node.js",
+    url: "https://asercordenergia.netlify.app/",
+  },
+  {
+    name: "Wanda Animalart",
+    category: "Platform",
+    year: "2024",
+    image: "/projects/wanda.avif",
+    highlight: "Astro",
+    url: "https://www.wanda-animalart.com/",
   },
 ];
 ---
@@ -50,12 +62,14 @@ const projects = [
 
     <div class="projects-list" role="list" aria-label="Lista de proyectos">
       {projects.map((project, i) => (
-        <article 
+        <a 
+          href={project.url}
+          target="_blank"
+          rel="noopener noreferrer"
           class="project-item" 
           data-image={project.image} 
           data-index={i}
           role="listitem"
-          tabindex="0"
         >
           <div class="item-number" aria-hidden="true">
             <span>0{i + 1}</span>
@@ -78,7 +92,7 @@ const projects = [
           <div class="item-action" aria-hidden="true">
             <span class="action-icon">↗</span>
           </div>
-        </article>
+        </a>
       ))}
     </div>
 
@@ -115,9 +129,9 @@ const projects = [
     let mouseX = 0, mouseY = 0;
     let mockupX = 0, mockupY = 0;
     let isHovering = false;
-    let rafId: number | null = null;
+    let rafId = null;
 
-    function lerp(start: number, end: number, factor: number) {
+    function lerp(start, end, factor) {
       return start + (end - start) * factor;
     }
 
@@ -131,8 +145,9 @@ const projects = [
       mockupX = lerp(mockupX, mouseX, 0.12);
       mockupY = lerp(mockupY, mouseY, 0.12);
 
-      const offsetX = 20;
-      const offsetY = -150;
+      // Offset to position mockup closer to cursor
+      const offsetX = 30;
+      const offsetY = -120;
 
       cursorMockup.style.transform = `translate3d(${mockupX + offsetX}px, ${mockupY + offsetY}px, 0)`;
 
@@ -156,7 +171,6 @@ const projects = [
           mockupImg.src = imageUrl;
           cursorMockup.classList.add("active");
           isHovering = true;
-          document.body.style.cursor = "none";
 
           if (!rafId) {
             rafId = requestAnimationFrame(updateMockupPosition);
@@ -167,7 +181,6 @@ const projects = [
       const handleLeave = () => {
         cursorMockup.classList.remove("active");
         isHovering = false;
-        document.body.style.cursor = "";
       };
 
       item.addEventListener("mouseenter", handleEnter);
@@ -180,7 +193,6 @@ const projects = [
     projectsSection?.addEventListener("mouseleave", () => {
       cursorMockup.classList.remove("active");
       isHovering = false;
-      document.body.style.cursor = "";
     });
   }
   
@@ -284,8 +296,10 @@ const projects = [
     gap: var(--space-md);
     padding: var(--space-xl) 0;
     border-bottom: 2px solid var(--border);
-    cursor: pointer;
+    cursor: none;
     position: relative;
+    text-decoration: none;
+    color: inherit;
     transition: 
       background var(--transition-base),
       padding var(--transition-base);
@@ -426,13 +440,13 @@ const projects = [
     opacity: 1;
   }
 
-  /* Mockup que sigue al cursor */
+  /* Mockup que sigue al cursor - above custom cursor */
   .cursor-mockup {
     position: fixed;
     top: 0;
     left: 0;
     pointer-events: none;
-    z-index: var(--z-tooltip, 700);
+    z-index: 10000;
     opacity: 0;
     transform: translate3d(-100%, -100%, 0);
     transition: opacity 0.2s ease;
@@ -444,13 +458,12 @@ const projects = [
   }
 
   .mockup-frame {
-    width: clamp(250px, 30vw, 350px);
-    height: auto;
-    aspect-ratio: 3/2;
+    width: 380px;
+    height: 260px;
     background: var(--bg);
-    border: 2px solid var(--border);
-    box-shadow: var(--shadow-brutal-lg);
-    padding: var(--space-sm);
+    border: 1px solid var(--border);
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+    padding: 6px;
     overflow: hidden;
   }
 
@@ -458,7 +471,6 @@ const projects = [
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border: 1px solid var(--border);
   }
   
   /* Reduced motion */

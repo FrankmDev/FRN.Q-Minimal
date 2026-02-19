@@ -3,38 +3,17 @@ const services = [
   {
     num: "01",
     title: "Velocidad que Convierte",
-    desc: "Cada milisegundo cuenta. Construimos experiencias de carga instantánea que retienen al usuario y eliminan el abandono antes de que ocurra.",
-    features: [
-      "Carga bajo 1 segundo",
-      "Cero plantillas pesadas",
-      "Optimización extrema",
-      "Métricas Core Web Vitals",
-    ],
-    pattern: "grid",
+    desc: "Cada milisegundo cuenta. Construimos experiencias de carga instantánea.",
   },
   {
     num: "02",
     title: "Diseño que Otorga Estatus",
-    desc: "No seguimos tendencias. Creamos sistemas visuales únicos que comunican autoridad y diferencian tu marca de la competencia genérica.",
-    features: [
-      "Sistemas de diseño exclusivos",
-      "Interacciones de alta fidelidad",
-      "Identidad visual memorable",
-      "Experiencia inmersiva",
-    ],
-    pattern: "diagonal",
+    desc: "Sistemas visuales únicos que comunican autoridad y diferencian tu marca.",
   },
   {
     num: "03",
     title: "Tecnología que No Caduca",
-    desc: "Olvídate de actualizaciones forzosas y plugins vulnerables. Arquitecturas limpias que escalan sin deuda técnica ni costes ocultos.",
-    features: [
-      "Código puro, sin dependencias",
-      "Seguridad de grado empresarial",
-      "Escalabilidad garantizada",
-      "Cero mantenimiento crítico",
-    ],
-    pattern: "dots",
+    desc: "Arquitecturas limpias que escalan sin deuda técnica ni costes ocultos.",
   },
 ];
 ---
@@ -52,62 +31,89 @@ const services = [
       </h2>
     </div>
 
-    <div class="services-grid" role="list">
+    <div class="services-grid" role="list" id="services-grid">
       {services.map((service, i) => (
         <article class="service-card" data-index={i} role="listitem">
-          <div
-            class="card-pattern"
-            data-pattern={service.pattern}
-            aria-hidden="true"
-          >
-            {service.pattern === "grid" && (
-              <div class="pattern-grid">
-                {Array.from({ length: 16 }).map(() => (
-                  <span />
-                ))}
-              </div>
-            )}
-            {service.pattern === "diagonal" && (
-              <div class="pattern-diagonal">
-                <span /><span /><span />
-              </div>
-            )}
-            {service.pattern === "dots" && (
-              <div class="pattern-dots">
-                {Array.from({ length: 20 }).map(() => (
-                  <span />
-                ))}
-              </div>
-            )}
-          </div>
-
+          <!-- Background number -->
+          <span class="card-bg-num" aria-hidden="true">{service.num}</span>
+          
+          <!-- Content -->
           <div class="card-content">
-            <div class="card-header">
-              <span class="card-num" aria-label={`Servicio ${service.num}`}>{service.num}</span>
-              <div class="card-icon" aria-hidden="true">
-                <span class="icon-arrow">↗</span>
-              </div>
-            </div>
-
+            <span class="card-index">{service.num}</span>
             <h3 class="card-title">{service.title}</h3>
             <p class="card-desc">{service.desc}</p>
-
-            <ul class="card-features" role="list" aria-label={`Características de ${service.title}`}>
-              {service.features.map((feature) => (
-                <li>
-                  <span class="feature-bullet" aria-hidden="true">→</span>
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
           </div>
 
-          <div class="card-border" aria-hidden="true" />
+          <!-- Arrow -->
+          <div class="card-arrow" aria-hidden="true">
+            <span>→</span>
+          </div>
+
+          <!-- Hover frame -->
+          <div class="hover-frame" aria-hidden="true">
+            <div class="frame-line frame-top"></div>
+            <div class="frame-line frame-right"></div>
+            <div class="frame-line frame-bottom"></div>
+            <div class="frame-line frame-left"></div>
+          </div>
         </article>
       ))}
     </div>
   </div>
+
+  <!-- Custom cursor for services -->
+  <div class="service-cursor" id="service-cursor" aria-hidden="true"></div>
 </section>
+
+<script>
+  // Custom cursor for service cards
+  const servicesGrid = document.getElementById('services-grid');
+  const cursor = document.getElementById('service-cursor');
+  
+  if (servicesGrid && cursor && window.matchMedia('(pointer: fine)').matches) {
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+    let isHovering = false;
+    let rafId = null;
+
+    function lerp(start, end, factor) {
+      return start + (end - start) * factor;
+    }
+
+    function updateCursor() {
+      if (!isHovering) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+        return;
+      }
+
+      cursorX = lerp(cursorX, mouseX, 0.15);
+      cursorY = lerp(cursorY, mouseY, 0.15);
+
+      cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`;
+
+      rafId = requestAnimationFrame(updateCursor);
+    }
+
+    servicesGrid.addEventListener('mouseenter', () => {
+      isHovering = true;
+      cursor.classList.add('active');
+      document.body.style.cursor = 'none';
+      if (!rafId) rafId = requestAnimationFrame(updateCursor);
+    }, { passive: true });
+
+    servicesGrid.addEventListener('mouseleave', () => {
+      isHovering = false;
+      cursor.classList.remove('active');
+      document.body.style.cursor = '';
+    }, { passive: true });
+
+    servicesGrid.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    }, { passive: true });
+  }
+</script>
 
 <style>
   .services {
@@ -182,7 +188,7 @@ const services = [
 
   .services-grid {
     display: grid;
-    gap: var(--space-lg);
+    gap: var(--space-xl);
   }
 
   @media (min-width: 768px) and (max-width: 1023px) {
@@ -197,184 +203,232 @@ const services = [
     }
   }
 
+  /* ============================================
+     CUSTOM CURSOR
+     ============================================ */
+  .service-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    background: var(--text);
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0;
+    transform: translate3d(-100%, -100%, 0);
+    transition: opacity 0.2s ease;
+    will-change: transform;
+    margin-left: -6px;
+    margin-top: -6px;
+  }
+
+  .service-cursor.active {
+    opacity: 1;
+    transform: translate3d(var(--x, 0), var(--y, 0), 0) scale(1);
+  }
+
+
+
+  /* Hide default cursor on grid */
+  .services-grid {
+    cursor: none;
+  }
+
+  @media (pointer: coarse) {
+    .service-cursor {
+      display: none;
+    }
+    .services-grid {
+      cursor: pointer;
+    }
+  }
+
+  /* ============================================
+     SERVICE CARD
+     ============================================ */
   .service-card {
     position: relative;
     background: var(--bg);
     border: 2px solid var(--border);
     padding: var(--space-xl);
-    transition: 
-      transform var(--transition-base),
-      box-shadow var(--transition-base);
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+    isolation: isolate;
     overflow: hidden;
-  }
-  
-  .service-card:focus-within {
-    outline: 3px solid var(--text);
-    outline-offset: 3px;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .service-card:hover {
-    transform: translate(-6px, -6px);
-  }
-
-  .service-card:hover .card-border {
-    transform: translate(12px, 12px);
-    opacity: 1;
-  }
-
-  .service-card:hover .icon-arrow {
-    transform: translate(4px, -4px);
-  }
-
-  .card-border {
+  /* Background number */
+  .card-bg-num {
     position: absolute;
-    inset: 0;
-    border: 2px solid var(--border);
-    transform: translate(6px, 6px);
-    z-index: -1;
-    opacity: 0.25;
-    transition: 
-      transform var(--transition-base),
-      opacity var(--transition-base);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-mono);
+    font-size: 10rem;
+    font-weight: 800;
+    opacity: 0.03;
     pointer-events: none;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  [data-theme="dark"] .service-card {
-    box-shadow: none;
+  .service-card:hover .card-bg-num {
+    opacity: 0.06;
+    transform: translate(-50%, -50%) scale(1.1);
   }
 
-  [data-theme="dark"] .service-card:hover .card-border {
-    opacity: 0.4;
-  }
-
-  .card-pattern {
-    position: absolute;
-    top: var(--space-lg);
-    right: var(--space-lg);
-    width: 80px;
-    height: 80px;
-    opacity: 0.12;
-    transition: opacity var(--transition-base);
-    pointer-events: none;
-  }
-
-  .service-card:hover .card-pattern {
-    opacity: 0.25;
-  }
-
-  .pattern-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 4px;
-  }
-
-  .pattern-grid span {
-    width: 100%;
-    aspect-ratio: 1;
-    background: var(--text);
-  }
-
-  .pattern-diagonal {
-    position: relative;
-    height: 100%;
-  }
-
-  .pattern-diagonal span {
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    background: var(--text);
-    transform-origin: left center;
-  }
-
-  .pattern-diagonal span:nth-child(1) { top: 20%; transform: rotate(45deg); }
-  .pattern-diagonal span:nth-child(2) { top: 50%; transform: rotate(45deg); }
-  .pattern-diagonal span:nth-child(3) { top: 80%; transform: rotate(45deg); }
-
-  .pattern-dots {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-  }
-
-  .pattern-dots span {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--text);
-  }
-
+  /* Content */
   .card-content {
     position: relative;
-    z-index: 1;
+    z-index: 2;
+    margin-top: auto;
   }
 
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: var(--space-xl);
-  }
-
-  .card-num {
+  .card-index {
+    display: block;
     font-family: var(--font-mono);
     font-size: 0.875rem;
     font-weight: 700;
-    opacity: 0.4;
+    opacity: 0.3;
+    margin-bottom: var(--space-md);
+    transition: all 0.4s ease;
   }
 
-  .card-icon {
-    width: 40px;
-    height: 40px;
+  .card-title {
+    font-size: clamp(1.5rem, 3vw, 1.75rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: var(--space-md);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .card-desc {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    opacity: 0.65;
+    max-width: 90%;
+    transition: all 0.4s ease;
+  }
+
+  /* Arrow */
+  .card-arrow {
+    position: absolute;
+    top: var(--space-lg);
+    right: var(--space-lg);
+    width: 44px;
+    height: 44px;
     border: 2px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.25rem;
-    flex-shrink: 0;
+    background: var(--bg);
+    z-index: 2;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .icon-arrow {
-    transition: transform var(--transition-base);
+  /* Hover Frame */
+  .hover-frame {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
   }
 
-  .card-title {
-    font-size: clamp(1.375rem, 3vw, 1.75rem);
-    font-weight: 700;
-    margin-bottom: var(--space-md);
-    letter-spacing: -0.02em;
-    line-height: 1.2;
+  .frame-line {
+    position: absolute;
+    background: var(--text);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .card-desc {
-    font-size: 0.9375rem;
-    line-height: 1.7;
-    opacity: 0.7;
-    margin-bottom: var(--space-lg);
+  .frame-top {
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
   }
 
-  .card-features {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
+  .frame-right {
+    top: 0;
+    right: 0;
+    width: 2px;
+    height: 0;
   }
 
-  .card-features li {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    font-size: 0.8125rem;
-    font-weight: 500;
+  .frame-bottom {
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 2px;
   }
 
-  .feature-bullet {
-    font-size: 0.75rem;
-    opacity: 0.4;
-    flex-shrink: 0;
+  .frame-left {
+    bottom: 0;
+    left: 0;
+    width: 2px;
+    height: 0;
   }
-  
-  /* Responsive adjustments */
+
+  /* ============================================
+     HOVER EFFECTS
+     ============================================ */
+  .service-card:hover {
+    transform: translate(-6px, -6px);
+    box-shadow: 6px 6px 0 var(--border);
+  }
+
+  .service-card:hover .card-index {
+    opacity: 0.8;
+    transform: translateX(4px);
+  }
+
+  .service-card:hover .card-title {
+    transform: translateX(8px);
+  }
+
+  .service-card:hover .card-desc {
+    opacity: 0.9;
+    transform: translateX(8px);
+  }
+
+  .service-card:hover .card-arrow {
+    background: var(--text);
+    color: var(--bg);
+    transform: translate(4px, -4px);
+  }
+
+  /* Frame animation */
+  .service-card:hover .frame-top { width: 100%; transition-delay: 0ms; }
+  .service-card:hover .frame-right { height: 100%; transition-delay: 80ms; }
+  .service-card:hover .frame-bottom { width: 100%; transition-delay: 160ms; }
+  .service-card:hover .frame-left { height: 100%; transition-delay: 240ms; }
+
+  /* ============================================
+     ENTRANCE ANIMATION
+     ============================================ */
+  .service-card {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: card-enter 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .service-card[data-index="0"] { animation-delay: 0ms; }
+  .service-card[data-index="1"] { animation-delay: 100ms; }
+  .service-card[data-index="2"] { animation-delay: 200ms; }
+
+  @keyframes card-enter {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
   @media (max-width: 640px) {
     .services {
       padding: var(--space-3xl) 0;
@@ -382,13 +436,31 @@ const services = [
     
     .service-card {
       padding: var(--space-lg);
+      min-height: 220px;
+    }
+
+    .card-bg-num {
+      font-size: 7rem;
+    }
+
+    .card-arrow {
+      width: 36px;
+      height: 36px;
+      font-size: 1rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .service-card {
+      opacity: 1;
+      transform: none;
+      animation: none;
     }
     
-    .card-pattern {
-      width: 60px;
-      height: 60px;
-      top: var(--space-md);
-      right: var(--space-md);
+    .service-card,
+    .service-card:hover,
+    .service-card * {
+      transition: none !important;
     }
   }
 </style>

@@ -493,7 +493,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://frnq.es"
     width: 24px;
     height: 24px;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 10001;
     mix-blend-mode: difference;
     opacity: 0;
     transform: translate(-50%, -50%);
@@ -502,6 +502,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://frnq.es"
 
   .custom-cursor.visible {
     opacity: 1;
+  }
+
+  .custom-cursor.force-hidden {
+    opacity: 0 !important;
+    display: none !important;
   }
 
   .cursor-dot {

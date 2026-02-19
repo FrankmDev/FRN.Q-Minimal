@@ -155,7 +155,6 @@ const navLinks = [
 
   // Scroll: progress bar + header shadow (throttled via rAF)
   let ticking = false;
-  let lastScrollY = 0;
   
   window.addEventListener(
     "scroll",
@@ -174,23 +173,12 @@ const navLinks = [
             headerProgress.setAttribute("aria-valuenow", String(Math.round(scrolled * 100)));
           }
           
-          const header = document.getElementById("header");
-          header?.classList.toggle("is-scrolled", scrollY > 10);
-          
-          // Add scroll direction detection for potential hide/show
-          if (scrollY > lastScrollY && scrollY > 200) {
-            header?.classList.add("is-scrolled-down");
-          } else {
-            header?.classList.remove("is-scrolled-down");
-          }
-          lastScrollY = scrollY;
-          
           ticking = false;
         });
         ticking = true;
       }
     },
-    { passive: true },
+    { passive: true }
   );
   
   // Handle visibility change to avoid animation glitches
@@ -200,23 +188,23 @@ const navLinks = [
     }
   });
   
-  // Calcular y actualizar la posición de la barra de progreso
+  // Calcular posición de la barra de progreso (header siempre visible)
   function updateProgressBarPosition() {
     const header = document.getElementById("header");
+    const mobileNav = document.getElementById("mobile-nav");
     if (!header) return;
     
-    // La altura total del header (incluye header-inner y mobile-nav si está abierto)
-    // Añadir separación de 6px entre el header y la barra
-    const progressTop = header.offsetHeight + 6;
+    // Altura del header + menú móvil si está abierto + separación de 8px
+    let headerHeight = header.offsetHeight;
+    const progressTop = headerHeight + 8;
     document.documentElement.style.setProperty('--progress-top', `${progressTop}px`);
   }
   
-  // Calcular posición inicial inmediatamente y después de un pequeño delay
+  // Calcular posición inicial
   updateProgressBarPosition();
-  setTimeout(updateProgressBarPosition, 100);
   window.addEventListener("resize", updateProgressBarPosition);
   
-  // Observar cambios en el menú móvil
+  // Actualizar cuando cambie el menú móvil
   if (mobileNav) {
     const mobileNavObserver = new MutationObserver(() => {
       setTimeout(updateProgressBarPosition, 50);
@@ -238,24 +226,6 @@ const navLinks = [
       box-shadow var(--transition-fast),
       transform var(--transition-base);
     will-change: transform;
-  }
-
-  .header.is-scrolled {
-    box-shadow: 0 4px 0 var(--border);
-  }
-  
-  .header.is-scrolled-down {
-    transform: translateY(-100%);
-  }
-  
-  .header.is-scrolled:not(.is-scrolled-down) {
-    transform: translateY(0);
-  }
-  
-  /* La barra de progreso también se oculta cuando el header se oculta */
-  .header.is-scrolled-down ~ .header-progress {
-    transform: translateY(-100%);
-    opacity: 0;
   }
 
   .header-accent {
@@ -293,7 +263,6 @@ const navLinks = [
     justify-content: space-between;
     padding-top: var(--space-md);
     padding-bottom: var(--space-md);
-    border-bottom: 2px solid var(--border);
   }
 
   .logo {
@@ -635,7 +604,7 @@ const navLinks = [
     top: var(--progress-top, 90px); /* posición calculada dinámicamente por JS */
     left: 0;
     right: 0;
-    height: 3px;
+    height: 6px;
     background: var(--bg-alt);
     overflow: hidden;
     z-index: calc(var(--z-fixed, 300) - 1);
@@ -667,10 +636,6 @@ const navLinks = [
     .mobile-link,
     .mobile-cta {
       transition: none !important;
-    }
-    
-    .header.is-scrolled-down {
-      transform: none;
     }
   }
 </style>

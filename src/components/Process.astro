@@ -33,6 +33,8 @@ const steps = [
     <ol class="process-steps" role="list" aria-label="Pasos del proceso">
       {steps.map((step, index) => (
         <li class="step reveal" style={`transition-delay: ${index * 0.1}s`} role="listitem">
+          <span class="step-border-bottom" aria-hidden="true"></span>
+          <span class="step-border-left" aria-hidden="true"></span>
           <span class="step-number font-mono" aria-hidden="true">{step.number}</span>
           <h3 class="step-title">{step.title}</h3>
           <p class="step-description">{step.description}</p>
@@ -123,34 +125,83 @@ const steps = [
     padding: var(--space-lg);
     border: 2px solid var(--border);
     background: var(--bg);
-    transition: 
-      border-color var(--transition-base),
-      background var(--transition-base),
-      transform var(--transition-base);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
+    overflow: hidden;
+    isolation: isolate;
   }
   
+  /* Top animated line */
   .step::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--text);
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 3;
+  }
+
+  /* Right line */
+  .step::after {
+    content: '';
+    position: absolute;
+    top: 0;
     right: 0;
-    height: 3px;
-    background: var(--border);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform var(--transition-base);
+    width: 2px;
+    height: 0;
+    background: var(--text);
+    transition: height 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+    z-index: 3;
   }
 
   .step:hover {
     border-color: var(--text);
     background: var(--bg-alt);
-    transform: translateY(-4px);
+    transform: translate(-6px, -6px);
+    box-shadow: 6px 6px 0 var(--border);
   }
   
   .step:hover::before {
-    transform: scaleX(1);
+    width: 100%;
+  }
+
+  .step:hover::after {
+    height: 100%;
+  }
+
+  /* Bottom line animation */
+  .step .step-border-bottom {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 2px;
+    background: var(--text);
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+    z-index: 3;
+  }
+
+  .step:hover .step-border-bottom {
+    width: 100%;
+  }
+
+  /* Left line animation */
+  .step .step-border-left {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 2px;
+    height: 0;
+    background: var(--text);
+    transition: height 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+    z-index: 3;
+  }
+
+  .step:hover .step-border-left {
+    height: 100%;
   }
 
   .step-number {
@@ -160,12 +211,23 @@ const steps = [
     color: var(--text-muted);
     margin-bottom: var(--space-sm);
     font-family: var(--font-mono);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .step:hover .step-number {
+    color: var(--text);
+    transform: translateX(4px);
   }
 
   .step-title {
     font-size: clamp(1.125rem, 2.5vw, 1.25rem);
     font-weight: 700;
     margin-bottom: var(--space-sm);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .step:hover .step-title {
+    transform: translateX(6px);
   }
 
   .step-description {
@@ -173,6 +235,12 @@ const steps = [
     color: var(--text-muted);
     line-height: 1.6;
     margin: 0;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .step:hover .step-description {
+    color: var(--text);
+    transform: translateX(6px);
   }
   
   /* Reveal animation base */

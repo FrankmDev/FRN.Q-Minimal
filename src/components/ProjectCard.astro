@@ -5,12 +5,16 @@ interface Props {
   result: string;
   tags?: string[];
   index?: number;
+  image?: string;
 }
 
-const { title, type, result, tags = [], index = 0 } = Astro.props;
+const { title, type, result, tags = [], index = 0, image = "" } = Astro.props;
+
+// Using projects folder for images (AVIF format)
+const displayImage = image || "/projects/urban.avif";
 ---
 
-<article class="project-card" style={`--delay: ${index * 0.1}s`}>
+<article class="project-card" data-image={image} style={`--delay: ${index * 0.1}s`}>
   <div class="project-visual" aria-hidden="true">
     <div class="visual-frame">
       <div class="frame-header">
@@ -62,14 +66,93 @@ const { title, type, result, tags = [], index = 0 } = Astro.props;
   </div>
   
   <div class="project-border" aria-hidden="true"></div>
+  
+  <!-- Floating image on hover -->
+  <div class="floating-mockup" data-image={displayImage} aria-hidden="true">
+    <div class="mockup-frame">
+      <img src={displayImage} alt={`${title} preview`} class="mockup-img" loading="lazy" decoding="async" />
+    </div>
+  </div>
 </article>
+
+<script>
+  // Enable floating mockup on hover for each project card
+  const projectCards = document.querySelectorAll('.project-card');
+  
+  projectCards.forEach((card) => {
+    const imageUrl = card.getAttribute('data-image');
+    const floatingMockup = card.querySelector('.floating-mockup') as HTMLElement | null;
+    const mockupImg = card.querySelector('.mockup-img') as HTMLImageElement | null;
+    
+    if (!imageUrl || !floatingMockup || !mockupImg) return;
+    
+    // Skip on touch devices
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+    
+    let mouseX = 0, mouseY = 0;
+    let mockupX = 0, mockupY = 0;
+    let rafId: number | null = null;
+    let isHovering = false;
+    
+    function lerp(start: number, end: number, factor: number) {
+      return start + (end - start) * factor;
+    }
+    
+    function updateMockupPosition() {
+      if (!isHovering) {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = null;
+        return;
+      }
+      
+      // Smooth follow with lerp
+      mockupX = lerp(mockupX, mouseX, 0.12);
+      mockupY = lerp(mockupY, mouseY, 0.12);
+      
+      // Apply position with offset from cursor (positioned to the right)
+      floatingMockup.style.left = `${mockupX + 60}px`;
+      floatingMockup.style.top = `${mockupY - 100}px`;
+      
+      rafId = requestAnimationFrame(updateMockupPosition);
+    }
+    
+    card.addEventListener('mouseenter', (e) => {
+      const imgUrl = floatingMockup.getAttribute('data-image');
+      if (imgUrl) {
+        mockupImg.src = imgUrl;
+      }
+      floatingMockup.classList.add('active');
+      isHovering = true;
+      
+      const rect = card.getBoundingClientRect();
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      mockupX = mouseX;
+      mockupY = mouseY;
+      
+      if (!rafId) {
+        rafId = requestAnimationFrame(updateMockupPosition);
+      }
+    }, { passive: true });
+    
+    card.addEventListener('mouseleave', () => {
+      floatingMockup.classList.remove('active');
+      isHovering = false;
+    }, { passive: true });
+    
+    card.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    }, { passive: true });
+  });
+</script>
 
 <style>
   .project-card {
     position: relative;
     background: var(--bg);
     border: 3px solid var(--border);
-    overflow: hidden;
+    overflow: visible;
     cursor: pointer;
     transition: 
       transform var(--transition-base),
@@ -306,10 +389,51 @@ const { title, type, result, tags = [], index = 0 } = Astro.props;
     opacity: 1;
   }
   
+  /* ============================================
+     FLOATING MOCKUP - Image on hover
+     ============================================ */
+  .floating-mockup {
+    position: fixed;
+    width: 320px;
+    height: 220px;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    will-change: left, top, opacity;
+    margin-left: 60px;
+    margin-top: -100px;
+  }
+  
+  .floating-mockup.active {
+    opacity: 1;
+  }
+  
+  .floating-mockup .mockup-frame {
+    width: 100%;
+    height: 100%;
+    background: var(--bg);
+    border: 3px solid var(--border);
+    box-shadow: 8px 8px 0 var(--border);
+    padding: 4px;
+    overflow: hidden;
+  }
+  
+  .floating-mockup .mockup-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 1px solid var(--border);
+  }
+  
   /* Responsive */
   @media (max-width: 640px) {
     .project-card:hover {
       transform: translate(-4px, -4px);
+    }
+    
+    .floating-mockup {
+      display: none;
     }
   }
 </style>

@@ -12,6 +12,9 @@ const initials = name.split(' ').map(n => n[0]).join('');
 ---
 
 <blockquote class="testimonial-item" style={`--delay: ${index * 0.15}s`}>
+  <span class="frame-right" aria-hidden="true"></span>
+  <span class="frame-bottom" aria-hidden="true"></span>
+  <span class="frame-left" aria-hidden="true"></span>
   <div class="testimonial-quote-mark" aria-hidden="true">"</div>
   
   <div class="testimonial-content">
@@ -42,6 +45,9 @@ const initials = name.split(' ').map(n => n[0]).join('');
     animation: testimonial-enter 0.6s ease forwards;
     animation-delay: var(--delay);
     margin: 0;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+    isolation: isolate;
   }
   
   .testimonial-item:nth-child(even) {
@@ -57,7 +63,77 @@ const initials = name.split(' ').map(n => n[0]).join('');
   
   .testimonial-item:hover {
     transform: translate(-6px, -6px);
-    box-shadow: var(--shadow-brutal);
+    box-shadow: 6px 6px 0 var(--border);
+  }
+  
+  /* Keep the rotation for even items on hover */
+  .testimonial-item:nth-child(even):hover {
+    transform: translate(-6px, -6px) rotate(0deg);
+  }
+  
+  /* Hover frame - top line */
+  .testimonial-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: var(--text);
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 4;
+  }
+
+  .testimonial-item:hover::before {
+    width: 100%;
+  }
+
+  /* Right line */
+  .testimonial-item .frame-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 3px;
+    height: 0;
+    background: var(--text);
+    transition: height 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.08s;
+    z-index: 4;
+  }
+
+  .testimonial-item:hover .frame-right {
+    height: 100%;
+  }
+
+  /* Bottom line */
+  .testimonial-item .frame-bottom {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 3px;
+    background: var(--text);
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.16s;
+    z-index: 4;
+  }
+
+  .testimonial-item:hover .frame-bottom {
+    width: 100%;
+  }
+
+  /* Left line */
+  .testimonial-item .frame-left {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--text);
+    transition: height 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.24s;
+    z-index: 4;
+  }
+
+  .testimonial-item:hover .frame-left {
+    height: 100%;
   }
   
   .testimonial-item:hover .testimonial-border {
@@ -75,6 +151,12 @@ const initials = name.split(' ').map(n => n[0]).join('');
     line-height: 1;
     pointer-events: none;
     font-family: Georgia, serif;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .testimonial-item:hover .testimonial-quote-mark {
+    opacity: 0.2;
+    transform: scale(1.05) translateY(-4px);
   }
 
   .testimonial-content {
@@ -88,6 +170,11 @@ const initials = name.split(' ').map(n => n[0]).join('');
     color: var(--text);
     font-style: normal;
     margin-bottom: var(--space-xl);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .testimonial-item:hover .testimonial-quote {
+    transform: translateX(6px);
   }
 
   .testimonial-author {
@@ -96,6 +183,12 @@ const initials = name.split(' ').map(n => n[0]).join('');
     gap: var(--space-md);
     padding-top: var(--space-lg);
     border-top: 2px solid var(--border);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .testimonial-item:hover .testimonial-author {
+    transform: translateX(6px);
+    border-color: var(--text);
   }
 
   .author-avatar {
@@ -107,6 +200,12 @@ const initials = name.split(' ').map(n => n[0]).join('');
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .testimonial-item:hover .author-avatar {
+    transform: scale(1.05);
+    border-color: var(--text);
   }
 
   .avatar-initials {
@@ -128,6 +227,7 @@ const initials = name.split(' ').map(n => n[0]).join('');
     font-weight: 700;
     color: var(--text);
     font-style: normal;
+    transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .author-role {
@@ -137,6 +237,11 @@ const initials = name.split(' ').map(n => n[0]).join('');
     color: var(--text-muted);
     font-family: var(--font-mono);
     margin: 0;
+    transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .testimonial-item:hover .author-role {
+    color: var(--text);
   }
   
   .testimonial-border {

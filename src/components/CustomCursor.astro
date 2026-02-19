@@ -25,6 +25,9 @@
     var isActive = false;
     var rafId = null;
 
+    // Standard interactive elements that get the hover effect
+    var hoverSelectors = 'a, button, [role="button"], input[type="submit"], input[type="button"], label[for], select, summary, [data-cursor-hover]';
+
     // Smooth follow animation
     function animate() {
       var ease = 0.15;
@@ -77,8 +80,6 @@
     });
 
     // Hover effect on interactive elements
-    var hoverSelectors = 'a, button, [role="button"], input[type="submit"], input[type="button"], label[for], select, summary, [data-cursor-hover]';
-    
     document.addEventListener('mouseover', function(e) {
       var target = e.target;
       if (target.closest(hoverSelectors)) {
