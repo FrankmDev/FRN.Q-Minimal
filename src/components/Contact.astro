@@ -313,7 +313,7 @@ const formFields = {
 
   @media (min-width: 900px) {
     .contact-layout {
-      grid-template-columns: 1fr 1.2fr;
+      grid-template-columns: 1fr 1.3fr;
     }
   }
 
@@ -343,9 +343,10 @@ const formFields = {
   }
 
   .info-title {
-    font-size: clamp(1.75rem, 5vw, 3.5rem);
+    font-size: clamp(2rem, 5vw, 4rem);
     font-weight: 300;
     line-height: 1.1;
+    letter-spacing: -0.04em;
     margin-bottom: var(--space-lg);
   }
 
@@ -385,9 +386,9 @@ const formFields = {
     align-items: center;
     gap: var(--space-md);
     padding: var(--space-md) var(--space-lg);
-    border: 2px solid var(--border);
+    border: 3px solid var(--border);
     background: var(--bg);
-    box-shadow: var(--shadow-brutal);
+    box-shadow: 6px 6px 0 var(--border);
     transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
@@ -465,7 +466,7 @@ const formFields = {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid var(--border);
+    border: 3px solid var(--border);
     font-family: var(--font-mono);
     font-size: 0.75rem;
     font-weight: 700;
@@ -496,13 +497,13 @@ const formFields = {
   }
 
   .form-card {
-    border: 2px solid var(--border);
+    border: 3px solid var(--border);
     background: var(--bg);
-    box-shadow: var(--shadow-brutal-lg);
+    box-shadow: 12px 12px 0 var(--border);
   }
 
   [data-theme="dark"] .form-card {
-    box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.08);
+    box-shadow: 12px 12px 0 rgba(255, 255, 255, 0.08);
   }
 
   .form-header {
@@ -510,7 +511,7 @@ const formFields = {
     align-items: center;
     justify-content: space-between;
     padding: var(--space-lg) var(--space-xl);
-    border-bottom: 2px solid var(--border);
+    border-bottom: 3px solid var(--border);
     background: var(--bg-alt);
     gap: var(--space-md);
     flex-wrap: wrap;
@@ -577,7 +578,7 @@ const formFields = {
     padding: 0.875rem var(--space-md);
     font-size: 0.9375rem;
     font-family: inherit;
-    border: 2px solid var(--border);
+    border: 3px solid var(--border);
     border-radius: 0;
     background: var(--bg);
     color: var(--text);
@@ -636,8 +637,8 @@ const formFields = {
     font-weight: 700;
     background: var(--text);
     color: var(--bg);
-    border: 2px solid var(--text);
-    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.15);
+    border: 3px solid var(--text);
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.15);
     transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
@@ -673,7 +674,7 @@ const formFields = {
   }
 
   .faq-section {
-    border-top: 2px solid var(--border);
+    border-top: 3px solid var(--border);
     padding-top: var(--space-3xl);
   }
 
@@ -690,7 +691,7 @@ const formFields = {
   }
 
   .faq-item {
-    border: 2px solid var(--border);
+    border: 3px solid var(--border);
     background: var(--bg);
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     cursor: none;

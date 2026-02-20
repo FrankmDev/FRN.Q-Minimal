@@ -270,7 +270,8 @@ const testimonials = [
   .intro-title {
     font-size: clamp(1.75rem, 5vw, 3.5rem);
     font-weight: 300;
-    line-height: 1.2;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
     margin-bottom: var(--space-lg);
   }
 
@@ -305,9 +306,9 @@ const testimonials = [
     gap: var(--space-sm);
     padding: var(--space-md) var(--space-lg);
     font-weight: 600;
-    border: 2px solid var(--border);
+    border: 3px solid var(--border);
     background: var(--bg);
-    box-shadow: var(--shadow-brutal);
+    box-shadow: 6px 6px 0 var(--border);
     transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
@@ -439,10 +440,10 @@ const testimonials = [
   }
 
   .result-card {
-    border: 2px solid var(--border);
-    padding: var(--space-xl);
+    border: 3px solid var(--border);
+    padding: var(--space-2xl);
     background: var(--bg);
-    box-shadow: var(--shadow-brutal);
+    box-shadow: 8px 8px 0 var(--border);
     transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
@@ -539,9 +540,10 @@ const testimonials = [
 
   .result-num {
     display: block;
-    font-size: clamp(2.5rem, 5vw, 3rem);
+    font-size: clamp(3rem, 6vw, 4rem);
     font-weight: 800;
     line-height: 1;
+    letter-spacing: -0.04em;
     margin-bottom: var(--space-xs);
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
@@ -616,9 +618,9 @@ const testimonials = [
   }
 
   .method-dot {
-    width: 12px;
-    height: 12px;
-    border: 2px solid var(--border);
+    width: 14px;
+    height: 14px;
+    border: 3px solid var(--border);
     border-radius: 50%;
     background: var(--bg);
     flex-shrink: 0;
@@ -645,8 +647,8 @@ const testimonials = [
   .step-item {
     display: flex;
     gap: var(--space-md);
-    padding: var(--space-lg);
-    border: 2px solid var(--border);
+    padding: var(--space-xl);
+    border: 3px solid var(--border);
     background: var(--bg);
     transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
@@ -746,10 +748,10 @@ const testimonials = [
   }
 
   .testimonial-card {
-    border: 2px solid var(--border);
-    padding: var(--space-xl);
+    border: 3px solid var(--border);
+    padding: var(--space-2xl);
     background: var(--bg);
-    box-shadow: var(--shadow-brutal);
+    box-shadow: 8px 8px 0 var(--border);
     position: relative;
     margin: 0;
     transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);

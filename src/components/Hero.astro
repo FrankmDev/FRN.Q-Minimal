@@ -202,9 +202,9 @@ const stats = [
   }
 
   .hero-title {
-    font-size: clamp(2.5rem, 8vw, 7rem);
-    line-height: 1.05;
-    letter-spacing: -0.03em;
+    font-size: clamp(3rem, 9vw, 8rem);
+    line-height: 1.02;
+    letter-spacing: -0.04em;
   }
 
   .title-thin {
@@ -229,12 +229,11 @@ const stats = [
     transition: background var(--transition-base);
   }
 
-  /* Marquee */
   .hero-marquee {
-    border-top: 2px solid var(--border);
-    border-bottom: 2px solid var(--border);
-    padding: var(--space-md) 0;
-    margin-bottom: var(--space-3xl);
+    border-top: 3px solid var(--border);
+    border-bottom: 3px solid var(--border);
+    padding: var(--space-lg) 0;
+    margin-bottom: var(--space-4xl);
     overflow: hidden;
     animation: fadeInUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
   }
@@ -309,33 +308,33 @@ const stats = [
     display: inline-flex;
     align-items: center;
     gap: var(--space-sm);
-    padding: var(--space-md) var(--space-xl);
+    padding: var(--space-lg) var(--space-xl);
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 1.05rem;
     background: var(--text);
     color: var(--bg);
-    border: 2px solid var(--text);
-    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.15);
+    border: 3px solid var(--text);
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.15);
     text-transform: uppercase;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.05em;
     transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
   }
 
   .hero-cta:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 12px 12px 0 rgba(0, 0, 0, 0.15);
+    transform: translate(-6px, -6px);
+    box-shadow: 14px 14px 0 rgba(0, 0, 0, 0.2);
   }
 
   /* En modo oscuro, sombra clara */
   [data-theme="dark"] .hero-cta {
     border-color: var(--text);
-    box-shadow: 8px 8px 0 rgba(255, 255, 255, 0.12);
+    box-shadow: 8px 8px 0 rgba(255, 255, 255, 0.15);
   }
 
   [data-theme="dark"] .hero-cta:hover {
-    box-shadow: 12px 12px 0 rgba(255, 255, 255, 0.12);
+    box-shadow: 14px 14px 0 rgba(255, 255, 255, 0.2);
   }
 
   .hero-cta:focus-visible {
