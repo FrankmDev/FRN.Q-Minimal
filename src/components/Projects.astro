@@ -49,7 +49,7 @@ const projects = [
   </div>
 
   <div class="container">
-    <div class="section-header">
+    <div class="section-header reveal">
       <div class="header-label">
         <span class="label-line" aria-hidden="true"></span>
         <span class="label-text">Arquitecturas Digitales</span>
@@ -60,40 +60,49 @@ const projects = [
       </h2>
     </div>
 
-    <div class="projects-list" role="list" aria-label="Lista de proyectos">
-      {projects.map((project, i) => (
-        <a 
-          href={project.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="project-item" 
-          data-image={project.image} 
-          data-index={i}
-          role="listitem"
-        >
-          <div class="item-number" aria-hidden="true">
-            <span>0{i + 1}</span>
-          </div>
-
-          <div class="item-content">
-            <div class="item-meta">
-              <span class="meta-year">{project.year}</span>
-              <span class="meta-sep" aria-hidden="true">/</span>
-              <span class="meta-cat">{project.category}</span>
+    <div
+      class="projects-list reveal"
+      style="transition-delay: 150ms;"
+      role="list"
+      aria-label="Lista de proyectos"
+    >
+      {
+        projects.map((project, i) => (
+          <a
+            href={project.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="project-item"
+            data-image={project.image}
+            data-index={i}
+            role="listitem"
+          >
+            <div class="item-number" aria-hidden="true">
+              <span>0{i + 1}</span>
             </div>
-            <h3 class="item-title">{project.name}</h3>
-          </div>
 
-          <div class="item-highlight">
-            <span class="highlight-dot" aria-hidden="true" />
-            <span class="highlight-text">{project.highlight}</span>
-          </div>
+            <div class="item-content">
+              <div class="item-meta">
+                <span class="meta-year">{project.year}</span>
+                <span class="meta-sep" aria-hidden="true">
+                  /
+                </span>
+                <span class="meta-cat">{project.category}</span>
+              </div>
+              <h3 class="item-title">{project.name}</h3>
+            </div>
 
-          <div class="item-action" aria-hidden="true">
-            <span class="action-icon">↗</span>
-          </div>
-        </a>
-      ))}
+            <div class="item-highlight">
+              <span class="highlight-dot" aria-hidden="true" />
+              <span class="highlight-text">{project.highlight}</span>
+            </div>
+
+            <div class="item-action" aria-hidden="true">
+              <span class="action-icon">↗</span>
+            </div>
+          </a>
+        ))
+      }
     </div>
 
     <div class="projects-footer">
@@ -107,7 +116,14 @@ const projects = [
   <!-- Mockup flotante que sigue al cursor -->
   <div class="cursor-mockup" id="cursor-mockup" aria-hidden="true">
     <div class="mockup-frame">
-      <img src="" alt="" class="mockup-img" id="mockup-img" loading="lazy" decoding="async" />
+      <img
+        src=""
+        alt=""
+        class="mockup-img"
+        id="mockup-img"
+        loading="lazy"
+        decoding="async"
+      />
     </div>
   </div>
 </section>
@@ -115,23 +131,27 @@ const projects = [
 <script>
   // Only enable cursor mockup on devices that support hover
   const hoverQuery = window.matchMedia("(hover: hover)");
-  
+
   function initCursorMockup() {
     if (!hoverQuery.matches) return;
-    
+
     const projectItems = document.querySelectorAll(".project-item");
     const cursorMockup = document.getElementById("cursor-mockup");
-    const mockupImg = document.getElementById("mockup-img") as HTMLImageElement | null;
+    const mockupImg = document.getElementById(
+      "mockup-img",
+    ) as HTMLImageElement | null;
     const projectsSection = document.querySelector(".projects");
 
     if (!cursorMockup || !mockupImg) return;
 
-    let mouseX = 0, mouseY = 0;
-    let mockupX = 0, mockupY = 0;
+    let mouseX = 0,
+      mouseY = 0;
+    let mockupX = 0,
+      mockupY = 0;
     let isHovering = false;
-    let rafId = null;
+    let rafId: number | null = null;
 
-    function lerp(start, end, factor) {
+    function lerp(start: number, end: number, factor: number) {
       return start + (end - start) * factor;
     }
 
@@ -142,16 +162,19 @@ const projects = [
         return;
       }
 
-      mockupX = lerp(mockupX, mouseX, 0.12);
-      mockupY = lerp(mockupY, mouseY, 0.12);
+      // Snappier mockup lerp
+      mockupX = lerp(mockupX, mouseX, 0.15);
+      mockupY = lerp(mockupY, mouseY, 0.15);
 
       // Offset to position mockup closer to cursor
       const offsetX = 30;
       const offsetY = -120;
 
-      cursorMockup.style.transform = `translate3d(${mockupX + offsetX}px, ${mockupY + offsetY}px, 0)`;
+      if (cursorMockup) {
+        cursorMockup.style.transform = `translate3d(${mockupX + offsetX}px, ${mockupY + offsetY}px, 0)`;
+      }
 
-      rafId = requestAnimationFrame(updateMockupPosition);
+      rafId = requestAnimationFrame(updateMockupPosition) as unknown as number;
     }
 
     document.addEventListener(
@@ -165,7 +188,7 @@ const projects = [
 
     projectItems.forEach((item) => {
       const imageUrl = item.getAttribute("data-image");
-      
+
       const handleEnter = () => {
         if (imageUrl && mockupImg) {
           mockupImg.src = imageUrl;
@@ -195,10 +218,10 @@ const projects = [
       isHovering = false;
     });
   }
-  
+
   // Initialize
   initCursorMockup();
-  
+
   // Re-check on resize
   hoverQuery.addEventListener("change", initCursorMockup);
 </script>
@@ -300,11 +323,11 @@ const projects = [
     position: relative;
     text-decoration: none;
     color: inherit;
-    transition: 
+    transition:
       background var(--transition-base),
       padding var(--transition-base);
   }
-  
+
   .project-item:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: -3px;
@@ -422,7 +445,7 @@ const projects = [
     font-weight: 600;
     border: 2px dashed var(--border);
     opacity: 0.6;
-    transition: 
+    transition:
       opacity var(--transition-base),
       border-style var(--transition-base),
       background var(--transition-base);
@@ -432,8 +455,14 @@ const projects = [
     opacity: 1;
     border-style: solid;
     background: var(--bg-alt);
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 var(--border);
   }
-  
+
+  [data-theme="dark"] .footer-cta:hover {
+    box-shadow: 6px 6px 0 rgba(255, 255, 255, 0.15);
+  }
+
   .footer-cta:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
@@ -472,7 +501,7 @@ const projects = [
     height: 100%;
     object-fit: cover;
   }
-  
+
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .project-item,

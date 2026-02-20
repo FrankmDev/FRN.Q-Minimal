@@ -6,11 +6,11 @@ const contactMethods = [
     value: "hola@frnq.es",
     href: "mailto:hola@frnq.es",
   },
-  { 
-    icon: "☕", 
-    label: "Call Estratégica", 
-    value: "Agendar 30 min", 
-    href: "#form" 
+  {
+    icon: "☕",
+    label: "Call Estratégica",
+    value: "Agendar 30 min",
+    href: "#form",
   },
   {
     icon: "✎",
@@ -69,7 +69,7 @@ const formFields = {
 <section class="contact" id="contacto" aria-labelledby="contact-title">
   <div class="container">
     <div class="contact-layout">
-      <div class="contact-info">
+      <div class="contact-info reveal">
         <div class="info-header">
           <div class="header-label">
             <span class="label-line" aria-hidden="true"></span>
@@ -86,30 +86,56 @@ const formFields = {
           </p>
         </div>
 
-        <div class="contact-methods" role="list" aria-label="Métodos de contacto">
-          {contactMethods.map((method) => (
-            <a href={method.href} class="method-card" role="listitem">
-              <span class="method-icon" aria-hidden="true">{method.icon}</span>
-              <div class="method-info">
-                <span class="method-label">{method.label}</span>
-                <span class="method-value">{method.value}</span>
-              </div>
-              <span class="method-arrow" aria-hidden="true">→</span>
-            </a>
-          ))}
+        <div
+          class="contact-methods"
+          role="list"
+          aria-label="Métodos de contacto"
+        >
+          {
+            contactMethods.map((method) => (
+              <a href={method.href} class="method-card" role="listitem">
+                <span class="method-icon" aria-hidden="true">
+                  {method.icon}
+                </span>
+                <div class="method-info">
+                  <span class="method-label">{method.label}</span>
+                  <span class="method-value">{method.value}</span>
+                </div>
+                <span class="method-arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            ))
+          }
         </div>
 
         <div class="social-links">
           <span class="social-label">También en:</span>
           <div class="social-icons" role="list" aria-label="Redes sociales">
-            <a href="#" class="social-icon" role="listitem" aria-label="LinkedIn">in</a>
-            <a href="#" class="social-icon" role="listitem" aria-label="GitHub">gh</a>
-            <a href="#" class="social-icon" role="listitem" aria-label="Dribbble">dr</a>
+            <a
+              href="#"
+              class="social-icon"
+              role="listitem"
+              aria-label="LinkedIn">in</a
+            >
+            <a href="#" class="social-icon" role="listitem" aria-label="GitHub"
+              >gh</a
+            >
+            <a
+              href="#"
+              class="social-icon"
+              role="listitem"
+              aria-label="Dribbble">dr</a
+            >
           </div>
         </div>
       </div>
 
-      <div class="contact-form-wrapper" id="form">
+      <div
+        class="contact-form-wrapper reveal"
+        style="transition-delay: 150ms;"
+        id="form"
+      >
         <div class="form-card">
           <div class="form-header">
             <h3 class="form-title">Evaluación de Proyecto</h3>
@@ -119,7 +145,12 @@ const formFields = {
             </div>
           </div>
 
-          <form class="contact-form" action="#" method="POST" aria-label="Formulario de evaluación de proyecto">
+          <form
+            class="contact-form"
+            action="#"
+            method="POST"
+            aria-label="Formulario de evaluación de proyecto"
+          >
             <div class="form-row">
               <div class="form-field">
                 <label for="name">Nombre</label>
@@ -148,18 +179,22 @@ const formFields = {
             <div class="form-field">
               <label for="type">Tipo de Infraestructura</label>
               <select id="type" name="type" required>
-                {formFields.types.map(type => (
-                  <option value={type.value}>{type.label}</option>
-                ))}
+                {
+                  formFields.types.map((type) => (
+                    <option value={type.value}>{type.label}</option>
+                  ))
+                }
               </select>
             </div>
 
             <div class="form-field">
               <label for="budget">Inversión Prevista</label>
               <select id="budget" name="budget" required>
-                {formFields.budgets.map(budget => (
-                  <option value={budget.value}>{budget.label}</option>
-                ))}
+                {
+                  formFields.budgets.map((budget) => (
+                    <option value={budget.value}>{budget.label}</option>
+                  ))
+                }
               </select>
             </div>
 
@@ -170,8 +205,7 @@ const formFields = {
                 name="message"
                 rows="4"
                 placeholder="¿Qué problema necesitas resolver? ¿Qué resultados esperas?"
-                required
-              ></textarea>
+                required></textarea>
             </div>
 
             <button type="submit" class="form-submit">
@@ -183,26 +217,41 @@ const formFields = {
       </div>
     </div>
 
-    <div class="faq-section">
+    <div class="faq-section reveal">
       <h3 class="faq-title">Preguntas que importan</h3>
       <div class="faq-list">
-        {faqItems.map((item, i) => (
-          <div class="faq-item" data-faq-item>
-            <button class="faq-question" aria-expanded="false" type="button">
-              <span>{item.q}</span>
-              <span class="faq-icon" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="faq-arrow">
-                  <path d="M3 6L8 11L13 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-            </button>
-            <div class="faq-answer-wrapper">
-              <div class="faq-answer-inner">
-                <p class="faq-answer">{item.a}</p>
+        {
+          faqItems.map((item, i) => (
+            <div class="faq-item" data-faq-item>
+              <button class="faq-question" aria-expanded="false" type="button">
+                <span>{item.q}</span>
+                <span class="faq-icon" aria-hidden="true">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="faq-arrow"
+                  >
+                    <path
+                      d="M3 6L8 11L13 6"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+              <div class="faq-answer-wrapper">
+                <div class="faq-answer-inner">
+                  <p class="faq-answer">{item.a}</p>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        }
       </div>
     </div>
   </div>
@@ -210,26 +259,26 @@ const formFields = {
 
 <script>
   // Smooth FAQ accordion
-  const faqItems = document.querySelectorAll('[data-faq-item]');
-  
-  faqItems.forEach(item => {
-    const question = item.querySelector('.faq-question');
-    
-    question?.addEventListener('click', () => {
-      const isOpen = item.classList.contains('is-open');
-      
+  const faqItems = document.querySelectorAll("[data-faq-item]");
+
+  faqItems.forEach((item) => {
+    const question = item.querySelector(".faq-question");
+
+    question?.addEventListener("click", () => {
+      const isOpen = item.classList.contains("is-open");
+
       // Close all other items (optional - remove if you want multiple open)
-      faqItems.forEach(otherItem => {
+      faqItems.forEach((otherItem) => {
         if (otherItem !== item) {
-          otherItem.classList.remove('is-open');
-          const otherQuestion = otherItem.querySelector('.faq-question');
-          otherQuestion?.setAttribute('aria-expanded', 'false');
+          otherItem.classList.remove("is-open");
+          const otherQuestion = otherItem.querySelector(".faq-question");
+          otherQuestion?.setAttribute("aria-expanded", "false");
         }
       });
-      
+
       // Toggle current item
-      item.classList.toggle('is-open');
-      question?.setAttribute('aria-expanded', String(!isOpen));
+      item.classList.toggle("is-open");
+      question?.setAttribute("aria-expanded", String(!isOpen));
     });
   });
 </script>
@@ -339,7 +388,7 @@ const formFields = {
     border: 2px solid var(--border);
     background: var(--bg);
     box-shadow: var(--shadow-brutal);
-    transition: 
+    transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
   }
@@ -349,18 +398,18 @@ const formFields = {
   }
 
   .method-card:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 8px 8px 0 var(--border);
+    transform: translate(-6px, -6px);
+    box-shadow: 12px 12px 0 var(--border);
   }
-  
+
   [data-theme="dark"] .method-card:hover {
-    box-shadow: var(--shadow-brutal-hover);
+    box-shadow: 12px 12px 0 rgba(255, 255, 255, 0.15);
   }
 
   .method-card:hover .method-arrow {
     transform: translateX(4px);
   }
-  
+
   .method-card:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
@@ -420,7 +469,7 @@ const formFields = {
     font-family: var(--font-mono);
     font-size: 0.75rem;
     font-weight: 700;
-    transition: 
+    transition:
       background var(--transition-fast),
       color var(--transition-fast),
       transform var(--transition-fast);
@@ -429,9 +478,14 @@ const formFields = {
   .social-icon:hover {
     background: var(--text);
     color: var(--bg);
-    transform: translateY(-2px);
+    transform: translate(-4px, -4px);
+    box-shadow: 6px 6px 0 var(--border);
   }
-  
+
+  [data-theme="dark"] .social-icon:hover {
+    box-shadow: 6px 6px 0 rgba(255, 255, 255, 0.15);
+  }
+
   .social-icon:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
@@ -527,13 +581,13 @@ const formFields = {
     border-radius: 0;
     background: var(--bg);
     color: var(--text);
-    transition: 
+    transition:
       box-shadow var(--transition-fast),
       transform var(--transition-fast);
     -webkit-appearance: none;
     appearance: none;
   }
-  
+
   .form-field input:hover,
   .form-field select:hover,
   .form-field textarea:hover {
@@ -584,30 +638,30 @@ const formFields = {
     color: var(--bg);
     border: 2px solid var(--text);
     box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.15);
-    transition: 
+    transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
     cursor: pointer;
   }
 
   .form-submit:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.15);
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.2);
   }
-  
+
   .form-submit:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
   }
-  
+
   /* En modo oscuro, sombra clara para contraste */
   [data-theme="dark"] .form-submit {
     border-color: var(--text);
     box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.12);
   }
-  
+
   [data-theme="dark"] .form-submit:hover {
-    box-shadow: 7px 7px 0 rgba(255, 255, 255, 0.12);
+    box-shadow: 8px 8px 0 rgba(255, 255, 255, 0.2);
   }
 
   .submit-icon {
@@ -645,7 +699,12 @@ const formFields = {
 
   .faq-item:hover {
     border-color: var(--text);
-    transform: translateX(4px);
+    transform: translateX(8px);
+    box-shadow: -4px 4px 0 var(--border);
+  }
+
+  [data-theme="dark"] .faq-item:hover {
+    box-shadow: -4px 4px 0 rgba(255, 255, 255, 0.15);
   }
 
   .faq-item.is-open {
@@ -687,12 +746,13 @@ const formFields = {
 
   .faq-question:hover {
     background: var(--bg-alt);
+    padding-left: calc(var(--space-md) + 4px);
   }
 
   .faq-item.is-open .faq-question {
     background: var(--bg-alt);
   }
-  
+
   .faq-question:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: -3px;
@@ -733,21 +793,21 @@ const formFields = {
     transform: translateY(0);
     opacity: 0.85;
   }
-  
+
   /* Responsive */
   @media (max-width: 640px) {
     .contact {
       padding: var(--space-3xl) 0;
     }
-    
+
     .contact-layout {
       gap: var(--space-2xl);
     }
-    
+
     .form-header {
       padding: var(--space-md) var(--space-lg);
     }
-    
+
     .contact-form {
       padding: var(--space-lg);
     }

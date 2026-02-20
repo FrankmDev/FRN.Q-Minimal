@@ -2,22 +2,22 @@
 const currentYear = new Date().getFullYear();
 
 const footerLinks = [
-  { href: '#proyectos', label: 'Arquitecturas' },
-  { href: '#sobre-mi', label: 'Estudio' },
-  { href: '#contacto', label: 'Contacto' },
+  { href: "#proyectos", label: "Arquitecturas" },
+  { href: "#sobre-mi", label: "Estudio" },
+  { href: "#contacto", label: "Contacto" },
 ];
 
 const socialLinks = [
-  { label: 'LI', href: '#', title: 'LinkedIn' },
-  { label: 'GH', href: '#', title: 'GitHub' },
-  { label: 'DR', href: '#', title: 'Dribbble' },
+  { label: "LI", href: "#", title: "LinkedIn" },
+  { label: "GH", href: "#", title: "GitHub" },
+  { label: "DR", href: "#", title: "Dribbble" },
 ];
 
-const marqueeItems = ['FRN.Q', 'INGENIERÍA WEB', 'DISEÑO', 'PERFORMANCE'];
+const marqueeItems = ["FRN.Q", "INGENIERÍA WEB", "DISEÑO", "PERFORMANCE"];
 ---
 
 <footer class="footer" role="contentinfo">
-  <div class="footer-top">
+  <div class="footer-top reveal">
     <div class="container">
       <div class="top-content">
         <div class="footer-brand">
@@ -30,31 +30,39 @@ const marqueeItems = ['FRN.Q', 'INGENIERÍA WEB', 'DISEÑO', 'PERFORMANCE'];
           </a>
           <p class="brand-tagline">Ingeniería Web de Alto Rendimiento</p>
         </div>
-        
+
         <nav class="footer-nav" aria-label="Navegación del pie">
-          {footerLinks.map(link => (
-            <a href={link.href} class="nav-link">
-              <span class="link-bracket" aria-hidden="true">[</span>
-              {link.label}
-              <span class="link-bracket" aria-hidden="true">]</span>
-            </a>
-          ))}
+          {
+            footerLinks.map((link) => (
+              <a href={link.href} class="nav-link">
+                <span class="link-bracket" aria-hidden="true">
+                  [
+                </span>
+                {link.label}
+                <span class="link-bracket" aria-hidden="true">
+                  ]
+                </span>
+              </a>
+            ))
+          }
         </nav>
       </div>
     </div>
   </div>
-  
-  <div class="footer-cta">
+
+  <div class="footer-cta reveal" style="transition-delay: 100ms;">
     <div class="container">
       <a href="mailto:hola@frnq.es" class="cta-large">
-        <span class="cta-label">¿Listo para dejar de depender de plantillas?</span>
+        <span class="cta-label"
+          >¿Listo para dejar de depender de plantillas?</span
+        >
         <span class="cta-email">hola@frnq.es</span>
         <span class="cta-arrow" aria-hidden="true">→</span>
       </a>
     </div>
   </div>
-  
-  <div class="footer-bottom">
+
+  <div class="footer-bottom reveal" style="transition-delay: 200ms;">
     <div class="container">
       <div class="bottom-content">
         <div class="bottom-left">
@@ -62,72 +70,85 @@ const marqueeItems = ['FRN.Q', 'INGENIERÍA WEB', 'DISEÑO', 'PERFORMANCE'];
           <span class="separator" aria-hidden="true">/</span>
           <span class="location">Granada, España</span>
         </div>
-        
+
         <div class="bottom-right">
           <div class="social-links" role="list" aria-label="Redes sociales">
-            {socialLinks.map(social => (
-              <a 
-                href={social.href} 
-                class="social-link" 
-                title={social.title}
-                role="listitem"
-                aria-label={social.title}
-              >
-                {social.label}
-              </a>
-            ))}
+            {
+              socialLinks.map((social) => (
+                <a
+                  href={social.href}
+                  class="social-link"
+                  title={social.title}
+                  role="listitem"
+                  aria-label={social.title}
+                >
+                  {social.label}
+                </a>
+              ))
+            }
           </div>
-          
-          <button class="back-top" id="back-top" aria-label="Volver arriba" type="button">
+
+          <button
+            class="back-top"
+            id="back-top"
+            aria-label="Volver arriba"
+            type="button"
+          >
             <span aria-hidden="true">↑</span>
           </button>
         </div>
       </div>
     </div>
   </div>
-  
+
   <div class="footer-marquee" aria-hidden="true">
     <div class="marquee-track">
-      {Array.from({ length: 6 }).map(() => (
-        <>
-          {marqueeItems.map(item => (
-            <>
-              <span>{item}</span>
-              <span class="marquee-sep">◆</span>
-            </>
-          ))}
-        </>
-      ))}
+      {
+        Array.from({ length: 6 }).map(() => (
+          <>
+            {marqueeItems.map((item) => (
+              <>
+                <span>{item}</span>
+                <span class="marquee-sep">◆</span>
+              </>
+            ))}
+          </>
+        ))
+      }
     </div>
   </div>
 </footer>
 
 <script>
-  const backTopBtn = document.getElementById('back-top');
-  
-  backTopBtn?.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const backTopBtn = document.getElementById("back-top");
+
+  backTopBtn?.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   });
-  
+
   // Show/hide back to top based on scroll
   const toggleBackTop = () => {
     if (window.scrollY > 500) {
-      backTopBtn?.classList.add('is-visible');
+      backTopBtn?.classList.add("is-visible");
     } else {
-      backTopBtn?.classList.remove('is-visible');
+      backTopBtn?.classList.remove("is-visible");
     }
   };
-  
+
   let ticking = false;
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        toggleBackTop();
-        ticking = false;
-      });
-      ticking = true;
-    }
-  }, { passive: true });
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          toggleBackTop();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    },
+    { passive: true },
+  );
 </script>
 
 <style>
@@ -148,7 +169,7 @@ const marqueeItems = ['FRN.Q', 'INGENIERÍA WEB', 'DISEÑO', 'PERFORMANCE'];
     flex-direction: column;
     gap: var(--space-lg);
   }
-  
+
   @media (min-width: 768px) {
     .top-content {
       flex-direction: row;
@@ -172,21 +193,21 @@ const marqueeItems = ['FRN.Q', 'INGENIERÍA WEB', 'DISEÑO', 'PERFORMANCE'];
     border: 2px solid var(--border);
     background: var(--bg);
     box-shadow: var(--shadow-brutal);
-    transition: 
+    transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
   }
-  
+
   .brand-logo:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 var(--border);
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0 var(--border);
   }
-  
+
   .brand-logo:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
   }
-  
+
   .logo-icon {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -194,17 +215,17 @@ const marqueeItems = ['FRN.Q', 'INGENIERÍA WEB', 'DISEÑO', 'PERFORMANCE'];
     width: 20px;
     height: 20px;
   }
-  
+
   .logo-icon span {
     background: var(--text);
   }
-  
+
   .logo-text {
     font-family: var(--font-mono);
     font-weight: 700;
     font-size: 1rem;
   }
-  
+
   .brand-tagline {
     font-size: 0.875rem;
     opacity: 0.6;
@@ -216,7 +237,7 @@ const marqueeItems = ['FRN.Q', 'INGENIERÍA WEB', 'DISEÑO', 'PERFORMANCE'];
     gap: var(--space-lg);
     flex-wrap: wrap;
   }
-  
+
   .nav-link {
     font-size: 0.875rem;
     font-weight: 500;
@@ -226,16 +247,16 @@ const marqueeItems = ['FRN.Q', 'INGENIERÍA WEB', 'DISEÑO', 'PERFORMANCE'];
     transition: opacity var(--transition-fast);
     padding: var(--space-xs) 0;
   }
-  
+
   .nav-link:hover {
     opacity: 0.7;
   }
-  
+
   .link-bracket {
     opacity: 0.3;
     transition: opacity var(--transition-base);
   }
-  
+
   .nav-link:hover .link-bracket,
   .nav-link:focus .link-bracket {
     opacity: 1;
@@ -257,42 +278,42 @@ const marqueeItems = ['FRN.Q', 'INGENIERÍA WEB', 'DISEÑO', 'PERFORMANCE'];
     background: var(--text);
     color: var(--bg);
     box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.15);
-    transition: 
+    transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
     position: relative;
     max-width: 100%;
   }
-  
+
   .cta-large:hover {
-    transform: translate(-6px, -6px);
-    box-shadow: 14px 14px 0 rgba(0, 0, 0, 0.15);
+    transform: translate(-8px, -8px);
+    box-shadow: 16px 16px 0 rgba(0, 0, 0, 0.15);
   }
-  
+
   /* En modo oscuro, sombra clara */
   [data-theme="dark"] .cta-large {
     border-color: var(--text);
     box-shadow: 8px 8px 0 rgba(255, 255, 255, 0.1);
   }
-  
+
   [data-theme="dark"] .cta-large:hover {
-    box-shadow: 14px 14px 0 rgba(255, 255, 255, 0.1);
+    box-shadow: 16px 16px 0 rgba(255, 255, 255, 0.1);
   }
-  
+
   .cta-large:hover .cta-arrow {
     transform: translateX(8px);
   }
-  
+
   .cta-large:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
   }
-  
+
   .cta-label {
     font-size: 0.875rem;
     opacity: 0.7;
   }
-  
+
   .cta-email {
     font-size: clamp(1.25rem, 5vw, 3rem);
     font-weight: 300;
@@ -300,7 +321,7 @@ const marqueeItems = ['FRN.Q', 'INGENIERÍA WEB', 'DISEÑO', 'PERFORMANCE'];
     font-family: var(--font-mono);
     word-break: break-all;
   }
-  
+
   .cta-arrow {
     position: absolute;
     right: 1.5rem;
@@ -309,12 +330,12 @@ const marqueeItems = ['FRN.Q', 'INGENIERÍA WEB', 'DISEÑO', 'PERFORMANCE'];
     font-size: 1.5rem;
     transition: transform var(--transition-base);
   }
-  
+
   @media (max-width: 640px) {
     .cta-arrow {
       display: none;
     }
-    
+
     .cta-large {
       padding: var(--space-lg) var(--space-xl);
       width: 100%;
@@ -332,7 +353,7 @@ const marqueeItems = ['FRN.Q', 'INGENIERÍA WEB', 'DISEÑO', 'PERFORMANCE'];
     gap: var(--space-md);
     align-items: center;
   }
-  
+
   @media (min-width: 768px) {
     .bottom-content {
       flex-direction: row;
@@ -349,7 +370,7 @@ const marqueeItems = ['FRN.Q', 'INGENIERÍA WEB', 'DISEÑO', 'PERFORMANCE'];
     flex-wrap: wrap;
     justify-content: center;
   }
-  
+
   .separator {
     opacity: 0.5;
   }
@@ -364,7 +385,7 @@ const marqueeItems = ['FRN.Q', 'INGENIERÍA WEB', 'DISEÑO', 'PERFORMANCE'];
     display: flex;
     gap: var(--space-xs);
   }
-  
+
   .social-link {
     width: 36px;
     height: 36px;
@@ -376,18 +397,19 @@ const marqueeItems = ['FRN.Q', 'INGENIERÍA WEB', 'DISEÑO', 'PERFORMANCE'];
     font-size: 0.625rem;
     font-weight: 700;
     background: var(--bg);
-    transition: 
+    transition:
       background var(--transition-fast),
       color var(--transition-fast),
       transform var(--transition-fast);
   }
-  
+
   .social-link:hover {
     background: var(--text);
     color: var(--bg);
-    transform: translateY(-2px);
+    transform: translate(-4px, -4px);
+    box-shadow: 6px 6px 0 var(--border);
   }
-  
+
   .social-link:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
@@ -402,7 +424,7 @@ const marqueeItems = ['FRN.Q', 'INGENIERÍA WEB', 'DISEÑO', 'PERFORMANCE'];
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: 
+    transition:
       background var(--transition-fast),
       color var(--transition-fast),
       transform var(--transition-fast),
@@ -411,18 +433,19 @@ const marqueeItems = ['FRN.Q', 'INGENIERÍA WEB', 'DISEÑO', 'PERFORMANCE'];
     opacity: 0;
     visibility: hidden;
   }
-  
+
   .back-top.is-visible {
     opacity: 1;
     visibility: visible;
   }
-  
+
   .back-top:hover {
     background: var(--text);
     color: var(--bg);
-    transform: translateY(-4px);
+    transform: translate(-4px, -4px);
+    box-shadow: 6px 6px 0 var(--border);
   }
-  
+
   .back-top:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
@@ -436,14 +459,14 @@ const marqueeItems = ['FRN.Q', 'INGENIERÍA WEB', 'DISEÑO', 'PERFORMANCE'];
     color: var(--bg);
     overflow: hidden;
   }
-  
+
   .marquee-track {
     display: flex;
     animation: marquee 20s linear infinite;
     width: max-content;
     will-change: transform;
   }
-  
+
   .marquee-track span {
     font-family: var(--font-mono);
     font-size: 0.75rem;
@@ -451,16 +474,20 @@ const marqueeItems = ['FRN.Q', 'INGENIERÍA WEB', 'DISEÑO', 'PERFORMANCE'];
     letter-spacing: 0.1em;
     padding: 0 var(--space-md);
   }
-  
+
   .marquee-sep {
     opacity: 0.3;
   }
-  
+
   @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
   }
-  
+
   @media (prefers-reduced-motion: reduce) {
     .marquee-track {
       animation: none;

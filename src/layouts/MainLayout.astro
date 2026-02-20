@@ -171,6 +171,52 @@ const canonicalURL = new URL(
 
     <!-- Skip to content link for accessibility -->
     <a href="#main-content" class="skip-link">Saltar al contenido</a>
+
+    <!-- Lenis Smooth Scroll & Intersection Observer for .reveal classes -->
+    <script>
+      import Lenis from "lenis";
+
+      // 1. Initialize Lenis
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: "vertical",
+        gestureOrientation: "vertical",
+        smoothWheel: true,
+        touchMultiplier: 2,
+      });
+
+      function raf(time: number) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+
+      // Store lenis globally so components can access it if needed
+      (window as any).lenis = lenis;
+
+      // 2. Intersection Observer for .reveal elements
+      const revealOptions = {
+        root: null,
+        rootMargin: "0px 0px -10% 0px",
+        threshold: 0.1,
+      };
+
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            // Stop observing once visible to maintain state
+            observer.unobserve(entry.target);
+          }
+        });
+      }, revealOptions);
+
+      // Elements to reveal
+      document.querySelectorAll(".reveal").forEach((el) => {
+        revealObserver.observe(el);
+      });
+    </script>
   </body>
 </html>
 
@@ -291,10 +337,27 @@ const canonicalURL = new URL(
   }
 
   html {
-    scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
     -moz-tab-size: 4;
     tab-size: 4;
+  }
+
+  /* Lenis recommended base styles */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+  .lenis.lenis-smooth iframe {
+    pointer-events: none;
   }
 
   @media (prefers-reduced-motion: reduce) {

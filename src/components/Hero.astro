@@ -1,7 +1,13 @@
 ---
 const marqueeItems = [
-  "Carga Instantánea", "Cero Mantenimiento", "Seguridad Bancaria", "Optimización de Conversión", 
-  "Escalabilidad B2B", "Infraestructura Premium", "ROI Garantizado", "Arquitectura Empresarial"
+  "Carga Instantánea",
+  "Cero Mantenimiento",
+  "Seguridad Bancaria",
+  "Optimización de Conversión",
+  "Escalabilidad B2B",
+  "Infraestructura Premium",
+  "ROI Garantizado",
+  "Arquitectura Empresarial",
 ];
 
 const stats = [
@@ -14,19 +20,23 @@ const stats = [
 <section class="hero" id="inicio" aria-label="Introducción">
   <div class="container">
     <!-- Header row -->
-    <div class="hero-header">
+    <div class="hero-header reveal">
       <div class="header-label">
         <span class="label-line" aria-hidden="true"></span>
         <span class="label-text">Ingeniería Web</span>
       </div>
-      <div class="hero-availability" role="status" aria-label="Estado de disponibilidad">
+      <div
+        class="hero-availability"
+        role="status"
+        aria-label="Estado de disponibilidad"
+      >
         <span class="avail-dot" aria-hidden="true"></span>
         <span class="avail-text">Disponible para proyectos</span>
       </div>
     </div>
 
     <!-- Main title -->
-    <div class="hero-title-block">
+    <div class="hero-title-block reveal" style="transition-delay: 100ms;">
       <h1 class="hero-title">
         <span class="title-bold">
           <span class="bold-accent" aria-hidden="true"></span>
@@ -37,27 +47,33 @@ const stats = [
     </div>
 
     <!-- Marquee -->
-    <div class="hero-marquee" aria-hidden="true">
+    <div
+      class="hero-marquee reveal"
+      style="transition-delay: 200ms;"
+      aria-hidden="true"
+    >
       <div class="marquee-track">
-        {Array.from({ length: 2 }).map(() => (
-          <span class="marquee-content">
-            {marqueeItems.map((item, i) => (
-              <>
-                <span class="mq-word">{item}</span>
-                <span class="mq-dot">·</span>
-              </>
-            ))}
-          </span>
-        ))}
+        {
+          Array.from({ length: 2 }).map(() => (
+            <span class="marquee-content">
+              {marqueeItems.map((item, i) => (
+                <>
+                  <span class="mq-word">{item}</span>
+                  <span class="mq-dot">·</span>
+                </>
+              ))}
+            </span>
+          ))
+        }
       </div>
     </div>
 
     <!-- Bottom row: description + CTA left | stats right -->
-    <div class="hero-bottom">
+    <div class="hero-bottom reveal" style="transition-delay: 300ms;">
       <div class="hero-info">
         <p class="hero-desc">
-          Desarrollo de infraestructuras digitales de alto
-          rendimiento. Sin plantillas. Sin límites. Solo resultados.
+          Desarrollo de infraestructuras digitales de alto rendimiento. Sin
+          plantillas. Sin límites. Solo resultados.
         </p>
         <div class="hero-actions">
           <a href="#contacto" class="hero-cta">
@@ -72,15 +88,19 @@ const stats = [
       </div>
 
       <dl class="hero-stats" role="list" aria-label="Estadísticas clave">
-        {stats.map((stat, i) => (
-          <>
-            <div class="stat-item" role="listitem">
-              <dt class="stat-value">{stat.value}</dt>
-              <dd class="stat-label">{stat.label}</dd>
-            </div>
-            {i < stats.length - 1 && <div class="stat-divider" aria-hidden="true"></div>}
-          </>
-        ))}
+        {
+          stats.map((stat, i) => (
+            <>
+              <div class="stat-item" role="listitem">
+                <dt class="stat-value">{stat.value}</dt>
+                <dd class="stat-label">{stat.label}</dd>
+              </div>
+              {i < stats.length - 1 && (
+                <div class="stat-divider" aria-hidden="true" />
+              )}
+            </>
+          ))
+        }
       </dl>
     </div>
   </div>
@@ -118,13 +138,11 @@ const stats = [
     );
   }
 
-  /* Header row */
   .hero-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: var(--space-3xl);
-    animation: fadeInUp 0.7s ease both;
   }
 
   .header-label {
@@ -227,7 +245,7 @@ const stats = [
     animation: marquee 25s linear infinite;
     will-change: transform;
   }
-  
+
   @media (prefers-reduced-motion: reduce) {
     .marquee-track {
       animation: none;
@@ -300,26 +318,26 @@ const stats = [
     box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.15);
     text-transform: uppercase;
     letter-spacing: 0.02em;
-    transition: 
+    transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
   }
 
   .hero-cta:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 9px 9px 0 rgba(0, 0, 0, 0.15);
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0 rgba(0, 0, 0, 0.15);
   }
-  
+
   /* En modo oscuro, sombra clara */
   [data-theme="dark"] .hero-cta {
     border-color: var(--text);
-    box-shadow: 6px 6px 0 rgba(255, 255, 255, 0.12);
+    box-shadow: 8px 8px 0 rgba(255, 255, 255, 0.12);
   }
-  
+
   [data-theme="dark"] .hero-cta:hover {
-    box-shadow: 9px 9px 0 rgba(255, 255, 255, 0.12);
+    box-shadow: 12px 12px 0 rgba(255, 255, 255, 0.12);
   }
-  
+
   .hero-cta:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
@@ -330,7 +348,7 @@ const stats = [
   }
 
   .hero-cta:hover .cta-arrow {
-    transform: translateX(4px);
+    transform: translateX(6px);
   }
 
   .hero-link {
@@ -342,7 +360,7 @@ const stats = [
     font-size: 0.875rem;
     border: 2px dashed var(--border);
     opacity: 0.6;
-    transition: 
+    transition:
       opacity var(--transition-base),
       border-style var(--transition-base),
       background var(--transition-base);
@@ -353,7 +371,7 @@ const stats = [
     border-style: solid;
     background: var(--bg-alt);
   }
-  
+
   .hero-link:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
@@ -365,7 +383,7 @@ const stats = [
   }
 
   .hero-link:hover .link-arrow {
-    transform: translate(3px, -3px);
+    transform: translate(4px, -4px);
   }
 
   /* Stats */
@@ -466,14 +484,14 @@ const stats = [
       text-align: center;
     }
   }
-  
+
   /* Tablet adjustments */
   @media (min-width: 641px) and (max-width: 767px) {
     .hero-stats {
       width: 100%;
       justify-content: center;
     }
-    
+
     .stat-item {
       flex: 1;
       text-align: center;

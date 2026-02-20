@@ -46,7 +46,7 @@ const testimonials = [
 
 <section class="about" id="sobre-mi" aria-labelledby="about-title">
   <div class="container">
-    <div class="about-intro">
+    <div class="about-intro reveal">
       <div class="intro-visual" aria-hidden="true">
         <div class="visual-box"></div>
         <div class="visual-box visual-box-small"></div>
@@ -71,32 +71,34 @@ const testimonials = [
       </div>
     </div>
 
-    <div class="results-section">
+    <div class="results-section reveal" style="transition-delay: 150ms;">
       <div class="section-label">
         <span class="label-num" aria-hidden="true">[01]</span>
         <span class="label-text">Resultados Medibles</span>
       </div>
 
       <dl class="results-grid" role="list" aria-label="Resultados clave">
-        {results.map((r) => (
-          <div class="result-card" role="listitem">
-            <div class="result-graphic" aria-hidden="true">
-              <div class="graphic-bar" />
-              <div class="graphic-bar graphic-bar-mid" />
-              <div class="graphic-bar graphic-bar-tall" />
+        {
+          results.map((r) => (
+            <div class="result-card" role="listitem">
+              <div class="result-graphic" aria-hidden="true">
+                <div class="graphic-bar" />
+                <div class="graphic-bar graphic-bar-mid" />
+                <div class="graphic-bar graphic-bar-tall" />
+              </div>
+              <dt class="sr-only">{r.label}</dt>
+              <dd class="result-value">
+                <span class="result-num">{r.num}</span>
+                <span class="result-label">{r.label}</span>
+                <span class="result-desc">{r.desc}</span>
+              </dd>
             </div>
-            <dt class="sr-only">{r.label}</dt>
-            <dd class="result-value">
-              <span class="result-num">{r.num}</span>
-              <span class="result-label">{r.label}</span>
-              <span class="result-desc">{r.desc}</span>
-            </dd>
-          </div>
-        ))}
+          ))
+        }
       </dl>
     </div>
 
-    <div class="method-section">
+    <div class="method-section reveal">
       <div class="section-label">
         <span class="label-num" aria-hidden="true">[02]</span>
         <span class="label-text">Proceso de Ingeniería</span>
@@ -106,56 +108,74 @@ const testimonials = [
         <div class="method-visual" aria-hidden="true">
           <div class="method-line"></div>
           <div class="method-dots">
-            {steps.map((_, i) => (
-              <span class="method-dot" data-active={i === 0 ? "true" : undefined} />
-            ))}
+            {
+              steps.map((_, i) => (
+                <span
+                  class="method-dot"
+                  data-active={i === 0 ? "true" : undefined}
+                />
+              ))
+            }
           </div>
         </div>
 
         <ol class="steps-list" role="list" aria-label="Pasos del proceso">
-          {steps.map((step) => (
-            <li class="step-item" role="listitem">
-              <span class="step-num" aria-hidden="true">{step.num}</span>
-              <div class="step-content">
-                <h3 class="step-title">{step.title}</h3>
-                <p class="step-desc">{step.desc}</p>
-              </div>
-            </li>
-          ))}
+          {
+            steps.map((step) => (
+              <li class="step-item" role="listitem">
+                <span class="step-num" aria-hidden="true">
+                  {step.num}
+                </span>
+                <div class="step-content">
+                  <h3 class="step-title">{step.title}</h3>
+                  <p class="step-desc">{step.desc}</p>
+                </div>
+              </li>
+            ))
+          }
         </ol>
       </div>
     </div>
 
-    <div class="guarantee-banner">
+    <div class="guarantee-banner reveal">
       <div class="guarantee-content">
         <span class="guarantee-icon" aria-hidden="true">◆</span>
         <p class="guarantee-text">
-          <strong>Garantía de Rendimiento:</strong> No hacemos el despliegue final si no superamos las métricas de tu web actual.
+          <strong>Garantía de Rendimiento:</strong> No hacemos el despliegue final
+          si no superamos las métricas de tu web actual.
         </p>
       </div>
     </div>
 
-    <div class="testimonials-section">
+    <div class="testimonials-section reveal">
       <div class="section-label">
         <span class="label-num" aria-hidden="true">[03]</span>
         <span class="label-text">Clientes</span>
       </div>
 
-      <div class="testimonials-grid" role="list" aria-label="Testimonios de clientes">
-        {testimonials.map((t, i) => (
-          <blockquote class="testimonial-card" role="listitem">
-            <div class="quote-mark" aria-hidden="true">"</div>
-            <p class="quote-text">{t.quote}</p>
-            <footer class="quote-author">
-              <cite class="author-name">{t.author}</cite>
-              <span class="author-role">{t.role}</span>
-            </footer>
-          </blockquote>
-        ))}
+      <div
+        class="testimonials-grid"
+        role="list"
+        aria-label="Testimonios de clientes"
+      >
+        {
+          testimonials.map((t, i) => (
+            <blockquote class="testimonial-card" role="listitem">
+              <div class="quote-mark" aria-hidden="true">
+                "
+              </div>
+              <p class="quote-text">{t.quote}</p>
+              <footer class="quote-author">
+                <cite class="author-name">{t.author}</cite>
+                <span class="author-role">{t.role}</span>
+              </footer>
+            </blockquote>
+          ))
+        }
       </div>
     </div>
 
-    <div class="cta-section">
+    <div class="cta-section reveal">
       <div class="cta-box">
         <div class="cta-content">
           <h3 class="cta-title">La web que necesitas vs. la que tienes</h3>
@@ -288,16 +308,20 @@ const testimonials = [
     border: 2px solid var(--border);
     background: var(--bg);
     box-shadow: var(--shadow-brutal);
-    transition: 
+    transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
   }
 
   .intro-cta:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 7px 7px 0 var(--border);
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0 var(--border);
   }
-  
+
+  [data-theme="dark"] .intro-cta:hover {
+    box-shadow: 8px 8px 0 rgba(255, 255, 255, 0.15);
+  }
+
   .intro-cta:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
@@ -407,7 +431,7 @@ const testimonials = [
       grid-template-columns: repeat(2, 1fr);
     }
   }
-  
+
   @media (min-width: 1024px) {
     .results-grid {
       grid-template-columns: repeat(3, 1fr);
@@ -426,13 +450,13 @@ const testimonials = [
   }
 
   .result-card:hover {
-    transform: translate(-6px, -6px);
-    box-shadow: 6px 6px 0 var(--border);
+    transform: translate(-8px, -8px);
+    box-shadow: 12px 12px 0 var(--border);
   }
 
   /* Hover frame for result cards */
   .result-card::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     pointer-events: none;
@@ -447,7 +471,7 @@ const testimonials = [
 
   /* Animated corner accents */
   .result-card::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -631,14 +655,18 @@ const testimonials = [
   }
 
   .step-item:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 4px 4px 0 var(--border);
+    transform: translate(-6px, -6px);
+    box-shadow: 8px 8px 0 var(--border);
     background: var(--bg-alt);
+  }
+
+  [data-theme="dark"] .step-item:hover {
+    box-shadow: 8px 8px 0 rgba(255, 255, 255, 0.15);
   }
 
   /* Hover frame - top line */
   .step-item::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -655,7 +683,7 @@ const testimonials = [
 
   /* Border overlay on hover */
   .step-item::after {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     border: 2px solid transparent;
@@ -730,8 +758,8 @@ const testimonials = [
   }
 
   .testimonial-card:hover {
-    transform: translate(-6px, -6px);
-    box-shadow: 6px 6px 0 var(--border);
+    transform: translate(-8px, -8px);
+    box-shadow: 10px 10px 0 var(--border);
   }
 
   [data-theme="dark"] .testimonial-card {
@@ -744,7 +772,7 @@ const testimonials = [
 
   /* Hover frame animation */
   .testimonial-card::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -761,7 +789,7 @@ const testimonials = [
 
   /* Animated border overlay */
   .testimonial-card::after {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     border: 2px solid transparent;
@@ -837,7 +865,7 @@ const testimonials = [
     gap: var(--space-xl);
     box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.15);
     border: 2px solid var(--text);
-    transition: 
+    transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
   }
@@ -877,7 +905,7 @@ const testimonials = [
     color: var(--text);
     border: 2px solid var(--bg);
     box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
-    transition: 
+    transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
     flex-shrink: 0;
@@ -887,18 +915,18 @@ const testimonials = [
     transform: translate(-3px, -3px);
     box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.2);
   }
-  
+
   .cta-btn:focus-visible {
     outline: 3px solid var(--bg);
     outline-offset: 3px;
   }
-  
+
   /* En modo oscuro, el botón es oscuro sobre caja clara - necesita borde visible */
   [data-theme="dark"] .cta-btn {
     border-color: var(--text);
     box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.15);
   }
-  
+
   [data-theme="dark"] .cta-btn:hover {
     box-shadow: 7px 7px 0 rgba(255, 255, 255, 0.15);
   }
@@ -910,7 +938,7 @@ const testimonials = [
   .cta-btn:hover .btn-arrow {
     transform: translate(4px, -4px);
   }
-  
+
   /* Responsive */
   @media (max-width: 640px) {
     .results-grid,

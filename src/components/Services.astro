@@ -20,7 +20,7 @@ const services = [
 
 <section class="services" id="servicios" aria-labelledby="services-title">
   <div class="container">
-    <div class="section-header">
+    <div class="section-header reveal">
       <div class="header-label">
         <span class="label-line" aria-hidden="true"></span>
         <span class="label-text">Propuesta de Valor</span>
@@ -31,7 +31,7 @@ const services = [
       </h2>
     </div>
 
-    <div class="services-grid" role="list" id="services-grid">
+    <div class="services-grid reveal" style="transition-delay: 150ms;" role="list" id="services-grid">
       {services.map((service, i) => (
         <article class="service-card" data-index={i} role="listitem">
           <!-- Background number -->
@@ -74,15 +74,15 @@ const services = [
     let mouseX = 0, mouseY = 0;
     let cursorX = 0, cursorY = 0;
     let isHovering = false;
-    let rafId = null;
+    let rafId: number | null = null;
 
-    function lerp(start, end, factor) {
+    function lerp(start: number, end: number, factor: number) {
       return start + (end - start) * factor;
     }
 
     function updateCursor() {
       if (!isHovering) {
-        cancelAnimationFrame(rafId);
+        if (rafId) cancelAnimationFrame(rafId);
         rafId = null;
         return;
       }
@@ -90,21 +90,23 @@ const services = [
       cursorX = lerp(cursorX, mouseX, 0.15);
       cursorY = lerp(cursorY, mouseY, 0.15);
 
-      cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`;
+      if (cursor) {
+        cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`;
+      }
 
-      rafId = requestAnimationFrame(updateCursor);
+      rafId = requestAnimationFrame(updateCursor) as unknown as number;
     }
 
     servicesGrid.addEventListener('mouseenter', () => {
       isHovering = true;
-      cursor.classList.add('active');
+      if (cursor) cursor.classList.add('active');
       document.body.style.cursor = 'none';
-      if (!rafId) rafId = requestAnimationFrame(updateCursor);
+      if (!rafId) rafId = requestAnimationFrame(updateCursor) as unknown as number;
     }, { passive: true });
 
     servicesGrid.addEventListener('mouseleave', () => {
       isHovering = false;
-      cursor.classList.remove('active');
+      if (cursor) cursor.classList.remove('active');
       document.body.style.cursor = '';
     }, { passive: true });
 
@@ -376,8 +378,12 @@ const services = [
      HOVER EFFECTS
      ============================================ */
   .service-card:hover {
-    transform: translate(-6px, -6px);
-    box-shadow: 6px 6px 0 var(--border);
+    transform: translate(-8px, -8px);
+    box-shadow: 12px 12px 0 var(--border);
+  }
+
+  [data-theme="dark"] .service-card:hover {
+    box-shadow: 12px 12px 0 rgba(255,255,255,0.15);
   }
 
   .service-card:hover .card-index {
@@ -391,13 +397,13 @@ const services = [
 
   .service-card:hover .card-desc {
     opacity: 0.9;
-    transform: translateX(8px);
+    transform: translateX(10px);
   }
 
   .service-card:hover .card-arrow {
     background: var(--text);
     color: var(--bg);
-    transform: translate(4px, -4px);
+    transform: translate(6px, -6px);
   }
 
   /* Frame animation */
