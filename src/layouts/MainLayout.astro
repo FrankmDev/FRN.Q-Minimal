@@ -1,5 +1,5 @@
 ---
-import CustomCursor from '../components/CustomCursor.astro';
+import CustomCursor from "../components/CustomCursor.astro";
 
 interface Props {
   title?: string;
@@ -13,25 +13,43 @@ const {
   ogImage = "/og-image.jpg",
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://frnq.es");
+const canonicalURL = new URL(
+  Astro.url.pathname,
+  Astro.site || "https://frnq.es",
+);
 ---
 
 <!doctype html>
 <html lang="es" data-theme="light">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    
+
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content="Francisco Muñoz" />
-    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <meta
+      name="theme-color"
+      content="#0a0a0a"
+      media="(prefers-color-scheme: dark)"
+    />
+    <meta
+      name="theme-color"
+      content="#ffffff"
+      media="(prefers-color-scheme: light)"
+    />
+
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
@@ -40,17 +58,17 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://frnq.es"
     <meta property="og:image" content={ogImage} />
     <meta property="og:locale" content="es_ES" />
     <meta property="og:site_name" content="FRN.Q Studio" />
-    
+
     <!-- Twitter Card -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={canonicalURL} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={ogImage} />
-    
+
     <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    
+
     <!-- Fonts - Optimized loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -59,6 +77,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://frnq.es"
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@300;400;500;600;700;800&display=swap"
       as="style"
       onload="this.onload=null;this.rel='stylesheet'"
+      fetchpriority="high"
     />
     <noscript>
       <link
@@ -66,70 +85,76 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://frnq.es"
         rel="stylesheet"
       />
     </noscript>
-    
+
     <!-- JSON-LD Structured Data - B2B Professional Service -->
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "ProfessionalService",
-      "name": "FRN.Q Studio - Desarrollo de Infraestructuras Web Premium",
-      "alternateName": "FRN.Q Studio",
-      "description": "Consultoría digital especializada en desarrollo web a medida para empresas. Infraestructuras digitales de alto rendimiento sin plantillas.",
-      "url": canonicalURL,
-      "email": "hola@frnq.es",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Granada",
-        "addressCountry": "ES"
-      },
-      "serviceType": [
-        "Desarrollo web a medida",
-        "Consultoría digital B2B",
-        "Infraestructura web empresarial",
-        "Optimización de conversión",
-        "Arquitectura web escalable",
-        "Diseño web corporativo premium"
-      ],
-      "areaServed": {
-        "@type": "Country",
-        "name": "España"
-      },
-      "priceRange": "€€€€",
-      "knowsAbout": [
-        "Desarrollo web empresarial",
-        "Optimización de rendimiento web",
-        "Arquitectura digital B2B",
-        "UX/UI para conversión",
-        "Infraestructuras sin plantillas"
-      ],
-      "hasOfferCatalog": {
-        "@type": "OfferCatalog",
-        "name": "Servicios de Infraestructura Digital",
-        "itemListElement": [
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Desarrollo Web Premium B2B",
-              "description": "Infraestructuras digitales a medida para empresas que buscan diferenciación"
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Consultoría de Transformación Digital",
-              "description": "Asesoramiento estratégico para optimizar presencia digital empresarial"
-            }
-          }
-        ]
-      }
-    })} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        name: "FRN.Q Studio - Desarrollo de Infraestructuras Web Premium",
+        alternateName: "FRN.Q Studio",
+        description:
+          "Consultoría digital especializada en desarrollo web a medida para empresas. Infraestructuras digitales de alto rendimiento sin plantillas.",
+        url: canonicalURL,
+        email: "hola@frnq.es",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Granada",
+          addressCountry: "ES",
+        },
+        serviceType: [
+          "Desarrollo web a medida",
+          "Consultoría digital B2B",
+          "Infraestructura web empresarial",
+          "Optimización de conversión",
+          "Arquitectura web escalable",
+          "Diseño web corporativo premium",
+        ],
+        areaServed: {
+          "@type": "Country",
+          name: "España",
+        },
+        priceRange: "€€€€",
+        knowsAbout: [
+          "Desarrollo web empresarial",
+          "Optimización de rendimiento web",
+          "Arquitectura digital B2B",
+          "UX/UI para conversión",
+          "Infraestructuras sin plantillas",
+        ],
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: "Servicios de Infraestructura Digital",
+          itemListElement: [
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "Desarrollo Web Premium B2B",
+                description:
+                  "Infraestructuras digitales a medida para empresas que buscan diferenciación",
+              },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "Consultoría de Transformación Digital",
+                description:
+                  "Asesoramiento estratégico para optimizar presencia digital empresarial",
+              },
+            },
+          ],
+        },
+      })}
+    />
 
     <slot name="head" />
 
     <!-- Theme initialization - CRITICAL: prevent flash -->
     <script is:inline>
-      (function() {
+      (function () {
         const savedTheme = localStorage.getItem("theme");
         const theme = savedTheme || "light";
         document.documentElement.setAttribute("data-theme", theme);
@@ -140,10 +165,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://frnq.es"
 
   <body>
     <slot />
-    
+
     <!-- Custom cursor component -->
     <CustomCursor />
-    
+
     <!-- Skip to content link for accessibility -->
     <a href="#main-content" class="skip-link">Saltar al contenido</a>
   </body>
@@ -153,12 +178,14 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://frnq.es"
   /* ============================================
      DESIGN TOKENS - Unified CSS Variables
      ============================================ */
-  
+
   :root {
     /* Typography */
-    --font-sans: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-sans:
+      "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      sans-serif;
     --font-mono: "JetBrains Mono", "SF Mono", "Fira Code", monospace;
-    
+
     /* Spacing Scale */
     --space-xs: 0.25rem;
     --space-sm: 0.5rem;
@@ -168,16 +195,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://frnq.es"
     --space-2xl: 3rem;
     --space-3xl: 4rem;
     --space-4xl: 6rem;
-    
+
     /* Transitions */
     --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
     --transition-base: 300ms cubic-bezier(0.16, 1, 0.3, 1);
     --transition-slow: 500ms cubic-bezier(0.16, 1, 0.3, 1);
-    
+
     /* Border Radius */
     --radius-none: 0;
     --radius-sm: 0.25rem;
-    
+
     /* Z-index Scale */
     --z-base: 0;
     --z-dropdown: 100;
@@ -195,20 +222,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://frnq.es"
     --bg: #ffffff;
     --bg-alt: #f5f5f5;
     --bg-elevated: #fafafa;
-    
+
     --text: #0a0a0a;
     --text-secondary: #333333;
     --text-muted: #666666;
-    
+
     --border: #0a0a0a;
     --border-light: rgba(10, 10, 10, 0.15);
     --border-strong: #0a0a0a;
-    
+
     --shadow: rgba(10, 10, 10, 0.12);
     --shadow-brutal: 4px 4px 0 0 #0a0a0a;
     --shadow-brutal-hover: 8px 8px 0 0 #0a0a0a;
     --shadow-brutal-lg: 12px 12px 0 0 #0a0a0a;
-    
+
     /* Legacy aliases for backwards compatibility */
     --color-bg: #ffffff;
     --color-bg-alt: #f5f5f5;
@@ -226,20 +253,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://frnq.es"
     --bg: #0a0a0a;
     --bg-alt: #141414;
     --bg-elevated: #1a1a1a;
-    
+
     --text: #ffffff;
     --text-secondary: #e5e5e5;
     --text-muted: #999999;
-    
+
     --border: #ffffff;
     --border-light: rgba(255, 255, 255, 0.15);
     --border-strong: #ffffff;
-    
+
     --shadow: rgba(255, 255, 255, 0.08);
     --shadow-brutal: 4px 4px 0 0 rgba(255, 255, 255, 0.12);
     --shadow-brutal-hover: 6px 6px 0 0 rgba(255, 255, 255, 0.15);
     --shadow-brutal-lg: 8px 8px 0 0 rgba(255, 255, 255, 0.12);
-    
+
     /* Legacy aliases */
     --color-bg: #0a0a0a;
     --color-bg-alt: #141414;
@@ -283,14 +310,23 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://frnq.es"
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-feature-settings: "kern" 1, "liga" 1;
-    transition: background-color var(--transition-base), color var(--transition-base);
+    font-feature-settings:
+      "kern" 1,
+      "liga" 1;
+    transition:
+      background-color var(--transition-base),
+      color var(--transition-base);
     min-height: 100vh;
     min-height: 100dvh;
   }
 
   /* Typography */
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: -0.02em;
@@ -306,13 +342,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://frnq.es"
     text-decoration: none;
   }
 
-  img, picture, video, canvas, svg {
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
     display: block;
     max-width: 100%;
     height: auto;
   }
 
-  input, button, textarea, select {
+  input,
+  button,
+  textarea,
+  select {
     font: inherit;
     color: inherit;
   }
@@ -370,7 +413,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://frnq.es"
   /* ============================================
      ACCESSIBILITY
      ============================================ */
-  
+
   /* Focus styles */
   :focus-visible {
     outline: 3px solid var(--text);
@@ -445,23 +488,41 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://frnq.es"
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 
   @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
   }
 
   @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
   }
 
   @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.3;
+    }
   }
 
   /* Reduced motion */
@@ -486,7 +547,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://frnq.es"
   .reveal {
     opacity: 0;
     transform: translateY(24px);
-    transition: opacity var(--transition-slow), transform var(--transition-slow);
+    transition:
+      opacity var(--transition-slow),
+      transform var(--transition-slow);
     will-change: opacity, transform;
   }
 
@@ -507,11 +570,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://frnq.es"
       box-shadow: none !important;
       text-shadow: none !important;
     }
-    
+
     a[href]::after {
       content: " (" attr(href) ")";
     }
-    
+
     .skip-link,
     .header,
     .footer,
@@ -525,7 +588,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://frnq.es"
   /* ============================================
      CUSTOM CURSOR
      ============================================ */
-  
+
   .custom-cursor {
     position: fixed;
     top: 0;
