@@ -22,16 +22,28 @@ const contactMethods = [
 
 const faqItems = [
   {
-    q: "¿Cuál es la inversión para un proyecto de estas características?",
-    a: "Nuestros proyectos parten desde 3.000€ para landing pages de alto impacto, hasta 15.000€+ para infraestructuras e-commerce complejas. No compites con el precio de una plantilla: inviertes en un activo que deprecia a cero costes de mantenimiento y genera retorno desde el primer mes.",
+    q: "¿Cuál es la inversión para una infraestructura digital de estas características?",
+    a: "Partimos desde 3.000€ para activos de alto impacto (landing pages que convierten), hasta 15.000€+ para infraestructuras e-commerce empresariales complejas. No estás comprando una web: estás adquiriendo un activo depreciable que elimina costes de mantenimiento y genera ROI desde el mes uno. A 3 años, la diferencia entre esto y una plantilla es de decenas de miles de euros ahorrados.",
   },
   {
-    q: "¿Por qué debería invertir en código puro si WordPress es más barato?",
-    a: "WordPress tiene costes ocultos: mantenimiento continuo, plugins que dejan de funcionar, hackeos frecuentes, y una velocidad que penaliza tu SEO. Nuestras infraestructuras son cero mantenimiento crítico, inmunes a vulnerabilidades comunes, y cargan en menos de un segundo. A 3 años, el código puro siempre es más rentable.",
+    q: "¿Por qué invertir en código puro cuando WordPress cuesta menos inicialmente?",
+    a: "WordPress es como alquilar un coche viejo: barato el primer mes, pero suma reparaciones, mantenimiento y averías. Las plantillas penalizan tu SEO, necesitan plugins que se rompen, y cada actualización es una ruleta rusa. Nuestra infraestructura es como comprar el coche nuevo: inversión única, cero mantenimiento crítico, y velocidad que Google premia. A medio plazo, siempre es más rentable.",
   },
   {
-    q: "¿Cómo garantizan que la web convertirá más que la actual?",
-    a: "No diseñamos por intuición. Cada decisión —tipografía, microinteracción, jerarquía visual— está respaldada por datos de comportamiento usuario. Además, entregamos con métricas Core Web Vitals garantizadas: si no mejoramos tu velocidad actual, no pagas.",
+    q: "¿Cómo garantizan que mi nueva infraestructura convertirá más que la actual?",
+    a: "Cada decisión está respaldada por datos, no por intuición. Analizamos el comportamiento de tus usuarios actuales, identificamos puntos de fricción, y diseñamos jerarquías visuales que guían hacia la acción. Además, nuestra garantía es concreta: si no superamos tus métricas actuales de velocidad y rendimiento, no pagas el despliegue final.",
+  },
+  {
+    q: "¿Cuánto tiempo tarda desde el diagnóstico hasta el lanzamiento?",
+    a: "Una landing de alto impacto: 2-3 semanas. Una web corporativa completa: 6-8 semanas. Una infraestructura B2B compleja: 10-12 semanas. Damos calendarios reales, no promesas imposibles. Durante todo el proceso recibes actualizaciones semanales y acceso a entornos de prueba. La velocidad depende de la complejidad, pero la calidad es innegociable.",
+  },
+  {
+    q: "¿Qué ocurre si necesito evolucionar el activo tras el lanzamiento?",
+    a: "Entregas tu infraestructura documentada, con código limpio y arquitectura escalable. Cualquier desarrollador puede trabajar sobre ella. Si prefieres continuar con nosotros, ofrecemos sprints de mejora continua sin permanencia ni dependencias técnicas. Tu activo es tuyo: nosotros solo lo construimos para que dure décadas, no meses.",
+  },
+  {
+    q: "¿Trabajan con empresas fuera de España?",
+    a: "La mitad de nuestros clientes están en Europa y Latinoamérica. Trabajamos con metodologías async, videollamadas estratégicas y sistemas de revisión colaborativa. La proximidad física es irrelevante cuando hay alineación de objetivos. Lo que importa es que entiendas que tu web es una inversión, no un gasto. Ese mindset no entiende de fronteras.",
   },
 ];
 
@@ -175,18 +187,52 @@ const formFields = {
       <h3 class="faq-title">Preguntas que importan</h3>
       <div class="faq-list">
         {faqItems.map((item, i) => (
-          <details class="faq-item">
-            <summary class="faq-question">
+          <div class="faq-item" data-faq-item>
+            <button class="faq-question" aria-expanded="false" type="button">
               <span>{item.q}</span>
-              <span class="faq-icon" aria-hidden="true">+</span>
-            </summary>
-            <p class="faq-answer">{item.a}</p>
-          </details>
+              <span class="faq-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="faq-arrow">
+                  <path d="M3 6L8 11L13 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </button>
+            <div class="faq-answer-wrapper">
+              <div class="faq-answer-inner">
+                <p class="faq-answer">{item.a}</p>
+              </div>
+            </div>
+          </div>
         ))}
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  // Smooth FAQ accordion
+  const faqItems = document.querySelectorAll('[data-faq-item]');
+  
+  faqItems.forEach(item => {
+    const question = item.querySelector('.faq-question');
+    
+    question?.addEventListener('click', () => {
+      const isOpen = item.classList.contains('is-open');
+      
+      // Close all other items (optional - remove if you want multiple open)
+      faqItems.forEach(otherItem => {
+        if (otherItem !== item) {
+          otherItem.classList.remove('is-open');
+          const otherQuestion = otherItem.querySelector('.faq-question');
+          otherQuestion?.setAttribute('aria-expanded', 'false');
+        }
+      });
+      
+      // Toggle current item
+      item.classList.toggle('is-open');
+      question?.setAttribute('aria-expanded', String(!isOpen));
+    });
+  });
+</script>
 
 <style>
   .contact {
@@ -592,15 +638,33 @@ const formFields = {
   .faq-item {
     border: 2px solid var(--border);
     background: var(--bg);
-    transition: background var(--transition-fast);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: none;
+    overflow: hidden;
   }
 
-  .faq-item[open] .faq-icon {
-    transform: rotate(45deg);
+  .faq-item:hover {
+    border-color: var(--text);
+    transform: translateX(4px);
   }
 
-  .faq-item[open] {
+  .faq-item.is-open {
     background: var(--bg-alt);
+  }
+
+  /* Smooth open animation using grid */
+  .faq-answer-wrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .faq-item.is-open .faq-answer-wrapper {
+    grid-template-rows: 1fr;
+  }
+
+  .faq-answer-inner {
+    overflow: hidden;
   }
 
   .faq-question {
@@ -610,13 +674,23 @@ const formFields = {
     gap: var(--space-md);
     padding: var(--space-md) var(--space-lg);
     font-weight: 600;
-    cursor: pointer;
-    list-style: none;
+    cursor: none;
     text-align: left;
+    transition: all 0.3s ease;
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
   }
 
-  .faq-question::-webkit-details-marker {
-    display: none;
+  .faq-question:hover {
+    background: var(--bg-alt);
+  }
+
+  .faq-item.is-open .faq-question {
+    background: var(--bg-alt);
   }
   
   .faq-question:focus-visible {
@@ -625,17 +699,39 @@ const formFields = {
   }
 
   .faq-icon {
-    font-size: 1.5rem;
-    font-weight: 400;
-    transition: transform var(--transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
     flex-shrink: 0;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .faq-arrow {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    width: 100%;
+    height: 100%;
+  }
+
+  .faq-item.is-open .faq-arrow {
+    transform: rotate(180deg);
   }
 
   .faq-answer {
     padding: 0 var(--space-lg) var(--space-lg);
     font-size: 0.9375rem;
     line-height: 1.7;
-    opacity: 0.7;
+    opacity: 0;
+    cursor: none;
+    transform: translateY(-10px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3) 0.1s;
+    margin: 0;
+  }
+
+  .faq-item.is-open .faq-answer {
+    transform: translateY(0);
+    opacity: 0.85;
   }
   
   /* Responsive */

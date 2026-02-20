@@ -1,0 +1,407 @@
+---
+const problemPoints = [
+  { icon: "✗", text: "Mantenimiento mensual recurrente" },
+  { icon: "✗", text: "Lentitud que pierde clientes cada día" },
+  { icon: "✗", text: "Vulnerabilidades y hackeos frecuentes" },
+  { icon: "✗", text: "Plugins de pago que aumentan costes" },
+  { icon: "✗", text: "Dependencia técnica permanente" },
+];
+
+const solutionPoints = [
+  { icon: "✓", text: "Inversión única, propiedad total" },
+  { icon: "✓", text: "Carga en milisegundos garantizada" },
+  { icon: "✓", text: "Código inmune a vulnerabilidades comunes" },
+  { icon: "✓", text: "Cero plugins de terceros" },
+  { icon: "✓", text: "Autonomía completa del activo" },
+];
+---
+
+<section class="hidden-cost" id="coste-oculto" aria-labelledby="hidden-cost-title">
+  <div class="container">
+    <div class="section-header">
+      <div class="header-label">
+        <span class="label-line" aria-hidden="true"></span>
+        <span class="label-text">Análisis de Inversión</span>
+      </div>
+      <h2 class="section-title" id="hidden-cost-title">
+        El coste oculto de<br />
+        <span class="title-highlight">las plantillas</span>
+      </h2>
+    </div>
+
+    <div class="comparison-grid">
+      <!-- Problem Card -->
+      <article class="comparison-card card-problem" aria-labelledby="problem-title">
+        <div class="card-header">
+          <div class="card-badge badge-problem">El Problema</div>
+          <h3 class="card-title" id="problem-title">Plantillas Tradicionales</h3>
+          <p class="card-subtitle">El coste oculto que nadie te menciona</p>
+        </div>
+        
+        <ul class="point-list" role="list">
+          {problemPoints.map((point) => (
+            <li class="point-item point-negative" role="listitem">
+              <span class="point-icon" aria-hidden="true">{point.icon}</span>
+              <span class="point-text">{point.text}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div class="card-footer">
+          <span class="footer-label">Coste real a 3 años</span>
+          <span class="footer-value">+15.000€</span>
+        </div>
+      </article>
+
+      <!-- Solution Card -->
+      <article class="comparison-card card-solution" aria-labelledby="solution-title">
+        <div class="card-header">
+          <div class="card-badge badge-solution">La Solución</div>
+          <h3 class="card-title" id="solution-title">Nuestra Infraestructura</h3>
+          <p class="card-subtitle">Un activo que se deprecia a cero mantenimiento</p>
+        </div>
+        
+        <ul class="point-list" role="list">
+          {solutionPoints.map((point) => (
+            <li class="point-item point-positive" role="listitem">
+              <span class="point-icon" aria-hidden="true">{point.icon}</span>
+              <span class="point-text">{point.text}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div class="card-footer">
+          <span class="footer-label">Coste real a 3 años</span>
+          <span class="footer-value footer-value-positive">Inversión única</span>
+        </div>
+      </article>
+    </div>
+
+    <div class="comparison-cta">
+      <a href="#contacto" class="cta-link">
+        <span>Descubre tu situación actual</span>
+        <span class="cta-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hidden-cost {
+    padding: var(--space-lg) 0 var(--space-4xl);
+    position: relative;
+  }
+
+  .hidden-cost::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--border) 0,
+      var(--border) 20px,
+      transparent 20px,
+      transparent 40px
+    );
+  }
+
+  .section-header {
+    margin-bottom: var(--space-3xl);
+  }
+
+  .header-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+  }
+
+  .label-line {
+    width: 60px;
+    height: 2px;
+    background: var(--border);
+  }
+
+  .label-text {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 6vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .title-highlight {
+    font-weight: 800;
+  }
+
+  /* Comparison Grid - Bento style */
+  .comparison-grid {
+    display: grid;
+    gap: var(--space-xl);
+    margin-bottom: var(--space-3xl);
+  }
+
+  @media (min-width: 900px) {
+    .comparison-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* Comparison Cards */
+  .comparison-card {
+    border: 2px solid var(--border);
+    padding: var(--space-2xl);
+    background: var(--bg);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .card-problem {
+    box-shadow: var(--shadow-brutal);
+  }
+
+  .card-solution {
+    box-shadow: 8px 8px 0 var(--border);
+  }
+
+  .comparison-card:hover {
+    transform: translate(-6px, -6px);
+    box-shadow: 12px 12px 0 var(--border);
+  }
+
+  /* Card Header */
+  .card-header {
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .card-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: var(--space-xs) var(--space-md);
+    margin-bottom: var(--space-md);
+  }
+
+  .badge-problem {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+
+  .badge-solution {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+  }
+
+  [data-theme="dark"] .badge-problem {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border-color: rgba(248, 113, 113, 0.3);
+  }
+
+  [data-theme="dark"] .badge-solution {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    border-color: rgba(74, 222, 128, 0.3);
+  }
+
+  .card-title {
+    font-size: clamp(1.5rem, 3vw, 1.875rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-sm);
+  }
+
+  .card-subtitle {
+    font-size: 0.9375rem;
+    opacity: 0.6;
+    line-height: 1.5;
+  }
+
+  /* Point List */
+  .point-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .point-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: var(--bg-alt);
+    transition: all 0.3s ease;
+  }
+
+  .point-item:hover {
+    transform: translateX(4px);
+  }
+
+  .point-icon {
+    font-size: 1rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  .point-negative .point-icon {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+  }
+
+  .point-positive .point-icon {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+  }
+
+  [data-theme="dark"] .point-negative .point-icon {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+  }
+
+  [data-theme="dark"] .point-positive .point-icon {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+  }
+
+  .point-text {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  /* Card Footer */
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--space-lg);
+    border-top: 2px solid var(--border);
+  }
+
+  .footer-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.5;
+  }
+
+  .footer-value {
+    font-family: var(--font-mono);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #ef4444;
+  }
+
+  .footer-value-positive {
+    color: #22c55e;
+  }
+
+  [data-theme="dark"] .footer-value {
+    color: #f87171;
+  }
+
+  [data-theme="dark"] .footer-value-positive {
+    color: #4ade80;
+  }
+
+  /* CTA */
+  .comparison-cta {
+    text-align: center;
+  }
+
+  .cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-xl);
+    font-weight: 600;
+    border: 2px dashed var(--border);
+    opacity: 0.6;
+    transition: 
+      opacity var(--transition-base),
+      border-style var(--transition-base),
+      background var(--transition-base);
+  }
+
+  .cta-link:hover {
+    opacity: 1;
+    border-style: solid;
+    background: var(--bg-alt);
+  }
+
+  .cta-link:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 3px;
+    opacity: 1;
+  }
+
+  .cta-arrow {
+    transition: transform var(--transition-base);
+  }
+
+  .cta-link:hover .cta-arrow {
+    transform: translateX(4px);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .hidden-cost {
+      padding: var(--space-3xl) 0;
+    }
+
+    .comparison-card {
+      padding: var(--space-xl);
+    }
+
+    .card-footer {
+      flex-direction: column;
+      gap: var(--space-sm);
+      align-items: flex-start;
+    }
+  }
+
+  /* Hover frame animation */
+  .comparison-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--text);
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 2;
+  }
+
+  .comparison-card:hover::before {
+    width: 100%;
+  }
+</style>

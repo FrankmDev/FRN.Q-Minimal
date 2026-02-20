@@ -67,12 +67,13 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://frnq.es"
       />
     </noscript>
     
-    <!-- JSON-LD Structured Data -->
+    <!-- JSON-LD Structured Data - B2B Professional Service -->
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
-      "name": "FRN.Q Studio",
-      "description": description,
+      "name": "FRN.Q Studio - Desarrollo de Infraestructuras Web Premium",
+      "alternateName": "FRN.Q Studio",
+      "description": "Consultoría digital especializada en desarrollo web a medida para empresas. Infraestructuras digitales de alto rendimiento sin plantillas.",
       "url": canonicalURL,
       "email": "hola@frnq.es",
       "address": {
@@ -80,9 +81,48 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://frnq.es"
         "addressLocality": "Granada",
         "addressCountry": "ES"
       },
-      "serviceType": ["Diseño Web", "Desarrollo Web", "SEO Técnico"],
-      "areaServed": "ES",
-      "priceRange": "€€€"
+      "serviceType": [
+        "Desarrollo web a medida",
+        "Consultoría digital B2B",
+        "Infraestructura web empresarial",
+        "Optimización de conversión",
+        "Arquitectura web escalable",
+        "Diseño web corporativo premium"
+      ],
+      "areaServed": {
+        "@type": "Country",
+        "name": "España"
+      },
+      "priceRange": "€€€€",
+      "knowsAbout": [
+        "Desarrollo web empresarial",
+        "Optimización de rendimiento web",
+        "Arquitectura digital B2B",
+        "UX/UI para conversión",
+        "Infraestructuras sin plantillas"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Servicios de Infraestructura Digital",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Desarrollo Web Premium B2B",
+              "description": "Infraestructuras digitales a medida para empresas que buscan diferenciación"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Consultoría de Transformación Digital",
+              "description": "Asesoramiento estratégico para optimizar presencia digital empresarial"
+            }
+          }
+        ]
+      }
     })} />
 
     <slot name="head" />
@@ -90,8 +130,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://frnq.es"
     <!-- Theme initialization - CRITICAL: prevent flash -->
     <script is:inline>
       (function() {
-        const theme = localStorage.getItem("theme") ||
-          (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        const savedTheme = localStorage.getItem("theme");
+        const theme = savedTheme || "light";
         document.documentElement.setAttribute("data-theme", theme);
         document.documentElement.style.colorScheme = theme;
       })();
