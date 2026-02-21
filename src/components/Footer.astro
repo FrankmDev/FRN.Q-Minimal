@@ -8,9 +8,9 @@ const footerLinks = [
 ];
 
 const socialLinks = [
-  { label: "LI", href: "#", title: "LinkedIn" },
-  { label: "GH", href: "#", title: "GitHub" },
-  { label: "DR", href: "#", title: "Dribbble" },
+  { label: "LI", href: "https://linkedin.com/in/frnq", title: "LinkedIn" },
+  { label: "GH", href: "https://github.com/frnq", title: "GitHub" },
+  { label: "DR", href: "https://dribbble.com/frnq", title: "Dribbble" },
 ];
 
 const marqueeItems = ["FRN.Q", "INGENIERÍA WEB", "DISEÑO", "PERFORMANCE"];
@@ -81,6 +81,8 @@ const marqueeItems = ["FRN.Q", "INGENIERÍA WEB", "DISEÑO", "PERFORMANCE"];
                   title={social.title}
                   role="listitem"
                   aria-label={social.title}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {social.label}
                 </a>
@@ -263,7 +265,7 @@ const marqueeItems = ["FRN.Q", "INGENIERÍA WEB", "DISEÑO", "PERFORMANCE"];
   }
 
   .footer-cta {
-    padding: var(--space-3xl) 0;
+    padding: var(--space-4xl) 0;
     border-bottom: 3px solid var(--border);
     text-align: center;
   }

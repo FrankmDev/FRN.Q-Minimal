@@ -18,7 +18,7 @@ const solutionPoints = [
 
 <section class="hidden-cost" id="coste-oculto" aria-labelledby="hidden-cost-title">
   <div class="container">
-    <div class="section-header">
+    <div class="section-header reveal">
       <div class="header-label">
         <span class="label-line" aria-hidden="true"></span>
         <span class="label-text">Análisis de Inversión</span>
@@ -29,7 +29,7 @@ const solutionPoints = [
       </h2>
     </div>
 
-    <div class="comparison-grid">
+    <div class="comparison-grid reveal" style="transition-delay: 150ms;">
       <!-- Problem Card -->
       <article class="comparison-card card-problem" aria-labelledby="problem-title">
         <div class="card-header">
@@ -77,7 +77,7 @@ const solutionPoints = [
       </article>
     </div>
 
-    <div class="comparison-cta">
+    <div class="comparison-cta reveal" style="transition-delay: 300ms;">
       <a href="#contacto" class="cta-link">
         <span>Descubre tu situación actual</span>
         <span class="cta-arrow" aria-hidden="true">→</span>
@@ -88,7 +88,7 @@ const solutionPoints = [
 
 <style>
   .hidden-cost {
-    padding: var(--space-lg) 0 var(--space-4xl);
+    padding: var(--space-4xl) 0;
     position: relative;
   }
 
@@ -159,7 +159,7 @@ const solutionPoints = [
 
   /* Comparison Cards */
   .comparison-card {
-    border: 2px solid var(--border);
+    border: 3px solid var(--border);
     padding: var(--space-2xl);
     background: var(--bg);
     transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
@@ -348,13 +348,21 @@ const solutionPoints = [
     transition: 
       opacity var(--transition-base),
       border-style var(--transition-base),
-      background var(--transition-base);
+      background var(--transition-base),
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast);
   }
 
   .cta-link:hover {
     opacity: 1;
     border-style: solid;
     background: var(--bg-alt);
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 var(--border);
+  }
+
+  [data-theme="dark"] .cta-link:hover {
+    box-shadow: 6px 6px 0 rgba(255, 255, 255, 0.15);
   }
 
   .cta-link:focus-visible {

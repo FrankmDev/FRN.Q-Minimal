@@ -1,0 +1,45 @@
+{
+  "name": "FRN.Q Studio - Desarrollo Web Premium",
+  "short_name": "FRN.Q",
+  "description": "Desarrollo de infraestructuras digitales de alto rendimiento. Sin plantillas. Sin límites. Solo resultados.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0a0a0a",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "es",
+  "categories": ["business", "design", "development"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/favicon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Contactar",
+      "short_name": "Contacto",
+      "url": "/#contacto",
+      "description": "Iniciar un proyecto con FRN.Q Studio"
+    },
+    {
+      "name": "Proyectos",
+      "short_name": "Proyectos",
+      "url": "/#proyectos",
+      "description": "Ver proyectos de infraestructuras digitales"
+    }
+  ]
+}

@@ -7,6 +7,7 @@ const projects = [
     image: "/projects/urban.avif",
     highlight: "Diseño Corporativo",
     url: "https://urban-loft.vercel.app/",
+    description: "Plataforma inmobiliaria con sistema de conversión optimizado y diseño corporativo premium",
   },
   {
     name: "Bar Caracalla",
@@ -15,6 +16,16 @@ const projects = [
     image: "/projects/caracalla.avif",
     highlight: "Retención UI",
     url: "https://barcaracalla.com/",
+    description: "Web de hostelería con experiencia de marca inmersiva y alta retención de usuarios",
+  },
+  {
+    name: "FRN.Q STUDIO",
+    category: "Identidad Digital",
+    year: "2025",
+    image: "/projects/frn.q.avif",
+    highlight: "Infraestructura Propia",
+    url: "https://frnq.es",
+    description: "Portfolio experimental brutalista con animaciones avanzadas y diseño disruptivo",
   },
   {
     name: "Fernando Feijoo",
@@ -23,6 +34,7 @@ const projects = [
     image: "/projects/fernando-feijoo.avif",
     highlight: "Arquitectura Escalable",
     url: "https://fernando-feijoo.vercel.app/",
+    description: "Portal empresarial B2B con arquitectura escalable y rendimiento optimizado",
   },
   {
     name: "Asercord Energia",
@@ -31,6 +43,7 @@ const projects = [
     image: "/projects/asercord.avif",
     highlight: "Transformación Digital",
     url: "https://asercordenergia.netlify.app/",
+    description: "Transformación digital completa para empresa del sector energético",
   },
   {
     name: "Wanda Animalart",
@@ -39,11 +52,39 @@ const projects = [
     image: "/projects/wanda.avif",
     highlight: "Conversión Optimizada",
     url: "https://www.wanda-animalart.com/",
+    description: "E-commerce de arte animal con funnel de conversión optimizado",
   },
 ];
+
+const projectSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Proyectos de Desarrollo Web - FRN.Q Studio",
+  description: "Portfolio de infraestructuras digitales de alto rendimiento desarrolladas por FRN.Q Studio",
+  numberOfItems: projects.length,
+  itemListElement: projects.map((project, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    item: {
+      "@type": "CreativeWork",
+      name: project.name,
+      description: project.description,
+      image: project.image,
+      url: project.url,
+      dateCreated: project.year,
+      creator: {
+        "@type": "Organization",
+        name: "FRN.Q Studio",
+        url: "https://frnq.es",
+      },
+    },
+  })),
+};
 ---
 
 <section class="projects" id="proyectos" aria-labelledby="projects-title">
+  <script type="application/ld+json" set:html={JSON.stringify(projectSchema)} slot="head" />
+  
   <div class="section-accent" aria-hidden="true">
     <div class="accent-shape"></div>
   </div>
@@ -76,6 +117,7 @@ const projects = [
             data-image={project.image}
             data-index={i}
             role="listitem"
+            aria-label={`Ver proyecto ${project.name}: ${project.description}`}
           >
             <div class="item-number" aria-hidden="true">
               <span>0{i + 1}</span>
@@ -118,7 +160,7 @@ const projects = [
     <div class="mockup-frame">
       <img
         src=""
-        alt=""
+        alt="Vista previa del proyecto"
         class="mockup-img"
         id="mockup-img"
         loading="lazy"

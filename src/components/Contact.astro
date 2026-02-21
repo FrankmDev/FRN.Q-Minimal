@@ -76,8 +76,8 @@ const formFields = {
             <span class="label-text">Primer Contacto</span>
           </div>
           <h2 class="info-title" id="contact-title">
-            Evaluemos si somos<br />
-            <span class="title-accent">el partner adecuado</span>
+            ¿Somos el partner
+            <span class="title-accent">adecuado?</span>
           </h2>
           <p class="info-desc">
             No trabajamos con todos los proyectos. Solo con quienes entienden
@@ -113,18 +113,28 @@ const formFields = {
           <span class="social-label">También en:</span>
           <div class="social-icons" role="list" aria-label="Redes sociales">
             <a
-              href="#"
+              href="https://linkedin.com/in/frnq"
               class="social-icon"
               role="listitem"
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="LinkedIn">in</a
             >
-            <a href="#" class="social-icon" role="listitem" aria-label="GitHub"
+            <a 
+              href="https://github.com/frnq" 
+              class="social-icon" 
+              role="listitem"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
               >gh</a
             >
             <a
-              href="#"
+              href="https://dribbble.com/frnq"
               class="social-icon"
               role="listitem"
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="Dribbble">dr</a
             >
           </div>
@@ -215,6 +225,112 @@ const formFields = {
           </form>
         </div>
       </div>
+    </div>
+
+    <div class="studio-section reveal">
+      <div class="studio-header">
+        <span class="studio-label">Portfolio Alternativo</span>
+        <div class="header-line" aria-hidden="true"></div>
+      </div>
+      
+      <a href="https://frnq.studio" target="_blank" rel="noopener noreferrer" class="studio-card">
+        <div class="studio-visual" aria-hidden="true">
+          <div class="visual-pattern">
+            <div class="pattern-row">
+              <span class="pattern-cell"></span>
+              <span class="pattern-cell pattern-active"></span>
+              <span class="pattern-cell"></span>
+              <span class="pattern-cell pattern-active"></span>
+            </div>
+            <div class="pattern-row">
+              <span class="pattern-cell pattern-active"></span>
+              <span class="pattern-cell"></span>
+              <span class="pattern-cell pattern-active"></span>
+              <span class="pattern-cell"></span>
+            </div>
+            <div class="pattern-row">
+              <span class="pattern-cell"></span>
+              <span class="pattern-cell pattern-active"></span>
+              <span class="pattern-cell"></span>
+              <span class="pattern-cell pattern-active"></span>
+            </div>
+            <div class="pattern-row">
+              <span class="pattern-cell pattern-active"></span>
+              <span class="pattern-cell"></span>
+              <span class="pattern-cell pattern-active"></span>
+              <span class="pattern-cell"></span>
+            </div>
+            <div class="pattern-row">
+              <span class="pattern-cell"></span>
+              <span class="pattern-cell pattern-active"></span>
+              <span class="pattern-cell"></span>
+              <span class="pattern-cell pattern-active"></span>
+            </div>
+            <div class="pattern-row">
+              <span class="pattern-cell pattern-active"></span>
+              <span class="pattern-cell"></span>
+              <span class="pattern-cell pattern-active"></span>
+              <span class="pattern-cell"></span>
+            </div>
+          </div>
+          <div class="visual-overlay">
+            <span class="overlay-text">STUDIO</span>
+          </div>
+        </div>
+        
+        <div class="studio-content">
+          <div class="content-top">
+            <div class="studio-tags">
+              <span class="tag tag-primary">Experimental</span>
+              <span class="tag">Brutalista</span>
+              <span class="tag">Sin límites</span>
+            </div>
+            
+            <h3 class="studio-title">
+              Para los que quieren
+              <span class="title-highlight">romper esquemas</span>
+            </h3>
+            
+            <p class="studio-desc">
+              <strong>FRN.Q STUDIO</strong> es nuestro laboratorio de interfaces disruptivas. 
+              Diseños brutales, animaciones cinéticas, tipografías que desafían. 
+              El portfolio para clientes que no quieren parecerse a nadie.
+            </p>
+          </div>
+          
+          <div class="content-bottom">
+            <div class="studio-metrics">
+              <div class="metric">
+                <span class="metric-value">100%</span>
+                <span class="metric-label">Experimental</span>
+              </div>
+              <div class="metric-divider" aria-hidden="true"></div>
+              <div class="metric">
+                <span class="metric-value">∞</span>
+                <span class="metric-label">Creatividad</span>
+              </div>
+              <div class="metric-divider" aria-hidden="true"></div>
+              <div class="metric">
+                <span class="metric-value">0</span>
+                <span class="metric-label">Convenciones</span>
+              </div>
+            </div>
+            
+            <div class="studio-cta">
+              <span class="cta-text">
+                <span class="cta-title">Explorar portfolio experimental</span>
+                <span class="cta-url">frnq.studio</span>
+              </span>
+              <span class="cta-icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </div>
+      </a>
     </div>
 
     <div class="faq-section reveal">
@@ -309,12 +425,18 @@ const formFields = {
     display: grid;
     gap: var(--space-3xl);
     margin-bottom: var(--space-4xl);
+    align-items: stretch;
   }
 
   @media (min-width: 900px) {
     .contact-layout {
       grid-template-columns: 1fr 1.3fr;
     }
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
   }
 
   .info-header {
@@ -493,13 +615,17 @@ const formFields = {
   }
 
   .contact-form-wrapper {
-    position: relative;
+    display: flex;
+    flex-direction: column;
   }
 
   .form-card {
     border: 3px solid var(--border);
     background: var(--bg);
     box-shadow: 12px 12px 0 var(--border);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
   }
 
   [data-theme="dark"] .form-card {
@@ -545,6 +671,7 @@ const formFields = {
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
+    flex: 1;
   }
 
   .form-row {
@@ -671,6 +798,376 @@ const formFields = {
 
   .form-submit:hover .submit-icon {
     transform: translate(4px, -4px);
+  }
+
+  /* ============================================
+     STUDIO SECTION - Experimental Portfolio
+     ============================================ */
+  
+  .studio-section {
+    margin-bottom: var(--space-4xl);
+  }
+
+  .studio-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+  }
+
+  .studio-label {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.6;
+  }
+
+  .header-line {
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+    opacity: 0.3;
+  }
+
+  .studio-card {
+    display: grid;
+    border: 3px solid var(--border);
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  @media (min-width: 900px) {
+    .studio-card {
+      grid-template-columns: 280px 1fr;
+    }
+  }
+
+  .studio-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: var(--text);
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 10;
+  }
+
+  .studio-card:hover::before {
+    width: 100%;
+  }
+
+  .studio-card:hover {
+    box-shadow: 14px 14px 0 var(--border);
+    transform: translate(-7px, -7px);
+  }
+
+  [data-theme="dark"] .studio-card:hover {
+    box-shadow: 14px 14px 0 rgba(255, 255, 255, 0.12);
+  }
+
+  .studio-card:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 3px;
+  }
+
+  /* Visual Pattern Side */
+  .studio-visual {
+    background: var(--text);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-3xl);
+    min-height: 320px;
+    overflow: hidden;
+  }
+
+  .visual-pattern {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .pattern-row {
+    display: flex;
+    gap: 6px;
+  }
+
+  .pattern-cell {
+    width: 28px;
+    height: 28px;
+    border: 2px solid var(--bg);
+    opacity: 0.25;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .pattern-active {
+    opacity: 1;
+    background: var(--bg);
+  }
+
+  .studio-card:hover .pattern-cell {
+    opacity: 0.35;
+    transform: scale(0.85);
+  }
+
+  .studio-card:hover .pattern-active {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+
+  /* Staggered animation for pattern cells */
+  .pattern-row:nth-child(1) .pattern-cell { transition-delay: 0ms; }
+  .pattern-row:nth-child(2) .pattern-cell { transition-delay: 25ms; }
+  .pattern-row:nth-child(3) .pattern-cell { transition-delay: 50ms; }
+  .pattern-row:nth-child(4) .pattern-cell { transition-delay: 75ms; }
+  .pattern-row:nth-child(5) .pattern-cell { transition-delay: 100ms; }
+  .pattern-row:nth-child(6) .pattern-cell { transition-delay: 125ms; }
+
+  .visual-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .overlay-text {
+    font-family: var(--font-mono);
+    font-size: clamp(3rem, 8vw, 5rem);
+    font-weight: 800;
+    color: var(--bg);
+    opacity: 0.06;
+    letter-spacing: -0.05em;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .studio-card:hover .overlay-text {
+    opacity: 0.12;
+    transform: scale(1.05);
+  }
+
+  /* Content Side */
+  .studio-content {
+    padding: var(--space-2xl) var(--space-3xl);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-left: 3px solid var(--border);
+    position: relative;
+    gap: var(--space-xl);
+    min-height: 320px;
+  }
+
+  @media (max-width: 899px) {
+    .studio-visual {
+      min-height: 200px;
+    }
+    
+    .studio-content {
+      padding: var(--space-xl);
+      border-left: none;
+      border-top: 3px solid var(--border);
+    }
+  }
+
+  .content-top {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  /* Tags */
+  .studio-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: var(--space-xs) var(--space-md);
+    border: 2px solid var(--border);
+    background: transparent;
+    transition: all 0.3s ease;
+  }
+
+  .tag-primary {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+  }
+
+  .studio-card:hover .tag:not(.tag-primary) {
+    border-color: var(--text);
+    background: var(--bg-alt);
+  }
+
+  /* Title */
+  .studio-title {
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+
+  .title-highlight {
+    font-weight: 800;
+    position: relative;
+    display: inline;
+  }
+
+  .title-highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 0.08em;
+    left: 0;
+    right: 0;
+    height: 0.18em;
+    background: var(--text);
+    opacity: 0.15;
+    transition: opacity 0.3s ease;
+  }
+
+  .studio-card:hover .title-highlight::after {
+    opacity: 0.25;
+  }
+
+  /* Description */
+  .studio-desc {
+    font-size: clamp(0.9375rem, 2vw, 1.0625rem);
+    line-height: 1.7;
+    opacity: 0.7;
+    max-width: 500px;
+    margin: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .studio-desc strong {
+    font-weight: 800;
+    opacity: 1;
+  }
+
+  .studio-card:hover .studio-desc {
+    opacity: 0.85;
+  }
+
+  /* Bottom Section */
+  .content-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  /* Metrics */
+  .studio-metrics {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md) 0;
+    border-top: 2px solid var(--border-light);
+    border-bottom: 2px solid var(--border-light);
+  }
+
+  .metric {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    flex: 1;
+    text-align: center;
+  }
+
+  .metric-value {
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-family: var(--font-mono);
+  }
+
+  .metric-label {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.5;
+    font-family: var(--font-mono);
+  }
+
+  .metric-divider {
+    width: 2px;
+    height: 40px;
+    background: var(--border);
+    opacity: 0.2;
+  }
+
+  /* CTA */
+  .studio-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-lg) var(--space-xl);
+    background: var(--text);
+    color: var(--bg);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .studio-card:hover .studio-cta {
+    padding-left: calc(var(--space-xl) + 8px);
+  }
+
+  .cta-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .cta-title {
+    font-weight: 700;
+    font-size: 1.0625rem;
+  }
+
+  .cta-url {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+  }
+
+  .studio-card:hover .cta-url {
+    opacity: 0.85;
+  }
+
+  .cta-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--bg);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .studio-card:hover .cta-icon {
+    transform: translate(6px, -6px);
+    background: var(--bg);
+    color: var(--text);
   }
 
   .faq-section {
