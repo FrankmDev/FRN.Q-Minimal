@@ -115,6 +115,19 @@ const services = [
       mouseY = e.clientY;
     }, { passive: true });
   }
+
+  // IntersectionObserver for service cards entrance
+  const serviceCards = document.querySelectorAll('.service-card');
+  const cardObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        cardObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -5% 0px' });
+
+  serviceCards.forEach((card) => cardObserver.observe(card));
 </script>
 
 <style>
@@ -175,17 +188,10 @@ const services = [
     font-weight: 800;
     position: relative;
     display: inline-block;
-  }
-
-  .title-highlight::after {
-    content: "";
-    position: absolute;
-    bottom: 0.1em;
-    left: 0;
-    right: 0;
-    height: 0.15em;
+    padding: 0 0.2em;
     background: var(--text);
-    opacity: 0.15;
+    color: var(--bg);
+    transform: rotate(-1deg);
   }
 
   .services-grid {
@@ -252,33 +258,54 @@ const services = [
   .service-card {
     position: relative;
     background: var(--bg);
-    border: 3px solid var(--border);
+    border: 4px solid var(--border);
     padding: var(--space-2xl);
-    min-height: 280px;
+    min-height: 320px;
     display: flex;
     flex-direction: column;
     isolation: isolate;
     overflow: hidden;
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* Background number */
+  /* Sweep background fill on hover */
+  .service-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--text);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 0;
+  }
+
+  .service-card:hover::before {
+    transform: scaleY(1);
+  }
+
   .card-bg-num {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-family: var(--font-mono);
-    font-size: 14rem;
+    font-size: 16rem;
     font-weight: 800;
-    opacity: 0.02;
+    opacity: 0.03;
     pointer-events: none;
     transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    -webkit-text-stroke: 2px var(--text);
+    color: transparent;
+    letter-spacing: -0.05em;
+    z-index: 1;
   }
 
   .service-card:hover .card-bg-num {
-    opacity: 0.06;
-    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0.12;
+    transform: translate(-50%, -50%) scale(1.15) rotate(-5deg);
+    -webkit-text-stroke: 2px var(--bg);
+    letter-spacing: 0.1em;
   }
 
   /* Content */
@@ -320,16 +347,17 @@ const services = [
     position: absolute;
     top: var(--space-xl);
     right: var(--space-xl);
-    width: 48px;
-    height: 48px;
-    border: 3px solid var(--border);
+    width: 56px;
+    height: 56px;
+    border: 4px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     background: var(--bg);
     z-index: 2;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 4px 4px 0 var(--border);
   }
 
   /* Hover Frame */
@@ -378,32 +406,39 @@ const services = [
      HOVER EFFECTS
      ============================================ */
   .service-card:hover {
-    transform: translate(-8px, -8px);
-    box-shadow: 12px 12px 0 var(--border);
+    transform: translate(-12px, -12px);
+    box-shadow: 20px 20px 0 var(--border);
+    background: var(--text);
+    color: var(--bg);
   }
 
   [data-theme="dark"] .service-card:hover {
-    box-shadow: 12px 12px 0 rgba(255,255,255,0.15);
+    box-shadow: 20px 20px 0 rgba(255,255,255,0.25);
   }
 
   .service-card:hover .card-index {
     opacity: 0.8;
-    transform: translateX(4px);
+    transform: translateX(8px);
+    color: var(--bg);
   }
 
   .service-card:hover .card-title {
-    transform: translateX(8px);
+    transform: translateX(12px);
+    color: var(--bg);
   }
 
   .service-card:hover .card-desc {
     opacity: 0.9;
-    transform: translateX(10px);
+    transform: translateX(12px);
+    color: var(--bg);
   }
 
   .service-card:hover .card-arrow {
-    background: var(--text);
-    color: var(--bg);
-    transform: translate(6px, -6px);
+    background: var(--bg);
+    color: var(--text);
+    border-color: var(--bg);
+    transform: translate(8px, -8px) scale(1.1);
+    box-shadow: 6px 6px 0 var(--bg);
   }
 
   /* Frame animation */
@@ -417,20 +452,21 @@ const services = [
      ============================================ */
   .service-card {
     opacity: 0;
-    transform: translateY(30px);
-    animation: card-enter 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transform: translateY(40px);
+    transition:
+      opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .service-card[data-index="0"] { animation-delay: 0ms; }
-  .service-card[data-index="1"] { animation-delay: 100ms; }
-  .service-card[data-index="2"] { animation-delay: 200ms; }
-
-  @keyframes card-enter {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .service-card.visible {
+    opacity: 1;
+    transform: translateY(0);
   }
+
+  .service-card[data-index="0"] { transition-delay: 0ms; }
+  .service-card[data-index="1"] { transition-delay: 100ms; }
+  .service-card[data-index="2"] { transition-delay: 200ms; }
 
   /* ============================================
      RESPONSIVE

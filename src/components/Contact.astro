@@ -120,14 +120,13 @@ const formFields = {
               rel="noopener noreferrer"
               aria-label="LinkedIn">in</a
             >
-            <a 
-              href="https://github.com/frnq" 
-              class="social-icon" 
+            <a
+              href="https://github.com/frnq"
+              class="social-icon"
               role="listitem"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="GitHub"
-              >gh</a
+              aria-label="GitHub">gh</a
             >
             <a
               href="https://dribbble.com/frnq"
@@ -232,8 +231,13 @@ const formFields = {
         <span class="studio-label">Portfolio Alternativo</span>
         <div class="header-line" aria-hidden="true"></div>
       </div>
-      
-      <a href="https://frnq.studio" target="_blank" rel="noopener noreferrer" class="studio-card">
+
+      <a
+        href="https://frnq.studio"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="studio-card"
+      >
         <div class="studio-visual" aria-hidden="true">
           <div class="visual-pattern">
             <div class="pattern-row">
@@ -277,7 +281,7 @@ const formFields = {
             <span class="overlay-text">STUDIO</span>
           </div>
         </div>
-        
+
         <div class="studio-content">
           <div class="content-top">
             <div class="studio-tags">
@@ -285,19 +289,19 @@ const formFields = {
               <span class="tag">Brutalista</span>
               <span class="tag">Sin límites</span>
             </div>
-            
+
             <h3 class="studio-title">
               Para los que quieren
               <span class="title-highlight">romper esquemas</span>
             </h3>
-            
+
             <p class="studio-desc">
-              <strong>FRN.Q STUDIO</strong> es nuestro laboratorio de interfaces disruptivas. 
-              Diseños brutales, animaciones cinéticas, tipografías que desafían. 
-              El portfolio para clientes que no quieren parecerse a nadie.
+              <strong>FRN.Q STUDIO</strong> es nuestro laboratorio de interfaces disruptivas.
+              Diseños brutales, animaciones cinéticas, tipografías que desafían. El
+              portfolio para clientes que no quieren parecerse a nadie.
             </p>
           </div>
-          
+
           <div class="content-bottom">
             <div class="studio-metrics">
               <div class="metric">
@@ -315,14 +319,23 @@ const formFields = {
                 <span class="metric-label">Convenciones</span>
               </div>
             </div>
-            
+
             <div class="studio-cta">
               <span class="cta-text">
                 <span class="cta-title">Explorar portfolio experimental</span>
                 <span class="cta-url">frnq.studio</span>
               </span>
               <span class="cta-icon" aria-hidden="true">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
                   <line x1="7" y1="17" x2="17" y2="7"></line>
                   <polyline points="7 7 17 7 17 17"></polyline>
                 </svg>
@@ -508,21 +521,41 @@ const formFields = {
     align-items: center;
     gap: var(--space-md);
     padding: var(--space-md) var(--space-lg);
-    border: 3px solid var(--border);
+    border: 4px solid var(--border);
     background: var(--bg);
-    box-shadow: 6px 6px 0 var(--border);
+    box-shadow: 10px 10px 0 var(--border);
     transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Left border sweep on method card hover */
+  .method-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 0;
+    background: var(--text);
+    transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 2;
+  }
+
+  .method-card:hover::before {
+    height: 100%;
   }
 
   [data-theme="dark"] .method-card {
     box-shadow: none;
+    border-color: var(--border);
   }
 
   .method-card:hover {
-    transform: translate(-6px, -6px);
-    box-shadow: 12px 12px 0 var(--border);
+    transform: translate(-8px, -8px);
+    box-shadow: 16px 16px 0 var(--border);
   }
 
   [data-theme="dark"] .method-card:hover {
@@ -583,26 +616,27 @@ const formFields = {
   }
 
   .social-icon {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 3px solid var(--border);
+    border: 4px solid var(--border);
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 700;
+    font-size: 0.8125rem;
+    font-weight: 800;
     transition:
       background var(--transition-fast),
       color var(--transition-fast),
-      transform var(--transition-fast);
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast);
   }
 
   .social-icon:hover {
     background: var(--text);
     color: var(--bg);
-    transform: translate(-4px, -4px);
-    box-shadow: 6px 6px 0 var(--border);
+    transform: translate(-6px, -6px);
+    box-shadow: 10px 10px 0 var(--border);
   }
 
   [data-theme="dark"] .social-icon:hover {
@@ -620,9 +654,9 @@ const formFields = {
   }
 
   .form-card {
-    border: 3px solid var(--border);
+    border: 4px solid var(--border);
     background: var(--bg);
-    box-shadow: 12px 12px 0 var(--border);
+    box-shadow: 16px 16px 0 var(--border);
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -637,7 +671,7 @@ const formFields = {
     align-items: center;
     justify-content: space-between;
     padding: var(--space-lg) var(--space-xl);
-    border-bottom: 3px solid var(--border);
+    border-bottom: 4px solid var(--border);
     background: var(--bg-alt);
     gap: var(--space-md);
     flex-wrap: wrap;
@@ -662,7 +696,9 @@ const formFields = {
     height: 8px;
     background: #22c55e;
     border-radius: 50%;
-    animation: pulse 2s infinite;
+    animation:
+      pulse 2s infinite,
+      pulseGlow 2s infinite;
     flex-shrink: 0;
   }
 
@@ -702,10 +738,10 @@ const formFields = {
   .form-field select,
   .form-field textarea {
     width: 100%;
-    padding: 0.875rem var(--space-md);
+    padding: 1rem var(--space-md);
     font-size: 0.9375rem;
     font-family: inherit;
-    border: 3px solid var(--border);
+    border: 4px solid var(--border);
     border-radius: 0;
     background: var(--bg);
     color: var(--text);
@@ -743,8 +779,9 @@ const formFields = {
   .form-field select:focus,
   .form-field textarea:focus {
     outline: none;
-    box-shadow: 4px 4px 0 var(--border);
-    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 var(--border);
+    transform: translate(-3px, -3px);
+    border-color: var(--text);
   }
 
   .form-field input::placeholder,
@@ -759,13 +796,14 @@ const formFields = {
     justify-content: center;
     gap: var(--space-sm);
     width: 100%;
-    padding: var(--space-md);
-    font-size: 0.9375rem;
-    font-weight: 700;
+    padding: var(--space-md) var(--space-lg);
+    font-size: 1.125rem;
+    font-weight: 800;
+    text-transform: uppercase;
     background: var(--text);
     color: var(--bg);
-    border: 3px solid var(--text);
-    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.15);
+    border: 4px solid var(--text);
+    box-shadow: 10px 10px 0 var(--border-light);
     transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
@@ -773,8 +811,8 @@ const formFields = {
   }
 
   .form-submit:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.2);
+    transform: translate(-6px, -6px);
+    box-shadow: 14px 14px 0 var(--border-strong);
   }
 
   .form-submit:focus-visible {
@@ -803,7 +841,7 @@ const formFields = {
   /* ============================================
      STUDIO SECTION - Experimental Portfolio
      ============================================ */
-  
+
   .studio-section {
     margin-bottom: var(--space-4xl);
   }
@@ -833,7 +871,7 @@ const formFields = {
 
   .studio-card {
     display: grid;
-    border: 3px solid var(--border);
+    border: 4px solid var(--border);
     background: var(--bg);
     position: relative;
     overflow: hidden;
@@ -849,12 +887,12 @@ const formFields = {
   }
 
   .studio-card::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 0;
-    height: 3px;
+    height: 4px;
     background: var(--text);
     transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 10;
@@ -865,8 +903,8 @@ const formFields = {
   }
 
   .studio-card:hover {
-    box-shadow: 14px 14px 0 var(--border);
-    transform: translate(-7px, -7px);
+    box-shadow: 16px 16px 0 var(--border);
+    transform: translate(-8px, -8px);
   }
 
   [data-theme="dark"] .studio-card:hover {
@@ -927,12 +965,24 @@ const formFields = {
   }
 
   /* Staggered animation for pattern cells */
-  .pattern-row:nth-child(1) .pattern-cell { transition-delay: 0ms; }
-  .pattern-row:nth-child(2) .pattern-cell { transition-delay: 25ms; }
-  .pattern-row:nth-child(3) .pattern-cell { transition-delay: 50ms; }
-  .pattern-row:nth-child(4) .pattern-cell { transition-delay: 75ms; }
-  .pattern-row:nth-child(5) .pattern-cell { transition-delay: 100ms; }
-  .pattern-row:nth-child(6) .pattern-cell { transition-delay: 125ms; }
+  .pattern-row:nth-child(1) .pattern-cell {
+    transition-delay: 0ms;
+  }
+  .pattern-row:nth-child(2) .pattern-cell {
+    transition-delay: 25ms;
+  }
+  .pattern-row:nth-child(3) .pattern-cell {
+    transition-delay: 50ms;
+  }
+  .pattern-row:nth-child(4) .pattern-cell {
+    transition-delay: 75ms;
+  }
+  .pattern-row:nth-child(5) .pattern-cell {
+    transition-delay: 100ms;
+  }
+  .pattern-row:nth-child(6) .pattern-cell {
+    transition-delay: 125ms;
+  }
 
   .visual-overlay {
     position: absolute;
@@ -974,7 +1024,7 @@ const formFields = {
     .studio-visual {
       min-height: 200px;
     }
-    
+
     .studio-content {
       padding: var(--space-xl);
       border-left: none;
@@ -1034,7 +1084,7 @@ const formFields = {
   }
 
   .title-highlight::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0.08em;
     left: 0;
@@ -1188,7 +1238,7 @@ const formFields = {
   }
 
   .faq-item {
-    border: 3px solid var(--border);
+    border: 4px solid var(--border);
     background: var(--bg);
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     cursor: none;
@@ -1197,8 +1247,8 @@ const formFields = {
 
   .faq-item:hover {
     border-color: var(--text);
-    transform: translateX(8px);
-    box-shadow: -4px 4px 0 var(--border);
+    transform: translate(10px, -6px);
+    box-shadow: -8px 12px 0 var(--border);
   }
 
   [data-theme="dark"] .faq-item:hover {

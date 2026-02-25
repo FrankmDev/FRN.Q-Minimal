@@ -16,7 +16,11 @@ const solutionPoints = [
 ];
 ---
 
-<section class="hidden-cost" id="coste-oculto" aria-labelledby="hidden-cost-title">
+<section
+  class="hidden-cost"
+  id="coste-oculto"
+  aria-labelledby="hidden-cost-title"
+>
   <div class="container">
     <div class="section-header reveal">
       <div class="header-label">
@@ -29,22 +33,31 @@ const solutionPoints = [
       </h2>
     </div>
 
-    <div class="comparison-grid reveal" style="transition-delay: 150ms;">
+    <div class="comparison-grid reveal" style="--reveal-delay: 150ms;">
       <!-- Problem Card -->
-      <article class="comparison-card card-problem" aria-labelledby="problem-title">
+      <article
+        class="comparison-card card-problem"
+        aria-labelledby="problem-title"
+      >
         <div class="card-header">
           <div class="card-badge badge-problem">El Problema</div>
-          <h3 class="card-title" id="problem-title">Plantillas Tradicionales</h3>
+          <h3 class="card-title" id="problem-title">
+            Plantillas Tradicionales
+          </h3>
           <p class="card-subtitle">El coste oculto que nadie te menciona</p>
         </div>
-        
+
         <ul class="point-list" role="list">
-          {problemPoints.map((point) => (
-            <li class="point-item point-negative" role="listitem">
-              <span class="point-icon" aria-hidden="true">{point.icon}</span>
-              <span class="point-text">{point.text}</span>
-            </li>
-          ))}
+          {
+            problemPoints.map((point) => (
+              <li class="point-item point-negative" role="listitem">
+                <span class="point-icon" aria-hidden="true">
+                  {point.icon}
+                </span>
+                <span class="point-text">{point.text}</span>
+              </li>
+            ))
+          }
         </ul>
 
         <div class="card-footer">
@@ -54,25 +67,37 @@ const solutionPoints = [
       </article>
 
       <!-- Solution Card -->
-      <article class="comparison-card card-solution" aria-labelledby="solution-title">
+      <article
+        class="comparison-card card-solution"
+        aria-labelledby="solution-title"
+      >
         <div class="card-header">
           <div class="card-badge badge-solution">La Solución</div>
-          <h3 class="card-title" id="solution-title">Nuestra Infraestructura</h3>
-          <p class="card-subtitle">Un activo que se deprecia a cero mantenimiento</p>
+          <h3 class="card-title" id="solution-title">
+            Nuestra Infraestructura
+          </h3>
+          <p class="card-subtitle">
+            Un activo que se deprecia a cero mantenimiento
+          </p>
         </div>
-        
+
         <ul class="point-list" role="list">
-          {solutionPoints.map((point) => (
-            <li class="point-item point-positive" role="listitem">
-              <span class="point-icon" aria-hidden="true">{point.icon}</span>
-              <span class="point-text">{point.text}</span>
-            </li>
-          ))}
+          {
+            solutionPoints.map((point) => (
+              <li class="point-item point-positive" role="listitem">
+                <span class="point-icon" aria-hidden="true">
+                  {point.icon}
+                </span>
+                <span class="point-text">{point.text}</span>
+              </li>
+            ))
+          }
         </ul>
 
         <div class="card-footer">
           <span class="footer-label">Coste real a 3 años</span>
-          <span class="footer-value footer-value-positive">Inversión única</span>
+          <span class="footer-value footer-value-positive">Inversión única</span
+          >
         </div>
       </article>
     </div>
@@ -149,6 +174,7 @@ const solutionPoints = [
     display: grid;
     gap: var(--space-xl);
     margin-bottom: var(--space-3xl);
+    position: relative;
   }
 
   @media (min-width: 900px) {
@@ -159,10 +185,10 @@ const solutionPoints = [
 
   /* Comparison Cards */
   .comparison-card {
-    border: 3px solid var(--border);
+    border: 4px solid var(--border);
     padding: var(--space-2xl);
     background: var(--bg);
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
     isolation: isolate;
@@ -173,12 +199,34 @@ const solutionPoints = [
   }
 
   .card-solution {
-    box-shadow: 8px 8px 0 var(--border);
+    box-shadow: 12px 12px 0 var(--border);
+    border-left: 4px solid var(--border);
+    position: relative;
+  }
+
+  .card-solution::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -4px;
+    width: 4px;
+    height: 0;
+    background: #22c55e;
+    transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 2;
+  }
+
+  .card-solution:hover::before {
+    height: 100%;
+  }
+
+  [data-theme="dark"] .card-solution::before {
+    background: #4ade80;
   }
 
   .comparison-card:hover {
-    transform: translate(-6px, -6px);
-    box-shadow: 12px 12px 0 var(--border);
+    transform: translate(-8px, -8px);
+    box-shadow: 16px 16px 0 var(--border);
   }
 
   /* Card Header */
@@ -253,10 +301,36 @@ const solutionPoints = [
     padding: var(--space-md);
     background: var(--bg-alt);
     transition: all 0.3s ease;
+    position: relative;
   }
 
   .point-item:hover {
     transform: translateX(4px);
+  }
+
+  /* Strikethrough on problem items */
+  .point-negative .point-text {
+    position: relative;
+    transition: opacity 0.3s ease;
+  }
+
+  .point-negative .point-text::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    height: 2px;
+    width: 0;
+    background: #ef4444;
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .point-negative:hover .point-text::after {
+    width: 100%;
+  }
+
+  .point-negative:hover .point-text {
+    opacity: 0.6;
   }
 
   .point-icon {
@@ -340,25 +414,27 @@ const solutionPoints = [
   .cta-link {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-sm);
-    padding: var(--space-md) var(--space-xl);
-    font-weight: 600;
-    border: 2px dashed var(--border);
-    opacity: 0.6;
-    transition: 
-      opacity var(--transition-base),
-      border-style var(--transition-base),
+    gap: var(--space-md);
+    padding: var(--space-lg) var(--space-2xl);
+    font-weight: 800;
+    font-size: 1.125rem;
+    border: 4px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 8px 8px 0 var(--border);
+    transition:
       background var(--transition-base),
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
   }
 
   .cta-link:hover {
-    opacity: 1;
-    border-style: solid;
-    background: var(--bg-alt);
-    transform: translate(-3px, -3px);
-    box-shadow: 6px 6px 0 var(--border);
+    background: var(--text);
+    color: var(--bg);
+    transform: translate(-6px, -6px);
+    box-shadow: 14px 14px 0 var(--border-strong);
   }
 
   [data-theme="dark"] .cta-link:hover {
@@ -398,7 +474,7 @@ const solutionPoints = [
 
   /* Hover frame animation */
   .comparison-card::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;

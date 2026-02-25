@@ -1,8 +1,12 @@
 ---
 const navLinks = [
-  { href: '#proyectos', label: 'Arquitecturas', labelMobile: '[Arquitecturas]' },
-  { href: '#sobre-mi', label: 'Estudio', labelMobile: '[Estudio]' },
-  { href: '#contacto', label: 'Contacto', labelMobile: '[Contacto]' },
+  {
+    href: "#proyectos",
+    label: "Arquitecturas",
+    labelMobile: "[Arquitecturas]",
+  },
+  { href: "#sobre-mi", label: "Estudio", labelMobile: "[Estudio]" },
+  { href: "#contacto", label: "Contacto", labelMobile: "[Contacto]" },
 ];
 ---
 
@@ -25,20 +29,31 @@ const navLinks = [
       <span class="logo-text">FRN.Q</span>
     </a>
 
-    <nav class="nav" id="nav" role="navigation" aria-label="Navegación principal">
-      {navLinks.map(link => (
-        <a href={link.href} class="nav-link">
-          <span class="link-bracket" aria-hidden="true">[</span>
-          <span class="link-text">{link.label}</span>
-          <span class="link-bracket" aria-hidden="true">]</span>
-        </a>
-      ))}
+    <nav
+      class="nav"
+      id="nav"
+      role="navigation"
+      aria-label="Navegación principal"
+    >
+      {
+        navLinks.map((link) => (
+          <a href={link.href} class="nav-link">
+            <span class="link-bracket" aria-hidden="true">
+              [
+            </span>
+            <span class="link-text">{link.label}</span>
+            <span class="link-bracket" aria-hidden="true">
+              ]
+            </span>
+          </a>
+        ))
+      }
     </nav>
 
     <div class="header-actions">
-      <button 
-        class="theme-toggle" 
-        id="theme-toggle" 
+      <button
+        class="theme-toggle"
+        id="theme-toggle"
         aria-label="Cambiar tema (claro/oscuro)"
         type="button"
       >
@@ -68,48 +83,62 @@ const navLinks = [
   </div>
 
   <!-- Mobile nav panel -->
-  <div 
-    class="mobile-nav" 
+  <div
+    class="mobile-nav"
     id="mobile-nav"
     role="dialog"
     aria-label="Menú móvil"
     aria-modal="true"
   >
     <div class="container">
-      {navLinks.map(link => (
-        <a href={link.href} class="mobile-link">{link.labelMobile}</a>
-      ))}
+      {
+        navLinks.map((link) => (
+          <a href={link.href} class="mobile-link">
+            {link.labelMobile}
+          </a>
+        ))
+      }
       <a href="#contacto" class="mobile-cta">
         <span>Evaluación</span>
         <span class="cta-arrow" aria-hidden="true">→</span>
       </a>
     </div>
   </div>
-
 </header>
 
 <!-- Progress bar - separada del header para evitar solapamiento -->
-<div class="header-progress" id="header-progress" aria-hidden="true" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+<div
+  class="header-progress"
+  id="header-progress"
+  aria-hidden="true"
+  role="progressbar"
+  aria-valuemin="0"
+  aria-valuemax="100"
+  aria-valuenow="0"
+>
   <div class="progress-bar" id="progress-bar"></div>
 </div>
 
 <script>
   // Theme toggle with improved handling
   const themeToggle = document.getElementById("theme-toggle");
-  
+
   themeToggle?.addEventListener("click", () => {
     const html = document.documentElement;
     const currentTheme = html.getAttribute("data-theme") || "light";
     const nextTheme = currentTheme === "light" ? "dark" : "light";
-    
+
     html.setAttribute("data-theme", nextTheme);
     html.style.colorScheme = nextTheme;
     localStorage.setItem("theme", nextTheme);
-    
+
     // Update meta theme-color
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor) {
-      metaThemeColor.setAttribute("content", nextTheme === "dark" ? "#0a0a0a" : "#ffffff");
+      metaThemeColor.setAttribute(
+        "content",
+        nextTheme === "dark" ? "#0a0a0a" : "#ffffff",
+      );
     }
   });
 
@@ -122,12 +151,15 @@ const navLinks = [
   function toggleMenu() {
     const isOpen = hamburger?.getAttribute("aria-expanded") === "true";
     const newState = !isOpen;
-    
+
     hamburger?.setAttribute("aria-expanded", String(newState));
-    hamburger?.setAttribute("aria-label", newState ? "Cerrar menú" : "Abrir menú");
+    hamburger?.setAttribute(
+      "aria-label",
+      newState ? "Cerrar menú" : "Abrir menú",
+    );
     hamburger?.classList.toggle("is-active", newState);
     mobileNav?.classList.toggle("is-open", newState);
-    
+
     // Prevent body scroll when menu is open
     document.body.style.overflow = newState ? "hidden" : "";
   }
@@ -147,70 +179,93 @@ const navLinks = [
 
   // Close menu on escape key
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && hamburger?.getAttribute("aria-expanded") === "true") {
+    if (
+      e.key === "Escape" &&
+      hamburger?.getAttribute("aria-expanded") === "true"
+    ) {
       toggleMenu();
       hamburger?.focus();
     }
   });
 
-  // Scroll: progress bar + header shadow (throttled via rAF)
+  // Scroll: progress bar + header scroll-shrink (throttled via rAF)
+  const header = document.getElementById("header") as HTMLElement | null;
   let ticking = false;
-  
+
   window.addEventListener(
     "scroll",
     () => {
       if (!ticking) {
         requestAnimationFrame(() => {
           const scrollY = window.scrollY;
-          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-          const scrolled = docHeight > 0 ? (scrollY / docHeight) : 0;
-          
+          const docHeight =
+            document.documentElement.scrollHeight - window.innerHeight;
+          const scrolled = docHeight > 0 ? scrollY / docHeight : 0;
+
           if (progressBar) {
             progressBar.style.width = `${Math.min(scrolled * 100, 100)}%`;
           }
-          
+
           if (headerProgress) {
-            headerProgress.setAttribute("aria-valuenow", String(Math.round(scrolled * 100)));
+            headerProgress.setAttribute(
+              "aria-valuenow",
+              String(Math.round(scrolled * 100)),
+            );
           }
-          
+
+          // Scroll-shrink header
+          if (header) {
+            if (scrollY > 60) {
+              header.classList.add("is-scrolled");
+            } else {
+              header.classList.remove("is-scrolled");
+            }
+          }
+
           ticking = false;
         });
         ticking = true;
       }
     },
-    { passive: true }
+    { passive: true },
   );
-  
+
   // Handle visibility change to avoid animation glitches
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
       ticking = false;
     }
   });
-  
+
   // Calcular posición de la barra de progreso (header siempre visible)
   function updateProgressBarPosition() {
     const header = document.getElementById("header");
     const mobileNav = document.getElementById("mobile-nav");
     if (!header) return;
-    
+
     // Altura del header + menú móvil si está abierto + separación de 8px
     let headerHeight = header.offsetHeight;
     const progressTop = headerHeight + 8;
-    document.documentElement.style.setProperty('--progress-top', `${progressTop}px`);
+    document.documentElement.style.setProperty(
+      "--progress-top",
+      `${progressTop}px`,
+    );
   }
-  
+
   // Calcular posición inicial
   updateProgressBarPosition();
   window.addEventListener("resize", updateProgressBarPosition);
-  
+
   // Actualizar cuando cambie el menú móvil
   if (mobileNav) {
     const mobileNavObserver = new MutationObserver(() => {
       setTimeout(updateProgressBarPosition, 50);
       setTimeout(updateProgressBarPosition, 350);
     });
-    mobileNavObserver.observe(mobileNav, { attributes: true, attributeFilter: ['class'] });
+    mobileNavObserver.observe(mobileNav, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
   }
 </script>
 
@@ -221,11 +276,24 @@ const navLinks = [
     left: 0;
     right: 0;
     z-index: var(--z-fixed, 300);
-    background: var(--bg);
-    transition: 
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: blur(12px) saturate(1.4);
+    -webkit-backdrop-filter: blur(12px) saturate(1.4);
+    border-bottom: 3px solid var(--border);
+    transition:
       box-shadow var(--transition-fast),
-      transform var(--transition-base);
+      transform var(--transition-base),
+      padding var(--transition-base);
     will-change: transform;
+  }
+
+  .header.is-scrolled {
+    background: color-mix(in srgb, var(--bg) 97%, transparent);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  [data-theme="dark"] .header.is-scrolled {
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.32);
   }
 
   .header-accent {
@@ -236,6 +304,7 @@ const navLinks = [
     height: 4px;
     display: flex;
     pointer-events: none;
+    z-index: 2;
   }
 
   .accent-line {
@@ -254,8 +323,12 @@ const navLinks = [
     margin-left: 4px;
   }
 
-  .accent-blocks span:nth-child(2) { width: 60px; }
-  .accent-blocks span:nth-child(3) { width: 30px; }
+  .accent-blocks span:nth-child(2) {
+    width: 60px;
+  }
+  .accent-blocks span:nth-child(3) {
+    width: 30px;
+  }
 
   .header-inner {
     display: flex;
@@ -273,7 +346,7 @@ const navLinks = [
     border: 2px solid var(--border);
     background: var(--bg);
     box-shadow: var(--shadow-brutal);
-    transition: 
+    transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
     position: relative;
@@ -283,7 +356,17 @@ const navLinks = [
     transform: translate(-3px, -3px);
     box-shadow: 7px 7px 0 var(--border);
   }
-  
+
+  .logo:hover .icon-grid {
+    animation: spin90 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes spin90 {
+    to {
+      transform: rotate(45deg);
+    }
+  }
+
   .logo:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
@@ -332,24 +415,56 @@ const navLinks = [
     align-items: center;
     gap: 0.25rem;
     font-size: 0.875rem;
-    font-weight: 500;
-    padding: var(--space-sm);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: var(--space-xs) var(--space-sm);
     position: relative;
-    transition: opacity var(--transition-fast);
+    transition: all var(--transition-fast);
+    border: 2px solid transparent;
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--text);
+    transition: width var(--transition-base);
   }
 
   .link-bracket {
-    opacity: 0.3;
-    transition: opacity var(--transition-base);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: all var(--transition-fast);
+    color: var(--text-muted);
+    font-size: 0.75rem;
+  }
+
+  .nav-link .link-bracket:last-child {
+    transform: translateX(4px);
   }
 
   .nav-link:hover .link-bracket,
   .nav-link:focus .link-bracket {
-    opacity: 1;
+    opacity: 0.5;
+    transform: translateX(0);
+    color: var(--bg);
   }
-  
-  .nav-link:hover {
-    opacity: 0.8;
+
+  .nav-link:hover,
+  .nav-link:focus-visible {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+    box-shadow: 4px 4px 0 var(--border);
+    transform: translate(-2px, -2px);
+  }
+
+  [data-theme="dark"] .nav-link:hover {
+    box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.15);
   }
 
   /* Header actions */
@@ -362,12 +477,12 @@ const navLinks = [
   .theme-toggle {
     width: 44px;
     height: 44px;
-    border: 2px solid var(--border);
+    border: 3px solid var(--border);
     background: var(--bg);
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    transition: 
+    transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
     display: flex;
@@ -379,7 +494,7 @@ const navLinks = [
     transform: translate(-2px, -2px);
     box-shadow: 4px 4px 0 var(--border);
   }
-  
+
   .theme-toggle:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
@@ -398,7 +513,9 @@ const navLinks = [
   .face-dark {
     position: absolute;
     font-size: 1.25rem;
-    transition: opacity var(--transition-base), transform var(--transition-base);
+    transition:
+      opacity var(--transition-base),
+      transform var(--transition-base);
   }
 
   .face-dark {
@@ -422,12 +539,14 @@ const navLinks = [
     gap: var(--space-sm);
     padding: 0.75rem 1.25rem;
     font-size: 0.875rem;
-    font-weight: 600;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     background: var(--text);
     color: var(--bg);
-    border: 2px solid var(--text);
-    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.15);
-    transition: 
+    border: 3px solid var(--text);
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.15);
+    transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
   }
@@ -442,17 +561,17 @@ const navLinks = [
     transform: translate(-3px, -3px);
     box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.15);
   }
-  
+
   /* En modo oscuro, sombra clara */
   [data-theme="dark"] .header-cta {
     border-color: var(--text);
     box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.12);
   }
-  
+
   [data-theme="dark"] .header-cta:hover {
     box-shadow: 7px 7px 0 rgba(255, 255, 255, 0.12);
   }
-  
+
   .header-cta:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
@@ -479,7 +598,7 @@ const navLinks = [
     background: var(--bg);
     cursor: pointer;
     padding: 12px;
-    transition: 
+    transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
   }
@@ -488,7 +607,7 @@ const navLinks = [
     transform: translate(-2px, -2px);
     box-shadow: 4px 4px 0 var(--border);
   }
-  
+
   .hamburger:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
@@ -556,11 +675,28 @@ const navLinks = [
     font-weight: 600;
     font-family: var(--font-mono);
     border-bottom: 1px solid var(--border);
-    opacity: 0.6;
+    opacity: 0;
+    transform: translateX(-16px);
     transition:
-      opacity var(--transition-fast),
+      opacity var(--transition-base),
+      transform var(--transition-base),
       padding-left var(--transition-fast),
       color var(--transition-fast);
+  }
+
+  .mobile-nav.is-open .mobile-link {
+    opacity: 0.7;
+    transform: translateX(0);
+  }
+
+  .mobile-nav.is-open .mobile-link:nth-child(1) {
+    transition-delay: 80ms;
+  }
+  .mobile-nav.is-open .mobile-link:nth-child(2) {
+    transition-delay: 140ms;
+  }
+  .mobile-nav.is-open .mobile-link:nth-child(3) {
+    transition-delay: 200ms;
   }
 
   .mobile-link:hover,
@@ -583,7 +719,7 @@ const navLinks = [
     border: 2px solid var(--border);
     box-shadow: var(--shadow-brutal);
     text-transform: uppercase;
-    transition: 
+    transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
   }
@@ -592,7 +728,7 @@ const navLinks = [
     transform: translate(-3px, -3px);
     box-shadow: 7px 7px 0 var(--border);
   }
-  
+
   .mobile-cta:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
@@ -601,14 +737,17 @@ const navLinks = [
   /* Progress bar - separada del header con espacio */
   .header-progress {
     position: fixed;
-    top: var(--progress-top, 90px); /* posición calculada dinámicamente por JS */
+    top: var(
+      --progress-top,
+      90px
+    ); /* posición calculada dinámicamente por JS */
     left: 0;
     right: 0;
     height: 6px;
     background: var(--bg-alt);
     overflow: hidden;
     z-index: calc(var(--z-fixed, 300) - 1);
-    transition: 
+    transition:
       top var(--transition-fast),
       transform var(--transition-base),
       opacity var(--transition-base);
@@ -619,12 +758,16 @@ const navLinks = [
     top: 0;
     left: 0;
     height: 100%;
-    background: var(--border);
+    background: linear-gradient(
+      90deg,
+      var(--text) 0%,
+      color-mix(in srgb, var(--text) 70%, transparent) 100%
+    );
     width: 0%;
     transition: width 0.1s linear;
     will-change: width;
   }
-  
+
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .header,

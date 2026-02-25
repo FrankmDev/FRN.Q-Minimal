@@ -193,6 +193,87 @@ const testimonials = [
   </div>
 </section>
 
+<script>
+  // Count-up animation for result numbers
+  function easeOutCubic(t: number): number {
+    return 1 - Math.pow(1 - t, 3);
+  }
+
+  function animateCountUp(el: HTMLElement, target: string) {
+    // Parse prefix, number and suffix
+    const match = target.match(/^([+\-]?)(\d+(?:\.\d+)?)(.*)$/);
+    if (!match) return;
+    const [, prefix, numStr, suffix] = match;
+    const end = parseFloat(numStr);
+    const duration = 1200;
+    const startTime = performance.now();
+
+    function update(now: number) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = easeOutCubic(progress);
+      const current = Math.round(eased * end * 10) / 10;
+      el.textContent = `${prefix}${Number.isInteger(current) ? current : current.toFixed(1)}${suffix}`;
+      if (progress < 1) requestAnimationFrame(update);
+    }
+
+    requestAnimationFrame(update);
+  }
+
+  const resultNums = document.querySelectorAll(".result-num");
+  const countObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const el = entry.target as HTMLElement;
+          const original = el.dataset.original || el.textContent || "";
+          if (!el.dataset.original) el.dataset.original = original;
+          animateCountUp(el, original);
+          countObserver.unobserve(el);
+        }
+      });
+    },
+    { threshold: 0.5 },
+  );
+
+  resultNums.forEach((el) => countObserver.observe(el));
+
+  // Sequential timeline dot animation
+  const methodDots = document.querySelectorAll(".method-dot");
+  let dotInterval: ReturnType<typeof setInterval> | null = null;
+  let currentDot = 0;
+
+  const dotsObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          if (dotInterval) clearInterval(dotInterval);
+          currentDot = 0;
+
+          methodDots.forEach((dot) => dot.removeAttribute("data-active"));
+
+          dotInterval = setInterval(() => {
+            methodDots.forEach((dot) => dot.removeAttribute("data-active"));
+            if (methodDots[currentDot]) {
+              (methodDots[currentDot] as HTMLElement).setAttribute(
+                "data-active",
+                "true",
+              );
+            }
+            currentDot = (currentDot + 1) % methodDots.length;
+          }, 600);
+
+          dotsObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.3 },
+  );
+
+  const methodSection = document.querySelector(".method-section");
+  if (methodSection) dotsObserver.observe(methodSection);
+</script>
+
 <style>
   .about {
     padding: var(--space-4xl) 0;
@@ -304,19 +385,23 @@ const testimonials = [
     display: inline-flex;
     align-items: center;
     gap: var(--space-sm);
-    padding: var(--space-md) var(--space-lg);
-    font-weight: 600;
-    border: 3px solid var(--border);
+    padding: var(--space-md) var(--space-xl);
+    font-weight: 700;
+    font-size: 1rem;
+    border: 4px solid var(--border);
     background: var(--bg);
-    box-shadow: 6px 6px 0 var(--border);
+    box-shadow: 8px 8px 0 var(--border);
+    text-transform: uppercase;
     transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
   }
 
   .intro-cta:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 8px 8px 0 var(--border);
+    background: var(--text);
+    color: var(--bg);
+    transform: translate(-6px, -6px);
+    box-shadow: 12px 12px 0 var(--border-strong);
   }
 
   [data-theme="dark"] .intro-cta:hover {
@@ -440,19 +525,19 @@ const testimonials = [
   }
 
   .result-card {
-    border: 3px solid var(--border);
+    border: 4px solid var(--border);
     padding: var(--space-2xl);
     background: var(--bg);
-    box-shadow: 8px 8px 0 var(--border);
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 10px 10px 0 var(--border);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
     isolation: isolate;
   }
 
   .result-card:hover {
-    transform: translate(-8px, -8px);
-    box-shadow: 12px 12px 0 var(--border);
+    transform: translate(-10px, -10px);
+    box-shadow: 16px 16px 0 var(--border);
   }
 
   /* Hover frame for result cards */
@@ -648,9 +733,9 @@ const testimonials = [
     display: flex;
     gap: var(--space-md);
     padding: var(--space-xl);
-    border: 3px solid var(--border);
+    border: 4px solid var(--border);
     background: var(--bg);
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
     isolation: isolate;
@@ -658,8 +743,9 @@ const testimonials = [
 
   .step-item:hover {
     transform: translate(-6px, -6px);
-    box-shadow: 8px 8px 0 var(--border);
-    background: var(--bg-alt);
+    box-shadow: 12px 12px 0 var(--border);
+    background: var(--text);
+    color: var(--bg);
   }
 
   [data-theme="dark"] .step-item:hover {
@@ -726,7 +812,7 @@ const testimonials = [
   .step-desc {
     font-size: 0.875rem;
     line-height: 1.6;
-    color: var(--text);
+    color: inherit;
     opacity: 0.85;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
@@ -734,6 +820,7 @@ const testimonials = [
   .step-item:hover .step-desc {
     opacity: 1;
     transform: translateX(4px);
+    color: var(--bg);
   }
 
   .testimonials-grid {
