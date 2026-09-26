@@ -1,69 +1,13 @@
 ---
-const contactMethods = [
-  {
-    icon: "✉",
-    label: "Email Directo",
-    value: "hola@frnq.es",
-    href: "mailto:hola@frnq.es",
-  },
-  {
-    icon: "☕",
-    label: "Call Estratégica",
-    value: "Agendar 30 min",
-    href: "#form",
-  },
-  {
-    icon: "✎",
-    label: "Briefing Online",
-    value: "Comenzar ahora",
-    href: "#form",
-  },
-];
-
-const faqItems = [
-  {
-    q: "¿Cuál es la inversión para una infraestructura digital de estas características?",
-    a: "Partimos desde 3.000€ para activos de alto impacto (landing pages que convierten), hasta 15.000€+ para infraestructuras e-commerce empresariales complejas. No estás comprando una web: estás adquiriendo un activo depreciable que elimina costes de mantenimiento y genera ROI desde el mes uno. A 3 años, la diferencia entre esto y una plantilla es de decenas de miles de euros ahorrados.",
-  },
-  {
-    q: "¿Por qué invertir en código puro cuando WordPress cuesta menos inicialmente?",
-    a: "WordPress es como alquilar un coche viejo: barato el primer mes, pero suma reparaciones, mantenimiento y averías. Las plantillas penalizan tu SEO, necesitan plugins que se rompen, y cada actualización es una ruleta rusa. Nuestra infraestructura es como comprar el coche nuevo: inversión única, cero mantenimiento crítico, y velocidad que Google premia. A medio plazo, siempre es más rentable.",
-  },
-  {
-    q: "¿Cómo garantizan que mi nueva infraestructura convertirá más que la actual?",
-    a: "Cada decisión está respaldada por datos, no por intuición. Analizamos el comportamiento de tus usuarios actuales, identificamos puntos de fricción, y diseñamos jerarquías visuales que guían hacia la acción. Además, nuestra garantía es concreta: si no superamos tus métricas actuales de velocidad y rendimiento, no pagas el despliegue final.",
-  },
-  {
-    q: "¿Cuánto tiempo tarda desde el diagnóstico hasta el lanzamiento?",
-    a: "Una landing de alto impacto: 2-3 semanas. Una web corporativa completa: 6-8 semanas. Una infraestructura B2B compleja: 10-12 semanas. Damos calendarios reales, no promesas imposibles. Durante todo el proceso recibes actualizaciones semanales y acceso a entornos de prueba. La velocidad depende de la complejidad, pero la calidad es innegociable.",
-  },
-  {
-    q: "¿Qué ocurre si necesito evolucionar el activo tras el lanzamiento?",
-    a: "Entregas tu infraestructura documentada, con código limpio y arquitectura escalable. Cualquier desarrollador puede trabajar sobre ella. Si prefieres continuar con nosotros, ofrecemos sprints de mejora continua sin permanencia ni dependencias técnicas. Tu activo es tuyo: nosotros solo lo construimos para que dure décadas, no meses.",
-  },
-  {
-    q: "¿Trabajan con empresas fuera de España?",
-    a: "La mitad de nuestros clientes están en Europa y Latinoamérica. Trabajamos con metodologías async, videollamadas estratégicas y sistemas de revisión colaborativa. La proximidad física es irrelevante cuando hay alineación de objetivos. Lo que importa es que entiendas que tu web es una inversión, no un gasto. Ese mindset no entiende de fronteras.",
-  },
-];
-
-const formFields = {
-  types: [
-    { value: "", label: "Selecciona..." },
-    { value: "landing", label: "Landing de Alto Impacto" },
-    { value: "corporate", label: "Web Corporativa Premium" },
-    { value: "ecommerce", label: "E-commerce a Medida" },
-    { value: "redesign", label: "Rediseño de Legado" },
-    { value: "other", label: "Otro — lo definimos juntos" },
-  ],
-  budgets: [
-    { value: "", label: "Selecciona rango..." },
-    { value: "3k-5k", label: "3.000€ – 5.000€" },
-    { value: "5k-10k", label: "5.000€ – 10.000€" },
-    { value: "10k-20k", label: "10.000€ – 20.000€" },
-    { value: "20k+", label: "Más de 20.000€" },
-  ],
-};
+import {
+  CONTACT_BUDGETS,
+  CONTACT_MESSAGE_MAX,
+  CONTACT_MESSAGE_MIN,
+  CONTACT_TYPES,
+} from "../data/contact-contract";
+import { contactMethods } from "../data/contact";
+import { faqItems } from "../data/engagement";
+import { portfolioLink, siteConfig, socialLinks } from "../data/site";
 ---
 
 <section class="contact" id="contacto" aria-labelledby="contact-title">
@@ -73,37 +17,28 @@ const formFields = {
         <div class="info-header">
           <div class="header-label">
             <span class="label-line" aria-hidden="true"></span>
-            <span class="label-text">Primer Contacto</span>
+            <span class="label-text">Contacto</span>
           </div>
           <h2 class="info-title" id="contact-title">
-            ¿Somos el partner
-            <span class="title-accent">adecuado?</span>
+            Cuéntame el
+            <span class="title-accent">proyecto</span>
           </h2>
           <p class="info-desc">
-            No trabajamos con todos los proyectos. Solo con quienes entienden
-            que una web es una inversión, no un gasto. Si buscas diferenciación
-            real, hablemos.
+            Escríbeme con el contexto y te respondo con los siguientes pasos. Si
+            el proyecto no encaja, te lo digo con claridad.
           </p>
         </div>
 
-        <div
-          class="contact-methods"
-          role="list"
-          aria-label="Métodos de contacto"
-        >
+         <div class="contact-methods">
           {
             contactMethods.map((method) => (
-              <a href={method.href} class="method-card" role="listitem">
-                <span class="method-icon" aria-hidden="true">
-                  {method.icon}
-                </span>
+               <a href={method.href} class="method-card">
+                <span class="method-icon" aria-hidden="true">{method.icon}</span>
                 <div class="method-info">
                   <span class="method-label">{method.label}</span>
                   <span class="method-value">{method.value}</span>
                 </div>
-                <span class="method-arrow" aria-hidden="true">
-                  →
-                </span>
+                <span class="method-arrow" aria-hidden="true">→</span>
               </a>
             ))
           }
@@ -111,31 +46,10 @@ const formFields = {
 
         <div class="social-links">
           <span class="social-label">También en:</span>
-          <div class="social-icons" role="list" aria-label="Redes sociales">
-            <a
-              href="https://linkedin.com/in/frnq"
-              class="social-icon"
-              role="listitem"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn">in</a
-            >
-            <a
-              href="https://github.com/frnq"
-              class="social-icon"
-              role="listitem"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub">gh</a
-            >
-            <a
-              href="https://dribbble.com/frnq"
-              class="social-icon"
-              role="listitem"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Dribbble">dr</a
-            >
+           <div class="social-icons" aria-label="Redes sociales">
+             {socialLinks.map((link) => (
+               <a href={link.href} class="social-icon" target="_blank" rel="noopener noreferrer" aria-label={link.title}>{link.label}</a>
+             ))}
           </div>
         </div>
       </div>
@@ -147,21 +61,41 @@ const formFields = {
       >
         <div class="form-card">
           <div class="form-header">
-            <h3 class="form-title">Evaluación de Proyecto</h3>
+            <h3 class="form-title">Brief de proyecto</h3>
             <div class="form-status" role="status">
               <span class="status-dot" aria-hidden="true"></span>
-              <span class="status-text">Aceptando nuevos</span>
+              <span class="status-text">Contacto directo</span>
             </div>
           </div>
 
+          <noscript>
+            <p class="form-noscript">
+              Puedes enviar el formulario sin JavaScript o escribirme
+              directamente a
+               <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>.
+            </p>
+          </noscript>
+
           <form
+            id="contact-form"
             class="contact-form"
-            action="#"
-            method="POST"
-            aria-label="Formulario de evaluación de proyecto"
+            method="post"
+            action="/api/contact"
+            aria-label="Formulario de proyecto"
           >
+            <div class="hp-field" aria-hidden="true">
+              <label for="website">Website</label>
+              <input
+                type="text"
+                id="website"
+                name="website"
+                tabindex="-1"
+                autocomplete="off"
+              />
+            </div>
+
             <div class="form-row">
-              <div class="form-field">
+              <div class="form-field" data-field-id="name">
                 <label for="name">Nombre</label>
                 <input
                   type="text"
@@ -170,9 +104,13 @@ const formFields = {
                   placeholder="Tu nombre"
                   required
                   autocomplete="name"
+                  minlength="2"
+                  maxlength="100"
+                  aria-describedby="name-error"
                 />
+                <span id="name-error" class="field-error hidden" role="alert"></span>
               </div>
-              <div class="form-field">
+              <div class="form-field" data-field-id="email">
                 <label for="email">Email</label>
                 <input
                   type="email"
@@ -181,178 +119,161 @@ const formFields = {
                   placeholder="tu@email.com"
                   required
                   autocomplete="email"
+                  maxlength="254"
+                  spellcheck="false"
+                  aria-describedby="email-error"
                 />
+                <span id="email-error" class="field-error hidden" role="alert"></span>
               </div>
             </div>
 
-            <div class="form-field">
-              <label for="type">Tipo de Infraestructura</label>
-              <select id="type" name="type" required>
-                {
-                  formFields.types.map((type) => (
-                    <option value={type.value}>{type.label}</option>
-                  ))
-                }
-              </select>
+            <div class="form-row">
+              <div class="form-field" data-field-id="company">
+                <label for="company">Empresa <span class="label-optional">(opcional)</span></label>
+                <input
+                  type="text"
+                  id="company"
+                  name="company"
+                  placeholder="Tu empresa o proyecto"
+                  autocomplete="organization"
+                  maxlength="120"
+                  aria-describedby="company-error"
+                />
+                <span id="company-error" class="field-error hidden" role="alert"></span>
+              </div>
+              <div class="form-field" data-field-id="type">
+                <label for="type">Tipo de proyecto</label>
+                <select id="type" name="type" required aria-describedby="type-error">
+                  <option value="" disabled selected>Selecciona…</option>
+                  {
+                    CONTACT_TYPES.map((type) => (
+                      <option value={type.value}>{type.label}</option>
+                    ))
+                  }
+                </select>
+                <span id="type-error" class="field-error hidden" role="alert"></span>
+              </div>
             </div>
 
-            <div class="form-field">
-              <label for="budget">Inversión Prevista</label>
-              <select id="budget" name="budget" required>
-                {
-                  formFields.budgets.map((budget) => (
-                    <option value={budget.value}>{budget.label}</option>
-                  ))
-                }
-              </select>
-            </div>
-
-            <div class="form-field">
-              <label for="message">Descripción del Desafío</label>
+            <div class="form-field" data-field-id="message">
+              <label for="message">Contexto / problema</label>
               <textarea
                 id="message"
                 name="message"
-                rows="4"
-                placeholder="¿Qué problema necesitas resolver? ¿Qué resultados esperas?"
-                required></textarea>
+                rows="5"
+                placeholder="¿Qué necesitas resolver? ¿Qué resultado esperas?"
+                required
+                minlength={CONTACT_MESSAGE_MIN}
+                maxlength={CONTACT_MESSAGE_MAX}
+                aria-describedby="message-error"
+              ></textarea>
+              <div class="field-foot">
+                <span id="message-error" class="field-error hidden" role="alert"></span>
+                <span class="field-counter" data-field-counter aria-live="polite">
+                  <span data-counter-current>0</span> / {CONTACT_MESSAGE_MAX}
+                </span>
+              </div>
             </div>
 
-            <button type="submit" class="form-submit">
-              <span>Solicitar evaluación estratégica</span>
+            <div class="form-field" data-field-id="budget">
+              <label for="budget">Presupuesto orientativo <span class="label-optional">(opcional)</span></label>
+              <select id="budget" name="budget" aria-describedby="budget-error">
+                {
+                  CONTACT_BUDGETS.map((budget) => (
+                    <option value={budget.value} selected={budget.value === ""}>
+                      {budget.label}
+                    </option>
+                  ))
+                }
+              </select>
+              <span id="budget-error" class="field-error hidden" role="alert"></span>
+            </div>
+
+            <div
+              id="form-error-banner"
+              class="form-error-banner hidden"
+              role="alert"
+              aria-live="assertive"
+              tabindex="-1"
+            >
+              <span id="form-error-text">Ha ocurrido un error.</span>
+              <button
+                type="button"
+                id="form-error-dismiss"
+                class="form-error-dismiss"
+                aria-label="Cerrar aviso"
+              >
+                ✕
+              </button>
+            </div>
+
+            <button type="submit" id="submit-btn" class="form-submit">
+              <span id="submit-text">Enviar proyecto</span>
               <span class="submit-icon" aria-hidden="true">↗</span>
             </button>
+
+            <div
+              id="form-loading"
+              class="form-loading hidden"
+              role="status"
+              aria-live="polite"
+              aria-busy="true"
+            >
+              <span class="loading-dot" aria-hidden="true"></span>
+              <span>Enviando…</span>
+            </div>
           </form>
+
+          <div
+            id="contact-success"
+            class="contact-success hidden"
+            role="status"
+            aria-live="polite"
+            tabindex="-1"
+          >
+            <span class="success-label">Mensaje recibido</span>
+            <h4 class="success-title">Gracias. Te respondo pronto.</h4>
+            <p class="success-body">
+              He recibido tu mensaje. Te contesto con los siguientes pasos en
+              cuanto lo revise.
+            </p>
+            <button type="button" id="reset-btn" class="success-reset">
+              Enviar otro mensaje
+            </button>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="studio-section reveal">
-      <div class="studio-header">
-        <span class="studio-label">Portfolio Alternativo</span>
-        <div class="header-line" aria-hidden="true"></div>
-      </div>
-
+    <div class="studio-link reveal">
       <a
-        href="https://frnq.studio"
+         href={portfolioLink.href}
         target="_blank"
         rel="noopener noreferrer"
-        class="studio-card"
+        class="studio-link-anchor"
       >
-        <div class="studio-visual" aria-hidden="true">
-          <div class="visual-pattern">
-            <div class="pattern-row">
-              <span class="pattern-cell"></span>
-              <span class="pattern-cell pattern-active"></span>
-              <span class="pattern-cell"></span>
-              <span class="pattern-cell pattern-active"></span>
-            </div>
-            <div class="pattern-row">
-              <span class="pattern-cell pattern-active"></span>
-              <span class="pattern-cell"></span>
-              <span class="pattern-cell pattern-active"></span>
-              <span class="pattern-cell"></span>
-            </div>
-            <div class="pattern-row">
-              <span class="pattern-cell"></span>
-              <span class="pattern-cell pattern-active"></span>
-              <span class="pattern-cell"></span>
-              <span class="pattern-cell pattern-active"></span>
-            </div>
-            <div class="pattern-row">
-              <span class="pattern-cell pattern-active"></span>
-              <span class="pattern-cell"></span>
-              <span class="pattern-cell pattern-active"></span>
-              <span class="pattern-cell"></span>
-            </div>
-            <div class="pattern-row">
-              <span class="pattern-cell"></span>
-              <span class="pattern-cell pattern-active"></span>
-              <span class="pattern-cell"></span>
-              <span class="pattern-cell pattern-active"></span>
-            </div>
-            <div class="pattern-row">
-              <span class="pattern-cell pattern-active"></span>
-              <span class="pattern-cell"></span>
-              <span class="pattern-cell pattern-active"></span>
-              <span class="pattern-cell"></span>
-            </div>
-          </div>
-          <div class="visual-overlay">
-            <span class="overlay-text">STUDIO</span>
-          </div>
-        </div>
-
-        <div class="studio-content">
-          <div class="content-top">
-            <div class="studio-tags">
-              <span class="tag tag-primary">Experimental</span>
-              <span class="tag">Brutalista</span>
-              <span class="tag">Sin límites</span>
-            </div>
-
-            <h3 class="studio-title">
-              Para los que quieren
-              <span class="title-highlight">romper esquemas</span>
-            </h3>
-
-            <p class="studio-desc">
-              <strong>FRN.Q STUDIO</strong> es nuestro laboratorio de interfaces disruptivas.
-              Diseños brutales, animaciones cinéticas, tipografías que desafían. El
-              portfolio para clientes que no quieren parecerse a nadie.
-            </p>
-          </div>
-
-          <div class="content-bottom">
-            <div class="studio-metrics">
-              <div class="metric">
-                <span class="metric-value">100%</span>
-                <span class="metric-label">Experimental</span>
-              </div>
-              <div class="metric-divider" aria-hidden="true"></div>
-              <div class="metric">
-                <span class="metric-value">∞</span>
-                <span class="metric-label">Creatividad</span>
-              </div>
-              <div class="metric-divider" aria-hidden="true"></div>
-              <div class="metric">
-                <span class="metric-value">0</span>
-                <span class="metric-label">Convenciones</span>
-              </div>
-            </div>
-
-            <div class="studio-cta">
-              <span class="cta-text">
-                <span class="cta-title">Explorar portfolio experimental</span>
-                <span class="cta-url">frnq.studio</span>
-              </span>
-              <span class="cta-icon" aria-hidden="true">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <line x1="7" y1="17" x2="17" y2="7"></line>
-                  <polyline points="7 7 17 7 17 17"></polyline>
-                </svg>
-              </span>
-            </div>
-          </div>
-        </div>
+         <span class="studio-link-label">{portfolioLink.label}</span>
+         <span class="studio-link-url">{portfolioLink.display}</span>
+        <span class="studio-link-arrow" aria-hidden="true">↗</span>
       </a>
+      <p class="studio-link-desc">
+        Portfolio profesional y técnico: selección de trabajos y proyectos de
+         FRN.Q.
+      </p>
     </div>
 
     <div class="faq-section reveal">
-      <h3 class="faq-title">Preguntas que importan</h3>
+      <h3 class="faq-title">Preguntas frecuentes</h3>
       <div class="faq-list">
         {
           faqItems.map((item, i) => (
             <div class="faq-item" data-faq-item>
-              <button class="faq-question" aria-expanded="false" type="button">
+              <button
+                class="faq-question"
+                aria-expanded="false"
+                aria-controls={`faq-panel-${i}`}
+                type="button"
+              >
                 <span>{item.q}</span>
                 <span class="faq-icon" aria-hidden="true">
                   <svg
@@ -373,7 +294,7 @@ const formFields = {
                   </svg>
                 </span>
               </button>
-              <div class="faq-answer-wrapper">
+               <div class="faq-answer-wrapper" id={`faq-panel-${i}`} inert>
                 <div class="faq-answer-inner">
                   <p class="faq-answer">{item.a}</p>
                 </div>
@@ -387,7 +308,8 @@ const formFields = {
 </section>
 
 <script>
-  // Smooth FAQ accordion
+  import "../scripts/contact-form";
+
   const faqItems = document.querySelectorAll("[data-faq-item]");
 
   faqItems.forEach((item) => {
@@ -396,18 +318,18 @@ const formFields = {
     question?.addEventListener("click", () => {
       const isOpen = item.classList.contains("is-open");
 
-      // Close all other items (optional - remove if you want multiple open)
-      faqItems.forEach((otherItem) => {
-        if (otherItem !== item) {
-          otherItem.classList.remove("is-open");
-          const otherQuestion = otherItem.querySelector(".faq-question");
-          otherQuestion?.setAttribute("aria-expanded", "false");
-        }
-      });
+       faqItems.forEach((otherItem) => {
+         if (otherItem !== item) {
+           otherItem.classList.remove("is-open");
+           const otherQuestion = otherItem.querySelector(".faq-question");
+           otherQuestion?.setAttribute("aria-expanded", "false");
+           otherItem.querySelector(".faq-answer-wrapper")?.setAttribute("inert", "");
+         }
+       });
 
-      // Toggle current item
-      item.classList.toggle("is-open");
-      question?.setAttribute("aria-expanded", String(!isOpen));
+       item.classList.toggle("is-open");
+       question?.setAttribute("aria-expanded", String(!isOpen));
+       item.querySelector(".faq-answer-wrapper")?.toggleAttribute("inert", isOpen);
     });
   });
 </script>
@@ -438,7 +360,7 @@ const formFields = {
     display: grid;
     gap: var(--space-3xl);
     margin-bottom: var(--space-4xl);
-    align-items: stretch;
+    align-items: start;
   }
 
   @media (min-width: 900px) {
@@ -506,7 +428,7 @@ const formFields = {
     font-size: clamp(1rem, 2vw, 1.125rem);
     line-height: 1.7;
     opacity: 0.7;
-    max-width: 400px;
+    max-width: 420px;
   }
 
   .contact-methods {
@@ -521,9 +443,9 @@ const formFields = {
     align-items: center;
     gap: var(--space-md);
     padding: var(--space-md) var(--space-lg);
-    border: 4px solid var(--border);
+    border: 3px solid var(--border);
     background: var(--bg);
-    box-shadow: 10px 10px 0 var(--border);
+    box-shadow: 8px 8px 0 var(--border);
     transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
@@ -531,16 +453,16 @@ const formFields = {
     overflow: hidden;
   }
 
-  /* Left border sweep on method card hover */
+  /* Left border sweep on hover */
   .method-card::before {
     content: "";
     position: absolute;
     left: 0;
     top: 0;
-    width: 4px;
+    width: 3px;
     height: 0;
     background: var(--text);
-    transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: height 0.4s var(--motion-ease-out);
     z-index: 2;
   }
 
@@ -548,22 +470,9 @@ const formFields = {
     height: 100%;
   }
 
-  [data-theme="dark"] .method-card {
-    box-shadow: none;
-    border-color: var(--border);
-  }
-
   .method-card:hover {
-    transform: translate(-8px, -8px);
-    box-shadow: 16px 16px 0 var(--border);
-  }
-
-  [data-theme="dark"] .method-card:hover {
-    box-shadow: 12px 12px 0 rgba(255, 255, 255, 0.15);
-  }
-
-  .method-card:hover .method-arrow {
-    transform: translateX(4px);
+    transform: translate(-6px, -6px);
+    box-shadow: 12px 12px 0 var(--border);
   }
 
   .method-card:focus-visible {
@@ -572,7 +481,7 @@ const formFields = {
   }
 
   .method-icon {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     flex-shrink: 0;
   }
 
@@ -595,8 +504,12 @@ const formFields = {
   }
 
   .method-arrow {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     transition: transform var(--transition-base);
+  }
+
+  .method-card:hover .method-arrow {
+    transform: translateX(4px);
   }
 
   .social-links {
@@ -621,7 +534,7 @@ const formFields = {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 4px solid var(--border);
+    border: 3px solid var(--border);
     font-family: var(--font-mono);
     font-size: 0.8125rem;
     font-weight: 800;
@@ -635,12 +548,8 @@ const formFields = {
   .social-icon:hover {
     background: var(--text);
     color: var(--bg);
-    transform: translate(-6px, -6px);
-    box-shadow: 10px 10px 0 var(--border);
-  }
-
-  [data-theme="dark"] .social-icon:hover {
-    box-shadow: 6px 6px 0 rgba(255, 255, 255, 0.15);
+    transform: translate(-5px, -5px);
+    box-shadow: 8px 8px 0 var(--border);
   }
 
   .social-icon:focus-visible {
@@ -659,11 +568,8 @@ const formFields = {
     box-shadow: 16px 16px 0 var(--border);
     display: flex;
     flex-direction: column;
+    position: relative;
     flex: 1;
-  }
-
-  [data-theme="dark"] .form-card {
-    box-shadow: 12px 12px 0 rgba(255, 255, 255, 0.08);
   }
 
   .form-header {
@@ -686,8 +592,11 @@ const formFields = {
     display: flex;
     align-items: center;
     gap: var(--space-sm);
-    font-size: 0.8125rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
     font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
     flex-shrink: 0;
   }
 
@@ -702,12 +611,36 @@ const formFields = {
     flex-shrink: 0;
   }
 
+  .form-noscript {
+    padding: var(--space-lg) var(--space-xl);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .form-noscript a {
+    border-bottom: 2px solid var(--text);
+    font-weight: 600;
+  }
+
   .contact-form {
     padding: var(--space-xl);
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
     flex: 1;
+  }
+
+  .contact-form.hidden {
+    display: none;
+  }
+
+  .hp-field {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
   }
 
   .form-row {
@@ -717,12 +650,13 @@ const formFields = {
 
   @media (min-width: 500px) {
     .form-row {
-      grid-template-columns: 1fr 1fr;
+       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
   .form-field {
-    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
   }
 
   .form-field label {
@@ -734,6 +668,13 @@ const formFields = {
     letter-spacing: 0.05em;
   }
 
+  .label-optional {
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 500;
+    opacity: 0.5;
+  }
+
   .form-field input,
   .form-field select,
   .form-field textarea {
@@ -741,13 +682,14 @@ const formFields = {
     padding: 1rem var(--space-md);
     font-size: 0.9375rem;
     font-family: inherit;
-    border: 4px solid var(--border);
+    border: 3px solid var(--border);
     border-radius: 0;
     background: var(--bg);
     color: var(--text);
     transition:
       box-shadow var(--transition-fast),
-      transform var(--transition-fast);
+      transform var(--transition-fast),
+      border-color var(--transition-fast);
     -webkit-appearance: none;
     appearance: none;
   }
@@ -766,10 +708,6 @@ const formFields = {
     cursor: pointer;
   }
 
-  [data-theme="dark"] .form-field select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  }
-
   .form-field select option {
     background: var(--bg);
     color: var(--text);
@@ -779,7 +717,7 @@ const formFields = {
   .form-field select:focus,
   .form-field textarea:focus {
     outline: none;
-    box-shadow: 8px 8px 0 var(--border);
+    box-shadow: 6px 6px 0 var(--border);
     transform: translate(-3px, -3px);
     border-color: var(--text);
   }
@@ -788,6 +726,73 @@ const formFields = {
   .form-field textarea::placeholder {
     color: var(--text);
     opacity: 0.4;
+  }
+
+  .form-field.is-invalid input,
+  .form-field.is-invalid select,
+  .form-field.is-invalid textarea {
+    border-color: #dc2626;
+  }
+
+  .field-error {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    margin-top: var(--space-xs);
+    color: #dc2626;
+  }
+
+  .field-error.hidden {
+    display: none;
+  }
+
+  .field-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    min-height: 1.25rem;
+  }
+
+  .field-foot .field-error {
+    margin-top: 0;
+  }
+
+  .field-counter {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    opacity: 0.5;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  .field-counter.is-warn,
+  .field-counter.is-max {
+    color: #dc2626;
+    opacity: 1;
+  }
+
+  .form-error-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    border: 2px solid #dc2626;
+    font-size: 0.875rem;
+  }
+
+  .form-error-banner.hidden {
+    display: none;
+  }
+
+  .form-error-dismiss {
+    font-size: 0.875rem;
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+
+  .form-error-dismiss:hover {
+    opacity: 1;
   }
 
   .form-submit {
@@ -802,17 +807,23 @@ const formFields = {
     text-transform: uppercase;
     background: var(--text);
     color: var(--bg);
-    border: 4px solid var(--text);
-    box-shadow: 10px 10px 0 var(--border-light);
+    border: 3px solid var(--text);
+    box-shadow: 8px 8px 0 var(--y, var(--accent));
     transition:
       transform var(--transition-fast),
-      box-shadow var(--transition-fast);
+      box-shadow var(--transition-fast),
+      opacity var(--transition-fast);
     cursor: pointer;
   }
 
-  .form-submit:hover {
+  .form-submit:hover:not(:disabled) {
     transform: translate(-6px, -6px);
-    box-shadow: 14px 14px 0 var(--border-strong);
+    box-shadow: 12px 12px 0 var(--y, var(--accent));
+  }
+
+  .form-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 
   .form-submit:focus-visible {
@@ -820,404 +831,154 @@ const formFields = {
     outline-offset: 3px;
   }
 
-  /* En modo oscuro, sombra clara para contraste */
-  [data-theme="dark"] .form-submit {
-    border-color: var(--text);
-    box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.12);
-  }
-
-  [data-theme="dark"] .form-submit:hover {
-    box-shadow: 8px 8px 0 rgba(255, 255, 255, 0.2);
-  }
-
   .submit-icon {
     transition: transform var(--transition-base);
   }
 
-  .form-submit:hover .submit-icon {
+  .form-submit:hover:not(:disabled) .submit-icon {
     transform: translate(4px, -4px);
   }
 
-  /* ============================================
-     STUDIO SECTION - Experimental Portfolio
-     ============================================ */
-
-  .studio-section {
-    margin-bottom: var(--space-4xl);
-  }
-
-  .studio-header {
+  .form-loading {
     display: flex;
     align-items: center;
-    gap: var(--space-md);
+    justify-content: center;
+    gap: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.7;
+  }
+
+  .form-loading.hidden {
+    display: none;
+  }
+
+  .loading-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--text);
+    animation: pulse 1.2s infinite;
+  }
+
+  .contact-success {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--space-2xl);
+    flex: 1;
+  }
+
+  .contact-success.hidden {
+    display: none;
+  }
+
+  .success-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.6;
+    margin-bottom: var(--space-md);
+  }
+
+  .success-title {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 800;
+    margin-bottom: var(--space-md);
+  }
+
+  .success-body {
+    font-size: 1rem;
+    line-height: 1.6;
+    opacity: 0.7;
+    max-width: 420px;
     margin-bottom: var(--space-xl);
   }
 
-  .studio-label {
+  .success-reset {
     font-family: var(--font-mono);
-    font-size: 0.875rem;
-    font-weight: 500;
+    font-size: 0.8125rem;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 0.25rem;
+    transition: opacity var(--transition-fast);
+  }
+
+  .success-reset:hover {
     opacity: 0.6;
   }
 
-  .header-line {
-    flex: 1;
-    height: 2px;
-    background: var(--border);
-    opacity: 0.3;
-  }
-
-  .studio-card {
-    display: grid;
-    border: 4px solid var(--border);
-    background: var(--bg);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    text-decoration: none;
-    color: inherit;
-  }
-
-  @media (min-width: 900px) {
-    .studio-card {
-      grid-template-columns: 280px 1fr;
-    }
-  }
-
-  .studio-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 4px;
-    background: var(--text);
-    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 10;
-  }
-
-  .studio-card:hover::before {
-    width: 100%;
-  }
-
-  .studio-card:hover {
-    box-shadow: 16px 16px 0 var(--border);
-    transform: translate(-8px, -8px);
-  }
-
-  [data-theme="dark"] .studio-card:hover {
-    box-shadow: 14px 14px 0 rgba(255, 255, 255, 0.12);
-  }
-
-  .studio-card:focus-visible {
+  .success-reset:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
   }
 
-  /* Visual Pattern Side */
-  .studio-visual {
-    background: var(--text);
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-3xl);
-    min-height: 320px;
-    overflow: hidden;
-  }
-
-  .visual-pattern {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .pattern-row {
-    display: flex;
-    gap: 6px;
-  }
-
-  .pattern-cell {
-    width: 28px;
-    height: 28px;
-    border: 2px solid var(--bg);
-    opacity: 0.25;
-    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .pattern-active {
-    opacity: 1;
-    background: var(--bg);
-  }
-
-  .studio-card:hover .pattern-cell {
-    opacity: 0.35;
-    transform: scale(0.85);
-  }
-
-  .studio-card:hover .pattern-active {
-    opacity: 1;
-    transform: scale(1.15);
-  }
-
-  /* Staggered animation for pattern cells */
-  .pattern-row:nth-child(1) .pattern-cell {
-    transition-delay: 0ms;
-  }
-  .pattern-row:nth-child(2) .pattern-cell {
-    transition-delay: 25ms;
-  }
-  .pattern-row:nth-child(3) .pattern-cell {
-    transition-delay: 50ms;
-  }
-  .pattern-row:nth-child(4) .pattern-cell {
-    transition-delay: 75ms;
-  }
-  .pattern-row:nth-child(5) .pattern-cell {
-    transition-delay: 100ms;
-  }
-  .pattern-row:nth-child(6) .pattern-cell {
-    transition-delay: 125ms;
-  }
-
-  .visual-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-  }
-
-  .overlay-text {
-    font-family: var(--font-mono);
-    font-size: clamp(3rem, 8vw, 5rem);
-    font-weight: 800;
-    color: var(--bg);
-    opacity: 0.06;
-    letter-spacing: -0.05em;
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .studio-card:hover .overlay-text {
-    opacity: 0.12;
-    transform: scale(1.05);
-  }
-
-  /* Content Side */
-  .studio-content {
-    padding: var(--space-2xl) var(--space-3xl);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border-left: 3px solid var(--border);
-    position: relative;
-    gap: var(--space-xl);
-    min-height: 320px;
-  }
-
-  @media (max-width: 899px) {
-    .studio-visual {
-      min-height: 200px;
-    }
-
-    .studio-content {
-      padding: var(--space-xl);
-      border-left: none;
-      border-top: 3px solid var(--border);
-    }
-  }
-
-  .content-top {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-lg);
-  }
-
-  /* Tags */
-  .studio-tags {
+  .studio-link {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-sm);
+    align-items: baseline;
+    gap: var(--space-md) var(--space-xl);
+    padding: var(--space-xl) var(--space-2xl);
+    margin-bottom: var(--space-4xl);
+    border: 3px solid var(--border);
+    box-shadow: 8px 8px 0 var(--border);
+    transition:
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast);
   }
 
-  .tag {
+  .studio-link:hover {
+    transform: translate(-5px, -5px);
+    box-shadow: 12px 12px 0 var(--y, var(--accent));
+  }
+
+  .studio-link-anchor {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-md);
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    padding: var(--space-xs) var(--space-md);
-    border: 2px solid var(--border);
-    background: transparent;
-    transition: all 0.3s ease;
+    transition: opacity var(--transition-fast);
   }
 
-  .tag-primary {
-    background: var(--text);
-    color: var(--bg);
-    border-color: var(--text);
+  .studio-link-anchor:hover {
+    opacity: 0.75;
   }
 
-  .studio-card:hover .tag:not(.tag-primary) {
-    border-color: var(--text);
-    background: var(--bg-alt);
+  .studio-link-anchor:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 3px;
   }
 
-  /* Title */
-  .studio-title {
-    font-size: clamp(1.75rem, 4vw, 2.75rem);
-    font-weight: 300;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-    margin: 0;
-  }
-
-  .title-highlight {
-    font-weight: 800;
-    position: relative;
-    display: inline;
-  }
-
-  .title-highlight::after {
-    content: "";
-    position: absolute;
-    bottom: 0.08em;
-    left: 0;
-    right: 0;
-    height: 0.18em;
-    background: var(--text);
-    opacity: 0.15;
-    transition: opacity 0.3s ease;
-  }
-
-  .studio-card:hover .title-highlight::after {
-    opacity: 0.25;
-  }
-
-  /* Description */
-  .studio-desc {
-    font-size: clamp(0.9375rem, 2vw, 1.0625rem);
-    line-height: 1.7;
-    opacity: 0.7;
-    max-width: 500px;
-    margin: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .studio-desc strong {
-    font-weight: 800;
-    opacity: 1;
-  }
-
-  .studio-card:hover .studio-desc {
-    opacity: 0.85;
-  }
-
-  /* Bottom Section */
-  .content-bottom {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xl);
-  }
-
-  /* Metrics */
-  .studio-metrics {
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
-    padding: var(--space-md) 0;
-    border-top: 2px solid var(--border-light);
-    border-bottom: 2px solid var(--border-light);
-  }
-
-  .metric {
-    display: flex;
-    flex-direction: column;
-    gap: 0.125rem;
-    flex: 1;
-    text-align: center;
-  }
-
-  .metric-value {
-    font-size: clamp(1.25rem, 3vw, 1.75rem);
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: -0.02em;
-    font-family: var(--font-mono);
-  }
-
-  .metric-label {
-    font-size: 0.6875rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    opacity: 0.5;
-    font-family: var(--font-mono);
-  }
-
-  .metric-divider {
-    width: 2px;
-    height: 40px;
-    background: var(--border);
-    opacity: 0.2;
-  }
-
-  /* CTA */
-  .studio-cta {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--space-lg) var(--space-xl);
-    background: var(--text);
-    color: var(--bg);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .studio-card:hover .studio-cta {
-    padding-left: calc(var(--space-xl) + 8px);
-  }
-
-  .cta-text {
-    display: flex;
-    flex-direction: column;
-    gap: 0.125rem;
-  }
-
-  .cta-title {
+  .studio-link-label {
+    font-size: 0.875rem;
     font-weight: 700;
-    font-size: 1.0625rem;
   }
 
-  .cta-url {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
+  .studio-link-url {
+    font-size: 0.8125rem;
     opacity: 0.6;
-    transition: opacity 0.3s ease;
   }
 
-  .studio-card:hover .cta-url {
-    opacity: 0.85;
+  .studio-link-arrow {
+    transition: transform var(--transition-base);
   }
 
-  .cta-icon {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid var(--bg);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  .studio-link-anchor:hover .studio-link-arrow {
+    transform: translate(4px, -4px);
   }
 
-  .studio-card:hover .cta-icon {
-    transform: translate(6px, -6px);
-    background: var(--bg);
-    color: var(--text);
+  .studio-link-desc {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    opacity: 0.6;
+    margin: 0;
   }
 
   .faq-section {
@@ -1238,28 +999,28 @@ const formFields = {
   }
 
   .faq-item {
-    border: 4px solid var(--border);
+    border: 3px solid var(--border);
     background: var(--bg);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    cursor: none;
+    transition:
+      background var(--transition-fast),
+      border-color var(--transition-fast),
+      transform var(--transition-base),
+      box-shadow var(--transition-base);
     overflow: hidden;
   }
 
   .faq-item:hover {
     border-color: var(--text);
-    transform: translate(10px, -6px);
-    box-shadow: -8px 12px 0 var(--border);
-  }
-
-  [data-theme="dark"] .faq-item:hover {
-    box-shadow: -4px 4px 0 rgba(255, 255, 255, 0.15);
+    transform: translate(6px, -4px);
+    box-shadow: -6px 8px 0 var(--border);
   }
 
   .faq-item.is-open {
     background: var(--bg-alt);
+    transform: none;
+    box-shadow: none;
   }
 
-  /* Smooth open animation using grid */
   .faq-answer-wrapper {
     display: grid;
     grid-template-rows: 0fr;
@@ -1281,20 +1042,18 @@ const formFields = {
     gap: var(--space-md);
     padding: var(--space-md) var(--space-lg);
     font-weight: 600;
-    cursor: none;
     text-align: left;
-    transition: all 0.3s ease;
     width: 100%;
     background: transparent;
     border: none;
     color: inherit;
     font-family: inherit;
     font-size: inherit;
+    transition: background var(--transition-fast);
   }
 
   .faq-question:hover {
     background: var(--bg-alt);
-    padding-left: calc(var(--space-md) + 4px);
   }
 
   .faq-item.is-open .faq-question {
@@ -1313,7 +1072,6 @@ const formFields = {
     width: 24px;
     height: 24px;
     flex-shrink: 0;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .faq-arrow {
@@ -1330,19 +1088,10 @@ const formFields = {
     padding: 0 var(--space-lg) var(--space-lg);
     font-size: 0.9375rem;
     line-height: 1.7;
-    opacity: 0;
-    cursor: none;
-    transform: translateY(-10px);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3) 0.1s;
+    opacity: 0.8;
     margin: 0;
   }
 
-  .faq-item.is-open .faq-answer {
-    transform: translateY(0);
-    opacity: 0.85;
-  }
-
-  /* Responsive */
   @media (max-width: 640px) {
     .contact {
       padding: var(--space-3xl) 0;

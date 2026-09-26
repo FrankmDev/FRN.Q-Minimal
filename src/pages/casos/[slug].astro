@@ -1,0 +1,813 @@
+---
+import { Image, getImage } from "astro:assets";
+import { siteConfig } from "../../data/site";
+import MainLayout from "../../layouts/MainLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import {
+  getProjects,
+  categoryLabels,
+  statusLabels,
+  casePath,
+  type Project,
+} from "../../data/projects";
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project, index) => ({
+    params: { slug: project.slug },
+    props: {
+      project,
+      next: projects[(index + 1) % projects.length],
+    },
+  }));
+}
+
+interface Props {
+  project: Project;
+  next: Project;
+}
+
+const { project, next }: Props = Astro.props;
+const categoryLabel = categoryLabels[project.category];
+const statusLabel = statusLabels[project.status];
+const canonical = new URL(casePath(project.slug), Astro.site).toString();
+
+const og = await getImage({
+  src: project.cover.src,
+  width: 1200,
+  height: 630,
+  fit: "cover",
+  format: "jpg",
+  quality: 80,
+});
+const ogImage = new URL(og.src, Astro.site).toString();
+
+const techLabel = project.technologies.join(" · ");
+
+const caseSchema = {
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  name: project.title,
+  headline: project.tagline,
+  description: project.seo.description,
+  url: canonical,
+  dateCreated: project.year,
+  datePublished: project.year,
+  image: ogImage,
+  keywords: project.seo.keywords.join(", "),
+  about: project.sector,
+  author: {
+    "@type": "Organization",
+     name: siteConfig.name,
+     url: siteConfig.url,
+  },
+};
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+     { "@type": "ListItem", position: 1, name: "Inicio", item: new URL("/", Astro.site).toString() },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Casos",
+       item: new URL("/casos/", Astro.site).toString(),
+    },
+    { "@type": "ListItem", position: 3, name: project.title, item: canonical },
+  ],
+};
+
+const facts = [
+  { label: "Cliente", value: project.client },
+  { label: "Sector", value: project.sector },
+  { label: "Año", value: project.year },
+  { label: "Estado", value: statusLabel },
+];
+---
+
+<MainLayout
+   title={`${project.title} — Caso | ${siteConfig.name}`}
+  description={project.seo.description}
+  ogImage={ogImage}
+>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(caseSchema)}
+    slot="head"
+  />
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbSchema)}
+    slot="head"
+  />
+
+  <Header />
+
+  <main id="main-content" class="case">
+    <article>
+      <!-- Hero -->
+      <header class="case-hero">
+        <div class="container">
+          <nav class="case-breadcrumb" aria-label="Ruta de navegación">
+            <a href="/">Inicio</a>
+            <span aria-hidden="true">/</span>
+            <a href="/casos/">Casos</a>
+          </nav>
+
+          <p class="case-eyebrow">
+            <span>{categoryLabel}</span>
+            <span class="eyebrow-sep" aria-hidden="true">·</span>
+            <span>{project.sector}</span>
+            <span class="eyebrow-sep" aria-hidden="true">·</span>
+            <span>{project.year}</span>
+          </p>
+
+          <h1 class="case-title">{project.title}</h1>
+          <p class="case-tagline">{project.tagline}</p>
+
+          <div class="case-hero-actions">
+            {
+              project.url && (
+                <a
+                  class="case-link"
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span>{project.urlLabel}</span>
+                  <span aria-hidden="true">↗</span>
+                </a>
+              )
+            }
+            <span class="case-status">
+              <span class="status-dot" aria-hidden="true" />
+              {statusLabel}
+            </span>
+          </div>
+        </div>
+
+        <div class="container">
+          <figure class="case-cover">
+            <Image
+              src={project.cover.src}
+              alt={project.cover.alt}
+              widths={[640, 1024, 1600]}
+              sizes="(max-width: 768px) 100vw, 1280px"
+              format="avif"
+              quality={70}
+              loading="eager"
+              fetchpriority="high"
+            />
+          </figure>
+        </div>
+      </header>
+
+      <!-- At a glance -->
+      <section class="case-facts" aria-label="Ficha del caso">
+        <div class="container">
+          <dl class="facts-grid">
+            {
+              facts.map((fact) => (
+                <div class="fact">
+                  <dt>{fact.label}</dt>
+                  <dd>{fact.value}</dd>
+                </div>
+              ))
+            }
+          </dl>
+          <ul class="scope-list" aria-label="Alcance del proyecto">
+            {
+              project.scope.map((item: string) => (
+                <li>
+                  <span aria-hidden="true">+</span>
+                  {item}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </section>
+
+      <!-- Business value first -->
+      <section class="case-section reveal">
+        <div class="container">
+          <div class="section-head">
+            <span class="section-num" aria-hidden="true">01</span>
+            <h2>Contexto</h2>
+          </div>
+          <p class="lede">{project.context}</p>
+        </div>
+      </section>
+
+      <section class="case-section reveal">
+        <div class="container">
+          <div class="section-head">
+            <span class="section-num" aria-hidden="true">02</span>
+            <h2>El problema</h2>
+          </div>
+          <p class="lede">{project.problem}</p>
+        </div>
+      </section>
+
+      <section class="case-section reveal">
+        <div class="container">
+          <div class="section-head">
+            <span class="section-num" aria-hidden="true">03</span>
+            <h2>El objetivo</h2>
+          </div>
+          <p class="lede">{project.objective}</p>
+        </div>
+      </section>
+
+      <!-- Implementation -->
+      <section class="case-section reveal">
+        <div class="container">
+          <div class="section-head">
+            <span class="section-num" aria-hidden="true">04</span>
+            <h2>La solución</h2>
+          </div>
+          <p class="lede">{project.solution}</p>
+        </div>
+      </section>
+
+      <section class="case-section reveal">
+        <div class="container">
+          <div class="section-head">
+            <span class="section-num" aria-hidden="true">05</span>
+            <h2>Funcionalidades</h2>
+          </div>
+          <div class="feature-grid">
+            {
+              project.features.map((feature: { title: string; description: string }) => (
+                <article class="feature">
+                  <h3>{feature.title}</h3>
+                  <p>{feature.description}</p>
+                </article>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+      <section class="case-section reveal">
+        <div class="container">
+          <div class="section-head">
+            <span class="section-num" aria-hidden="true">06</span>
+            <h2>Decisiones</h2>
+          </div>
+          <ul class="decision-list">
+            {
+              project.decisions.map((decision: { title: string; description: string }, i: number) => (
+                <li class="decision">
+                  <span class="decision-num" aria-hidden="true">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <h3>{decision.title}</h3>
+                    <p>{decision.description}</p>
+                  </div>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </section>
+
+      <!-- Outcome -->
+      <section class="case-section reveal">
+        <div class="container">
+          <div class="section-head">
+            <span class="section-num" aria-hidden="true">07</span>
+            <h2>Resultado observable</h2>
+          </div>
+          <p class="lede">{project.result}</p>
+
+          {
+            project.metrics && project.metrics.length > 0 && (
+              <ul class="metrics" aria-label="Métricas verificadas">
+                {project.metrics.map((metric: { value: string; label: string; note?: string }) => (
+                  <li class="metric">
+                    <span class="metric-value">{metric.value}</span>
+                    <span class="metric-label">{metric.label}</span>
+                    {metric.note && <span class="metric-note">{metric.note}</span>}
+                  </li>
+                ))}
+              </ul>
+            )
+          }
+
+          <p class="tech-note">
+            <span class="tech-note-label">Tecnologías (evidencia secundaria)</span>
+            <span>{techLabel}</span>
+          </p>
+        </div>
+      </section>
+
+      <!-- Gallery -->
+      <section class="case-section case-gallery-section reveal">
+        <div class="container">
+          <div class="section-head">
+            <span class="section-num" aria-hidden="true">08</span>
+            <h2>En detalle</h2>
+          </div>
+          <div class="gallery">
+            {
+               project.images.map((image, i) => (
+                <figure class:list={["gallery-item", { "gallery-item-wide": i === 0 }]}>
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    widths={[480, 800, 1200]}
+                    sizes="(max-width: 768px) 100vw, 800px"
+                    format="avif"
+                    quality={68}
+                    loading="lazy"
+                  />
+                  {image.caption && <figcaption>{image.caption}</figcaption>}
+                </figure>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+      <!-- Next + back -->
+      <section class="case-next">
+        <div class="container">
+          <a
+            class="next-case"
+            href={casePath(next.slug)}
+            aria-label={`Siguiente caso: ${next.title}`}
+          >
+            <span class="next-label">Siguiente caso</span>
+            <span class="next-title">{next.title}</span>
+            <span class="next-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="back-link" href="/casos/">← Volver a todos los casos</a>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <Footer />
+</MainLayout>
+
+<style>
+  .case {
+    padding-top: 120px;
+  }
+
+  /* Hero */
+  .case-hero {
+    padding: var(--space-3xl) 0 var(--space-2xl);
+    border-bottom: 4px solid var(--border);
+  }
+
+  .case-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .case-breadcrumb a {
+    opacity: 0.6;
+    transition: opacity var(--transition-fast);
+  }
+
+  .case-breadcrumb a:hover {
+    opacity: 1;
+  }
+
+  .case-breadcrumb span {
+    opacity: 0.4;
+  }
+
+  .case-eyebrow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-lg);
+    opacity: 0.75;
+  }
+
+  .eyebrow-sep {
+    opacity: 0.4;
+  }
+
+  .case-title {
+    font-size: clamp(2.5rem, 9vw, 7rem);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+  }
+
+  .case-tagline {
+    max-width: 55ch;
+    margin-top: var(--space-lg);
+    font-size: clamp(1.125rem, 2.2vw, 1.5rem);
+    line-height: 1.4;
+    color: var(--text-secondary);
+  }
+
+  .case-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-lg);
+    margin-top: var(--space-2xl);
+  }
+
+  .case-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-xl);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--text);
+    color: var(--bg);
+    border: 3px solid var(--text);
+    box-shadow: 8px 8px 0 var(--border);
+    transition:
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+
+  .case-link:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0 var(--border);
+  }
+
+  .case-status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.75;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .case-cover {
+    margin-top: var(--space-3xl);
+    border: 4px solid var(--border);
+    box-shadow: 12px 12px 0 var(--border);
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    background: var(--bg-alt);
+  }
+
+  .case-cover :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Facts */
+  .case-facts {
+    padding: var(--space-3xl) 0;
+    border-bottom: 4px solid var(--border);
+  }
+
+  .facts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+  }
+
+  @media (min-width: 768px) {
+    .facts-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .fact dt {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.55;
+    margin-bottom: var(--space-xs);
+  }
+
+  .fact dd {
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .scope-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-top: var(--space-2xl);
+  }
+
+  .scope-list li {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-xs) var(--space-md);
+    border: 2px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .scope-list li span {
+    font-weight: 700;
+    opacity: 0.5;
+  }
+
+  /* Sections */
+  .case-section {
+    padding: var(--space-3xl) 0;
+    border-bottom: 2px dashed var(--border-light);
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+  }
+
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 700;
+    opacity: 0.4;
+  }
+
+  .section-head h2 {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.03em;
+  }
+
+  .lede {
+    max-width: 72ch;
+    font-size: clamp(1.0625rem, 1.8vw, 1.25rem);
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  /* Features */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  @media (min-width: 640px) {
+    .feature-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .feature {
+    padding: var(--space-lg);
+    border: 3px solid var(--border);
+    background: var(--bg);
+    transition:
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+
+  .feature:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0 var(--border);
+  }
+
+  .feature h3 {
+    font-size: 1.125rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .feature p {
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+
+  /* Decisions */
+  .decision-list {
+    list-style: none;
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  .decision {
+    display: flex;
+    gap: var(--space-lg);
+    padding-top: var(--space-md);
+    border-top: 2px solid var(--border);
+  }
+
+  .decision-num {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    opacity: 0.4;
+    flex-shrink: 0;
+  }
+
+  .decision h3 {
+    font-size: 1.125rem;
+    margin-bottom: var(--space-xs);
+  }
+
+  .decision p {
+    max-width: 70ch;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+
+  /* Metrics */
+  .metrics {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--space-md);
+    margin-top: var(--space-xl);
+  }
+
+  .metric {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    padding: var(--space-lg);
+    border: 3px solid var(--border);
+  }
+
+  .metric-value {
+    font-size: clamp(1.75rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  .metric-label {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .metric-note {
+    font-size: 0.8125rem;
+    opacity: 0.6;
+  }
+
+  .tech-note {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm) var(--space-md);
+    margin-top: var(--space-2xl);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+  }
+
+  .tech-note-label {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    opacity: 0.5;
+  }
+
+  /* Gallery */
+  .gallery {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  @media (min-width: 768px) {
+    .gallery {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .gallery-item {
+    border: 3px solid var(--border);
+    background: var(--bg-alt);
+    overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    .gallery-item-wide {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .gallery-item :global(img) {
+    width: 100%;
+    height: auto;
+  }
+
+  .gallery-item figcaption {
+    padding: var(--space-sm) var(--space-md);
+    border-top: 3px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    opacity: 0.75;
+  }
+
+  /* Next */
+  .case-next {
+    padding: var(--space-3xl) 0 var(--space-4xl);
+  }
+
+  .next-case {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-xl) var(--space-lg);
+    border: 4px solid var(--border);
+    background: var(--bg);
+    box-shadow: 8px 8px 0 var(--border);
+    transition:
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast),
+      background var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .next-case:hover {
+    background: var(--text);
+    color: var(--bg);
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0 var(--border);
+  }
+
+  .next-label {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    opacity: 0.6;
+  }
+
+  .next-title {
+    font-size: clamp(1.25rem, 3vw, 2rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.03em;
+    margin-right: auto;
+  }
+
+  .next-arrow {
+    font-size: 1.75rem;
+    transition: transform var(--transition-base);
+  }
+
+  .next-case:hover .next-arrow {
+    transform: translateX(8px);
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: var(--space-xl);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    opacity: 0.65;
+    transition: opacity var(--transition-fast);
+  }
+
+  .back-link:hover {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .case-link,
+    .feature,
+    .next-case,
+    .next-arrow {
+      transition: none !important;
+    }
+  }
+</style>

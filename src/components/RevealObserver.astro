@@ -1,0 +1,30 @@
+---
+---
+
+<script>
+  const revealTargets = document.querySelectorAll(".reveal, .reveal-left");
+
+  if (
+    revealTargets.length > 0 &&
+    !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
+    if (!("IntersectionObserver" in window)) {
+      revealTargets.forEach((target) => target.classList.add("visible"));
+    } else {
+      const observer = new IntersectionObserver(
+        (entries, activeObserver) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              activeObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { rootMargin: "0px 0px -10% 0px", threshold: 0.1 },
+      );
+
+      document.documentElement.classList.add("has-reveal-observer");
+      revealTargets.forEach((target) => observer.observe(target));
+    }
+  }
+</script>

@@ -1,19 +1,37 @@
 ---
-import MainLayout from '../layouts/MainLayout.astro';
-import Header from '../components/Header.astro';
-import Hero from '../components/Hero.astro';
-import Services from '../components/Services.astro';
-import HiddenCost from '../components/HiddenCost.astro';
-import Projects from '../components/Projects.astro';
-import About from '../components/About.astro';
-import Contact from '../components/Contact.astro';
-import Footer from '../components/Footer.astro';
+import MainLayout from "../layouts/MainLayout.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Services from "../components/Services.astro";
+import HiddenCost from "../components/HiddenCost.astro";
+import Projects from "../components/Projects.astro";
+import About from "../components/About.astro";
+import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
+import { faqItems } from "../data/engagement";
+import { siteConfig } from "../data/site";
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+   mainEntity: faqItems.map((item) => ({
+     "@type": "Question",
+     name: item.q,
+     acceptedAnswer: { "@type": "Answer", text: item.a },
+   })),
+};
 ---
 
-<MainLayout 
-  title="FRN.Q — Desarrollo Web Premium de Alto Rendimiento | Sin Plantillas"
-  description="Desarrollo de infraestructuras digitales premium para empresas que buscan diferenciación. 100% código a medida, rendimiento garantizado, sin plantillas. Francisco Muñoz - FRN.Q Studio Granada."
+<MainLayout
+   title={`${siteConfig.name} — Ecommerce, Portales B2B y Sistemas Digitales para Empresas`}
+   description={siteConfig.description}
 >
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(faqSchema)}
+    slot="head"
+  />
+
   <Header />
   <main id="main-content">
     <Hero />

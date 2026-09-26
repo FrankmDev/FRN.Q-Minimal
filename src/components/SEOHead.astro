@@ -1,0 +1,72 @@
+---
+import { siteConfig } from "../data/site";
+interface Props {
+  title: string;
+  description: string;
+  canonicalURL: URL;
+  noindex?: boolean;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description,
+  canonicalURL,
+  noindex = false,
+  ogImage = "/og-image.svg",
+} = Astro.props;
+
+const imageURL = new URL(ogImage, canonicalURL.origin);
+const imageExtension = imageURL.pathname.split(".").pop()?.toLowerCase();
+const imageType =
+  imageExtension === "jpg" || imageExtension === "jpeg"
+    ? "image/jpeg"
+    : imageExtension === "png"
+      ? "image/png"
+      : imageExtension === "webp"
+        ? "image/webp"
+        : imageExtension === "avif"
+          ? "image/avif"
+          : "image/svg+xml";
+const organization = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${canonicalURL.origin}/#organization`,
+   name: siteConfig.name,
+   url: siteConfig.url,
+   email: siteConfig.email,
+  address: {
+    "@type": "PostalAddress",
+     addressLocality: siteConfig.location.city,
+     addressCountry: siteConfig.location.country,
+  },
+};
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
+<link rel="canonical" href={canonicalURL} />
+
+<meta property="og:type" content="website" />
+ <meta property="og:locale" content={siteConfig.locale} />
+ <meta property="og:site_name" content={siteConfig.name} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={imageURL} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:type" content={imageType} />
+<meta property="og:image:alt" content="FRN.Q — Desarrollo de soluciones digitales" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageURL} />
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<meta name="theme-color" content="#f4f3ef" />
+
+<script type="application/ld+json" set:html={JSON.stringify(organization)} />

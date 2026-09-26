@@ -1,0 +1,150 @@
+.container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--layout-content-width);
+  margin-inline: auto;
+  padding-inline: var(--layout-gutter);
+}
+
+.skip-link {
+  position: absolute;
+  z-index: var(--z-tooltip);
+  top: 0;
+  left: var(--layout-gutter);
+  padding: var(--space-sm) var(--space-md);
+  transform: translateY(-150%);
+  background: var(--text);
+  color: var(--bg);
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: transform var(--transition-fast);
+}
+
+.skip-link:focus {
+  transform: translateY(var(--space-md));
+}
+
+.custom-cursor {
+  position: fixed;
+  z-index: 10001;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  mix-blend-mode: difference;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.custom-cursor.visible {
+  opacity: 1;
+}
+
+.cursor-dot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #fff;
+  transition:
+    transform 150ms var(--motion-ease-out),
+    background-color 150ms ease,
+    border-radius 200ms var(--motion-ease-out);
+  will-change: transform;
+}
+
+.custom-cursor.hovering .cursor-dot {
+  transform: scale(2.5);
+  border: 3px solid #fff;
+  border-radius: 0;
+  background: transparent;
+}
+
+.custom-cursor.clicking .cursor-dot {
+  transform: scale(0.5);
+}
+
+.custom-cursor.hovering.clicking .cursor-dot {
+  transform: scale(1.5) rotate(45deg);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --layout-gutter: var(--space-lg);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --layout-gutter: var(--space-xl);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html.has-custom-cursor {
+    cursor: none;
+  }
+
+  .has-custom-cursor a,
+  .has-custom-cursor button,
+  .has-custom-cursor [role="button"],
+  .has-custom-cursor input[type="submit"],
+  .has-custom-cursor input[type="button"],
+  .has-custom-cursor label[for],
+  .has-custom-cursor select,
+  .has-custom-cursor summary,
+  .has-custom-cursor [data-cursor-hover] {
+    cursor: none;
+  }
+}
+
+@media (hover: none), (pointer: coarse), (max-width: 768px) {
+  .custom-cursor {
+    display: none !important;
+  }
+
+  html,
+  a,
+  button,
+  [role="button"],
+  input[type="submit"],
+  input[type="button"],
+  label[for],
+  select,
+  summary {
+    cursor: auto !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .custom-cursor {
+    display: none;
+  }
+}
+
+@media print {
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+  }
+
+  .skip-link,
+  .header,
+  .footer {
+    display: none !important;
+  }
+}

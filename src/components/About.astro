@@ -1,45 +1,72 @@
 ---
-const results = [
-  { num: "+45%", label: "Conversión", desc: "promedio en sitios rediseñados" },
-  { num: "-60%", label: "Tiempo carga", desc: "con optimización técnica" },
-  { num: "100%", label: "Satisfacción", desc: "clientes recomiendan" },
-];
-
-const steps = [
+const capabilities = [
   {
     num: "01",
-    title: "Diagnóstico",
-    desc: "Auditoría completa de tu infraestructura actual y mapeo de oportunidades",
+    title: "Discovery",
+    desc: "Entender el negocio, los objetivos y las restricciones antes de decidir nada.",
   },
   {
     num: "02",
-    title: "Arquitectura",
-    desc: "Diseño de sistemas escalables con enfoque en rendimiento y conversión",
+    title: "Análisis de negocio y proceso",
+    desc: "Revisar cómo trabajas hoy, dónde se pierde tiempo o dinero y qué se puede sistematizar.",
   },
   {
     num: "03",
-    title: "Ejecución",
-    desc: "Construcción artesanal sin plantillas ni atajos. Código puro, píxel perfecto",
+    title: "Alcance claro",
+    desc: "Un alcance por escrito: qué se entrega, qué no, con qué calendario y qué coste.",
   },
   {
     num: "04",
-    title: "Entrega",
-    desc: "Deploy optimizado con métricas garantizadas y documentación técnica",
+    title: "Diseño y desarrollo",
+    desc: "Diseño y programo yo mismo. La misma persona decide y construye.",
+  },
+  {
+    num: "05",
+    title: "QA",
+    desc: "Pruebas de funcionamiento, contenido, rendimiento, accesibilidad y SEO técnico.",
+  },
+  {
+    num: "06",
+    title: "Lanzamiento",
+    desc: "Publicación, redirecciones, analítica y traspaso documentado.",
+  },
+  {
+    num: "07",
+    title: "Evolución",
+    desc: "Acompañamiento posterior o entrega preparada para que la continúe tu equipo.",
   },
 ];
 
-const testimonials = [
+const process = [
   {
-    quote:
-      "Pasamos de una web que nos avergonzaba mostrar a una infraestructura que ahora es nuestro principal activo comercial. El ROI fue inmediato.",
-    author: "María García",
-    role: "Directora, Asercord Energy",
+    num: "01",
+    title: "Discovery",
+    does: "Reunión inicial y revisión de tu situación. Definimos objetivo, usuarios y restricciones.",
+    receives: "Resumen escrito del punto de partida y del objetivo.",
   },
   {
-    quote:
-      "No es solo diseño. Es entender el negocio primero, luego construir la tecnología que lo hace crecer. Un nivel de profesionalismo raro de encontrar.",
-    author: "Carlos Ruiz",
-    role: "CEO, Nexus Commerce",
+    num: "02",
+    title: "Scope / System Design",
+    does: "Decido arquitectura, tecnología y estructura de contenido.",
+    receives: "Alcance, calendario y presupuesto cerrado.",
+  },
+  {
+    num: "03",
+    title: "Design & Build",
+    does: "Diseño y desarrollo en iteraciones cortas sobre un entorno de pruebas.",
+    receives: "Acceso a la evolución del proyecto y entregas parciales.",
+  },
+  {
+    num: "04",
+    title: "QA / Launch",
+    does: "Revisión de funcionamiento, rendimiento, accesibilidad y SEO técnico.",
+    receives: "Publicación, redirecciones y documentación de traspaso.",
+  },
+  {
+    num: "05",
+    title: "Evolution",
+    does: "Mejoras y mantenimiento cuando hacen falta.",
+    receives: "Proyecto documentado, o acompañamiento continuo si lo prefieres.",
   },
 ];
 ---
@@ -54,225 +81,97 @@ const testimonials = [
       </div>
 
       <div class="intro-content">
+        <div class="section-label">
+          <span class="label-num mono" aria-hidden="true">[01]</span>
+          <span class="label-text">Estudio independiente</span>
+        </div>
+
         <h2 class="intro-title" id="about-title">
-          No construimos webs.
-          <span class="title-emphasis">Diseñamos legados digitales.</span>
+          Diseño y desarrollo web,
+          <span class="title-emphasis">de principio a fin.</span>
         </h2>
-        <p class="intro-text">
-          FRN.Q Studio es un estudio de Ingeniería y Diseño Web de Alto
-          Rendimiento. No usamos plantillas. No dependemos de terceros. Creamos
-          infraestructuras digitales a medida que funcionan hoy, mañana y dentro
-          de diez años.
-        </p>
+
+        <div class="intro-body">
+          <p class="intro-text">
+            FRN.Q es el estudio independiente dirigido por Francisco Muñoz.
+            Trabajo directo, contigo, en todo el proyecto: negocio, diseño y
+            código. Sin intermediarios ni capas de gestión.
+          </p>
+          <p class="intro-text">
+            Diseño y desarrollo webs, portales y sistemas a medida. Cada
+            proyecto empieza entendiendo cómo funciona tu negocio y termina en
+            un producto mantenible que puedes seguir evolucionando.
+          </p>
+        </div>
+
         <a href="#contacto" class="intro-cta">
-          <span>Consulta de valoración</span>
+          <span>Hablar del proyecto</span>
           <span class="cta-arrow" aria-hidden="true">→</span>
         </a>
       </div>
     </div>
 
-    <div class="results-section reveal" style="transition-delay: 150ms;">
+    <div class="capabilities-section reveal">
       <div class="section-label">
-        <span class="label-num" aria-hidden="true">[01]</span>
-        <span class="label-text">Resultados Medibles</span>
+        <span class="label-num mono" aria-hidden="true">[02]</span>
+        <span class="label-text">Qué entra en un proyecto</span>
       </div>
 
-      <dl class="results-grid" role="list" aria-label="Resultados clave">
+      <ul class="capabilities-list" role="list">
         {
-          results.map((r) => (
-            <div class="result-card" role="listitem">
-              <div class="result-graphic" aria-hidden="true">
-                <div class="graphic-bar" />
-                <div class="graphic-bar graphic-bar-mid" />
-                <div class="graphic-bar graphic-bar-tall" />
+          capabilities.map((capability) => (
+            <li class="capability-item" role="listitem">
+              <span class="capability-num mono" aria-hidden="true">{capability.num}</span>
+              <div class="capability-content">
+                <h3 class="capability-title">{capability.title}</h3>
+                <p class="capability-desc">{capability.desc}</p>
               </div>
-              <dt class="sr-only">{r.label}</dt>
-              <dd class="result-value">
-                <span class="result-num">{r.num}</span>
-                <span class="result-label">{r.label}</span>
-                <span class="result-desc">{r.desc}</span>
-              </dd>
-            </div>
+            </li>
           ))
         }
-      </dl>
+      </ul>
     </div>
 
-    <div class="method-section reveal">
+    <div class="process-section reveal">
       <div class="section-label">
-        <span class="label-num" aria-hidden="true">[02]</span>
-        <span class="label-text">Proceso de Ingeniería</span>
+        <span class="label-num mono" aria-hidden="true">[03]</span>
+        <span class="label-text">Proceso</span>
       </div>
 
-      <div class="method-grid">
-        <div class="method-visual" aria-hidden="true">
-          <div class="method-line"></div>
-          <div class="method-dots">
-            {
-              steps.map((_, i) => (
-                <span
-                  class="method-dot"
-                  data-active={i === 0 ? "true" : undefined}
-                />
-              ))
-            }
-          </div>
-        </div>
-
-        <ol class="steps-list" role="list" aria-label="Pasos del proceso">
-          {
-            steps.map((step) => (
-              <li class="step-item" role="listitem">
-                <span class="step-num" aria-hidden="true">
-                  {step.num}
-                </span>
-                <div class="step-content">
-                  <h3 class="step-title">{step.title}</h3>
-                  <p class="step-desc">{step.desc}</p>
-                </div>
-              </li>
-            ))
-          }
-        </ol>
-      </div>
+      <ol class="process-list" role="list">
+        {
+          process.map((step) => (
+            <li class="process-item" role="listitem">
+              <span class="process-num mono" aria-hidden="true">{step.num}</span>
+              <div class="process-body">
+                <h3 class="process-title">{step.title}</h3>
+                <p class="process-does">{step.does}</p>
+                <p class="process-receives">
+                  <span class="process-receives-label mono">Recibes</span>
+                  {step.receives}
+                </p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
     </div>
 
-    <div class="guarantee-banner reveal">
-      <div class="guarantee-content">
-        <span class="guarantee-icon" aria-hidden="true">◆</span>
-        <p class="guarantee-text">
-          <strong>Garantía de Rendimiento:</strong> No hacemos el despliegue final
-          si no superamos las métricas de tu web actual.
+    <div class="about-contact reveal">
+      <div class="about-contact-main">
+        <span class="ac-icon" aria-hidden="true">◆</span>
+        <p class="about-contact-text">
+          Contacto directo, sin formularios que se pierden. Cuéntame el
+          proyecto y te respondo con los siguientes pasos.
         </p>
       </div>
-    </div>
-
-    <div class="testimonials-section reveal">
-      <div class="section-label">
-        <span class="label-num" aria-hidden="true">[03]</span>
-        <span class="label-text">Clientes</span>
-      </div>
-
-      <div
-        class="testimonials-grid"
-        role="list"
-        aria-label="Testimonios de clientes"
-      >
-        {
-          testimonials.map((t, i) => (
-            <blockquote class="testimonial-card" role="listitem">
-              <div class="quote-mark" aria-hidden="true">
-                "
-              </div>
-              <p class="quote-text">{t.quote}</p>
-              <footer class="quote-author">
-                <cite class="author-name">{t.author}</cite>
-                <span class="author-role">{t.role}</span>
-              </footer>
-            </blockquote>
-          ))
-        }
-      </div>
-    </div>
-
-    <div class="cta-section reveal">
-      <div class="cta-box">
-        <div class="cta-content">
-          <h3 class="cta-title">La web que necesitas vs. la que tienes</h3>
-          <p class="cta-desc">
-            La diferencia entre una infraestructura que escala y una que te
-            obliga a reinvertir cada año. Descubre cuál es tu situación actual.
-          </p>
-        </div>
-        <a href="#contacto" class="cta-btn">
-          <span>Solicitar auditoría</span>
-          <span class="btn-arrow" aria-hidden="true">↗</span>
-        </a>
-      </div>
+      <a href="mailto:hola@frnq.es" class="about-contact-mail">
+        <span>hola@frnq.es</span>
+        <span class="mail-arrow" aria-hidden="true">→</span>
+      </a>
     </div>
   </div>
 </section>
-
-<script>
-  // Count-up animation for result numbers
-  function easeOutCubic(t: number): number {
-    return 1 - Math.pow(1 - t, 3);
-  }
-
-  function animateCountUp(el: HTMLElement, target: string) {
-    // Parse prefix, number and suffix
-    const match = target.match(/^([+\-]?)(\d+(?:\.\d+)?)(.*)$/);
-    if (!match) return;
-    const [, prefix, numStr, suffix] = match;
-    const end = parseFloat(numStr);
-    const duration = 1200;
-    const startTime = performance.now();
-
-    function update(now: number) {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = easeOutCubic(progress);
-      const current = Math.round(eased * end * 10) / 10;
-      el.textContent = `${prefix}${Number.isInteger(current) ? current : current.toFixed(1)}${suffix}`;
-      if (progress < 1) requestAnimationFrame(update);
-    }
-
-    requestAnimationFrame(update);
-  }
-
-  const resultNums = document.querySelectorAll(".result-num");
-  const countObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const el = entry.target as HTMLElement;
-          const original = el.dataset.original || el.textContent || "";
-          if (!el.dataset.original) el.dataset.original = original;
-          animateCountUp(el, original);
-          countObserver.unobserve(el);
-        }
-      });
-    },
-    { threshold: 0.5 },
-  );
-
-  resultNums.forEach((el) => countObserver.observe(el));
-
-  // Sequential timeline dot animation
-  const methodDots = document.querySelectorAll(".method-dot");
-  let dotInterval: ReturnType<typeof setInterval> | null = null;
-  let currentDot = 0;
-
-  const dotsObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          if (dotInterval) clearInterval(dotInterval);
-          currentDot = 0;
-
-          methodDots.forEach((dot) => dot.removeAttribute("data-active"));
-
-          dotInterval = setInterval(() => {
-            methodDots.forEach((dot) => dot.removeAttribute("data-active"));
-            if (methodDots[currentDot]) {
-              (methodDots[currentDot] as HTMLElement).setAttribute(
-                "data-active",
-                "true",
-              );
-            }
-            currentDot = (currentDot + 1) % methodDots.length;
-          }, 600);
-
-          dotsObserver.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.3 },
-  );
-
-  const methodSection = document.querySelector(".method-section");
-  if (methodSection) dotsObserver.observe(methodSection);
-</script>
 
 <style>
   .about {
@@ -296,129 +195,8 @@ const testimonials = [
     );
   }
 
-  .about-intro {
-    display: grid;
-    gap: var(--space-2xl);
-    margin-bottom: var(--space-4xl);
-  }
-
-  @media (min-width: 768px) {
-    .about-intro {
-      grid-template-columns: 200px 1fr;
-      gap: var(--space-3xl);
-    }
-  }
-
-  @media (max-width: 767px) {
-    .intro-visual {
-      display: none;
-    }
-  }
-
-  .intro-visual {
-    position: relative;
-    height: 200px;
-  }
-
-  .visual-box {
-    position: absolute;
-    width: 120px;
-    height: 120px;
-    border: 2px solid var(--border);
-    background: var(--text);
-    box-shadow: 6px 6px 0 var(--border);
-  }
-
-  .visual-box-small {
-    width: 60px;
-    height: 60px;
-    top: 80px;
-    left: 100px;
-    background: var(--bg);
-    z-index: 1;
-  }
-
-  .visual-line {
-    position: absolute;
-    bottom: 20px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--border);
-    opacity: 0.3;
-  }
-
-  .intro-title {
-    font-size: clamp(1.75rem, 5vw, 3.5rem);
-    font-weight: 300;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-    margin-bottom: var(--space-lg);
-  }
-
-  .title-emphasis {
-    display: block;
-    font-weight: 800;
-    margin-top: 0.25rem;
-    position: relative;
-  }
-
-  .title-emphasis::before {
-    content: "";
-    position: absolute;
-    left: -1rem;
-    top: 0.5em;
-    width: 4px;
-    height: 0.8em;
-    background: var(--text);
-  }
-
-  .intro-text {
-    font-size: clamp(1rem, 2vw, 1.125rem);
-    line-height: 1.8;
-    opacity: 0.7;
-    max-width: 500px;
-    margin-bottom: var(--space-xl);
-  }
-
-  .intro-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-sm);
-    padding: var(--space-md) var(--space-xl);
-    font-weight: 700;
-    font-size: 1rem;
-    border: 4px solid var(--border);
-    background: var(--bg);
-    box-shadow: 8px 8px 0 var(--border);
-    text-transform: uppercase;
-    transition:
-      transform var(--transition-fast),
-      box-shadow var(--transition-fast);
-  }
-
-  .intro-cta:hover {
-    background: var(--text);
-    color: var(--bg);
-    transform: translate(-6px, -6px);
-    box-shadow: 12px 12px 0 var(--border-strong);
-  }
-
-  [data-theme="dark"] .intro-cta:hover {
-    box-shadow: 8px 8px 0 rgba(255, 255, 255, 0.15);
-  }
-
-  .intro-cta:focus-visible {
-    outline: 3px solid var(--text);
-    outline-offset: 3px;
-  }
-
-  .cta-arrow {
-    transition: transform var(--transition-base);
-  }
-
-  .intro-cta:hover .cta-arrow {
-    transform: translateX(4px);
+  .mono {
+    font-family: var(--font-mono);
   }
 
   .section-label {
@@ -443,597 +221,407 @@ const testimonials = [
     letter-spacing: 0.1em;
   }
 
-  .results-section,
-  .method-section {
-    margin-bottom: var(--space-3xl);
+  /* ---- Intro ---- */
+  .about-intro {
+    display: grid;
+    gap: var(--space-2xl);
+    margin-bottom: var(--space-4xl);
   }
 
-  /* Guarantee Banner */
-  .guarantee-banner {
-    margin-bottom: var(--space-3xl);
-    padding: var(--space-xl) var(--space-2xl);
+  @media (min-width: 768px) {
+    .about-intro {
+      grid-template-columns: 200px 1fr;
+      gap: var(--space-3xl);
+    }
+  }
+
+  .intro-visual {
+    position: relative;
+    height: 200px;
+  }
+
+  @media (max-width: 767px) {
+    .intro-visual {
+      display: none;
+    }
+  }
+
+  .visual-box {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border: 2px solid var(--border);
+    background: var(--text);
+    box-shadow: 6px 6px 0 var(--border);
+  }
+
+  .visual-box-small {
+    width: 60px;
+    height: 60px;
+    top: 80px;
+    left: 100px;
+    background: var(--bg);
+    z-index: 1;
+    transition: transform var(--transition-base);
+  }
+
+  .visual-box-small:hover {
+    transform: translate(-4px, -4px);
+  }
+
+  .visual-line {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--border);
+    opacity: 0.3;
+  }
+
+  .intro-title {
+    font-size: clamp(1.75rem, 5vw, 3.25rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-lg);
+  }
+
+  .title-emphasis {
+    display: block;
+    font-weight: 800;
+    margin-top: 0.25rem;
+    position: relative;
+    padding-left: 0;
+  }
+
+  .title-emphasis::before {
+    content: "";
+    position: absolute;
+    left: -0.85em;
+    top: 0.5em;
+    width: 4px;
+    height: 0.8em;
+    background: var(--text);
+  }
+
+  .intro-body {
+    display: grid;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+  }
+
+  .intro-text {
+    font-size: clamp(1rem, 2vw, 1.125rem);
+    line-height: 1.8;
+    color: var(--text-secondary);
+    max-width: 620px;
+    margin: 0;
+  }
+
+  .intro-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-xl);
+    font-weight: 700;
+    font-size: 1rem;
+    border: 3px solid var(--border);
+    background: var(--bg);
+    box-shadow: 8px 8px 0 var(--border);
+    text-transform: uppercase;
+    transition:
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast),
+      background var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .intro-cta:hover {
     background: var(--text);
     color: var(--bg);
-    border: 2px solid var(--text);
-    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.15);
+    transform: translate(-6px, -6px);
+    box-shadow: 12px 12px 0 var(--y);
+  }
+
+  .intro-cta:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 3px;
+  }
+
+  .cta-arrow {
+    transition: transform var(--transition-base);
+  }
+
+  .intro-cta:hover .cta-arrow {
+    transform: translateX(4px);
+  }
+
+  /* ---- Capabilities ---- */
+  .capabilities-section,
+  .process-section {
+    margin-bottom: var(--space-4xl);
+  }
+
+  .capabilities-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    border-top: 2px solid var(--border);
+  }
+
+  @media (min-width: 768px) {
+    .capabilities-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .capability-item {
+    display: flex;
+    gap: var(--space-lg);
+    padding: var(--space-lg) 0;
+    border-bottom: 1px solid var(--border-light);
+    transition: background-color var(--transition-fast);
+  }
+
+  .capability-item:hover {
+    background: var(--bg-alt);
+  }
+
+  @media (min-width: 768px) {
+    .capability-item:nth-child(odd) {
+      padding-right: var(--space-2xl);
+      border-right: 1px solid var(--border-light);
+    }
+
+    .capability-item:nth-child(even) {
+      padding-left: var(--space-2xl);
+    }
+
+    .capability-item:nth-child(odd):last-child {
+      padding-right: 0;
+      border-right: none;
+    }
+  }
+
+  .capability-num {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    padding-top: 0.2rem;
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+  }
+
+  .capability-item:hover .capability-num {
+    color: var(--text);
+    background: var(--y);
+    padding: 0 var(--space-xs) var(--space-xs);
+  }
+
+  .capability-title {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    margin-bottom: var(--space-xs);
+    transition: transform 0.4s var(--motion-ease-out);
+  }
+
+  .capability-item:hover .capability-title {
+    transform: translateX(4px);
+  }
+
+  .capability-desc {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  /* ---- Process ---- */
+  .process-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  @media (min-width: 768px) {
+    .process-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .process-item {
+    display: flex;
+    gap: var(--space-lg);
+    padding: var(--space-xl);
+    border: 3px solid var(--border);
+    background: var(--bg);
+    transition: all 0.4s var(--motion-ease-out);
     position: relative;
     overflow: hidden;
   }
 
-  [data-theme="dark"] .guarantee-banner {
-    box-shadow: 8px 8px 0 rgba(255, 255, 255, 0.1);
+  /* Top line draw on hover */
+  .process-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: var(--text);
+    transition: width 0.35s var(--motion-ease-out);
+    z-index: 2;
   }
 
-  .guarantee-content {
+  .process-item:hover::before {
+    width: 100%;
+  }
+
+  .process-item:hover {
+    transform: translate(-5px, -5px);
+    box-shadow: 10px 10px 0 var(--border);
+  }
+
+  .process-num {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    opacity: 0.45;
+    flex-shrink: 0;
+    padding-top: 0.2rem;
+    transition: all 0.4s var(--motion-ease-out);
+  }
+
+  .process-item:hover .process-num {
+    opacity: 1;
+    transform: translateX(4px);
+  }
+
+  .process-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: var(--space-xs);
+  }
+
+  .process-does {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0 0 var(--space-md);
+  }
+
+  .process-receives {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-sm);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin: 0;
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border-light);
+  }
+
+  .process-receives-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+    background: var(--y);
+    padding: 0 var(--space-xs);
+  }
+
+  /* ---- Contact banner ---- */
+  .about-contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    padding: var(--space-2xl);
+    background: var(--text);
+    color: var(--bg);
+    border: 2px solid var(--text);
+    box-shadow: 10px 10px 0 var(--y);
+  }
+
+  .about-contact-main {
     display: flex;
     align-items: center;
     gap: var(--space-lg);
-    position: relative;
-    z-index: 1;
   }
 
-  .guarantee-icon {
+  .ac-icon {
     font-size: 1.5rem;
     flex-shrink: 0;
     opacity: 0.6;
   }
 
-  .guarantee-text {
+  .about-contact-text {
     font-size: clamp(1rem, 2vw, 1.125rem);
     line-height: 1.6;
-    margin: 0;
     opacity: 0.95;
-  }
-
-  .guarantee-text strong {
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-  }
-
-  @media (max-width: 640px) {
-    .guarantee-banner {
-      padding: var(--space-lg);
-    }
-
-    .guarantee-content {
-      flex-direction: column;
-      text-align: center;
-      gap: var(--space-md);
-    }
-  }
-
-  .testimonials-section {
-    margin-bottom: var(--space-3xl);
-  }
-
-  .results-grid {
-    display: grid;
-    gap: var(--space-lg);
-  }
-
-  @media (min-width: 640px) {
-    .results-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .results-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  .result-card {
-    border: 4px solid var(--border);
-    padding: var(--space-2xl);
-    background: var(--bg);
-    box-shadow: 10px 10px 0 var(--border);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
-  }
-
-  .result-card:hover {
-    transform: translate(-10px, -10px);
-    box-shadow: 16px 16px 0 var(--border);
-  }
-
-  /* Hover frame for result cards */
-  .result-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 3;
-    border: 2px solid transparent;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .result-card:hover::before {
-    border-color: var(--text);
-  }
-
-  /* Animated corner accents */
-  .result-card::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--text);
-    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 3;
-  }
-
-  .result-card:hover::after {
-    width: 100%;
-  }
-
-  [data-theme="dark"] .result-card {
-    box-shadow: none;
-    border-color: var(--border);
-  }
-
-  [data-theme="dark"] .result-card:hover {
-    box-shadow: var(--shadow-brutal-hover);
-  }
-
-  .result-graphic {
-    display: flex;
-    align-items: flex-end;
-    gap: 6px;
-    margin-bottom: var(--space-lg);
-    height: 40px;
-  }
-
-  .graphic-bar {
-    width: 8px;
-    height: 20px;
-    background: var(--border);
-    opacity: 0.3;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .graphic-bar-mid {
-    height: 30px;
-    opacity: 0.5;
-  }
-  .graphic-bar-tall {
-    height: 40px;
-    opacity: 1;
-  }
-
-  .result-card:hover .graphic-bar {
-    background: var(--text);
-    opacity: 0.4;
-  }
-
-  .result-card:hover .graphic-bar-mid {
-    opacity: 0.6;
-  }
-
-  .result-card:hover .graphic-bar-tall {
-    opacity: 0.8;
-  }
-
-  .result-value {
+    max-width: 520px;
     margin: 0;
   }
 
-  .result-num {
-    display: block;
-    font-size: clamp(3rem, 6vw, 4rem);
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: -0.04em;
-    margin-bottom: var(--space-xs);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .result-card:hover .result-num {
-    transform: translateX(8px);
-  }
-
-  .result-label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .result-card:hover .result-label {
-    transform: translateX(4px);
-  }
-
-  .result-desc {
-    font-size: 0.875rem;
-    color: var(--text);
-    opacity: 0.9;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .result-card:hover .result-desc {
-    opacity: 1;
-    transform: translateX(4px);
-  }
-
-  .method-grid {
-    display: grid;
-    gap: var(--space-xl);
-  }
-
-  @media (min-width: 768px) {
-    .method-grid {
-      grid-template-columns: 60px 1fr;
-    }
-  }
-
-  .method-visual {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-  }
-
-  @media (max-width: 767px) {
-    .method-visual {
-      display: none;
-    }
-  }
-
-  .method-line {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: var(--border);
-    opacity: 0.2;
-  }
-
-  .method-dots {
-    display: flex;
-    flex-direction: column;
-    gap: calc((100% - 40px) / 3);
-    position: relative;
-    height: 100%;
-    padding: 20px 0;
-  }
-
-  .method-dot {
-    width: 14px;
-    height: 14px;
-    border: 3px solid var(--border);
-    border-radius: 50%;
-    background: var(--bg);
-    flex-shrink: 0;
-  }
-
-  .method-dot[data-active="true"] {
-    background: var(--text);
-  }
-
-  .steps-list {
-    display: grid;
-    gap: var(--space-md);
-    list-style: none;
-    padding: 0;
-    counter-reset: step;
-  }
-
-  @media (min-width: 768px) {
-    .steps-list {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  .step-item {
-    display: flex;
-    gap: var(--space-md);
-    padding: var(--space-xl);
-    border: 4px solid var(--border);
-    background: var(--bg);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
-  }
-
-  .step-item:hover {
-    transform: translate(-6px, -6px);
-    box-shadow: 12px 12px 0 var(--border);
-    background: var(--text);
-    color: var(--bg);
-  }
-
-  [data-theme="dark"] .step-item:hover {
-    box-shadow: 8px 8px 0 rgba(255, 255, 255, 0.15);
-  }
-
-  /* Hover frame - top line */
-  .step-item::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--text);
-    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 3;
-  }
-
-  .step-item:hover::before {
-    width: 100%;
-  }
-
-  /* Border overlay on hover */
-  .step-item::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border: 2px solid transparent;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    pointer-events: none;
-    z-index: 2;
-  }
-
-  .step-item:hover::after {
-    border-color: var(--text);
-  }
-
-  .step-num {
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
-    font-weight: 700;
-    opacity: 0.4;
-    flex-shrink: 0;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .step-item:hover .step-num {
-    opacity: 0.8;
-    transform: translateX(4px);
-  }
-
-  .step-title {
-    font-size: 1.125rem;
-    font-weight: 700;
-    margin-bottom: var(--space-xs);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .step-item:hover .step-title {
-    transform: translateX(4px);
-  }
-
-  .step-desc {
-    font-size: 0.875rem;
-    line-height: 1.6;
-    color: inherit;
-    opacity: 0.85;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .step-item:hover .step-desc {
-    opacity: 1;
-    transform: translateX(4px);
-    color: var(--bg);
-  }
-
-  .testimonials-grid {
-    display: grid;
-    gap: var(--space-lg);
-  }
-
-  @media (min-width: 768px) {
-    .testimonials-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  .testimonial-card {
-    border: 3px solid var(--border);
-    padding: var(--space-2xl);
-    background: var(--bg);
-    box-shadow: 8px 8px 0 var(--border);
-    position: relative;
-    margin: 0;
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    overflow: hidden;
-    isolation: isolate;
-  }
-
-  .testimonial-card:hover {
-    transform: translate(-8px, -8px);
-    box-shadow: 10px 10px 0 var(--border);
-  }
-
-  [data-theme="dark"] .testimonial-card {
-    box-shadow: none;
-  }
-
-  [data-theme="dark"] .testimonial-card:hover {
-    box-shadow: var(--shadow-brutal-hover);
-  }
-
-  /* Hover frame animation */
-  .testimonial-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--text);
-    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 3;
-  }
-
-  .testimonial-card:hover::before {
-    width: 100%;
-  }
-
-  /* Animated border overlay */
-  .testimonial-card::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border: 2px solid transparent;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    pointer-events: none;
-    z-index: 2;
-  }
-
-  .testimonial-card:hover::after {
-    border-color: var(--text);
-  }
-
-  .quote-mark {
-    position: absolute;
-    top: 1rem;
-    right: 1.5rem;
-    font-size: 4rem;
-    line-height: 1;
-    font-weight: 300;
-    opacity: 0.15;
-    font-family: Georgia, serif;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .testimonial-card:hover .quote-mark {
-    opacity: 0.25;
-    transform: scale(1.1) translateY(-4px);
-  }
-
-  .quote-text {
-    font-size: 1.0625rem;
-    line-height: 1.7;
-    font-style: italic;
-    margin-bottom: var(--space-lg);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .testimonial-card:hover .quote-text {
-    transform: translateX(6px);
-  }
-
-  .quote-author {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .testimonial-card:hover .quote-author {
-    transform: translateX(6px);
-  }
-
-  .author-name {
-    font-weight: 700;
-    font-style: normal;
-  }
-
-  .author-role {
-    font-size: 0.875rem;
-    opacity: 0.6;
-  }
-
-  .cta-section {
-    margin-top: var(--space-3xl);
-  }
-
-  .cta-box {
-    background: var(--text);
-    color: var(--bg);
-    padding: var(--space-2xl);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xl);
-    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.15);
-    border: 2px solid var(--text);
-    transition:
-      transform var(--transition-fast),
-      box-shadow var(--transition-fast);
-  }
-
-  [data-theme="dark"] .cta-box {
-    box-shadow: 8px 8px 0 rgba(255, 255, 255, 0.1);
-    border-color: var(--text);
-  }
-
-  @media (min-width: 768px) {
-    .cta-box {
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      padding: var(--space-3xl);
-    }
-  }
-
-  .cta-title {
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
-    font-weight: 300;
-    margin-bottom: var(--space-sm);
-  }
-
-  .cta-desc {
-    opacity: 0.8;
-    max-width: 400px;
-  }
-
-  .cta-btn {
+  .about-contact-mail {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-sm);
+    gap: var(--space-md);
     padding: var(--space-md) var(--space-xl);
-    font-weight: 600;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1rem;
     background: var(--bg);
     color: var(--text);
-    border: 2px solid var(--bg);
-    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+    border: 3px solid var(--bg);
+    box-shadow: 4px 4px 0 rgb(0 0 0 / 20%);
     transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
     flex-shrink: 0;
   }
 
-  .cta-btn:hover {
+  .about-contact-mail:hover {
     transform: translate(-3px, -3px);
-    box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 7px 7px 0 rgb(0 0 0 / 20%);
   }
 
-  .cta-btn:focus-visible {
+  .about-contact-mail:focus-visible {
     outline: 3px solid var(--bg);
     outline-offset: 3px;
   }
 
-  /* En modo oscuro, el botón es oscuro sobre caja clara - necesita borde visible */
-  [data-theme="dark"] .cta-btn {
-    border-color: var(--text);
-    box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.15);
-  }
-
-  [data-theme="dark"] .cta-btn:hover {
-    box-shadow: 7px 7px 0 rgba(255, 255, 255, 0.15);
-  }
-
-  .btn-arrow {
+  .mail-arrow {
     transition: transform var(--transition-base);
   }
 
-  .cta-btn:hover .btn-arrow {
-    transform: translate(4px, -4px);
+  .about-contact-mail:hover .mail-arrow {
+    transform: translateX(6px);
   }
 
-  /* Responsive */
+  /* ---- Responsive ---- */
   @media (max-width: 640px) {
-    .results-grid,
-    .steps-list,
-    .testimonials-grid {
-      grid-template-columns: 1fr;
+    .about-contact {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: var(--space-lg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .intro-cta,
+    .process-item,
+    .capability-item,
+    .about-contact-mail {
+      transition: none !important;
     }
   }
 </style>

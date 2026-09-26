@@ -1,0 +1,67 @@
+---
+title: "GRN Urban"
+client: "GRN Urban"
+category: "product"
+sector: "Cultura y turismo"
+year: "2023"
+status: "live"
+order: 1
+
+tagline: "Una guía cultural de Granada que reúne eventos, rutas, guías y un planificador de itinerarios en un único producto."
+context: "La mayoría de guías digitales de Granada son blogs estáticos, portales institucionales densos o landings orientadas a SEO, con poca atención a los recorridos reales de quien visita la ciudad."
+problem: "Los visitantes tenían que recomponer la información a mano: relacionar eventos en vivo con rutas, consejos locales y restricciones prácticas como el tiempo disponible, el presupuesto o la movilidad."
+objective: "Responder a una pregunta concreta —qué hacer hoy en Granada según el tiempo y los intereses de cada persona— con un producto útil, cuidado y usable en cualquier dispositivo."
+scope:
+  - "Agenda de eventos"
+  - "Rutas temáticas por tiempo disponible"
+  - "Guías editoriales de contexto"
+  - "Planificador de itinerarios"
+  - "Contenido bilingüe ES / EN"
+solution: "Plataforma editorial construida de extremo a extremo con Astro y Tailwind CSS, que combina diseño editorial y utilidad práctica para descubrir Granada a través de eventos, rutas e itinerarios curados."
+features:
+  - title: "Agenda de eventos"
+    description: "Actividades culturales agrupadas con categorías, sedes y detalles prácticos."
+  - title: "Rutas por tema y tiempo"
+    description: "Recorridos temáticos organizados según el tiempo disponible, no como listados genéricos."
+  - title: "Guías con contexto"
+    description: "Contenido editorial de formato largo que enlaza de vuelta a rutas y eventos relevantes."
+  - title: "Planificador de itinerarios"
+    description: "Constructor de planes que equilibra el control editorial con la flexibilidad del usuario."
+decisions:
+  - title: "Identidad de cartografía impresa"
+    description: "Tipografía vertical, referencias de coordenadas y etiquetas de sección enmarcan la experiencia como un volumen de ciudad contemporáneo, no como un folleto genérico."
+  - title: "Arquitectura de cuatro pilares"
+    description: "Eventos, Rutas, Guías y Planifica estructuran el producto y se enlazan entre sí en lugar de vivir como secciones aisladas."
+  - title: "Estático primero, JS mínimo"
+    description: "Generación estática e imágenes cuidadas en las páginas de contenido, reservando la interacción más rica para el configurador de itinerarios."
+result: "Producto cultural publicado en granadaurban.com: eventos, rutas, guías y planificador conviven en una misma interfaz, con navegación clara y ritmo de lectura consistente en móvil y escritorio."
+technologies:
+  - "Astro"
+  - "Tailwind CSS"
+  - "GSAP"
+url: "https://www.granadaurban.com/"
+urlLabel: "Ver GRN Urban"
+cover:
+  src: "../../assets/projects/grn-urban/cover.avif"
+  alt: "GRN Urban — guía cultural de Granada"
+images:
+  - src: "../../assets/projects/grn-urban/granada1.avif"
+    alt: "GRN Urban — portada de la guía cultural con la ciudad"
+    caption: "Portada de la guía cultural."
+  - src: "../../assets/projects/grn-urban/granada2.avif"
+    alt: "GRN Urban — agenda de eventos e interfaz en vivo"
+    caption: "Agenda de eventos con categorías y sedes."
+  - src: "../../assets/projects/grn-urban/granada3.avif"
+    alt: "GRN Urban — rutas curadas y composición cartográfica"
+    caption: "Rutas curadas y composición cartográfica."
+  - src: "../../assets/projects/grn-urban/granada4.avif"
+    alt: "GRN Urban — planificador de itinerarios"
+    caption: "Planificador de itinerarios."
+seo:
+  description: "GRN Urban: guía cultural de Granada con eventos en vivo, rutas curadas, contenido editorial y planificador de viajes, desarrollada por FRN.Q."
+  keywords:
+    - "guía cultural Granada"
+    - "producto digital Astro"
+    - "diseño editorial web"
+    - "desarrollo web Granada"
+---

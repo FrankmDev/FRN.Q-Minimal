@@ -11,12 +11,14 @@
     // Only initialize on devices with fine pointer (mouse)
     if (window.matchMedia('(hover: none)').matches || 
         window.matchMedia('(pointer: coarse)').matches ||
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
         window.innerWidth <= 768) {
       return;
     }
 
     var cursor = document.querySelector('.custom-cursor');
     if (!cursor) return;
+    document.documentElement.classList.add('has-custom-cursor');
 
     var mouseX = 0;
     var mouseY = 0;
@@ -82,14 +84,14 @@
     // Hover effect on interactive elements
     document.addEventListener('mouseover', function(e) {
       var target = e.target;
-      if (target.closest(hoverSelectors)) {
+       if (target instanceof Element && target.closest(hoverSelectors)) {
         if (cursor) cursor.classList.add('hovering');
       }
     });
 
     document.addEventListener('mouseout', function(e) {
       var target = e.target;
-      if (target.closest(hoverSelectors)) {
+       if (target instanceof Element && target.closest(hoverSelectors)) {
         if (cursor) cursor.classList.remove('hovering');
       }
     });

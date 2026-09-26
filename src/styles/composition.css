@@ -1,0 +1,134 @@
+.section-separator {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--border) 0,
+    var(--border) 20px,
+    transparent 20px,
+    transparent 40px
+  );
+}
+
+.section-header {
+  margin-bottom: var(--space-3xl);
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.section-label-line {
+  width: 60px;
+  height: 2px;
+  background: var(--border);
+}
+
+.section-label-text {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.section-title {
+  font-size: clamp(2rem, 6vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.section-title-highlight,
+.title-highlight {
+  font-weight: var(--font-weight-heavy);
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border: 2px solid var(--border);
+  background: var(--bg);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.card-brutal {
+  box-shadow: 6px 6px 0 var(--border);
+}
+
+.card-brutal:hover {
+  transform: translate(-6px, -6px);
+  box-shadow: 10px 10px 0 var(--border);
+}
+
+.card::before {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--text);
+  content: "";
+  transition: width var(--transition-base);
+}
+
+.card:hover::before {
+  width: 100%;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.btn-primary {
+  border: 2px solid var(--text);
+  background: var(--text);
+  color: var(--bg);
+  box-shadow: 6px 6px 0 var(--shadow);
+}
+
+.btn-primary:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 10px 10px 0 var(--shadow);
+}
+
+.btn-secondary {
+  border: 2px dashed var(--border);
+  background: transparent;
+  color: var(--text);
+  opacity: 0.7;
+  transition:
+    opacity var(--transition-base),
+    border-style var(--transition-base),
+    background-color var(--transition-base),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.btn-secondary:hover {
+  transform: translate(-3px, -3px);
+  border-style: solid;
+  background: var(--bg-alt);
+  box-shadow: 6px 6px 0 var(--border);
+  opacity: 1;
+}
+
+.btn-arrow {
+  transition: transform var(--transition-base);
+}
+
+.btn:hover .btn-arrow {
+  transform: translateX(4px);
+}

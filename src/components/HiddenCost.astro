@@ -1,123 +1,129 @@
 ---
-const problemPoints = [
-  { icon: "✗", text: "Mantenimiento mensual recurrente" },
-  { icon: "✗", text: "Lentitud que pierde clientes cada día" },
-  { icon: "✗", text: "Vulnerabilidades y hackeos frecuentes" },
-  { icon: "✗", text: "Plugins de pago que aumentan costes" },
-  { icon: "✗", text: "Dependencia técnica permanente" },
-];
-
-const solutionPoints = [
-  { icon: "✓", text: "Inversión única, propiedad total" },
-  { icon: "✓", text: "Carga en milisegundos garantizada" },
-  { icon: "✓", text: "Código inmune a vulnerabilidades comunes" },
-  { icon: "✓", text: "Cero plugins de terceros" },
-  { icon: "✓", text: "Autonomía completa del activo" },
+const cases = [
+  {
+    num: "01",
+    title: "Catálogo mantenido a mano",
+    problem:
+      "Precios, referencias y stock actualizados en hojas sueltas y de memoria.",
+    answer:
+      "Catálogo conectado a la gestión: los datos del producto viven en un sitio y se publican solos.",
+    area: "Ecommerce · B2B",
+  },
+  {
+    num: "02",
+    title: "Pedidos por email y WhatsApp",
+    problem:
+      "Líneas de mensaje que se copian a mano a la hoja de cálculo. Errores, y nada trazable.",
+    answer:
+      "Pedidos y área privada de cliente, con flujo directo hacia la gestión interna.",
+    area: "B2B · Sistemas",
+  },
+  {
+    num: "03",
+    title: "Clientes profesionales sin área privada",
+    problem:
+      "Distribuidores y clientes habituales pidiendo igual que cualquiera: sin condiciones ni histórico.",
+    answer:
+      "Portal B2B con precios por cuenta, documentos y pedidos en línea.",
+    area: "B2B",
+  },
+  {
+    num: "04",
+    title: "Precios y documentos dispersos",
+    problem:
+      "PDF viejos, condiciones en conversaciones, versiones que ya no se sabe cuál vale.",
+    answer:
+      "Un sitio único, siempre actualizado, para precios, fichas y documentación.",
+    area: "Sistemas",
+  },
+  {
+    num: "05",
+    title: "Ecommerce sin medición",
+    problem:
+      "Ventas que entran sin saber por dónde: sin analítica, sin embudo, sin datos de producto.",
+    answer:
+      "Analítica y CRO desde el lanzamiento: cada pantalla se mide y se mejora.",
+    area: "Ecommerce · Growth",
+  },
+  {
+    num: "06",
+    title: "Sistemas que no se comunican",
+    problem:
+      "Web, ERP/CRM y hojas de cálculo en islas: trabajo duplicado y decisiones con datos viejos.",
+    answer:
+      "Integración entre interfaz, producto y operación para que los datos circulen.",
+    area: "Sistemas · B2B",
+  },
 ];
 ---
 
 <section
-  class="hidden-cost"
-  id="coste-oculto"
-  aria-labelledby="hidden-cost-title"
+  class="operacion"
+  id="operacion"
+  aria-labelledby="operacion-title"
 >
   <div class="container">
-    <div class="section-header reveal">
-      <div class="header-label">
+    <header class="sec-head reveal">
+      <div class="label-row">
         <span class="label-line" aria-hidden="true"></span>
-        <span class="label-text">Análisis de Inversión</span>
+        <span class="label-text mono">Síntomas frecuentes</span>
       </div>
-      <h2 class="section-title" id="hidden-cost-title">
-        El coste oculto de<br />
-        <span class="title-highlight">las plantillas</span>
+      <h2 class="oper-title" id="operacion-title">
+        <span class="ot-light">Seis síntomas de que la</span>
+        <span class="ot-highlight">operación manda</span>
+        <span class="ot-light">sobre la web.</span>
       </h2>
-    </div>
+    </header>
 
-    <div class="comparison-grid reveal" style="--reveal-delay: 150ms;">
-      <!-- Problem Card -->
-      <article
-        class="comparison-card card-problem"
-        aria-labelledby="problem-title"
-      >
-        <div class="card-header">
-          <div class="card-badge badge-problem">El Problema</div>
-          <h3 class="card-title" id="problem-title">
-            Plantillas Tradicionales
-          </h3>
-          <p class="card-subtitle">El coste oculto que nadie te menciona</p>
-        </div>
+    <ul class="ops-list" role="list">
+      {
+        cases.map((c, i) => (
+          <li class:list={["op-card", `op-${i}`]} aria-labelledby={`op-t-${c.num}`}>
+            <div class="op-head">
+              <span class="op-badge mono" aria-hidden="true">
+                {c.num}
+              </span>
+              <h3 class="op-title" id={`op-t-${c.num}`}>
+                {c.title}
+              </h3>
+            </div>
 
-        <ul class="point-list" role="list">
-          {
-            problemPoints.map((point) => (
-              <li class="point-item point-negative" role="listitem">
-                <span class="point-icon" aria-hidden="true">
-                  {point.icon}
-                </span>
-                <span class="point-text">{point.text}</span>
-              </li>
-            ))
-          }
-        </ul>
+            <div class="op-block op-block-problem">
+              <span class="op-kicker mono" aria-hidden="true">Hoy</span>
+              <p class="op-text">{c.problem}</p>
+            </div>
 
-        <div class="card-footer">
-          <span class="footer-label">Coste real a 3 años</span>
-          <span class="footer-value">+15.000€</span>
-        </div>
-      </article>
+            <div class="op-block op-block-answer">
+              <span class="op-kicker op-kicker-answer mono" aria-hidden="true">Con FRN.Q</span>
+              <p class="op-text op-text-answer">{c.answer}</p>
+            </div>
 
-      <!-- Solution Card -->
-      <article
-        class="comparison-card card-solution"
-        aria-labelledby="solution-title"
-      >
-        <div class="card-header">
-          <div class="card-badge badge-solution">La Solución</div>
-          <h3 class="card-title" id="solution-title">
-            Nuestra Infraestructura
-          </h3>
-          <p class="card-subtitle">
-            Un activo que se deprecia a cero mantenimiento
-          </p>
-        </div>
+            <p class="op-area mono">
+              <span class="op-area-label" aria-hidden="true">Área</span>
+              {c.area}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
 
-        <ul class="point-list" role="list">
-          {
-            solutionPoints.map((point) => (
-              <li class="point-item point-positive" role="listitem">
-                <span class="point-icon" aria-hidden="true">
-                  {point.icon}
-                </span>
-                <span class="point-text">{point.text}</span>
-              </li>
-            ))
-          }
-        </ul>
-
-        <div class="card-footer">
-          <span class="footer-label">Coste real a 3 años</span>
-          <span class="footer-value footer-value-positive">Inversión única</span
-          >
-        </div>
-      </article>
-    </div>
-
-    <div class="comparison-cta reveal" style="transition-delay: 300ms;">
-      <a href="#contacto" class="cta-link">
-        <span>Descubre tu situación actual</span>
-        <span class="cta-arrow" aria-hidden="true">→</span>
+    <footer class="ops-cta reveal">
+      <a href="#contacto" class="ops-cta-link">
+        <span>¿Te reconoces en alguno? Hablemos</span>
+        <span class="ops-arrow" aria-hidden="true">→</span>
       </a>
-    </div>
+    </footer>
   </div>
 </section>
 
 <style>
-  .hidden-cost {
+  .operacion {
+    --y: var(--accent);
     padding: var(--space-4xl) 0;
     position: relative;
   }
 
-  .hidden-cost::before {
+  .operacion::before {
     content: "";
     position: absolute;
     top: 0;
@@ -133,11 +139,16 @@ const solutionPoints = [
     );
   }
 
-  .section-header {
+  .mono {
+    font-family: var(--font-mono);
+  }
+
+  /* ---- Section header ---- */
+  .sec-head {
     margin-bottom: var(--space-3xl);
   }
 
-  .header-label {
+  .label-row {
     display: flex;
     align-items: center;
     gap: var(--space-md);
@@ -151,341 +162,252 @@ const solutionPoints = [
   }
 
   .label-text {
-    font-family: var(--font-mono);
     font-size: 0.875rem;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.1em;
+    color: var(--text-muted);
   }
 
-  .section-title {
-    font-size: clamp(2rem, 6vw, 4.5rem);
+  .oper-title {
+    font-size: clamp(2rem, 5.5vw, 4rem);
     font-weight: 300;
-    line-height: 1;
-    letter-spacing: -0.03em;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    max-width: 24ch;
   }
 
-  .title-highlight {
+  .ot-light {
+    display: inline;
+  }
+
+  .ot-highlight {
+    display: inline-block;
     font-weight: 800;
+    padding: 0 0.2em;
+    background: var(--text);
+    color: var(--bg);
+    transform: rotate(-1deg);
   }
 
-  /* Comparison Grid - Bento style */
-  .comparison-grid {
+  /* ---- Cards grid ---- */
+  .ops-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: grid;
-    gap: var(--space-xl);
-    margin-bottom: var(--space-3xl);
-    position: relative;
+    gap: var(--space-lg);
+    grid-template-columns: 1fr;
   }
 
-  @media (min-width: 900px) {
-    .comparison-grid {
-      grid-template-columns: 1fr 1fr;
+  @media (min-width: 1024px) {
+    .ops-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .op-4,
+    .op-5 {
+      grid-column: auto;
     }
   }
 
-  /* Comparison Cards */
-  .comparison-card {
-    border: 4px solid var(--border);
-    padding: var(--space-2xl);
-    background: var(--bg);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
-  }
-
-  .card-problem {
-    box-shadow: var(--shadow-brutal);
-  }
-
-  .card-solution {
-    box-shadow: 12px 12px 0 var(--border);
-    border-left: 4px solid var(--border);
-    position: relative;
-  }
-
-  .card-solution::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -4px;
-    width: 4px;
-    height: 0;
-    background: #22c55e;
-    transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 2;
-  }
-
-  .card-solution:hover::before {
-    height: 100%;
-  }
-
-  [data-theme="dark"] .card-solution::before {
-    background: #4ade80;
-  }
-
-  .comparison-card:hover {
-    transform: translate(-8px, -8px);
-    box-shadow: 16px 16px 0 var(--border);
-  }
-
-  /* Card Header */
-  .card-header {
-    margin-bottom: var(--space-xl);
-    padding-bottom: var(--space-lg);
-    border-bottom: 1px solid var(--border-light);
-  }
-
-  .card-badge {
-    display: inline-block;
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    padding: var(--space-xs) var(--space-md);
-    margin-bottom: var(--space-md);
-  }
-
-  .badge-problem {
-    background: rgba(239, 68, 68, 0.1);
-    color: #ef4444;
-    border: 1px solid rgba(239, 68, 68, 0.3);
-  }
-
-  .badge-solution {
-    background: rgba(34, 197, 94, 0.1);
-    color: #22c55e;
-    border: 1px solid rgba(34, 197, 94, 0.3);
-  }
-
-  [data-theme="dark"] .badge-problem {
-    background: rgba(239, 68, 68, 0.15);
-    color: #f87171;
-    border-color: rgba(248, 113, 113, 0.3);
-  }
-
-  [data-theme="dark"] .badge-solution {
-    background: rgba(34, 197, 94, 0.15);
-    color: #4ade80;
-    border-color: rgba(74, 222, 128, 0.3);
-  }
-
-  .card-title {
-    font-size: clamp(1.5rem, 3vw, 1.875rem);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    margin-bottom: var(--space-sm);
-  }
-
-  .card-subtitle {
-    font-size: 0.9375rem;
-    opacity: 0.6;
-    line-height: 1.5;
-  }
-
-  /* Point List */
-  .point-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 var(--space-xl);
+  .op-card {
+    --y: var(--accent);
     display: flex;
     flex-direction: column;
     gap: var(--space-md);
-  }
-
-  .point-item {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-md);
-    padding: var(--space-md);
-    background: var(--bg-alt);
-    transition: all 0.3s ease;
+    padding: var(--space-xl);
+    border: 3px solid var(--border);
+    background: var(--bg);
+    transition: all 0.4s var(--motion-ease-out);
     position: relative;
   }
 
-  .point-item:hover {
-    transform: translateX(4px);
-  }
-
-  /* Strikethrough on problem items */
-  .point-negative .point-text {
-    position: relative;
-    transition: opacity 0.3s ease;
-  }
-
-  .point-negative .point-text::after {
+  /* Top line draw on hover */
+  .op-card::before {
     content: "";
     position: absolute;
+    top: 0;
     left: 0;
-    top: 50%;
-    height: 2px;
     width: 0;
-    background: #ef4444;
-    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    height: 3px;
+    background: var(--text);
+    transition: width 0.35s var(--motion-ease-out);
+    z-index: 2;
   }
 
-  .point-negative:hover .point-text::after {
+  .op-card:hover::before {
     width: 100%;
   }
 
-  .point-negative:hover .point-text {
+  .op-card:hover {
+    transform: translate(-5px, -5px);
+    box-shadow: 10px 10px 0 var(--border);
+  }
+
+  /* ---- Head row ---- */
+  .op-head {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+    padding-bottom: var(--space-md);
+    border-bottom: 2px solid var(--border);
+  }
+
+  .op-badge {
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: var(--space-xs) var(--space-sm);
+    background: var(--text);
+    color: var(--bg);
+    transition: all 0.4s var(--motion-ease-out);
+  }
+
+  .op-card:hover .op-badge {
+    background: var(--y);
+    color: #111110;
+    transform: rotate(-4deg);
+  }
+
+  .op-title {
+    font-size: clamp(1.125rem, 2vw, 1.375rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    transition: transform 0.4s var(--motion-ease-out);
+  }
+
+  .op-card:hover .op-title {
+    transform: translateX(4px);
+  }
+
+  /* ---- Blocks ---- */
+  .op-block {
+    border-left: 2px solid var(--border-light);
+    padding-left: var(--space-md);
+    transition: all 0.4s var(--motion-ease-out);
+  }
+
+  .op-block-problem {
+    opacity: 0.85;
+  }
+
+  .op-block-answer {
+    border-left-color: var(--y);
+  }
+
+  .op-kicker {
+    display: inline-block;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    margin-bottom: var(--space-xs);
+  }
+
+  .op-kicker-answer {
+    color: var(--text);
+    background: var(--y);
+    padding: 0 var(--space-xs);
+  }
+
+  .op-text {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .op-text-answer {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* ---- Area ---- */
+  .op-area {
+    margin-top: auto;
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border-light);
+    font-size: 0.625rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+  }
+
+  .op-area-label {
+    margin-right: var(--space-sm);
     opacity: 0.6;
   }
 
-  .point-icon {
-    font-size: 1rem;
-    font-weight: 700;
-    flex-shrink: 0;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-  }
-
-  .point-negative .point-icon {
-    background: rgba(239, 68, 68, 0.1);
-    color: #ef4444;
-  }
-
-  .point-positive .point-icon {
-    background: rgba(34, 197, 94, 0.1);
-    color: #22c55e;
-  }
-
-  [data-theme="dark"] .point-negative .point-icon {
-    background: rgba(239, 68, 68, 0.15);
-    color: #f87171;
-  }
-
-  [data-theme="dark"] .point-positive .point-icon {
-    background: rgba(34, 197, 94, 0.15);
-    color: #4ade80;
-  }
-
-  .point-text {
-    font-size: 0.9375rem;
-    line-height: 1.5;
-  }
-
-  /* Card Footer */
-  .card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: var(--space-lg);
-    border-top: 2px solid var(--border);
-  }
-
-  .footer-label {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    opacity: 0.5;
-  }
-
-  .footer-value {
-    font-family: var(--font-mono);
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: #ef4444;
-  }
-
-  .footer-value-positive {
-    color: #22c55e;
-  }
-
-  [data-theme="dark"] .footer-value {
-    color: #f87171;
-  }
-
-  [data-theme="dark"] .footer-value-positive {
-    color: #4ade80;
-  }
-
-  /* CTA */
-  .comparison-cta {
+  /* ---- CTA ---- */
+  .ops-cta {
+    margin-top: var(--space-2xl);
     text-align: center;
   }
 
-  .cta-link {
+  .ops-cta-link {
     display: inline-flex;
     align-items: center;
     gap: var(--space-md);
-    padding: var(--space-lg) var(--space-2xl);
-    font-weight: 800;
-    font-size: 1.125rem;
-    border: 4px solid var(--border);
+    min-height: 48px;
+    padding: var(--space-md) var(--space-2xl);
     background: var(--bg);
     color: var(--text);
+    border: 3px solid var(--border);
+    box-shadow: 8px 8px 0 var(--border);
+    font-weight: 800;
+    font-size: 1.0625rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    box-shadow: 8px 8px 0 var(--border);
     transition:
-      background var(--transition-base),
+      background var(--transition-fast),
+      color var(--transition-fast),
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
   }
 
-  .cta-link:hover {
+  .ops-cta-link:hover {
     background: var(--text);
     color: var(--bg);
     transform: translate(-6px, -6px);
-    box-shadow: 14px 14px 0 var(--border-strong);
+    box-shadow: 14px 14px 0 var(--y);
   }
 
-  [data-theme="dark"] .cta-link:hover {
-    box-shadow: 6px 6px 0 rgba(255, 255, 255, 0.15);
-  }
-
-  .cta-link:focus-visible {
+  .ops-cta-link:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
-    opacity: 1;
   }
 
-  .cta-arrow {
-    transition: transform var(--transition-base);
+  .ops-arrow {
+    transition: transform var(--transition-fast);
   }
 
-  .cta-link:hover .cta-arrow {
-    transform: translateX(4px);
+  .ops-cta-link:hover .ops-arrow {
+    transform: translateX(6px);
   }
 
-  /* Responsive */
+  /* ---- Responsive ---- */
   @media (max-width: 640px) {
-    .hidden-cost {
+    .operacion {
       padding: var(--space-3xl) 0;
     }
 
-    .comparison-card {
-      padding: var(--space-xl);
-    }
-
-    .card-footer {
-      flex-direction: column;
-      gap: var(--space-sm);
-      align-items: flex-start;
+    .op-card {
+      padding: var(--space-lg);
     }
   }
 
-  /* Hover frame animation */
-  .comparison-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--text);
-    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 2;
-  }
-
-  .comparison-card:hover::before {
-    width: 100%;
+  @media (prefers-reduced-motion: reduce) {
+    .op-card,
+    .op-badge,
+    .op-title,
+    .ops-cta-link,
+    .ops-arrow {
+      transition: none !important;
+    }
   }
 </style>

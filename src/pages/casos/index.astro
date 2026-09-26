@@ -1,0 +1,381 @@
+---
+import { Image } from "astro:assets";
+import { siteConfig } from "../../data/site";
+import MainLayout from "../../layouts/MainLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import {
+  getProjects,
+  categoryLabels,
+  statusLabels,
+  casePath,
+  type Project,
+} from "../../data/projects";
+
+const projects = await getProjects();
+
+const itemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+   name: `Casos de ${siteConfig.name}`,
+  numberOfItems: projects.length,
+  itemListElement: projects.map((project, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: project.title,
+    url: new URL(casePath(project.slug), Astro.site).toString(),
+  })),
+};
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+     { "@type": "ListItem", position: 1, name: "Inicio", item: new URL("/", Astro.site).toString() },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Casos",
+       item: new URL("/casos/", Astro.site).toString(),
+    },
+  ],
+};
+---
+
+<MainLayout
+   title={`Casos — Trabajo seleccionado | ${siteConfig.name}`}
+   description="Casos de clientes y productos digitales de FRN.Q: contexto, problema y decisiones de negocio antes que tecnología."
+>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(itemListSchema)}
+    slot="head"
+  />
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbSchema)}
+    slot="head"
+  />
+
+  <Header />
+
+  <main id="main-content" class="cases-index">
+    <section class="cases-hero">
+      <div class="container">
+        <nav class="crumbs" aria-label="Ruta de navegación">
+          <a href="/">Inicio</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Casos</span>
+        </nav>
+        <p class="eyebrow">Trabajo seleccionado</p>
+        <h1 class="title">
+          Casos<br />
+          <span class="title-strong">reales</span>
+        </h1>
+        <p class="intro">
+          Cada caso empieza por el contexto y el problema de negocio, y termina
+          en un resultado observable. La tecnología aparece como evidencia
+          secundaria, no como argumento. Solo se publican proyectos cuya
+          información puede verificarse.
+        </p>
+      </div>
+    </section>
+
+    <section class="cases-list" aria-label="Lista de casos">
+      <div class="container">
+        <ul class="grid">
+          {
+            projects.map((project: Project, i) => (
+              <li>
+                <a class="card" href={casePath(project.slug)}>
+                  <div class="card-media">
+                    <Image
+                      src={project.cover.src}
+                      alt={project.cover.alt}
+                      widths={[480, 800, 1200]}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      format="avif"
+                      quality={68}
+                      loading={i < 2 ? "eager" : "lazy"}
+                    />
+                    <span class="card-index" aria-hidden="true">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <div class="card-body">
+                    <p class="card-meta">
+                      <span>{categoryLabels[project.category]}</span>
+                      <span class="dot" aria-hidden="true">·</span>
+                      <span>{project.sector}</span>
+                      <span class="dot" aria-hidden="true">·</span>
+                      <span>{project.year}</span>
+                    </p>
+                    <h2 class="card-title">{project.title}</h2>
+                    <p class="card-value">{project.tagline}</p>
+                    <span class="card-status">
+                      <span class="status-dot" aria-hidden="true" />
+                      {statusLabels[project.status]}
+                      <span class="card-arrow" aria-hidden="true">→</span>
+                    </span>
+                  </div>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <div class="cases-cta">
+          <p>¿Quieres un caso aplicado a tu negocio?</p>
+          <a class="cta" href="/#contacto">
+            <span>Hablemos</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</MainLayout>
+
+<style>
+  .cases-index {
+    padding-top: 120px;
+  }
+
+  .cases-hero {
+    padding: var(--space-3xl) 0 var(--space-2xl);
+    border-bottom: 4px solid var(--border);
+  }
+
+  .crumbs {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .crumbs a {
+    opacity: 0.6;
+    transition: opacity var(--transition-fast);
+  }
+
+  .crumbs a:hover {
+    opacity: 1;
+  }
+
+  .crumbs span {
+    opacity: 0.4;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-lg);
+    opacity: 0.65;
+  }
+
+  .title {
+    font-size: clamp(2.5rem, 10vw, 8rem);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+  }
+
+  .title-strong {
+    font-weight: 800;
+  }
+
+  .intro {
+    max-width: 68ch;
+    margin-top: var(--space-xl);
+    font-size: clamp(1.0625rem, 1.8vw, 1.25rem);
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .cases-list {
+    padding: var(--space-3xl) 0 var(--space-4xl);
+  }
+
+  .grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+
+  @media (min-width: 800px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 3px solid var(--border);
+    background: var(--bg);
+    transition:
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+
+  .card:hover {
+    transform: translate(-6px, -6px);
+    box-shadow: 12px 12px 0 var(--border);
+  }
+
+  .card-media {
+    position: relative;
+    border-bottom: 3px solid var(--border);
+    background: var(--bg-alt);
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+
+  .card-media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .card:hover .card-media :global(img) {
+    transform: scale(1.04);
+  }
+
+  .card-index {
+    position: absolute;
+    top: var(--space-sm);
+    left: var(--space-sm);
+    padding: 0.25rem 0.5rem;
+    background: var(--bg);
+    border: 2px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding: var(--space-lg);
+    flex: 1;
+  }
+
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-xs);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    opacity: 0.65;
+  }
+
+  .dot {
+    opacity: 0.5;
+  }
+
+  .card-title {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .card-value {
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .card-status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-top: auto;
+    padding-top: var(--space-md);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .card-arrow {
+    margin-left: auto;
+    font-size: 1.125rem;
+    transition: transform var(--transition-base);
+  }
+
+  .card:hover .card-arrow {
+    transform: translateX(6px);
+  }
+
+  .cases-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    margin-top: var(--space-4xl);
+    padding-top: var(--space-2xl);
+    border-top: 4px solid var(--border);
+  }
+
+  .cases-cta p {
+    font-size: clamp(1.125rem, 2vw, 1.5rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-2xl);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--text);
+    color: var(--bg);
+    border: 3px solid var(--text);
+    box-shadow: 8px 8px 0 var(--border);
+    transition:
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+
+  .cta:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0 var(--border);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card,
+    .card-media :global(img),
+    .card-arrow,
+    .cta {
+      transition: none !important;
+    }
+  }
+</style>

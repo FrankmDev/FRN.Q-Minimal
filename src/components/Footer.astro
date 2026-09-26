@@ -1,63 +1,56 @@
 ---
 const currentYear = new Date().getFullYear();
+import { portfolioLink, siteConfig, socialLinks } from "../data/site";
+import { serviceAreas } from "../data/services";
 
-const footerLinks = [
-  { href: "#proyectos", label: "Arquitecturas" },
-  { href: "#sobre-mi", label: "Estudio" },
-  { href: "#contacto", label: "Contacto" },
-];
-
-const socialLinks = [
-  { label: "LI", href: "https://linkedin.com/in/frnq", title: "LinkedIn" },
-  { label: "GH", href: "https://github.com/frnq", title: "GitHub" },
-  { label: "DR", href: "https://dribbble.com/frnq", title: "Dribbble" },
-];
-
-const marqueeItems = ["FRN.Q", "INGENIERÍA WEB", "DISEÑO", "PERFORMANCE"];
+const marqueeItems = ["FRN.Q", "ECOMMERCE", "PORTALES B2B", "SISTEMAS", "GROWTH"];
 ---
 
 <footer class="footer" role="contentinfo">
-  <div class="footer-top reveal">
+  <div class="footer-top">
     <div class="container">
       <div class="top-content">
         <div class="footer-brand">
-          <a href="/" class="brand-logo" aria-label="FRN.Q - Inicio">
+          <a href="/" class="brand-logo" aria-label="{siteConfig.name} — Inicio">
             <div class="logo-icon" aria-hidden="true">
               <span></span><span></span>
               <span></span><span></span>
             </div>
-            <span class="logo-text">FRN.Q</span>
+            <span class="logo-text">{siteConfig.name}</span>
           </a>
-          <p class="brand-tagline">Ingeniería Web de Alto Rendimiento</p>
+          <p class="brand-tagline">{siteConfig.tagline}</p>
         </div>
 
-        <nav class="footer-nav" aria-label="Navegación del pie">
-          {
-            footerLinks.map((link) => (
-              <a href={link.href} class="nav-link">
-                <span class="link-bracket" aria-hidden="true">
-                  [
-                </span>
-                {link.label}
-                <span class="link-bracket" aria-hidden="true">
-                  ]
-                </span>
-              </a>
-            ))
-          }
-        </nav>
+        <div class="footer-cols">
+          <nav class="footer-col" aria-label="Soluciones">
+            <h2 class="col-title mono">Soluciones</h2>
+            {serviceAreas.map((area) => <a href={`/#sol-${area.id}`}>{area.title}</a>)}
+          </nav>
+
+          <div class="footer-col">
+            <h2 class="col-title mono">Contacto</h2>
+            <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+            <span>{siteConfig.location.city} / España</span>
+            <a
+              class="portfolio-link"
+              href={portfolioLink.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {portfolioLink.label} <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="footer-cta reveal" style="--reveal-delay: 100ms;">
+  <div class="footer-cta">
     <div class="container">
-      <a href="mailto:hola@frnq.es" class="cta-large">
-        <span class="cta-label"
-          >¿Listo para dejar de depender de plantillas?</span
-        >
+      <a href={`mailto:${siteConfig.email}`} class="cta-large">
+        <span class="cta-label mono">¿Hablamos?</span>
         <span class="cta-email">
-          <span>hola@frnq.es</span>
+          <span>{siteConfig.email}</span>
           <span class="cta-cursor" aria-hidden="true">_</span>
         </span>
         <span class="cta-arrow" aria-hidden="true">→</span>
@@ -65,13 +58,13 @@ const marqueeItems = ["FRN.Q", "INGENIERÍA WEB", "DISEÑO", "PERFORMANCE"];
     </div>
   </div>
 
-  <div class="footer-bottom reveal" style="--reveal-delay: 200ms;">
+  <div class="footer-bottom">
     <div class="container">
       <div class="bottom-content">
         <div class="bottom-left">
-          <span class="copyright">© {currentYear} FRN.Q Studio</span>
+          <span class="copyright">© {currentYear} {siteConfig.name}</span>
           <span class="separator" aria-hidden="true">/</span>
-          <span class="location">Granada, España</span>
+          <span class="location">{siteConfig.location.city}, España</span>
         </div>
 
         <div class="bottom-right">
@@ -109,7 +102,7 @@ const marqueeItems = ["FRN.Q", "INGENIERÍA WEB", "DISEÑO", "PERFORMANCE"];
   <div class="footer-marquee" aria-hidden="true">
     <div class="marquee-track">
       {
-        Array.from({ length: 6 }).map(() => (
+        Array.from({ length: 3 }).map(() => (
           <>
             {marqueeItems.map((item) => (
               <>
@@ -132,25 +125,16 @@ const marqueeItems = ["FRN.Q", "INGENIERÍA WEB", "DISEÑO", "PERFORMANCE"];
   });
 
   // Show/hide back to top based on scroll
-  const toggleBackTop = () => {
-    if (window.scrollY > 500) {
-      backTopBtn?.classList.add("is-visible");
-    } else {
-      backTopBtn?.classList.remove("is-visible");
-    }
-  };
-
   let ticking = false;
   window.addEventListener(
     "scroll",
     () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          toggleBackTop();
-          ticking = false;
-        });
-        ticking = true;
-      }
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        backTopBtn?.classList.toggle("is-visible", window.scrollY > 500);
+        ticking = false;
+      });
     },
     { passive: true },
   );
@@ -158,36 +142,43 @@ const marqueeItems = ["FRN.Q", "INGENIERÍA WEB", "DISEÑO", "PERFORMANCE"];
 
 <style>
   .footer {
-    border-top: 2px solid var(--border);
+    --y: var(--accent);
+    border-top: 3px solid var(--border);
     background: var(--bg);
     position: relative;
     overflow: hidden;
   }
 
+  .mono {
+    font-family: var(--font-mono);
+  }
+
+  /* ---- Top ---- */
   .footer-top {
-    padding: var(--space-xl) 0;
+    padding: var(--space-2xl) 0;
     border-bottom: 3px solid var(--border);
   }
 
   .top-content {
     display: flex;
     flex-direction: column;
-    gap: var(--space-lg);
+    gap: var(--space-xl);
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 900px) {
     .top-content {
       flex-direction: row;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
+      gap: var(--space-3xl);
     }
   }
 
   .footer-brand {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     gap: var(--space-md);
-    flex-wrap: wrap;
   }
 
   .brand-logo {
@@ -235,40 +226,59 @@ const marqueeItems = ["FRN.Q", "INGENIERÍA WEB", "DISEÑO", "PERFORMANCE"];
     font-size: 0.875rem;
     opacity: 0.6;
     font-style: italic;
+    margin: 0;
   }
 
-  .footer-nav {
-    display: flex;
-    gap: var(--space-lg);
-    flex-wrap: wrap;
+  .footer-cols {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
   }
 
-  .nav-link {
-    font-size: 0.875rem;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    transition: opacity var(--transition-fast);
-    padding: var(--space-xs) 0;
+  @media (min-width: 700px) {
+    .footer-cols {
+      grid-template-columns: 1.2fr 1fr;
+      gap: var(--space-2xl);
+    }
   }
 
-  .nav-link:hover {
-    opacity: 0.7;
+  .footer-col {
+    display: grid;
+    align-content: start;
+    gap: 0.65rem;
   }
 
-  .link-bracket {
-    opacity: 0.3;
-    transition: opacity var(--transition-base);
+  .col-title {
+    margin-bottom: 0.4rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.52;
   }
 
-  .nav-link:hover .link-bracket,
-  .nav-link:focus .link-bracket {
-    opacity: 1;
+  .footer-col a,
+  .footer-col span {
+    font-size: 0.82rem;
+    line-height: 1.6;
+    width: fit-content;
   }
 
+  .footer-col a:hover {
+    opacity: 0.58;
+    text-decoration: underline;
+    text-decoration-color: var(--y);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+
+  .portfolio-link {
+    font-weight: 650;
+  }
+
+  /* ---- Big CTA ---- */
   .footer-cta {
-    padding: var(--space-4xl) 0;
+    padding: var(--space-3xl) 0;
     border-bottom: 3px solid var(--border);
     text-align: center;
   }
@@ -282,7 +292,7 @@ const marqueeItems = ["FRN.Q", "INGENIERÍA WEB", "DISEÑO", "PERFORMANCE"];
     border: 3px solid var(--text);
     background: var(--text);
     color: var(--bg);
-    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 8px 8px 0 var(--y);
     transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
@@ -292,7 +302,35 @@ const marqueeItems = ["FRN.Q", "INGENIERÍA WEB", "DISEÑO", "PERFORMANCE"];
 
   .cta-large:hover {
     transform: translate(-8px, -8px);
-    box-shadow: 16px 16px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 14px 14px 0 var(--y);
+  }
+
+  .cta-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    opacity: 0.7;
+  }
+
+  .cta-email {
+    font-family: var(--font-mono);
+    font-size: clamp(1.375rem, 4.5vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+
+  .cta-arrow {
+    position: absolute;
+    right: var(--space-lg);
+    bottom: var(--space-lg);
+    font-size: 1.5rem;
+    transition: transform var(--transition-base);
+  }
+
+  .cta-large:hover .cta-arrow {
+    transform: translateX(8px);
   }
 
   /* Terminal cursor blink */
@@ -304,73 +342,26 @@ const marqueeItems = ["FRN.Q", "INGENIERÍA WEB", "DISEÑO", "PERFORMANCE"];
     margin-left: 2px;
   }
 
-  /* En modo oscuro, sombra clara */
-  [data-theme="dark"] .cta-large {
-    border-color: var(--text);
-    box-shadow: 8px 8px 0 rgba(255, 255, 255, 0.1);
-  }
-
-  [data-theme="dark"] .cta-large:hover {
-    box-shadow: 16px 16px 0 rgba(255, 255, 255, 0.1);
-  }
-
-  .cta-large:hover .cta-arrow {
-    transform: translateX(8px);
-  }
-
   .cta-large:focus-visible {
     outline: 3px solid var(--text);
-    outline-offset: 3px;
+    outline-offset: 4px;
   }
 
-  .cta-label {
-    font-size: 0.875rem;
-    opacity: 0.7;
-  }
-
-  .cta-email {
-    font-size: clamp(1.25rem, 5vw, 3rem);
-    font-weight: 300;
-    letter-spacing: -0.02em;
-    font-family: var(--font-mono);
-    word-break: break-all;
-  }
-
-  .cta-arrow {
-    position: absolute;
-    right: 1.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.5rem;
-    transition: transform var(--transition-base);
-  }
-
-  @media (max-width: 640px) {
-    .cta-arrow {
-      display: none;
-    }
-
-    .cta-large {
-      padding: var(--space-lg) var(--space-xl);
-      width: 100%;
-    }
-  }
-
+  /* ---- Bottom ---- */
   .footer-bottom {
-    padding: var(--space-md) 0;
-    background: var(--bg-alt);
+    padding: var(--space-lg) 0;
   }
 
   .bottom-content {
     display: flex;
     flex-direction: column;
     gap: var(--space-md);
-    align-items: center;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 700px) {
     .bottom-content {
       flex-direction: row;
+      align-items: center;
       justify-content: space-between;
     }
   }
@@ -379,20 +370,21 @@ const marqueeItems = ["FRN.Q", "INGENIERÍA WEB", "DISEÑO", "PERFORMANCE"];
     display: flex;
     align-items: center;
     gap: var(--space-sm);
-    font-size: 0.8125rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     opacity: 0.6;
-    flex-wrap: wrap;
-    justify-content: center;
   }
 
   .separator {
-    opacity: 0.5;
+    opacity: 0.4;
   }
 
   .bottom-right {
     display: flex;
     align-items: center;
-    gap: var(--space-md);
+    gap: var(--space-lg);
   }
 
   .social-links {
@@ -401,27 +393,23 @@ const marqueeItems = ["FRN.Q", "INGENIERÍA WEB", "DISEÑO", "PERFORMANCE"];
   }
 
   .social-link {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 3px solid var(--border);
+    border: 2px solid var(--border);
     font-family: var(--font-mono);
-    font-size: 0.625rem;
+    font-size: 0.75rem;
     font-weight: 700;
-    background: var(--bg);
-    transition:
-      background var(--transition-fast),
-      color var(--transition-fast),
-      transform var(--transition-fast);
+    transition: all var(--transition-fast);
   }
 
   .social-link:hover {
     background: var(--text);
     color: var(--bg);
-    transform: translate(-4px, -4px);
-    box-shadow: 6px 6px 0 var(--border);
+    transform: translate(-3px, -3px);
+    box-shadow: 5px 5px 0 var(--border);
   }
 
   .social-link:focus-visible {
@@ -432,78 +420,64 @@ const marqueeItems = ["FRN.Q", "INGENIERÍA WEB", "DISEÑO", "PERFORMANCE"];
   .back-top {
     width: 40px;
     height: 40px;
-    border: 3px solid var(--border);
-    background: var(--bg);
-    font-size: 1.25rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition:
-      background var(--transition-fast),
-      color var(--transition-fast),
-      transform var(--transition-fast),
-      opacity var(--transition-base);
-    cursor: pointer;
+    border: 2px solid var(--border);
+    background: var(--bg);
+    font-size: 1rem;
     opacity: 0;
     visibility: hidden;
+    transform: translateY(8px);
+    transition: all var(--transition-base);
   }
 
   .back-top.is-visible {
     opacity: 1;
     visibility: visible;
+    transform: translateY(0);
   }
 
   .back-top:hover {
     background: var(--text);
     color: var(--bg);
-    transform: translate(-4px, -4px);
-    box-shadow: 6px 6px 0 var(--border);
-  }
-
-  .back-top:hover span {
-    animation: bounceFade 0.6s ease;
   }
 
   .back-top:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
-    opacity: 1;
-    visibility: visible;
   }
 
+  /* ---- Bottom marquee ---- */
   .footer-marquee {
-    padding: var(--space-md) 0;
+    border-top: 3px solid var(--border);
     background: var(--text);
     color: var(--bg);
+    padding: var(--space-md) 0;
     overflow: hidden;
   }
 
   .marquee-track {
     display: flex;
-    animation: marquee 20s linear infinite;
+    align-items: center;
     width: max-content;
+    animation: marquee 30s linear infinite;
     will-change: transform;
   }
 
   .marquee-track span {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
     padding: 0 var(--space-md);
   }
 
   .marquee-sep {
-    opacity: 0.3;
-  }
-
-  @keyframes marquee {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
+    opacity: 0.4;
+    font-size: 0.75rem;
   }
 
   @media (prefers-reduced-motion: reduce) {

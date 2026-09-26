@@ -1,88 +1,54 @@
 ---
-const projects = [
-  {
-    name: "Urban Loft",
-    category: "Optimización de Conversión",
-    year: "2023",
-    image: "/projects/urban.avif",
-    highlight: "Diseño Corporativo",
-    url: "https://urban-loft.vercel.app/",
-    description:
-      "Plataforma inmobiliaria con sistema de conversión optimizado y diseño corporativo premium",
-  },
-  {
-    name: "Bar Caracalla",
-    category: "Experiencia de Marca",
-    year: "2024",
-    image: "/projects/caracalla.avif",
-    highlight: "Retención UI",
-    url: "https://barcaracalla.com/",
-    description:
-      "Web de hostelería con experiencia de marca inmersiva y alta retención de usuarios",
-  },
-  {
-    name: "FRN.Q STUDIO",
-    category: "Identidad Digital",
-    year: "2025",
-    image: "/projects/frn.q.avif",
-    highlight: "Infraestructura Propia",
-    url: "https://frnq.es",
-    description:
-      "Portfolio experimental brutalista con animaciones avanzadas y diseño disruptivo",
-  },
-  {
-    name: "Fernando Feijoo",
-    category: "Portal B2B",
-    year: "2025",
-    image: "/projects/fernando-feijoo.avif",
-    highlight: "Arquitectura Escalable",
-    url: "https://fernando-feijoo.vercel.app/",
-    description:
-      "Portal empresarial B2B con arquitectura escalable y rendimiento optimizado",
-  },
-  {
-    name: "Asercord Energia",
-    category: "Sector Energético",
-    year: "2024",
-    image: "/projects/asercord.avif",
-    highlight: "Transformación Digital",
-    url: "https://asercordenergia.netlify.app/",
-    description:
-      "Transformación digital completa para empresa del sector energético",
-  },
-  {
-    name: "Wanda Animalart",
-    category: "E-commerce",
-    year: "2024",
-    image: "/projects/wanda.avif",
-    highlight: "Conversión Optimizada",
-    url: "https://www.wanda-animalart.com/",
-    description:
-      "E-commerce de arte animal con funnel de conversión optimizado",
-  },
-];
+import { getImage } from "astro:assets";
+import { siteConfig } from "../data/site";
+import {
+  getProjects,
+  categoryLabels,
+  casePath,
+  type Project,
+} from "../data/projects";
+
+const projects = await getProjects();
+
+const cases = await Promise.all(
+  projects.map(async (project: Project) => ({
+    slug: project.slug,
+    title: project.title,
+    href: casePath(project.slug),
+    year: project.year,
+    sector: project.sector,
+    categoryLabel: categoryLabels[project.category],
+    value: project.tagline,
+    preview: (
+      await getImage({
+        src: project.cover.src,
+        width: 880,
+        format: "avif",
+        quality: 58,
+      })
+    ).src,
+  })),
+);
 
 const projectSchema = {
   "@context": "https://schema.org",
   "@type": "ItemList",
-  name: "Proyectos de Desarrollo Web - FRN.Q Studio",
+   name: `Casos de ${siteConfig.name}`,
   description:
-    "Portfolio de infraestructuras digitales de alto rendimiento desarrolladas por FRN.Q Studio",
-  numberOfItems: projects.length,
-  itemListElement: projects.map((project, index) => ({
+     `Casos de clientes y productos digitales desarrollados por ${siteConfig.name}.`,
+  numberOfItems: cases.length,
+  itemListElement: cases.map((item, index) => ({
     "@type": "ListItem",
     position: index + 1,
     item: {
       "@type": "CreativeWork",
-      name: project.name,
-      description: project.description,
-      image: project.image,
-      url: project.url,
-      dateCreated: project.year,
+      name: item.title,
+      url: new URL(item.href, Astro.site).toString(),
+      dateCreated: item.year,
       creator: {
         "@type": "Organization",
-        name: "FRN.Q Studio",
-        url: "https://frnq.es",
+         name: siteConfig.name,
+         url: siteConfig.url,
       },
     },
   })),
@@ -104,31 +70,27 @@ const projectSchema = {
     <div class="section-header reveal">
       <div class="header-label">
         <span class="label-line" aria-hidden="true"></span>
-        <span class="label-text">Arquitecturas Digitales</span>
+        <span class="label-text">Casos de cliente</span>
       </div>
       <h2 class="section-title" id="projects-title">
-        Proyectos<br />
-        <span class="title-highlight">Seleccionados</span>
+        Resultados<br />
+        <span class="title-highlight">antes que tecnología</span>
       </h2>
+      <p class="section-intro">
+        Cada caso explica el contexto, el problema y la decisión de negocio
+        antes que el stack. La implementación es la evidencia, no el argumento.
+      </p>
     </div>
 
-    <div
-      class="projects-list reveal"
-      style="transition-delay: 150ms;"
-      role="list"
-      aria-label="Lista de proyectos"
-    >
+     <div class="projects-list reveal" style="transition-delay: 150ms;" aria-label="Lista de casos">
       {
-        projects.map((project, i) => (
+        cases.map((item, i) => (
           <a
-            href={project.url}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={item.href}
             class="project-item"
-            data-image={project.image}
+            data-image={item.preview}
             data-index={i}
-            role="listitem"
-            aria-label={`Ver proyecto ${project.name}: ${project.description}`}
+            aria-label={`Ver caso ${item.title}: ${item.value}`}
           >
             <div class="item-number" aria-hidden="true">
               <span>0{i + 1}</span>
@@ -136,18 +98,19 @@ const projectSchema = {
 
             <div class="item-content">
               <div class="item-meta">
-                <span class="meta-year">{project.year}</span>
+                <span class="meta-year">{item.year}</span>
                 <span class="meta-sep" aria-hidden="true">
                   /
                 </span>
-                <span class="meta-cat">{project.category}</span>
+                <span class="meta-sector">{item.sector}</span>
               </div>
-              <h3 class="item-title">{project.name}</h3>
+              <h3 class="item-title">{item.title}</h3>
+              <p class="item-value">{item.value}</p>
             </div>
 
             <div class="item-highlight">
               <span class="highlight-dot" aria-hidden="true" />
-              <span class="highlight-text">{project.highlight}</span>
+              <span class="highlight-text">{item.categoryLabel}</span>
             </div>
 
             <div class="item-action" aria-hidden="true">
@@ -159,8 +122,8 @@ const projectSchema = {
     </div>
 
     <div class="projects-footer">
-      <a href="#contacto" class="footer-cta">
-        <span>Tu proyecto merece este nivel</span>
+      <a href="/casos/" class="footer-cta">
+        <span>Ver todos los casos</span>
         <span class="cta-arrow" aria-hidden="true">→</span>
       </a>
     </div>
@@ -176,8 +139,7 @@ const projectSchema = {
     </div>
     <div class="mockup-frame">
       <img
-        src=""
-        alt="Vista previa del proyecto"
+        alt="Vista previa del caso"
         class="mockup-img"
         id="mockup-img"
         loading="lazy"
@@ -191,8 +153,8 @@ const projectSchema = {
   // Only enable cursor mockup on devices that support hover
   const hoverQuery = window.matchMedia("(hover: hover)");
 
-  function initCursorMockup() {
-    if (!hoverQuery.matches) return;
+   function initCursorMockup() {
+     if (!hoverQuery.matches || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const projectItems = document.querySelectorAll(".project-item");
     const cursorMockup = document.getElementById("cursor-mockup");
@@ -245,7 +207,7 @@ const projectSchema = {
       { passive: true },
     );
 
-    projectItems.forEach((item) => {
+     projectItems.forEach((item) => {
       const imageUrl = item.getAttribute("data-image");
 
       const handleEnter = () => {
@@ -267,8 +229,6 @@ const projectSchema = {
 
       item.addEventListener("mouseenter", handleEnter);
       item.addEventListener("mouseleave", handleLeave);
-      item.addEventListener("focus", handleEnter);
-      item.addEventListener("blur", handleLeave);
     });
 
     // Safety: restore cursor if mouse leaves the entire section
@@ -281,11 +241,7 @@ const projectSchema = {
   // Initialize
   initCursorMockup();
 
-  // Re-check on resize
-  hoverQuery.addEventListener("change", initCursorMockup);
-
   // IntersectionObserver for project items entrance (slide from left)
-  const projectItems = document.querySelectorAll(".project-item");
   const itemObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -301,7 +257,13 @@ const projectSchema = {
     { threshold: 0.05, rootMargin: "0px 0px -5% 0px" },
   );
 
-  projectItems.forEach((item) => itemObserver.observe(item));
+  document.querySelectorAll(".project-item").forEach((item) => {
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      itemObserver.observe(item);
+    } else {
+      item.classList.add("visible");
+    }
+  });
 </script>
 
 <style>
@@ -386,6 +348,13 @@ const projectSchema = {
     font-weight: 800;
   }
 
+  .section-intro {
+    max-width: 60ch;
+    margin-top: var(--space-lg);
+    font-size: clamp(1rem, 1.5vw, 1.125rem);
+    color: var(--text-muted);
+  }
+
   .projects-list {
     border-top: 4px solid var(--border);
   }
@@ -401,14 +370,14 @@ const projectSchema = {
     position: relative;
     text-decoration: none;
     color: inherit;
+    /* Entrance animation defaults */
+    opacity: 0;
+    transform: translateX(-24px);
     transition:
       background var(--transition-base),
       padding var(--transition-base),
       border-color var(--transition-base),
       color var(--transition-base);
-    /* Entrance animation defaults */
-    opacity: 0;
-    transform: translateX(-24px);
   }
 
   .project-item.visible {
@@ -419,8 +388,14 @@ const projectSchema = {
       padding var(--transition-base),
       border-color var(--transition-base),
       color var(--transition-base),
-      opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity 0.55s var(--motion-ease-out),
+      transform 0.55s var(--motion-ease-out);
+  }
+
+  @media (hover: none), (pointer: coarse) {
+    .project-item {
+      cursor: pointer;
+    }
   }
 
   /* Left accent bar on hover */
@@ -508,6 +483,14 @@ const projectSchema = {
     transition: transform var(--transition-base);
   }
 
+  .item-value {
+    max-width: 68ch;
+    margin-top: var(--space-sm);
+    font-size: clamp(0.9375rem, 1.4vw, 1.0625rem);
+    line-height: 1.45;
+    opacity: 0.7;
+  }
+
   .item-highlight {
     display: flex;
     align-items: center;
@@ -534,7 +517,7 @@ const projectSchema = {
   .highlight-dot {
     width: 6px;
     height: 6px;
-    background: #22c55e;
+    background: var(--accent);
     border-radius: 50%;
     flex-shrink: 0;
   }
@@ -599,14 +582,6 @@ const projectSchema = {
     box-shadow: 14px 14px 0 var(--border-strong);
   }
 
-  [data-theme="dark"] .footer-cta {
-    box-shadow: 8px 8px 0 rgba(255, 255, 255, 0.15);
-  }
-
-  [data-theme="dark"] .footer-cta:hover {
-    box-shadow: 14px 14px 0 rgba(255, 255, 255, 0.25);
-  }
-
   .footer-cta:focus-visible {
     outline: 4px solid var(--text);
     outline-offset: 4px;
@@ -623,6 +598,12 @@ const projectSchema = {
     transform: translate3d(-100%, -100%, 0);
     transition: opacity 0.2s ease;
     will-change: transform;
+    border: 4px solid var(--border);
+    box-shadow: 12px 12px 0 var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: 440px;
   }
 
   .cursor-mockup.active {
@@ -676,30 +657,10 @@ const projectSchema = {
     width: 440px;
     height: 260px;
     background: var(--bg);
-    border: 4px solid var(--border);
     border-top: none;
-    box-shadow: 12px 12px 0 var(--border);
     padding: 0;
     overflow: hidden;
     flex-shrink: 0;
-  }
-
-  .cursor-mockup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    z-index: 10000;
-    opacity: 0;
-    transform: translate3d(-100%, -100%, 0);
-    transition: opacity 0.2s ease;
-    will-change: transform;
-    border: 4px solid var(--border);
-    box-shadow: 12px 12px 0 var(--border);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    width: 440px;
   }
 
   .mockup-img {
@@ -721,6 +682,11 @@ const projectSchema = {
     .footer-cta,
     .cursor-mockup {
       transition: none !important;
+    }
+
+    .project-item {
+      opacity: 1 !important;
+      transform: none !important;
     }
   }
 </style>

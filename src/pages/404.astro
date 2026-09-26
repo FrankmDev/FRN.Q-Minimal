@@ -4,10 +4,10 @@ import MainLayout from '../layouts/MainLayout.astro';
 
 <MainLayout 
   title="404 — Página no encontrada | FRN.Q"
-  description="La página que buscas no existe. Vuelve al inicio o contacta con nosotros para comenzar tu proyecto."
+   description="La página que buscas no existe. Vuelve al inicio o contacta conmigo para hablar de tu proyecto."
   noindex={true}
 >
-  <main class="error-page">
+  <main id="main-content" class="error-page">
     <div class="container">
       <div class="error-content">
         <div class="error-code" aria-hidden="true">
@@ -27,7 +27,7 @@ import MainLayout from '../layouts/MainLayout.astro';
             <span>Volver al inicio</span>
             <span class="btn-arrow" aria-hidden="true">→</span>
           </a>
-          <a href="#contacto" class="error-btn btn-secondary">
+           <a href="/#contacto" class="error-btn btn-secondary">
             <span>Contactar</span>
           </a>
         </div>
