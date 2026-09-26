@@ -7,7 +7,7 @@ import {
 } from "../data/contact-contract";
 import { contactMethods } from "../data/contact";
 import { faqItems } from "../data/engagement";
-import { portfolioLink, siteConfig, socialLinks } from "../data/site";
+import { portfolioLink, siteConfig } from "../data/site";
 ---
 
 <section class="contact" id="contacto" aria-labelledby="contact-title">
@@ -39,15 +39,6 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
               <span class="method-arrow" aria-hidden="true">→</span>
             </a>
           ))}
-        </div>
-
-        <div class="social-links">
-          <span class="social-label">También en:</span>
-          <nav class="social-icons" aria-label="Redes sociales">
-            {socialLinks.map((link) => (
-              <a href={link.href} class="social-icon" target="_blank" rel="noopener noreferrer" aria-label={link.title}>{link.label}</a>
-            ))}
-          </nav>
         </div>
 
         <a
@@ -249,7 +240,7 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
 
     <section class="faq-section reveal" aria-labelledby="faq-title">
       <header class="faq-heading">
-        <h3 class="faq-title" id="faq-title">Dudas, antes de empezar.</h3>
+        <h3 class="faq-title" id="faq-title">Dudas antes de empezar.</h3>
         <span class="faq-count mono" aria-hidden="true">
           {String(faqItems.length).padStart(2, "0")} / FAQ
         </span>
@@ -503,51 +494,6 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
 
   .method-card:hover .method-arrow {
     transform: translateX(4px);
-  }
-
-  .social-links {
-    display: flex;
-    align-items: center;
-    gap: var(--space-lg);
-  }
-
-  .social-label {
-    font-size: 0.875rem;
-    opacity: 0.6;
-  }
-
-  .social-icons {
-    display: flex;
-    gap: var(--space-sm);
-  }
-
-  .social-icon {
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 3px solid var(--border);
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    font-weight: 800;
-    transition:
-      background var(--transition-fast),
-      color var(--transition-fast),
-      transform var(--transition-fast),
-      box-shadow var(--transition-fast);
-  }
-
-  .social-icon:hover {
-    background: var(--text);
-    color: var(--bg);
-    transform: translate(-5px, -5px);
-    box-shadow: 8px 8px 0 var(--border);
-  }
-
-  .social-icon:focus-visible {
-    outline: 3px solid var(--text);
-    outline-offset: 3px;
   }
 
   .contact-form-wrapper {
@@ -1120,7 +1066,7 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
   }
 
   .info-title {
-    font-size: clamp(2rem, 4.4vw, 3.8rem);
+    font-size: clamp(2.5rem, 5vw, 4rem);
   }
 
   .info-desc {
@@ -1131,32 +1077,58 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
   }
 
   .contact-methods {
+    align-items: center;
     gap: var(--space-md);
     margin: var(--space-xl) 0 var(--space-lg);
   }
 
-  .social-links {
-    gap: var(--space-md);
+  .method-card {
+    width: 100%;
+    max-width: 34rem;
+    min-height: 10rem;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-sm);
+    padding: var(--space-lg);
+    text-align: center;
   }
 
-  .social-label {
-    color: var(--text-muted);
-    font-size: 0.75rem;
-  }
-
-  .social-icons {
-    gap: var(--space-xs);
-  }
-
-  .social-icon {
+  .method-icon {
+    display: grid;
     width: 2.5rem;
     height: 2.5rem;
-    border-width: 2px;
+    place-items: center;
+    border: 2px solid var(--border);
+    background: var(--accent);
+    font-size: 1.125rem;
+  }
+
+  .method-info {
+    flex: initial;
+    text-align: center;
+  }
+
+  .method-label { margin-bottom: var(--space-xs); }
+
+  .method-value {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    overflow-wrap: anywhere;
+  }
+
+  .method-arrow {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+  }
+
+  .method-card:hover .method-arrow {
+    transform: translate(4px, -2px);
   }
 
   .contact-portfolio {
-    display: inline-block;
-    margin-top: var(--space-lg);
+    display: block;
+    width: fit-content;
+    margin: var(--space-lg) auto 0;
     color: var(--text-muted);
     font-size: 0.625rem;
     font-weight: 700;
@@ -1172,7 +1144,6 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
   }
 
   .method-card:focus-visible,
-  .social-icon:focus-visible,
   .contact-portfolio:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
@@ -1210,34 +1181,30 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
 
   .faq-section {
     margin-top: clamp(var(--space-3xl), 7vw, 7rem);
-    padding: clamp(var(--space-lg), 4vw, var(--space-2xl));
-    border: 3px solid var(--border);
-    border-top: 9px solid var(--accent);
-    background: var(--text);
-    color: var(--bg);
-    box-shadow: 10px 10px 0 var(--border);
+    padding-top: var(--space-lg);
+    border-top: 3px solid var(--border);
   }
 
   .faq-heading {
     display: flex;
-    align-items: end;
+    align-items: baseline;
     justify-content: space-between;
     gap: var(--space-lg);
     margin-bottom: var(--space-md);
     padding-bottom: var(--space-md);
-    border-bottom: 1px solid rgb(244 243 239 / 24%);
   }
 
   .faq-title {
     margin: 0;
-    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
-    font-family: var(--font-mono);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-family: var(--font-sans);
     font-weight: 700;
-    letter-spacing: -0.06em;
+    line-height: 0.95;
+    letter-spacing: -0.065em;
   }
 
   .faq-count {
-    color: var(--accent);
+    color: var(--text-muted);
     font-size: 0.6875rem;
     font-weight: 700;
     letter-spacing: 0.1em;
@@ -1251,8 +1218,8 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
 
   .faq-item {
     border: 0;
-    border-bottom: 1px solid rgb(244 243 239 / 24%);
-    background: var(--text);
+    border-top: 2px solid var(--border);
+    background: var(--bg);
   }
 
   .faq-item:hover,
@@ -1266,26 +1233,26 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
     grid-template-columns: 2rem minmax(0, 1fr) 2rem;
     min-height: 4rem;
     padding: var(--space-sm) 0;
-    color: var(--bg);
+    color: var(--text);
     font-size: 0.875rem;
   }
 
   .faq-question:hover,
   .faq-item.is-open .faq-question {
-    background: transparent;
-    color: var(--accent);
+    background: var(--bg-alt);
+    color: var(--text);
   }
 
   .faq-question:focus-visible {
     position: relative;
     z-index: 1;
-    outline: 3px solid var(--accent);
+    outline: 3px solid var(--text);
     outline-offset: 2px;
   }
 
   .faq-number {
     align-self: center;
-    color: var(--accent);
+    color: var(--text-muted);
     font-size: 0.625rem;
     font-weight: 700;
     letter-spacing: 0.05em;
@@ -1295,17 +1262,17 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
     padding: 0 2.5rem var(--space-md);
     font-size: 0.875rem;
     line-height: 1.55;
-    color: var(--bg);
+    color: var(--text-secondary);
   }
 
   .faq-icon {
     width: 2rem;
     height: 2rem;
-    border: 1px solid rgb(244 243 239 / 52%);
+    border: 2px solid var(--border);
   }
 
   .faq-arrow {
-    color: var(--accent);
+    color: var(--text);
   }
 
   .faq-item.is-open .faq-icon {
@@ -1340,6 +1307,8 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
     }
 
     .faq-heading { align-items: flex-start; }
+    .faq-title { font-size: clamp(2.1rem, 8vw, 2.75rem); }
+    .faq-question { min-height: 4.25rem; font-size: 0.9375rem; }
 
     .faq-answer { padding-left: 2.5rem; }
 

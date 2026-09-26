@@ -86,9 +86,6 @@ import { portfolioLink } from "../data/site";
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-  }
-
-  .portfolio-link {
     color: var(--text-muted);
     text-decoration: underline;
     text-decoration-color: var(--border-light);
@@ -222,11 +219,11 @@ import { portfolioLink } from "../data/site";
   @media (max-width: 720px) {
     .hero {
       min-height: unset;
-      padding: var(--space-2xl) 0 var(--space-3xl);
+      padding: var(--space-3xl) 0 var(--space-4xl);
     }
 
     .hero-top {
-      margin-bottom: clamp(4rem, 17vw, 6rem);
+      margin-bottom: clamp(4.5rem, 20vw, 6.5rem);
     }
 
     .portfolio-link {
@@ -250,7 +247,7 @@ import { portfolioLink } from "../data/site";
       align-items: flex-start;
       flex-direction: column;
       gap: var(--space-xl);
-      margin-top: var(--space-2xl);
+      margin-top: var(--space-3xl);
       padding-left: 0;
     }
 

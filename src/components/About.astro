@@ -26,7 +26,6 @@ const process = [
 <section class="about" id="sobre-mi" aria-labelledby="about-title">
   <div class="container">
     <div class="about-intro reveal">
-      <span class="about-label mono"><span aria-hidden="true"></span>FRN.Q / Francisco Muñoz</span>
       <h2 id="about-title">Negocio al centro.<br /><span>Diseño y código, juntos.</span></h2>
       <div class="about-intro-bottom">
         <p>
@@ -83,25 +82,15 @@ const process = [
   .mono { font-family: var(--font-mono); }
 
   .about-intro {
-    position: relative;
-    padding: clamp(var(--space-lg), 4.8vw, var(--space-4xl));
-    border: 2px solid var(--border);
-    background: var(--bg-alt);
-    color: var(--text);
-    box-shadow: 7px 7px 0 var(--border);
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(17rem, 0.85fr);
+    align-items: end;
+    gap: clamp(var(--space-xl), 5vw, var(--space-4xl));
+    padding: clamp(var(--space-lg), 4vw, var(--space-3xl)) 0;
+    border-top: 3px solid var(--border);
+    border-bottom: 1px solid var(--border-light);
   }
 
-  .about-intro::before {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: clamp(3rem, 8vw, 6rem);
-    height: 0.3rem;
-    content: "";
-    background: var(--accent);
-  }
-
-  .about-label,
   .process-label {
     display: inline-flex;
     align-items: center;
@@ -112,9 +101,6 @@ const process = [
     text-transform: uppercase;
   }
 
-  .about-label { color: var(--text-muted); }
-
-  .about-label span,
   .process-label span {
     width: 1.5rem;
     height: 0.45rem;
@@ -123,31 +109,31 @@ const process = [
   }
 
   .about-intro h2 {
-    max-width: 15ch;
-    margin: clamp(var(--space-xl), 4vw, var(--space-3xl)) 0;
-    font-size: clamp(2.8rem, 7.4vw, 7rem);
+    max-width: 16ch;
+    margin: 0;
+    font-size: clamp(2.8rem, 6.5vw, 6.5rem);
     font-weight: 800;
-    line-height: 0.88;
+    line-height: 0.92;
     letter-spacing: -0.08em;
-    text-transform: uppercase;
   }
 
   .about-intro h2 span {
     display: inline-block;
-    padding: 0 0.02em 0.08em;
+    padding: 0 0.02em 0.06em;
     color: var(--text-muted);
     box-shadow: inset 0 -0.16em var(--accent);
   }
 
   .about-intro-bottom {
     display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: var(--space-xl);
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding-bottom: 0.25rem;
   }
 
   .about-intro-bottom p {
-    max-width: 44ch;
+    max-width: 36ch;
     margin: 0;
     font-size: clamp(0.9375rem, 1.5vw, 1.125rem);
     font-weight: 600;
@@ -304,7 +290,9 @@ const process = [
   }
 
   @media (max-width: 760px) {
-    .about-intro h2 { font-size: clamp(2.8rem, 9vw, 5rem); }
+    .about-intro { grid-template-columns: minmax(0, 1fr) minmax(15rem, 0.8fr); }
+    .about-intro h2 { font-size: clamp(2.65rem, 7.5vw, 4.75rem); }
+    .process-heading h3 { font-size: clamp(1.75rem, 4.5vw, 2.5rem); }
     .process-list { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--space-xl); }
     .process-list::before { display: none; }
     .process-item { min-height: 11rem; padding: 0 var(--space-md); border-left: 0; }
@@ -315,9 +303,9 @@ const process = [
   }
 
   @media (max-width: 560px) {
-    .about-intro { box-shadow: 5px 5px 0 var(--border); }
-    .about-intro h2 { font-size: clamp(2.65rem, 12vw, 4.5rem); }
-    .about-intro-bottom { align-items: flex-start; flex-direction: column; }
+    .about-intro { grid-template-columns: 1fr; gap: var(--space-xl); padding-block: var(--space-xl); }
+    .about-intro h2 { font-size: clamp(2.75rem, 11vw, 4.25rem); }
+    .about-intro-bottom { align-items: flex-start; }
     .about-cta { width: fit-content; }
     .process-section { margin-top: var(--space-3xl); box-shadow: 6px 6px 0 var(--border); }
     .process-heading { align-items: flex-start; }

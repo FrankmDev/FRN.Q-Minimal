@@ -117,34 +117,16 @@ import { serviceAreas, servicesCopy, type ServiceArea } from "../data/services";
     transition: transform 280ms var(--motion-ease-out), box-shadow 280ms var(--motion-ease-out), background-color 280ms var(--motion-ease-out), color 280ms var(--motion-ease-out);
   }
 
-  .service-card::before {
-    position: absolute;
-    z-index: -1;
-    right: -0.03em;
-    bottom: -0.31em;
-    content: "";
-    color: color-mix(in srgb, var(--card-ink) 7%, transparent);
-    font: 800 clamp(10rem, 21vw, 18rem) / 0.8 var(--font-mono);
-    letter-spacing: -0.12em;
-    pointer-events: none;
-  }
-
-  .sol-0::before { content: "01"; }
-  .sol-1::before { content: "02"; }
-  .sol-2::before { content: "03"; }
-  .sol-3::before { content: "04"; }
-
   .sol-1 { --card-ink: var(--bg); --card-paper: var(--text); }
   .sol-2 { --card-paper: var(--accent); }
 
   .card-number {
     width: fit-content;
-    font-size: clamp(3.5rem, 7vw, 6.5rem);
+    font-size: clamp(4.5rem, 8vw, 7.5rem);
     font-weight: 800;
     line-height: 0.8;
     letter-spacing: -0.1em;
-    color: transparent;
-    -webkit-text-stroke: 2px var(--card-ink);
+    color: var(--card-ink);
     opacity: 0.8;
     transition: transform 350ms var(--motion-ease-out), color 350ms ease;
   }
@@ -191,24 +173,20 @@ import { serviceAreas, servicesCopy, type ServiceArea } from "../data/services";
     transition: transform 280ms var(--motion-ease-out), background-color 280ms ease;
   }
 
-  .service-card:hover,
-  .service-card:focus-within {
+  .service-card:hover {
     transform: translate(-6px, -6px);
     box-shadow: 10px 10px 0 var(--border);
   }
 
-  .service-card:hover .card-number,
-  .service-card:focus-within .card-number {
+  .service-card:hover .card-number {
     transform: translate(6px, -3px) rotate(-4deg);
     color: var(--accent);
     opacity: 1;
   }
 
-  .service-card:hover .card-title,
-  .service-card:focus-within .card-title { transform: translateX(4px); }
+  .service-card:hover .card-title { transform: translateX(4px); }
 
-  .service-card:hover .card-corner,
-  .service-card:focus-within .card-corner {
+  .service-card:hover .card-corner {
     transform: translate(3px, -3px);
     background: var(--accent);
     color: var(--text);
@@ -216,16 +194,20 @@ import { serviceAreas, servicesCopy, type ServiceArea } from "../data/services";
 
   @media (max-width: 760px) {
     .services-header { display: block; }
-    .services-header h2 { margin-top: var(--space-lg); text-align: left; }
+    .services-header h2 {
+      margin-top: var(--space-lg);
+      font-size: clamp(2.35rem, 9vw, 4.25rem);
+      line-height: 0.9;
+      text-align: left;
+    }
     .service-card { min-height: 16rem; }
     .card-content { padding-right: 0; }
-    .card-number { font-size: clamp(3.25rem, 11vw, 5rem); }
+    .card-number { font-size: clamp(4rem, 14vw, 5.5rem); }
   }
 
   @media (max-width: 560px) {
     .solutions-grid { grid-template-columns: 1fr; gap: var(--space-md); }
     .service-card { min-height: 13.5rem; padding: var(--space-lg); }
-    .service-card::before { font-size: 12rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {

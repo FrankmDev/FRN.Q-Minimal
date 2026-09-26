@@ -179,7 +179,12 @@ const system = [
 
   @media (max-width: 760px) {
     .operation-header { display: block; }
-    .operation-header h2 { margin-top: var(--space-lg); text-align: left; }
+    .operation-header h2 {
+      margin-top: var(--space-lg);
+      font-size: clamp(2.35rem, 9vw, 4.25rem);
+      line-height: 0.9;
+      text-align: left;
+    }
     .comparison { gap: var(--space-md); }
     .comparison-side { min-height: 18rem; }
   }

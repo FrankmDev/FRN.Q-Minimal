@@ -7,13 +7,13 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
   <div class="footer-top">
     <div class="container footer-top-inner">
       <div class="footer-brand">
-        <span class="brand-caption mono">Estudio independiente · {siteConfig.location.city}</span>
+        <span class="brand-caption mono">{siteConfig.location.city} / España</span>
         <a href="#inicio" class="brand-name" aria-label={`${siteConfig.name} — Inicio`}>
           {siteConfig.name}
         </a>
       </div>
       <div class="footer-contact">
-        <span class="contact-caption mono">Contacto directo</span>
+        <span class="contact-caption mono">Escríbeme</span>
         <a href={`mailto:${siteConfig.email}`} class="contact-address">
           {siteConfig.email}<span aria-hidden="true">↗</span>
         </a>
@@ -67,22 +67,22 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
     position: relative;
     overflow: hidden;
     border-top: 4px solid var(--border);
-    background: var(--text);
-    color: var(--bg);
+    background: var(--bg);
+    color: var(--text);
   }
 
   .mono { font-family: var(--font-mono); }
 
   .footer-top {
-    padding: clamp(var(--space-3xl), 8vw, 8rem) 0 clamp(var(--space-2xl), 5vw, 5rem);
-    border-bottom: 1px solid rgb(244 243 239 / 22%);
+    padding: clamp(var(--space-2xl), 5vw, var(--space-4xl)) 0;
+    border-bottom: 2px solid var(--border);
   }
 
   .footer-top-inner { display: flex; align-items: end; justify-content: space-between; gap: var(--space-2xl); }
   .footer-brand { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-md); }
 
   .brand-caption, .contact-caption {
-    color: rgb(244 243 239 / 62%);
+    color: var(--text-muted);
     font-size: 0.6875rem;
     font-weight: 600;
     letter-spacing: 0.12em;
@@ -91,59 +91,57 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
 
   .brand-name {
     display: block;
-    font-size: clamp(6rem, 16vw, 16rem);
+    font-size: clamp(3.5rem, 7vw, 6.5rem);
     font-weight: 800;
-    line-height: 0.7;
-    letter-spacing: -0.12em;
-    color: var(--bg);
+    line-height: 0.85;
+    letter-spacing: -0.1em;
+    color: var(--text);
   }
 
   .brand-name::after {
     display: inline-block;
-    width: 0.12em;
+    width: 0.1em;
     aspect-ratio: 1;
-    margin-left: 0.17em;
+    margin-left: 0.14em;
     content: "";
     background: var(--accent);
   }
 
-  .footer-contact { display: flex; flex-direction: column; align-items: flex-end; gap: var(--space-md); padding-bottom: 0.15em; }
+  .footer-contact { display: flex; flex-direction: column; align-items: flex-end; gap: var(--space-sm); padding-bottom: 0.15em; }
 
   .contact-address {
     display: inline-flex;
     align-items: center;
     gap: var(--space-md);
-    padding: var(--space-md) var(--space-lg);
-    border: 2px solid var(--bg);
-    background: var(--accent);
+    padding: var(--space-xs) 0;
+    border-bottom: 3px solid var(--accent);
     color: var(--text);
     font-family: var(--font-mono);
-    font-size: clamp(0.875rem, 1.5vw, 1.125rem);
+    font-size: clamp(1rem, 1.75vw, 1.375rem);
     font-weight: 700;
-    box-shadow: 6px 6px 0 var(--bg);
-    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    transition: border-color var(--transition-fast), color var(--transition-fast);
   }
 
-  .contact-address:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0 var(--bg); }
+  .contact-address:hover { border-color: var(--text); }
   .contact-address span { transition: transform var(--transition-fast); }
   .contact-address:hover span { transform: translate(3px, -3px); }
-  .footer-bottom { padding: var(--space-lg) 0; }
+  .footer-bottom { padding: var(--space-lg) 0; border-top: 2px solid var(--border); background: var(--bg-alt); }
   .footer-bottom-inner, .footer-nav, .footer-meta, .social-links { display: flex; align-items: center; }
   .footer-bottom-inner { justify-content: space-between; gap: var(--space-xl); }
   .footer-nav { flex-wrap: wrap; gap: var(--space-lg); }
 
   .footer-nav a { font-size: 0.8125rem; font-weight: 700; transition: color var(--transition-fast); }
-  .footer-nav a:hover { color: var(--accent); }
+  .footer-nav a:hover { color: var(--text-muted); }
 
   .footer-nav a:focus-visible, .social-link:focus-visible, .back-top:focus-visible, .contact-address:focus-visible {
-    outline: 3px solid var(--accent);
+    outline: 3px solid var(--text);
     outline-offset: 4px;
   }
 
-  .footer-nav .portfolio-link { color: rgb(244 243 239 / 58%); font-size: 0.625rem; letter-spacing: 0.08em; }
-  .footer-nav .portfolio-link:hover { color: var(--accent); }
+  .footer-nav .portfolio-link { color: var(--text-muted); font-size: 0.625rem; letter-spacing: 0.08em; }
+  .footer-nav .portfolio-link:hover { color: var(--text); }
   .footer-meta { gap: var(--space-lg); }
-  .copyright { color: rgb(244 243 239 / 58%); font-size: 0.625rem; letter-spacing: 0.08em; white-space: nowrap; }
+  .copyright { color: var(--text-muted); font-size: 0.625rem; letter-spacing: 0.08em; white-space: nowrap; }
   .social-links { gap: var(--space-xs); }
 
   .social-link, .back-top {
@@ -151,8 +149,8 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
     width: 2.25rem;
     aspect-ratio: 1;
     place-items: center;
-    border: 1px solid rgb(244 243 239 / 48%);
-    color: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
     font-size: 0.625rem;
     font-weight: 700;
     transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
@@ -168,8 +166,8 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
   }
 
   @media (max-width: 600px) {
-    .footer-top-inner { align-items: flex-start; flex-direction: column; gap: var(--space-3xl); }
-    .brand-name { font-size: clamp(5.5rem, 29vw, 9rem); }
+    .footer-top-inner { align-items: flex-start; flex-direction: column; gap: var(--space-xl); }
+    .brand-name { font-size: clamp(3.25rem, 16vw, 5rem); }
     .footer-contact { align-items: flex-start; }
     .footer-nav { gap: var(--space-md) var(--space-lg); }
   }

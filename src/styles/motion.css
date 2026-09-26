@@ -121,17 +121,17 @@
   transition-delay: var(--reveal-delay, 0ms);
 }
 
-.reveal {
-  transform: translateY(32px);
-}
-
-.reveal-left {
-  transform: translateX(-32px);
-}
-
 .has-reveal-observer .reveal,
 .has-reveal-observer .reveal-left {
   opacity: 0;
+}
+
+.has-reveal-observer .reveal {
+  transform: translateY(32px);
+}
+
+.has-reveal-observer .reveal-left {
+  transform: translateX(-32px);
 }
 
 .has-reveal-observer .reveal.visible,

@@ -301,9 +301,17 @@ const projectSchema = {
     .project-title { font-size: clamp(1.75rem, 5vw, 3rem); }
   }
 
-  @media (max-width: 560px) {
+  @media (max-width: 760px) {
     .projects-header { display: block; }
-    .projects-header h2 { margin-top: var(--space-lg); text-align: left; }
+    .projects-header h2 {
+      margin-top: var(--space-lg);
+      font-size: clamp(2.35rem, 9vw, 4.25rem);
+      line-height: 0.9;
+      text-align: left;
+    }
+  }
+
+  @media (max-width: 560px) {
     .project-link { grid-template-columns: 1fr 2.5rem; gap: var(--space-sm) var(--space-md); padding: var(--space-md) 0; }
     .project-image { grid-column: 1 / -1; grid-row: 1; }
     .project-number { display: none; }

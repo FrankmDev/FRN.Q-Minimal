@@ -7,10 +7,4 @@ export const contactMethods = [
     value: siteConfig.email,
     href: `mailto:${siteConfig.email}`,
   },
-  {
-    icon: "→",
-    label: "Brief de proyecto",
-    value: "Rellena el formulario",
-    href: "#form",
-  },
 ] as const;
