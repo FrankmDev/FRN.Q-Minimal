@@ -15,31 +15,27 @@ export interface FaqItem {
 
 export const faqItems: FaqItem[] = [
   {
-    q: "¿Cómo se define el precio de un proyecto?",
-    a: "Cada proyecto se presupuesta según alcance, complejidad e integraciones. Tras una primera conversación recibes una horquilla orientativa y, una vez definido el alcance, un presupuesto cerrado por escrito. No publico tarifas fijas porque dos tiendas o dos portales nunca cuestan lo mismo.",
+    q: "¿Cómo se presupuesta un proyecto?",
+    a: "Aclaro contigo el objetivo, el alcance y las integraciones. Después recibes una propuesta por escrito con entregables, calendario y coste.",
   },
   {
     q: "¿Shopify o desarrollo a medida?",
-    a: "Depende del problema. Para venta directa y puesta en marcha rápida, Shopify suele ser la base adecuada. Para portales B2B, precios privados o flujos complejos, desarrollo a medida o una combinación de ambos. Elijo la herramienta por el negocio, no por moda.",
+    a: "Depende del catálogo, el flujo de venta y las integraciones. Valoro esas necesidades para elegir la base adecuada para el proyecto.",
   },
   {
-    q: "¿Y si ya tengo una web o un sistema?",
-    a: "Se puede partir de lo que tienes. Audito, mido y decidimos qué conservar, qué migrar y qué reconstruir. No siempre hace falta empezar de cero.",
+    q: "¿Hay que rehacer lo que ya tengo?",
+    a: "No necesariamente. Reviso contigo la web y los sistemas actuales para decidir qué conservar, ajustar o sustituir.",
   },
   {
     q: "¿Cuánto tarda un proyecto?",
-    a: "Depende del alcance. Una web o una tienda sencilla puede estar lista en semanas; un portal B2B o un sistema con integraciones requiere más. Recibes un calendario realista por fases, con hitos claros.",
+    a: "El calendario depende del alcance, los contenidos y las integraciones. Lo concretamos en la propuesta, con hitos y dependencias.",
   },
   {
     q: "¿Qué pasa después del lanzamiento?",
-    a: "Entrego documentación y accesos. Puedes mantenerlo con tu equipo o seguir contando conmigo para mejoras, sin permanencia obligatoria.",
+    a: "Entrego documentación y accesos. Si lo necesitas, puedo seguir con mejoras y mantenimiento.",
   },
   {
-    q: "¿Cómo se mide el resultado?",
-    a: "Definimos de antemano qué vamos a medir: visibilidad, conversión, tiempos de proceso, tareas manuales eliminadas. La analítica se instala desde el inicio para decidir con datos y no con impresiones.",
-  },
-  {
-    q: "¿Trabajas fuera de España?",
-    a: "Sí. Trabajo en remoto con clientes en España y en el extranjero, con reuniones y seguimiento por videollamada.",
+    q: "¿Trabajas fuera de Granada?",
+    a: "Sí. Trabajo en remoto con empresas de España y de otros países.",
   },
 ];

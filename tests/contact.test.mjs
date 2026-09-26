@@ -41,13 +41,11 @@ afterEach(() => {
   mock.restore();
   globalThis.fetch = originalFetch;
   delete process.env.RESEND_API_KEY;
-  delete process.env.CONTACT_TO_EMAIL;
   delete process.env.CONTACT_FROM_EMAIL;
 });
 
 test("form options are accepted as JSON and URL-encoded without JavaScript", async () => {
   process.env.RESEND_API_KEY = "test";
-  process.env.CONTACT_TO_EMAIL = "to@example.test";
   process.env.CONTACT_FROM_EMAIL = "from@example.test";
   const deliver = mock(() => Promise.resolve({ ok: true }));
   globalThis.fetch = deliver;
@@ -64,6 +62,21 @@ test("form options are accepted as JSON and URL-encoded without JavaScript", asy
     }
   }
   expect(deliver).toHaveBeenCalledTimes(CONTACT_TYPES.length * CONTACT_BUDGETS.length * 2);
+});
+
+test("form submissions are delivered to the configured public contact address", async () => {
+  process.env.RESEND_API_KEY = "test";
+  process.env.CONTACT_FROM_EMAIL = "from@example.test";
+  const deliver = mock((_url, options) => {
+    expect(JSON.parse(options.body).to).toEqual(["info@frnq.studio"]);
+    return Promise.resolve({ ok: true });
+  });
+  globalThis.fetch = deliver;
+
+  const response = await send(request(valid));
+
+  expect(response.status).toBe(200);
+  expect(deliver).toHaveBeenCalledTimes(1);
 });
 
 test("invalid project types and budgets are rejected before delivery", async () => {

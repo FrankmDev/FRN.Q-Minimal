@@ -1,565 +1,280 @@
 ---
-import { portfolioLink, siteConfig } from "../data/site";
-import { serviceAreas } from "../data/services";
-
-const marqueeItems = [
-  ...serviceAreas.map((area) => area.title.toUpperCase()),
-  "INTEGRACIONES",
-  "ANALÍTICA",
-  "AUTOMATIZACIÓN",
-  "MEDICIÓN",
-];
+import { portfolioLink } from "../data/site";
 ---
 
-<section class="hero" id="inicio" aria-label="Introducción">
-  <div class="hero-glow" aria-hidden="true"></div>
+<section class="hero" id="inicio" aria-labelledby="hero-title">
+  <div class="container hero-container">
+    <div class="hero-top">
+      <a
+        class="portfolio-link mono"
+        href={portfolioLink.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={portfolioLink.title}
+      >
+        {portfolioLink.label} <span aria-hidden="true">↗</span>
+      </a>
+    </div>
 
-  <div class="container">
-    <!-- Header row -->
-    <div class="hero-header">
-      <div class="hero-top">
-        <span class="top-meta mono">
-          Estudio digital / {siteConfig.location.city}
-        </span>
-        <a
-          class="studio-link mono"
-          href={portfolioLink.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={portfolioLink.title}
-        >
-          {portfolioLink.label} <span class="ext" aria-hidden="true">↗</span>
+    <h1 class="hero-title" id="hero-title">
+      <span class="hero-line">Ecommerce,</span>
+      <span class="hero-line hero-line-bottom"><span class="hero-b2b">B2B</span><span class="hero-slash" aria-hidden="true">/</span><span>Sistemas</span></span>
+    </h1>
+
+    <div class="hero-bottom">
+      <p class="hero-desc">
+        Diseño y desarrollo soluciones digitales que conectan ventas, clientes y operación.
+      </p>
+      <div class="hero-actions">
+        <a href="#contacto" class="hero-cta">
+          <span>Plantear un proyecto</span>
+          <span aria-hidden="true">→</span>
+        </a>
+        <a href="#proyectos" class="hero-work-link">
+          <span>Ver casos</span>
+          <span aria-hidden="true">↘</span>
         </a>
       </div>
-    </div>
-
-    <!-- Main title -->
-    <div class="hero-title-block">
-      <h1 class="hero-title">
-        <span class="ht-b title-bold">
-          <span class="bold-accent" aria-hidden="true"></span>
-          Ecommerce,
-        </span>
-        <span class="ht-l">portales B2B y sistemas digitales</span>
-        <span class="ht-b">para empresas.</span>
-      </h1>
-    </div>
-
-    <!-- Marquee band -->
-    <div class="hero-marquee" aria-hidden="true">
-      <div class="marquee-track">
-        {
-          Array.from({ length: 2 }).map(() => (
-            <span class="marquee-content">
-              {marqueeItems.map((item) => (
-                <>
-                  <span class="mq-word">{item}</span>
-                  <span class="mq-dot">·</span>
-                </>
-              ))}
-            </span>
-          ))
-        }
-      </div>
-    </div>
-
-    <!-- Bottom row: description + CTA left | index right -->
-    <div class="hero-bottom">
-      <div class="hero-info">
-        <p class="hero-desc">
-          FRN.Q diseña y desarrolla soluciones que conectan producto, clientes
-          y procesos comerciales, manteniendo web, diseño, SEO y growth como
-          parte de la oferta.
-        </p>
-
-        <div class="hero-actions">
-          <a href="#contacto" class="cta-main">
-            <span>Plantear un proyecto</span>
-            <span class="cta-arrow" aria-hidden="true">→</span>
-          </a>
-          <a href="#servicios" class="cta-ghost">
-            <span>Ver soluciones / casos</span>
-            <span class="ghost-arrow" aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </div>
-
-      <nav class="hero-index" aria-label="Índice de soluciones">
-        <span class="idx-caption mono">Índice / Soluciones</span>
-        <dl class="idx-list" role="list">
-          {
-            serviceAreas.slice(0, 3).map((item) => (
-              <div class="idx-row" role="listitem">
-                <dt class="idx-num mono" aria-hidden="true">
-                  {item.num}
-                </dt>
-                <dd class="idx-name">{item.title}</dd>
-              </div>
-            ))
-          }
-        </dl>
-        <p class="idx-note mono">La web, el SEO y el growth van con todo.</p>
-      </nav>
-    </div>
-  </div>
-
-  <!-- Bottom meta strip -->
-  <div class="hero-foot">
-    <div class="container hero-foot-in">
-      <span class="hf-item mono">
-        <span class="hf-dot" aria-hidden="true"></span>
-        {siteConfig.tagline}
-      </span>
-      <span class="hf-item hf-coords mono">{siteConfig.geo.latitude}° N / {siteConfig.geo.longitude}° W</span>
-      <span class="hf-item mono" aria-hidden="true">Scroll ↓</span>
     </div>
   </div>
 </section>
 
 <style>
   .hero {
-    --y: var(--accent);
-    position: relative;
+    min-height: min(860px, calc(100svh - var(--layout-header-height)));
     display: flex;
-    flex-direction: column;
-    min-height: 100svh;
+    align-items: center;
+    position: relative;
     overflow: hidden;
-    scroll-margin-top: var(--layout-header-height);
+    padding: clamp(var(--space-xl), 5vw, var(--space-4xl)) 0;
+    border-bottom: 3px solid var(--border);
+  }
+
+  .hero::after {
+    content: "";
+    position: absolute;
+    width: clamp(14rem, 29vw, 27rem);
+    aspect-ratio: 1;
+    right: -11%;
+    top: 8%;
+    border: clamp(2rem, 5vw, 5rem) solid var(--border);
+    opacity: 0.035;
+    transform: rotate(18deg);
+    pointer-events: none;
+  }
+
+  .hero-container {
+    width: 100%;
+    position: relative;
+    z-index: 1;
   }
 
   .mono {
     font-family: var(--font-mono);
   }
 
-  /* ---- Radial bloom ---- */
-  .hero-glow {
-    position: absolute;
-    top: -20%;
-    left: -10%;
-    width: 70vw;
-    height: 70vw;
-    background: radial-gradient(
-      circle at center,
-      color-mix(in srgb, var(--text) 5%, transparent) 0%,
-      transparent 70%
-    );
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .container {
-    position: relative;
-    z-index: 1;
-  }
-
-  /* ---- Top meta row ---- */
-  .hero-header {
-    margin-bottom: var(--space-2xl);
-  }
-
   .hero-top {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: flex-end;
     gap: var(--space-md);
+    margin-bottom: clamp(var(--space-2xl), 6vw, var(--space-4xl));
   }
 
-  .top-meta {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-md);
+  .portfolio-link {
     font-size: 0.6875rem;
-    font-weight: 500;
+    font-weight: 700;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
+  }
+
+  .portfolio-link {
     color: var(--text-muted);
-  }
-
-  .top-meta::before {
-    content: "";
-    width: 40px;
-    height: 2px;
-    background: var(--border);
-  }
-
-  .studio-link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-xs);
-    padding: var(--space-sm) var(--space-xs);
-    font-size: 0.6875rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--text-muted);
-    transition: color var(--transition-fast);
-  }
-
-  .studio-link:hover {
-    color: var(--text);
     text-decoration: underline;
-    text-decoration-color: var(--y);
-    text-decoration-thickness: 3px;
+    text-decoration-color: var(--border-light);
     text-underline-offset: 5px;
+    transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
   }
 
-  .ext {
-    transition: transform var(--transition-fast);
+  .portfolio-link:hover {
+    color: var(--text);
+    text-decoration-color: var(--accent);
   }
 
-  .studio-link:hover .ext {
-    transform: translate(2px, -2px);
-  }
-
-  /* ---- Title ---- */
-  .hero-title-block {
-    margin-bottom: var(--space-2xl);
-    animation: fadeInUp 0.9s var(--motion-ease-out) 0.1s both;
+  .portfolio-link:focus-visible,
+  .hero-cta:focus-visible,
+  .hero-work-link:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 4px;
   }
 
   .hero-title {
-    font-size: clamp(2.75rem, 9.5vw, 8.75rem);
-    line-height: 0.94;
-    letter-spacing: -0.045em;
-  }
-
-  .ht-b {
-    display: block;
+    position: relative;
+    width: fit-content;
+    max-width: 100%;
+    font-size: clamp(3.35rem, 11.2vw, 10rem);
+    line-height: 0.84;
+    letter-spacing: -0.085em;
     font-weight: 800;
     text-transform: uppercase;
+    animation: fadeInUp 0.8s var(--motion-ease-out) both;
   }
 
-  .title-bold {
-    position: relative;
-    padding-left: 1.25rem;
-  }
-
-  .bold-accent {
-    position: absolute;
-    left: 0;
-    top: 0.15em;
-    width: 8px;
-    height: 0;
-    background: var(--text);
-    animation: accentGrow 0.7s var(--motion-ease-out) 0.5s forwards;
-  }
-
-  .ht-l {
+  .hero-line {
     display: block;
-    font-weight: 300;
-    font-style: italic;
-    font-size: 0.55em;
-    line-height: 1.08;
-    letter-spacing: -0.015em;
-    padding-left: 1.25rem;
-    transform: translateY(-6%);
-  }
-
-  /* ---- Marquee band ---- */
-  .hero-marquee {
-    border-top: 4px solid var(--border);
-    border-bottom: 4px solid var(--border);
-    padding: var(--space-lg) 0;
-    margin-bottom: var(--space-3xl);
-    overflow: hidden;
-    background: var(--text);
-    color: var(--bg);
-    transform: rotate(-1.25deg) scale(1.03);
-    box-shadow: 0 10px 30px rgb(0 0 0 / 10%);
-    animation: fadeInUp 0.9s var(--motion-ease-out) 0.2s both;
-  }
-
-  .marquee-track {
-    display: flex;
-    width: max-content;
-    animation: marquee 28s linear infinite;
-    will-change: transform;
-  }
-
-  .marquee-content {
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
-    padding-right: var(--space-md);
     white-space: nowrap;
   }
 
-  .mq-word {
+  .hero-line-bottom {
+    display: flex;
+    align-items: center;
+    gap: 0.12em;
+    margin-top: 0.1em;
+    padding-left: 0.52em;
+  }
+
+  .hero-b2b {
+    padding: 0.04em 0.12em 0.1em;
+    background: var(--accent);
+    box-shadow: 0.08em 0.08em 0 var(--border);
+  }
+
+  .hero-slash {
     font-family: var(--font-mono);
-    font-size: 1.0625rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+    font-size: 0.58em;
+    font-weight: 400;
+    letter-spacing: -0.12em;
+    transform: rotate(9deg);
   }
 
-  .mq-dot {
-    font-size: 1.5rem;
-    opacity: 0.5;
-  }
-
-  /* ---- Info + index ---- */
   .hero-bottom {
-    display: grid;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
     gap: var(--space-2xl);
-    align-items: start;
-    animation: fadeInUp 0.9s var(--motion-ease-out) 0.35s both;
-  }
-
-  @media (min-width: 960px) {
-    .hero-bottom {
-      grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
-      gap: var(--space-4xl);
-    }
+    margin-top: clamp(var(--space-2xl), 6vw, var(--space-4xl));
+    padding-left: 0.52em;
+    animation: fadeInUp 0.8s var(--motion-ease-out) 120ms both;
   }
 
   .hero-desc {
-    max-width: 52ch;
-    font-size: clamp(1rem, 1.4vw, 1.125rem);
-    line-height: 1.75;
+    max-width: 34ch;
+    margin: 0;
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
+    line-height: 1.55;
     color: var(--text-secondary);
-    margin-bottom: var(--space-xl);
   }
 
   .hero-actions {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
-    gap: var(--space-md);
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--space-lg);
   }
 
-  .cta-main {
+  .hero-cta {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-md);
-    min-height: 48px;
-    padding: var(--space-md) var(--space-xl);
+    gap: var(--space-xl);
+    min-height: 3.5rem;
+    padding: var(--space-md) var(--space-lg);
+    border: 3px solid var(--border);
     background: var(--text);
     color: var(--bg);
-    border: 3px solid var(--text);
-    font-weight: 700;
-    font-size: 0.9375rem;
+    box-shadow: 7px 7px 0 var(--accent);
+    font-size: 0.875rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    transition:
-      transform var(--transition-fast),
-      box-shadow var(--transition-fast);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
   }
 
-  .cta-main:hover {
-    transform: translate(-5px, -5px);
-    box-shadow: 9px 9px 0 var(--y);
+  .hero-cta:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 11px 11px 0 var(--accent);
   }
 
-  .cta-main:focus-visible {
-    outline: 3px solid var(--text);
-    outline-offset: 3px;
-  }
-
-  .cta-arrow {
+  .hero-cta span:last-child,
+  .hero-work-link span:last-child {
     transition: transform var(--transition-fast);
   }
 
-  .cta-main:hover .cta-arrow {
-    transform: translateX(6px);
+  .hero-cta:hover span:last-child {
+    transform: translateX(4px);
   }
 
-  .cta-ghost {
+  .hero-work-link {
     display: inline-flex;
     align-items: center;
     gap: var(--space-sm);
-    min-height: 48px;
-    padding: var(--space-md) var(--space-lg);
-    border: 2px dashed var(--border);
-    font-weight: 600;
+    min-height: 3rem;
     font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    opacity: 0.8;
-    transition: all var(--transition-base);
-  }
-
-  .cta-ghost:hover {
-    opacity: 1;
-    border-style: solid;
-    background: var(--text);
-    color: var(--bg);
-    transform: translate(-3px, -3px);
-    box-shadow: 6px 6px 0 var(--border);
-  }
-
-  .cta-ghost:focus-visible {
-    outline: 3px solid var(--text);
-    outline-offset: 3px;
-    opacity: 1;
-  }
-
-  .ghost-arrow {
-    transition: transform var(--transition-base);
-  }
-
-  .cta-ghost:hover .ghost-arrow {
-    transform: translate(4px, -4px);
-  }
-
-  /* ---- Index list ---- */
-  .idx-caption {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-md);
-    margin-bottom: var(--space-md);
-    font-size: 0.6875rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--text-muted);
-  }
-
-  .idx-caption::before {
-    content: "";
-    width: 40px;
-    height: 2px;
-    background: var(--border);
-  }
-
-  .idx-list {
-    margin: 0;
-    border-top: 2px solid var(--border);
-    border-bottom: 2px solid var(--border);
-    background: var(--bg);
-    box-shadow: var(--shadow-brutal);
-  }
-
-  .idx-row {
-    display: flex;
-    align-items: stretch;
-    gap: var(--space-lg);
-    border-bottom: 1px solid var(--border-light);
-    transition: background-color var(--transition-fast);
-  }
-
-  .idx-row:last-of-type {
-    border-bottom: 0;
-  }
-
-  .idx-row:hover {
-    background: var(--bg-alt);
-  }
-
-  .idx-num {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    border-right: 1px solid var(--border-light);
-    padding: var(--space-md) var(--space-md);
-    font-size: 0.75rem;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: 0.08em;
-    color: var(--text-muted);
-    transition:
-      background-color var(--transition-fast),
-      color var(--transition-fast);
-  }
-
-  .idx-row:hover .idx-num {
-    background: var(--y);
-    color: #111110;
-  }
-
-  .idx-name {
-    align-self: center;
-    margin: 0;
-    font-weight: 700;
-    font-size: 1.0625rem;
-    letter-spacing: -0.01em;
-  }
-
-  .idx-note {
-    margin-top: var(--space-md);
-    font-size: 0.6875rem;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-muted);
   }
 
-  /* ---- Foot bar ---- */
-  .hero-foot {
-    flex-shrink: 0;
-    position: relative;
-    z-index: 1;
-    border-top: 2px solid var(--border);
-    background: var(--bg);
+  .hero-work-link:hover span:last-child {
+    transform: translate(3px, 3px);
   }
 
-  .hero-foot-in {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-md);
-    padding-top: var(--space-md);
-    padding-bottom: var(--space-md);
-  }
+  @media (max-width: 720px) {
+    .hero {
+      min-height: unset;
+      padding: var(--space-2xl) 0 var(--space-3xl);
+    }
 
-  .hf-item {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-sm);
-    font-size: 0.6875rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--text-muted);
-  }
+    .hero-top {
+      margin-bottom: clamp(4rem, 17vw, 6rem);
+    }
 
-  .hf-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--y);
-    animation: blink 2.4s ease-in-out infinite;
-  }
+    .portfolio-link {
+      font-size: 0.58rem;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
 
-  /* ---- Responsive ---- */
-  @media (max-width: 639px) {
     .hero-title {
-      font-size: clamp(2.375rem, 12.5vw, 3.5rem);
+      font-size: clamp(2.55rem, 12.6vw, 5.2rem);
+      line-height: 0.88;
+      letter-spacing: -0.08em;
     }
 
-    .ht-l {
-      font-size: 0.6em;
+    .hero-line-bottom {
+      gap: 0.1em;
+      padding-left: 0.2em;
     }
 
-    .title-bold,
-    .ht-l {
-      padding-left: 0.75rem;
+    .hero-bottom {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: var(--space-xl);
+      margin-top: var(--space-2xl);
+      padding-left: 0;
     }
 
-    .bold-accent {
-      width: 4px;
+    .hero-desc {
+      max-width: 32ch;
+      font-size: 1rem;
     }
 
-    .cta-main,
-    .cta-ghost {
-      width: 100%;
-      justify-content: center;
-    }
-
-    .hero-foot-in {
-      justify-content: center;
+    .hero-actions {
+      justify-content: flex-start;
       gap: var(--space-lg);
     }
   }
 
-  @media (max-width: 700px) {
-    .hf-coords {
-      display: none;
+  @media (max-width: 380px) {
+    .hero-title {
+      font-size: 12vw;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero,
-    .hero * {
-      transition: none !important;
+    .hero-title,
+    .hero-bottom {
+      animation: none;
     }
   }
 </style>

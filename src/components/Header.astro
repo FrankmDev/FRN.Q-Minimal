@@ -33,19 +33,18 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
           </a>
         ))
       }
-      <a
-        href={portfolioLink.href}
-        class="nav-link nav-link-ext"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span class="link-bracket" aria-hidden="true">[</span>
-        <span class="link-text">{portfolioLink.label}</span>
-        <span class="link-bracket" aria-hidden="true">]</span>
-      </a>
     </nav>
 
     <div class="header-actions">
+      <a
+        href={portfolioLink.href}
+        class="studio-button mono"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Visitar FRN.Q Studio en una nueva pestaña"
+      >
+        STUDIO <span aria-hidden="true">↗</span>
+      </a>
       <a href={`/${headerCta.href}`} class="header-cta">
         <span class="cta-text">{headerCta.label}</span>
         <span class="cta-arrow" aria-hidden="true">→</span>
@@ -58,8 +57,12 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
         aria-controls="mobile-nav"
         aria-label="Abrir menú"
       >
-        <span class="toggle-line" aria-hidden="true"></span>
-        <span class="toggle-line" aria-hidden="true"></span>
+        <span class="menu-toggle-label mono" aria-hidden="true">Menú</span>
+        <span class="menu-icon" aria-hidden="true">
+          <span class="toggle-line"></span>
+          <span class="toggle-line"></span>
+          <span class="toggle-line"></span>
+        </span>
         <span class="sr-only">Menú</span>
       </button>
     </div>
@@ -79,15 +82,6 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
           </a>
         ))
       }
-      <a
-        href={portfolioLink.href}
-        class="mobile-link"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span class="ml-bracket" aria-hidden="true">[</span>
-        {portfolioLink.label}
-      </a>
       <a href={`/${headerCta.href}`} class="mobile-cta">
         <span>{headerCta.label}</span>
         <span class="cta-arrow" aria-hidden="true">→</span>
@@ -350,6 +344,31 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     gap: var(--space-sm);
   }
 
+  .studio-button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    min-height: 42px;
+    padding: 0 var(--space-sm);
+    border: 2px solid var(--border);
+    background: var(--accent);
+    box-shadow: 4px 4px 0 var(--border);
+    font-size: 0.6875rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .studio-button:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--border);
+  }
+
+  .studio-button:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 3px;
+  }
+
   .header-cta {
     display: none;
     align-items: center;
@@ -389,15 +408,14 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
   /* ---- Hamburger ---- */
   .menu-toggle {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    gap: 6px;
-    width: 44px;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    min-width: 96px;
     height: 44px;
     border: 2px solid var(--border);
     background: var(--bg);
-    padding: 12px;
+    padding: 2px 2px 2px var(--space-sm);
     transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
@@ -415,19 +433,41 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
 
   .toggle-line {
     display: block;
-    width: 100%;
+    width: 17px;
     height: 2px;
-    background: var(--text);
-    transition: all var(--transition-base);
+    background: var(--accent);
+    transition: opacity var(--transition-fast), transform var(--transition-base);
     transform-origin: center;
   }
 
-  .menu-toggle.is-active .toggle-line:first-child {
-    transform: translateY(4px) rotate(45deg);
+  .menu-toggle-label {
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
+  .menu-icon {
+    display: flex;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border: 1px solid var(--border);
+    background: var(--text);
+  }
+
+  .menu-toggle.is-active .toggle-line:first-child {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .menu-toggle.is-active .toggle-line:nth-child(2) { opacity: 0; }
+
   .menu-toggle.is-active .toggle-line:last-child {
-    transform: translateY(-4px) rotate(-45deg);
+    transform: translateY(-6px) rotate(-45deg);
   }
 
   /* ---- Progress bar ---- */

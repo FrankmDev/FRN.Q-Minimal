@@ -2,7 +2,8 @@
  * Single source of truth for navigation and the contact CTA.
  *
  * Internal links use real anchors on the single-page commercial surface.
- * The external portfolio is labelled PORTFOLIO / EN and opens frnq.studio.
+ * The external portfolio is linked as STUDIO in the header and PORTFOLIO / EN
+ * in contact/footer contexts; both labels point to frnq.studio.
  */
 
 export interface NavItem {

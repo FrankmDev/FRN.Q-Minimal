@@ -18,7 +18,7 @@ All editable commercial copy lives in `src/data/*`:
 
 | File | Owns |
 |------|------|
-| `site.ts` | Identity, url, email, location, `PORTFOLIO / EN` link, social links |
+| `site.ts` | Identity, url, email, location, external portfolio link, social links |
 | `navigation.ts` | Primary navigation and header CTA |
 | `services.ts` | The four commercial areas in priority order and their section copy |
 | `engagement.ts` | Pricing/engagement FAQ, also used in FAQ schema |

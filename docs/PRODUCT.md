@@ -4,7 +4,7 @@
 
 frnq.es is the Spanish **commercial surface** of FRN.Q, the independent digital practice of **Francisco Muñoz** (Granada, Spain). It is a single, static, high-performance Astro site whose job is to explain what FRN.Q solves, show published work, and convert interest into a conversation.
 
-The professional/technical portfolio lives separately at **frnq.studio** (English) and is linked externally as `PORTFOLIO / EN ↗`.
+The professional/technical portfolio lives separately at **frnq.studio** (English) and is linked externally as `STUDIO ↗` in the header and `PORTFOLIO / EN ↗` in contact/footer contexts.
 
 See `POSITIONING.md` for the authoritative business definition and language rules.
 

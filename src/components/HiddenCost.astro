@@ -1,413 +1,195 @@
 ---
-const cases = [
-  {
-    num: "01",
-    title: "Catálogo mantenido a mano",
-    problem:
-      "Precios, referencias y stock actualizados en hojas sueltas y de memoria.",
-    answer:
-      "Catálogo conectado a la gestión: los datos del producto viven en un sitio y se publican solos.",
-    area: "Ecommerce · B2B",
-  },
-  {
-    num: "02",
-    title: "Pedidos por email y WhatsApp",
-    problem:
-      "Líneas de mensaje que se copian a mano a la hoja de cálculo. Errores, y nada trazable.",
-    answer:
-      "Pedidos y área privada de cliente, con flujo directo hacia la gestión interna.",
-    area: "B2B · Sistemas",
-  },
-  {
-    num: "03",
-    title: "Clientes profesionales sin área privada",
-    problem:
-      "Distribuidores y clientes habituales pidiendo igual que cualquiera: sin condiciones ni histórico.",
-    answer:
-      "Portal B2B con precios por cuenta, documentos y pedidos en línea.",
-    area: "B2B",
-  },
-  {
-    num: "04",
-    title: "Precios y documentos dispersos",
-    problem:
-      "PDF viejos, condiciones en conversaciones, versiones que ya no se sabe cuál vale.",
-    answer:
-      "Un sitio único, siempre actualizado, para precios, fichas y documentación.",
-    area: "Sistemas",
-  },
-  {
-    num: "05",
-    title: "Ecommerce sin medición",
-    problem:
-      "Ventas que entran sin saber por dónde: sin analítica, sin embudo, sin datos de producto.",
-    answer:
-      "Analítica y CRO desde el lanzamiento: cada pantalla se mide y se mejora.",
-    area: "Ecommerce · Growth",
-  },
-  {
-    num: "06",
-    title: "Sistemas que no se comunican",
-    problem:
-      "Web, ERP/CRM y hojas de cálculo en islas: trabajo duplicado y decisiones con datos viejos.",
-    answer:
-      "Integración entre interfaz, producto y operación para que los datos circulen.",
-    area: "Sistemas · B2B",
-  },
+const friction = [
+  "Catálogo, stock y precios en fuentes separadas",
+  "Pedidos que se copian entre canales",
+  "Sistemas que no comparten datos",
+];
+
+const system = [
+  "Catálogo conectado con la gestión",
+  "Pedidos en un flujo compartido",
+  "Integraciones entre las herramientas",
 ];
 ---
 
-<section
-  class="operacion"
-  id="operacion"
-  aria-labelledby="operacion-title"
->
+<section class="operation" id="operacion" aria-labelledby="operation-title">
   <div class="container">
-    <header class="sec-head reveal">
-      <div class="label-row">
-        <span class="label-line" aria-hidden="true"></span>
-        <span class="label-text mono">Síntomas frecuentes</span>
-      </div>
-      <h2 class="oper-title" id="operacion-title">
-        <span class="ot-light">Seis síntomas de que la</span>
-        <span class="ot-highlight">operación manda</span>
-        <span class="ot-light">sobre la web.</span>
-      </h2>
+    <header class="operation-header reveal">
+      <span class="operation-label mono"><span aria-hidden="true"></span>Operación</span>
+      <h2 id="operation-title">Menos fricción.<br /><span>Mejor conectada.</span></h2>
     </header>
 
-    <ul class="ops-list" role="list">
-      {
-        cases.map((c, i) => (
-          <li class:list={["op-card", `op-${i}`]} aria-labelledby={`op-t-${c.num}`}>
-            <div class="op-head">
-              <span class="op-badge mono" aria-hidden="true">
-                {c.num}
-              </span>
-              <h3 class="op-title" id={`op-t-${c.num}`}>
-                {c.title}
-              </h3>
-            </div>
+    <div class="comparison reveal">
+      <article class="comparison-side friction-side" aria-labelledby="friction-title">
+        <span class="comparison-num mono" aria-hidden="true">01</span>
+        <div class="comparison-body">
+          <h3 id="friction-title">Fricción actual</h3>
+          <ul>
+            {friction.map((item) => <li><span aria-hidden="true">—</span>{item}</li>)}
+          </ul>
+        </div>
+      </article>
 
-            <div class="op-block op-block-problem">
-              <span class="op-kicker mono" aria-hidden="true">Hoy</span>
-              <p class="op-text">{c.problem}</p>
-            </div>
-
-            <div class="op-block op-block-answer">
-              <span class="op-kicker op-kicker-answer mono" aria-hidden="true">Con FRN.Q</span>
-              <p class="op-text op-text-answer">{c.answer}</p>
-            </div>
-
-            <p class="op-area mono">
-              <span class="op-area-label" aria-hidden="true">Área</span>
-              {c.area}
-            </p>
-          </li>
-        ))
-      }
-    </ul>
-
-    <footer class="ops-cta reveal">
-      <a href="#contacto" class="ops-cta-link">
-        <span>¿Te reconoces en alguno? Hablemos</span>
-        <span class="ops-arrow" aria-hidden="true">→</span>
-      </a>
-    </footer>
+      <article class="comparison-side system-side" aria-labelledby="system-title">
+        <span class="comparison-num mono" aria-hidden="true">02</span>
+        <div class="comparison-body">
+          <h3 id="system-title">Sistema mejor resuelto</h3>
+          <ul>
+            {system.map((item) => <li><span aria-hidden="true">+</span>{item}</li>)}
+          </ul>
+        </div>
+      </article>
+    </div>
   </div>
 </section>
 
 <style>
-  .operacion {
-    --y: var(--accent);
-    padding: var(--space-4xl) 0;
+  .operation {
     position: relative;
+    padding: clamp(var(--space-3xl), 8vw, 8rem) 0;
+    scroll-margin-top: var(--layout-header-height);
   }
 
-  .operacion::before {
+  .operation::before {
     content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: repeating-linear-gradient(
-      90deg,
-      var(--border) 0,
-      var(--border) 20px,
-      transparent 20px,
-      transparent 40px
-    );
-  }
-
-  .mono {
-    font-family: var(--font-mono);
-  }
-
-  /* ---- Section header ---- */
-  .sec-head {
-    margin-bottom: var(--space-3xl);
-  }
-
-  .label-row {
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
-    margin-bottom: var(--space-lg);
-  }
-
-  .label-line {
-    width: 60px;
+    inset: 0 0 auto;
     height: 2px;
-    background: var(--border);
+    background: repeating-linear-gradient(90deg, var(--border) 0 18px, transparent 18px 36px);
   }
 
-  .label-text {
-    font-size: 0.875rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-muted);
-  }
+  .mono { font-family: var(--font-mono); }
 
-  .oper-title {
-    font-size: clamp(2rem, 5.5vw, 4rem);
-    font-weight: 300;
-    line-height: 1.08;
-    letter-spacing: -0.035em;
-    max-width: 24ch;
-  }
-
-  .ot-light {
-    display: inline;
-  }
-
-  .ot-highlight {
-    display: inline-block;
-    font-weight: 800;
-    padding: 0 0.2em;
-    background: var(--text);
-    color: var(--bg);
-    transform: rotate(-1deg);
-  }
-
-  /* ---- Cards grid ---- */
-  .ops-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: var(--space-lg);
-    grid-template-columns: 1fr;
-  }
-
-  @media (min-width: 1024px) {
-    .ops-list {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .op-4,
-    .op-5 {
-      grid-column: auto;
-    }
-  }
-
-  .op-card {
-    --y: var(--accent);
+  .operation-header {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-md);
-    padding: var(--space-xl);
-    border: 3px solid var(--border);
-    background: var(--bg);
-    transition: all 0.4s var(--motion-ease-out);
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--space-xl);
+    margin-bottom: clamp(var(--space-2xl), 5vw, var(--space-4xl));
+  }
+
+  .operation-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex: 0 0 auto;
+    margin-bottom: 0.25em;
+    color: var(--text-muted);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .operation-label span {
+    width: 1.75rem;
+    height: 0.5rem;
+    border: 1px solid var(--border);
+    background: var(--accent);
+  }
+
+  .operation-header h2 {
+    margin: 0;
+    font-size: clamp(2rem, 5.7vw, 5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.065em;
+    text-align: right;
+  }
+
+  .operation-header h2 span { color: var(--text-muted); }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-xl);
+    align-items: stretch;
+  }
+
+  .comparison-side {
     position: relative;
+    display: flex;
+    min-height: 20rem;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    padding: clamp(var(--space-lg), 4vw, var(--space-2xl));
+    border: 3px solid var(--border);
+    transition: transform 300ms var(--motion-ease-out), box-shadow 300ms var(--motion-ease-out);
   }
 
-  /* Top line draw on hover */
-  .op-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 3px;
-    background: var(--text);
-    transition: width 0.35s var(--motion-ease-out);
-    z-index: 2;
-  }
-
-  .op-card:hover::before {
-    width: 100%;
-  }
-
-  .op-card:hover {
-    transform: translate(-5px, -5px);
+  .comparison-side:hover {
+    transform: translate(-6px, -6px);
     box-shadow: 10px 10px 0 var(--border);
   }
 
-  /* ---- Head row ---- */
-  .op-head {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-md);
-    padding-bottom: var(--space-md);
-    border-bottom: 2px solid var(--border);
-  }
+  .friction-side { background: var(--bg); color: var(--text); }
+  .system-side { background: var(--text); color: var(--bg); box-shadow: 9px 9px 0 var(--accent); }
 
-  .op-badge {
-    flex-shrink: 0;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    padding: var(--space-xs) var(--space-sm);
-    background: var(--text);
-    color: var(--bg);
-    transition: all 0.4s var(--motion-ease-out);
-  }
-
-  .op-card:hover .op-badge {
-    background: var(--y);
-    color: #111110;
-    transform: rotate(-4deg);
-  }
-
-  .op-title {
-    font-size: clamp(1.125rem, 2vw, 1.375rem);
+  .comparison-num {
+    align-self: flex-end;
+    font-size: clamp(4.5rem, 10vw, 8.5rem);
     font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.25;
-    transition: transform 0.4s var(--motion-ease-out);
+    line-height: 0.72;
+    letter-spacing: -0.12em;
+    opacity: 0.18;
+    transition: transform 350ms var(--motion-ease-out), color 350ms ease;
   }
 
-  .op-card:hover .op-title {
-    transform: translateX(4px);
-  }
+  .system-side .comparison-num { color: var(--accent); opacity: 0.85; }
+  .comparison-side:hover .comparison-num { transform: translate(-0.15em, 0.08em) rotate(-5deg); }
+  .comparison-body { position: relative; z-index: 1; }
 
-  /* ---- Blocks ---- */
-  .op-block {
-    border-left: 2px solid var(--border-light);
-    padding-left: var(--space-md);
-    transition: all 0.4s var(--motion-ease-out);
-  }
-
-  .op-block-problem {
-    opacity: 0.85;
-  }
-
-  .op-block-answer {
-    border-left-color: var(--y);
-  }
-
-  .op-kicker {
-    display: inline-block;
-    font-size: 0.625rem;
-    font-weight: 700;
+  .comparison-body h3 {
+    width: fit-content;
+    margin: 0 0 var(--space-lg);
+    font-size: clamp(1.2rem, 2.4vw, 2rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--text-muted);
-    margin-bottom: var(--space-xs);
   }
 
-  .op-kicker-answer {
+  .system-side h3 {
+    padding: 0.1em 0.22em;
+    background: var(--accent);
     color: var(--text);
-    background: var(--y);
-    padding: 0 var(--space-xs);
+    transform: rotate(-1deg);
   }
 
-  .op-text {
-    font-size: 0.9375rem;
-    line-height: 1.6;
-    color: var(--text-secondary);
+  .comparison-body ul {
+    display: grid;
+    gap: 0.8rem;
     margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
-  .op-text-answer {
-    color: var(--text);
-    font-weight: 500;
+  .comparison-body li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-sm);
+    max-width: 36ch;
+    font-size: clamp(0.9rem, 1.35vw, 1.05rem);
+    font-weight: 600;
+    line-height: 1.4;
   }
 
-  /* ---- Area ---- */
-  .op-area {
-    margin-top: auto;
-    padding-top: var(--space-md);
-    border-top: 1px solid var(--border-light);
-    font-size: 0.625rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--text-muted);
+  .comparison-body li span { flex: 0 0 1rem; font-family: var(--font-mono); font-weight: 700; opacity: 0.55; }
+  .system-side li span { color: var(--accent); opacity: 1; }
+
+  @media (max-width: 760px) {
+    .operation-header { display: block; }
+    .operation-header h2 { margin-top: var(--space-lg); text-align: left; }
+    .comparison { gap: var(--space-md); }
+    .comparison-side { min-height: 18rem; }
   }
 
-  .op-area-label {
-    margin-right: var(--space-sm);
-    opacity: 0.6;
-  }
-
-  /* ---- CTA ---- */
-  .ops-cta {
-    margin-top: var(--space-2xl);
-    text-align: center;
-  }
-
-  .ops-cta-link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-md);
-    min-height: 48px;
-    padding: var(--space-md) var(--space-2xl);
-    background: var(--bg);
-    color: var(--text);
-    border: 3px solid var(--border);
-    box-shadow: 8px 8px 0 var(--border);
-    font-weight: 800;
-    font-size: 1.0625rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    transition:
-      background var(--transition-fast),
-      color var(--transition-fast),
-      transform var(--transition-fast),
-      box-shadow var(--transition-fast);
-  }
-
-  .ops-cta-link:hover {
-    background: var(--text);
-    color: var(--bg);
-    transform: translate(-6px, -6px);
-    box-shadow: 14px 14px 0 var(--y);
-  }
-
-  .ops-cta-link:focus-visible {
-    outline: 3px solid var(--text);
-    outline-offset: 3px;
-  }
-
-  .ops-arrow {
-    transition: transform var(--transition-fast);
-  }
-
-  .ops-cta-link:hover .ops-arrow {
-    transform: translateX(6px);
-  }
-
-  /* ---- Responsive ---- */
-  @media (max-width: 640px) {
-    .operacion {
-      padding: var(--space-3xl) 0;
-    }
-
-    .op-card {
-      padding: var(--space-lg);
-    }
+  @media (max-width: 560px) {
+    .comparison { grid-template-columns: 1fr; gap: var(--space-lg); }
+    .comparison-side { min-height: 15rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .op-card,
-    .op-badge,
-    .op-title,
-    .ops-cta-link,
-    .ops-arrow {
-      transition: none !important;
-    }
+    .comparison-side, .comparison-num { transition: none; }
   }
 </style>

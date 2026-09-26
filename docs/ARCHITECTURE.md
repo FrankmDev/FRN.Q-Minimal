@@ -31,7 +31,7 @@ api/
 src/
 ├── assets/projects/<case>/        # cover.avif + gallery AVIF per case
 ├── components/
-│   ├── Header.astro               # sticky nav; internal anchors + PORTFOLIO / EN ↗
+│   ├── Header.astro               # sticky nav; anchors + STUDIO ↗ external shortcut
 │   ├── Hero.astro                 # intro, four-solution index, portfolio link
 │   ├── Services.astro             # four commercial areas from data/services
 │   ├── HiddenCost.astro           # frequent-operations problems (symptoms)

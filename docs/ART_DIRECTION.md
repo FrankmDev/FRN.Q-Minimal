@@ -1,58 +1,54 @@
 # ART DIRECTION — frnq.es
 
-> **STATUS: CURRENT — FROZEN DURING THE CONTENT RECONSTRUCTION.**
+## Purpose
 
-This document records the visual direction already implemented. The current task rebuilds strategy, content and documentation; it **does not** change art direction. Any visual change requires a separate, explicit task. `DESIGN.md` owns technical implementation; this document owns intent.
-
-## Why
-
-frnq.es is the **commercial** surface, not the technical portfolio. Its visual job is to feel considered, direct and trustworthy — closer to an industrial editorial system than to a generic agency landing page. The composition stays quiet so the commercial content (problems, outcomes, evidence) leads.
+frnq.es is the Spanish commercial surface of FRN.Q: an independent digital practice led by Francisco Muñoz. The Home is a visual commercial summary, not a complete catalogue of every service, process and capability. It should make the offer legible quickly and lead visitors towards selected work or direct contact.
 
 ## Aesthetic
 
-**Minimal industrial editorial brutalism.**
+**Commercial brutalism with strong visual composition.**
 
-- **Brutalist:** composition, scale, hierarchy and contrast; hard borders and hard shadows; sharp corners.
-- **Industrial/editorial:** ruled structure, indexes, real metadata, generous negative space, a single restrained accent.
-- **Personality:** clarity and rhythm — not decoration, terminal theatre or fake telemetry.
+- **Brutalist:** oversized type and numerals, hard borders, sharp corners and occasional offset shadows.
+- **Industrial:** direct labels, ruled divisions, compact mono details and purposeful alignment.
+- **Compositional:** scale shifts, asymmetry, image-led case rows and deliberate changes in density between sections.
+- **Commercial:** communicate Ecommerce, B2B commerce and systems first; design, development, SEO, analytics and integrations support those outcomes.
 
-The light `#f4f3ef` base, near-black `#111110` foreground, single yellow accent `#ffe600`, Manrope body and JetBrains Mono metadata are the palette foundation. They are tokens, not per-section choices.
+The warm off-white `#f4f3ef`, near-black `#111110` and yellow `#ffe600` remain the shared palette. Manrope carries display and body text; JetBrains Mono is reserved for concise functional details. Do not add identity colours per section.
 
-## Composition and rhythm
+## Composition and content density
 
-- One dominant element per viewport, one or two secondary elements, quiet metadata.
-- Sections alternate dense / sparse; not every block shares the same template.
-- The grid aligns; it does not force a filled layout. Empty space is an active element.
-- Asymmetry is allowed, but it must reveal an underlying order.
+- One main idea per section; use one strong heading and at most one short supporting paragraph.
+- Give the Home negative space and visible pacing. Avoid repeating the same capability in the hero, service cards, studio introduction and contact area.
+- Let numerals, contrast, image crops and large type carry the visual weight; prose is supporting information.
+- Services remain four compact areas. Operational friction is a visual comparison, not a long problem catalogue.
+- Cases remain factual and sourced from Content Collections. The Home shows a small selection; `/casos/` holds the full case studies.
+- The studio section introduces the person and a four-step process at most. Contact is the close: keep the real form, reduce surrounding promotion.
+- Use a marquee only when it acts as a deliberate graphic gesture. It is not a required section device.
 
 ## Typography and image
 
-- Heavy display headings establish hierarchy; mono carries navigation, indexes and real technical metadata.
-- Imagery is rectangular and local (case covers and galleries through `astro:assets`). No rounded images, no generic stock.
-- Case imagery is evidence; it is not decorative filler.
+- Large, heavy headings lead; sentence case or uppercase is chosen for composition, not applied indiscriminately.
+- Mono labels stay small and useful: section cues, numbers, dates and navigation.
+- Case imagery is rectangular, local and factual. Let selected covers be visible in the Home list; do not turn each row into a miniature case study.
+- Keep imagery evidence-led. Do not add stock art or invented project outcomes.
 
 ## Visual vocabulary
 
-Allowed devices: rules, real section indexes, large numerals, arrows, small squares, technical labels, offset rectangles, hard borders.
-
-Use one to three relevant devices per section, never the whole vocabulary at once.
+Rules, giant numerals, arrows, yellow fields, hard frames, off-axis alignment, image strips and occasional hard shadows are available. Use a small number of devices per section and vary composition across sections rather than applying one card template throughout.
 
 ## Motion
 
-- Precise and fast. One strong interaction per component.
-- CSS-first; scroll reveal centralized in `RevealObserver`.
-- All motion collapses under `prefers-reduced-motion`.
+- CSS-first, concise and purposeful: a strong hover response or a restrained entrance is enough.
+- Scroll reveal is centralized in `RevealObserver` where possible.
+- Respect `prefers-reduced-motion`; interactions and content remain usable without motion or JavaScript.
 
 ## Anti-patterns
 
-No fake military UI (CLASSIFIED/CLEARANCE), decorative coordinates, fake percentages or telemetry, arbitrary IDs/hashes, glitch spam, cyberpunk interfaces, SaaS card grids, glassmorphism, rounded containers, gradient blobs or stock photography.
+No false metrics, guarantees, testimonials, availability claims or invented outcomes. Do not revive “Webs Premium / Cero plantillas” or the old template-versus-infrastructure pitch. Avoid SaaS layouts, rounded neutral cards, glass, gradient blobs, stock imagery, decorative telemetry and `.studio`-style editorial minimalism.
 
-## Accessibility
+## Accessibility and boundaries
 
-Structural, not decorative: never communicate through position, color or hover alone; keep headings and copy as real text; mark decoration appropriately; preserve contrast, focus and reduced motion.
-
-## Scope boundary
-
-- The content reconstruction changes copy, data and documentation only.
-- It does not touch `tokens.css`, `typography.css`, `utilities.css`, component scoped styles or assets.
-- frnq.es and frnq.studio are separate surfaces with separate visual systems. Do not import `.studio` art direction here, and do not link them visually.
+- Structure remains semantic, keyboard-operable and understandable without colour, hover or layout position.
+- Preserve clear focus states, accessible names, form labels and reduced-motion support.
+- The Home redesign changes section composition and scoped component styles; it does not roll back Astro architecture, data modules, Content Collections, case routes, contact validation/API, SEO wiring or shared design tokens.
+- frnq.es and frnq.studio are separate surfaces. The header links to the latter as `STUDIO ↗`; contact and footer may use `PORTFOLIO / EN ↗`. Do not merge or translate its visual system.

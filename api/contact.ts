@@ -12,6 +12,7 @@ import {
   CONTACT_TYPES,
   CONTACT_TYPE_VALUES,
 } from "../src/data/contact-contract";
+import { siteConfig } from "../src/data/site";
 
 declare const process: { env: Record<string, string | undefined> };
 
@@ -226,10 +227,9 @@ export default async function handler(request: VercelRequest, response: VercelRe
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  const toEmail = process.env.CONTACT_TO_EMAIL;
   const fromEmail = process.env.CONTACT_FROM_EMAIL;
 
-  if (!apiKey || !toEmail || !fromEmail) {
+  if (!apiKey || !fromEmail) {
     return reply(request, response, 503, { success: false, error: UNAVAILABLE_ERROR }, "error");
   }
 
@@ -252,7 +252,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
       },
       body: JSON.stringify({
         from: fromEmail,
-        to: [toEmail],
+        to: [siteConfig.email],
         reply_to: result.email,
         subject: `FRN.Q — ${result.name} · ${labelFor(CONTACT_TYPES, result.type)}`,
         text: lines.join("\n"),

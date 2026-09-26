@@ -1,592 +1,234 @@
 ---
-import {
-  serviceAreas,
-  servicesCopy,
-  type ServiceArea,
-} from "../data/services";
+import { serviceAreas, servicesCopy, type ServiceArea } from "../data/services";
 ---
 
 <section class="services" id="servicios" aria-labelledby="services-title">
   <div class="container">
-    <header class="section-header reveal">
-      <div class="header-label">
-        <span class="label-line" aria-hidden="true"></span>
-        <span class="label-text">{servicesCopy.label}</span>
+    <header class="services-header reveal">
+      <div class="section-label mono">
+        <span aria-hidden="true"></span>
+        {servicesCopy.label}
       </div>
-      <h2 class="section-title" id="services-title">
-        {servicesCopy.titleLine}
-        <span class="st-strong">{servicesCopy.titleHighlight}</span>
-      </h2>
-      <p class="header-sub">
-        Cuatro frentes que se contratan por separado o como sistema. Cada uno
-        ataca un punto concreto de la cadena: catálogo, clientes, procesos o
-        captación.
-      </p>
+      <h2 id="services-title">Cuatro áreas.<br /><span>Un mismo negocio.</span></h2>
     </header>
 
-    <ul class="solutions-grid" role="list" id="services-grid">
+    <ul class="solutions-grid reveal" role="list" id="services-grid">
       {
-        serviceAreas.map((s: ServiceArea, i) => (
+        serviceAreas.map((service: ServiceArea, index) => (
           <li
-            class:list={["service-card", `sol-${i}`]}
-            id={`sol-${s.id}`}
-            aria-labelledby={`sol-${s.id}-title`}
+            class:list={["service-card", `sol-${index}`]}
+            id={`sol-${service.id}`}
+            aria-labelledby={`sol-${service.id}-title`}
           >
-            <span class="card-bg-num" aria-hidden="true">{s.num}</span>
-
+            <span class="card-number mono" aria-hidden="true">{service.num}</span>
             <div class="card-content">
-              <span class="card-index mono">{s.num}</span>
-              <h3 class="card-title" id={`sol-${s.id}-title`}>
-                {s.title}
+              <h3 class="card-title" id={`sol-${service.id}-title`}>
+                {service.title}
               </h3>
-              <p class="card-desc">{s.short}</p>
-
-              <div class="card-body">
-                <div class="card-block">
-                  <span class="blk-label mono">El problema</span>
-                  <ul class="prob-list" role="list">
-                    {s.problems.slice(0, 2).map((p) => (
-                      <li class="prob-item" role="listitem">
-                        <span class="prob-dash" aria-hidden="true">—</span>
-                        {p}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div class="card-block">
-                  <span class="blk-label mono">Qué incluye</span>
-                  <ul class="cap-list" role="list">
-                    {s.includes.map((c) => (
-                      <li class="cap-item" role="listitem">
-                        <span class="cap-dash" aria-hidden="true">+</span>
-                        {c}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+              <p class="card-desc">{service.short}</p>
             </div>
-
-            <div class="card-arrow" aria-hidden="true">
-              <span>→</span>
-            </div>
-
-            <div class="hover-frame" aria-hidden="true">
-              <div class="frame-line frame-top"></div>
-              <div class="frame-line frame-right"></div>
-              <div class="frame-line frame-bottom"></div>
-              <div class="frame-line frame-left"></div>
-            </div>
+            <span class="card-corner" aria-hidden="true">↗</span>
           </li>
         ))
       }
     </ul>
-
-    <footer class="services-foot">
-      <span class="foot-note mono">
-        Estrategia · Diseño · Desarrollo · Datos · Growth
-      </span>
-      <a href="#contacto" class="foot-cta">
-        <span>Plantear un proyecto</span>
-        <span class="f-cta-arrow" aria-hidden="true">→</span>
-      </a>
-    </footer>
   </div>
 </section>
 
-<script>
-  // IntersectionObserver for service cards entrance
-  const serviceCards = document.querySelectorAll(".service-card");
-  const cardObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-        cardObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1, rootMargin: "0px 0px -5% 0px" });
-
-  serviceCards.forEach((card) => cardObserver.observe(card));
-</script>
-
 <style>
   .services {
-    padding: var(--space-4xl) 0;
     position: relative;
+    padding: clamp(var(--space-3xl), 8vw, 8rem) 0;
     scroll-margin-top: var(--layout-header-height);
   }
 
   .services::before {
     content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: repeating-linear-gradient(
-      90deg,
-      var(--border) 0,
-      var(--border) 20px,
-      transparent 20px,
-      transparent 40px
-    );
-  }
-
-  .mono {
-    font-family: var(--font-mono);
-  }
-
-  /* ---- Section header ---- */
-  .section-header {
-    margin-bottom: var(--space-3xl);
-  }
-
-  .header-label {
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
-    margin-bottom: var(--space-lg);
-  }
-
-  .label-line {
-    width: 60px;
+    inset: 0 0 auto;
     height: 2px;
-    background: var(--border);
+    background: repeating-linear-gradient(90deg, var(--border) 0 18px, transparent 18px 36px);
   }
 
-  .label-text {
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+  .mono { font-family: var(--font-mono); }
+
+  .services-header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--space-xl);
+    margin-bottom: clamp(var(--space-2xl), 5vw, var(--space-4xl));
   }
 
-  .section-title {
-    font-size: clamp(2rem, 6vw, 4.5rem);
-    font-weight: 300;
-    line-height: 1;
-    letter-spacing: -0.03em;
-  }
-
-  .st-strong {
-    display: block;
-    font-weight: 800;
-  }
-
-  .header-sub {
-    max-width: 52ch;
-    margin-top: var(--space-lg);
-    font-size: clamp(0.9375rem, 1.4vw, 1.0625rem);
-    line-height: 1.7;
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex: 0 0 auto;
+    margin-bottom: 0.25em;
     color: var(--text-muted);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 
-  /* ---- Grid ---- */
+  .section-label span {
+    width: 1.75rem;
+    height: 0.5rem;
+    border: 1px solid var(--border);
+    background: var(--accent);
+  }
+
+  .services-header h2 {
+    margin: 0;
+    font-size: clamp(2rem, 5.7vw, 5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.065em;
+    text-align: right;
+  }
+
+  .services-header h2 span { color: var(--text-muted); }
+
   .solutions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(var(--space-md), 2.5vw, var(--space-xl));
     list-style: none;
     margin: 0;
     padding: 0;
-    display: grid;
-    gap: var(--space-xl);
   }
 
-  @media (min-width: 768px) and (max-width: 1023px) {
-    .solutions-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .solutions-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  /* ============================================
-     SERVICE CARD
-     ============================================ */
   .service-card {
-    --y: var(--accent);
+    --card-ink: var(--text);
+    --card-paper: var(--bg);
     position: relative;
-    background: var(--bg);
-    border: 4px solid var(--border);
-    padding: var(--space-2xl);
-    min-height: 320px;
-    display: flex;
-    flex-direction: column;
     isolation: isolate;
+    display: flex;
+    min-height: clamp(17rem, 28vw, 23rem);
+    flex-direction: column;
+    justify-content: space-between;
     overflow: hidden;
-    transition: all 0.4s var(--motion-ease-out);
+    padding: clamp(var(--space-lg), 3.2vw, var(--space-2xl));
+    border: 3px solid var(--border);
+    background: var(--card-paper);
+    color: var(--card-ink);
+    transition: transform 280ms var(--motion-ease-out), box-shadow 280ms var(--motion-ease-out), background-color 280ms var(--motion-ease-out), color 280ms var(--motion-ease-out);
   }
 
-  /* Sweep background fill on hover */
   .service-card::before {
+    position: absolute;
+    z-index: -1;
+    right: -0.03em;
+    bottom: -0.31em;
     content: "";
-    position: absolute;
-    inset: 0;
-    background: var(--text);
-    transform: scaleY(0);
-    transform-origin: bottom;
-    transition: transform 0.45s var(--motion-ease-out);
-    z-index: 0;
-  }
-
-  .service-card:hover::before {
-    transform: scaleY(1);
-  }
-
-  .card-bg-num {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: var(--font-mono);
-    font-size: clamp(10rem, 18vw, 16rem);
-    font-weight: 800;
-    opacity: 0.05;
+    color: color-mix(in srgb, var(--card-ink) 7%, transparent);
+    font: 800 clamp(10rem, 21vw, 18rem) / 0.8 var(--font-mono);
+    letter-spacing: -0.12em;
     pointer-events: none;
-    transition: all 0.6s var(--motion-ease-out);
-    -webkit-text-stroke: 2px var(--text);
+  }
+
+  .sol-0::before { content: "01"; }
+  .sol-1::before { content: "02"; }
+  .sol-2::before { content: "03"; }
+  .sol-3::before { content: "04"; }
+
+  .sol-1 { --card-ink: var(--bg); --card-paper: var(--text); }
+  .sol-2 { --card-paper: var(--accent); }
+
+  .card-number {
+    width: fit-content;
+    font-size: clamp(3.5rem, 7vw, 6.5rem);
+    font-weight: 800;
+    line-height: 0.8;
+    letter-spacing: -0.1em;
     color: transparent;
-    letter-spacing: -0.05em;
-    z-index: 1;
+    -webkit-text-stroke: 2px var(--card-ink);
+    opacity: 0.8;
+    transition: transform 350ms var(--motion-ease-out), color 350ms ease;
   }
 
-  .service-card:hover .card-bg-num {
-    opacity: 0.14;
-    transform: translate(-50%, -50%) scale(1.15) rotate(-5deg);
-    -webkit-text-stroke: 2px var(--bg);
-    letter-spacing: 0.06em;
-  }
-
-  /* Content */
   .card-content {
     position: relative;
-    z-index: 2;
-    margin-top: auto;
-  }
-
-  .card-index {
-    display: block;
-    font-size: 0.875rem;
-    font-weight: 700;
-    opacity: 0.4;
-    margin-bottom: var(--space-md);
-    transition: all 0.4s ease;
+    z-index: 1;
+    max-width: 33rem;
+    padding-right: var(--space-2xl);
   }
 
   .card-title {
-    font-size: clamp(1.5rem, 3.2vw, 2.125rem);
+    max-width: 17ch;
+    margin: 0 0 var(--space-sm);
+    font-size: clamp(1.4rem, 2.9vw, 2.5rem);
     font-weight: 800;
-    letter-spacing: -0.035em;
-    line-height: 1.1;
-    margin-bottom: var(--space-sm);
-    transition: transform 0.4s var(--motion-ease-out);
+    line-height: 0.98;
+    letter-spacing: -0.05em;
+    transition: transform 350ms var(--motion-ease-out);
   }
 
   .card-desc {
-    font-size: 0.9375rem;
-    line-height: 1.6;
-    opacity: 0.7;
-    max-width: 48ch;
-    transition: all 0.4s ease;
-  }
-
-  .card-body {
-    display: grid;
-    gap: var(--space-lg);
-    margin-top: var(--space-xl);
-  }
-
-  @media (min-width: 640px) {
-    .card-body {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  .card-block {
-    border-left: 2px solid var(--border);
-    padding-left: var(--space-md);
-    transition: border-color 0.4s ease;
-  }
-
-  .blk-label {
-    display: inline-block;
-    font-size: 0.625rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    opacity: 0.5;
-    margin-bottom: var(--space-sm);
-  }
-
-  .prob-list,
-  .cap-list {
-    list-style: none;
+    max-width: 42ch;
+    display: -webkit-box;
+    overflow: hidden;
     margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
+    font-size: clamp(0.875rem, 1.25vw, 1rem);
+    line-height: 1.5;
+    opacity: 0.76;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
-  .prob-item,
-  .cap-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.5rem;
-    font-size: 0.8125rem;
-    line-height: 1.55;
-    padding: 0.4rem 0;
-    color: var(--text-secondary);
-    transition: color 0.4s ease;
-  }
-
-  .prob-dash,
-  .cap-dash {
-    flex-shrink: 0;
-    opacity: 0.5;
-    font-weight: 700;
-  }
-
-  .cap-dash {
-    color: var(--y);
-    opacity: 1;
-  }
-
-  /* Arrow chip */
-  .card-arrow {
+  .card-corner {
     position: absolute;
     top: var(--space-lg);
     right: var(--space-lg);
-    width: 48px;
-    height: 48px;
-    border: 3px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem;
-    background: var(--bg);
-    z-index: 2;
-    transition: all 0.4s var(--motion-ease-out);
-    box-shadow: 4px 4px 0 var(--border);
+    display: grid;
+    width: 2.4rem;
+    aspect-ratio: 1;
+    place-items: center;
+    border: 2px solid currentColor;
+    font-size: 1.125rem;
+    transition: transform 280ms var(--motion-ease-out), background-color 280ms ease;
   }
 
-  /* Hover frame */
-  .hover-frame {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 3;
+  .service-card:hover,
+  .service-card:focus-within {
+    transform: translate(-6px, -6px);
+    box-shadow: 10px 10px 0 var(--border);
   }
 
-  .frame-line {
-    position: absolute;
-    background: var(--y);
-    transition: all 0.3s var(--motion-ease-out);
-  }
-
-  .frame-top {
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 3px;
-  }
-
-  .frame-right {
-    top: 0;
-    right: 0;
-    width: 3px;
-    height: 0;
-  }
-
-  .frame-bottom {
-    bottom: 0;
-    right: 0;
-    width: 0;
-    height: 3px;
-  }
-
-  .frame-left {
-    bottom: 0;
-    left: 0;
-    width: 3px;
-    height: 0;
-  }
-
-  /* ============================================
-     HOVER EFFECTS
-     ============================================ */
-  .service-card:hover {
-    transform: translate(-10px, -10px);
-    box-shadow: 16px 16px 0 var(--border);
-    background: var(--text);
-    color: var(--bg);
-  }
-
-  .service-card:hover .card-bg-num {
-    opacity: 0.14;
-  }
-
-  .service-card:hover .card-index {
-    opacity: 0.8;
-    transform: translateX(8px);
-    color: var(--bg);
-  }
-
-  .service-card:hover .card-title {
-    transform: translateX(10px);
-    color: var(--bg);
-  }
-
-  .service-card:hover .card-desc {
-    opacity: 0.9;
-    transform: translateX(10px);
-    color: var(--bg);
-  }
-
-  .service-card:hover .card-block {
-    border-left-color: var(--bg);
-  }
-
-  .service-card:hover .blk-label {
-    color: var(--bg);
-  }
-
-  .service-card:hover .prob-item,
-  .service-card:hover .cap-item {
-    color: var(--bg);
-    opacity: 0.95;
-  }
-
-  .service-card:hover .prob-dash {
-    color: var(--y);
+  .service-card:hover .card-number,
+  .service-card:focus-within .card-number {
+    transform: translate(6px, -3px) rotate(-4deg);
+    color: var(--accent);
     opacity: 1;
   }
 
-  .service-card:hover .card-arrow {
-    background: var(--y);
-    color: #111110;
-    border-color: var(--y);
-    transform: translate(6px, -6px) scale(1.05);
-    box-shadow: 6px 6px 0 var(--bg);
+  .service-card:hover .card-title,
+  .service-card:focus-within .card-title { transform: translateX(4px); }
+
+  .service-card:hover .card-corner,
+  .service-card:focus-within .card-corner {
+    transform: translate(3px, -3px);
+    background: var(--accent);
+    color: var(--text);
   }
 
-  /* Frame animation */
-  .service-card:hover .frame-top { width: 100%; transition-delay: 0ms; }
-  .service-card:hover .frame-right { height: 100%; transition-delay: 80ms; }
-  .service-card:hover .frame-bottom { width: 100%; transition-delay: 160ms; }
-  .service-card:hover .frame-left { height: 100%; transition-delay: 240ms; }
-
-  /* ============================================
-     ENTRANCE ANIMATION
-     ============================================ */
-  .service-card {
-    opacity: 0;
-    transform: translateY(40px);
-    transition:
-      opacity 0.65s var(--motion-ease-out),
-      transform 0.65s var(--motion-ease-out),
-      box-shadow 0.4s var(--motion-ease-out);
+  @media (max-width: 760px) {
+    .services-header { display: block; }
+    .services-header h2 { margin-top: var(--space-lg); text-align: left; }
+    .service-card { min-height: 16rem; }
+    .card-content { padding-right: 0; }
+    .card-number { font-size: clamp(3.25rem, 11vw, 5rem); }
   }
 
-  .service-card.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .service-card.sol-0 { transition-delay: 0ms; }
-  .service-card.sol-1 { transition-delay: 100ms; }
-  .service-card.sol-2 { transition-delay: 200ms; }
-  .service-card.sol-3 { transition-delay: 300ms; }
-
-  /* ============================================
-     FOOTER
-     ============================================ */
-  .services-foot {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-lg);
-    margin-top: var(--space-3xl);
-  }
-
-  .foot-note {
-    font-size: 0.6875rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--text-muted);
-  }
-
-  .foot-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-md);
-    min-height: 48px;
-    padding: var(--space-md) var(--space-xl);
-    background: var(--text);
-    color: var(--bg);
-    border: 3px solid var(--text);
-    font-weight: 700;
-    font-size: 0.9375rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    transition:
-      transform var(--transition-fast),
-      box-shadow var(--transition-fast);
-  }
-
-  .foot-cta:hover {
-    transform: translate(-5px, -5px);
-    box-shadow: 9px 9px 0 var(--y);
-  }
-
-  .foot-cta:focus-visible {
-    outline: 3px solid var(--text);
-    outline-offset: 3px;
-  }
-
-  .f-cta-arrow {
-    transition: transform var(--transition-fast);
-  }
-
-  .foot-cta:hover .f-cta-arrow {
-    transform: translateX(6px);
-  }
-
-  /* ============================================
-     RESPONSIVE
-     ============================================ */
-  @media (max-width: 640px) {
-    .services {
-      padding: var(--space-3xl) 0;
-    }
-
-    .service-card {
-      padding: var(--space-lg);
-      min-height: 220px;
-    }
-
-    .card-arrow {
-      width: 36px;
-      height: 36px;
-      font-size: 1rem;
-    }
+  @media (max-width: 560px) {
+    .solutions-grid { grid-template-columns: 1fr; gap: var(--space-md); }
+    .service-card { min-height: 13.5rem; padding: var(--space-lg); }
+    .service-card::before { font-size: 12rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .service-card {
-      opacity: 1;
-      transform: none;
-      animation: none;
-    }
-
-    .service-card,
-    .service-card * {
-      transition: none !important;
-    }
+    .service-card, .card-number, .card-title, .card-corner { transition: none; }
   }
 </style>

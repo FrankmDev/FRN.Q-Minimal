@@ -1,72 +1,24 @@
 ---
-const capabilities = [
-  {
-    num: "01",
-    title: "Discovery",
-    desc: "Entender el negocio, los objetivos y las restricciones antes de decidir nada.",
-  },
-  {
-    num: "02",
-    title: "Análisis de negocio y proceso",
-    desc: "Revisar cómo trabajas hoy, dónde se pierde tiempo o dinero y qué se puede sistematizar.",
-  },
-  {
-    num: "03",
-    title: "Alcance claro",
-    desc: "Un alcance por escrito: qué se entrega, qué no, con qué calendario y qué coste.",
-  },
-  {
-    num: "04",
-    title: "Diseño y desarrollo",
-    desc: "Diseño y programo yo mismo. La misma persona decide y construye.",
-  },
-  {
-    num: "05",
-    title: "QA",
-    desc: "Pruebas de funcionamiento, contenido, rendimiento, accesibilidad y SEO técnico.",
-  },
-  {
-    num: "06",
-    title: "Lanzamiento",
-    desc: "Publicación, redirecciones, analítica y traspaso documentado.",
-  },
-  {
-    num: "07",
-    title: "Evolución",
-    desc: "Acompañamiento posterior o entrega preparada para que la continúe tu equipo.",
-  },
-];
-
 const process = [
   {
     num: "01",
-    title: "Discovery",
-    does: "Reunión inicial y revisión de tu situación. Definimos objetivo, usuarios y restricciones.",
-    receives: "Resumen escrito del punto de partida y del objetivo.",
+    title: "Descubrir y acotar",
+    desc: "Analizo el negocio, sus procesos y objetivos para fijar un alcance claro.",
   },
   {
     num: "02",
-    title: "Scope / System Design",
-    does: "Decido arquitectura, tecnología y estructura de contenido.",
-    receives: "Alcance, calendario y presupuesto cerrado.",
+    title: "Diseñar",
+    desc: "Defino estructura y experiencia desde las necesidades del negocio.",
   },
   {
     num: "03",
-    title: "Design & Build",
-    does: "Diseño y desarrollo en iteraciones cortas sobre un entorno de pruebas.",
-    receives: "Acceso a la evolución del proyecto y entregas parciales.",
+    title: "Desarrollar",
+    desc: "Construyo el producto e integro los sistemas necesarios.",
   },
   {
     num: "04",
-    title: "QA / Launch",
-    does: "Revisión de funcionamiento, rendimiento, accesibilidad y SEO técnico.",
-    receives: "Publicación, redirecciones y documentación de traspaso.",
-  },
-  {
-    num: "05",
-    title: "Evolution",
-    does: "Mejoras y mantenimiento cuando hacen falta.",
-    receives: "Proyecto documentado, o acompañamiento continuo si lo prefieres.",
+    title: "Probar y lanzar",
+    desc: "Pruebas, publicación y entrega documentada.",
   },
 ];
 ---
@@ -74,554 +26,319 @@ const process = [
 <section class="about" id="sobre-mi" aria-labelledby="about-title">
   <div class="container">
     <div class="about-intro reveal">
-      <div class="intro-visual" aria-hidden="true">
-        <div class="visual-box"></div>
-        <div class="visual-box visual-box-small"></div>
-        <div class="visual-line"></div>
-      </div>
-
-      <div class="intro-content">
-        <div class="section-label">
-          <span class="label-num mono" aria-hidden="true">[01]</span>
-          <span class="label-text">Estudio independiente</span>
-        </div>
-
-        <h2 class="intro-title" id="about-title">
-          Diseño y desarrollo web,
-          <span class="title-emphasis">de principio a fin.</span>
-        </h2>
-
-        <div class="intro-body">
-          <p class="intro-text">
-            FRN.Q es el estudio independiente dirigido por Francisco Muñoz.
-            Trabajo directo, contigo, en todo el proyecto: negocio, diseño y
-            código. Sin intermediarios ni capas de gestión.
-          </p>
-          <p class="intro-text">
-            Diseño y desarrollo webs, portales y sistemas a medida. Cada
-            proyecto empieza entendiendo cómo funciona tu negocio y termina en
-            un producto mantenible que puedes seguir evolucionando.
-          </p>
-        </div>
-
-        <a href="#contacto" class="intro-cta">
-          <span>Hablar del proyecto</span>
-          <span class="cta-arrow" aria-hidden="true">→</span>
+      <span class="about-label mono"><span aria-hidden="true"></span>FRN.Q / Francisco Muñoz</span>
+      <h2 id="about-title">Negocio al centro.<br /><span>Diseño y código, juntos.</span></h2>
+      <div class="about-intro-bottom">
+        <p>
+          Trabajo directamente contigo: entiendo el negocio y llevo cada proyecto del diseño al desarrollo.
+        </p>
+        <a href="#contacto" class="about-cta">
+          <span>Hablemos del proyecto</span>
+          <span aria-hidden="true">→</span>
         </a>
       </div>
     </div>
 
-    <div class="capabilities-section reveal">
-      <div class="section-label">
-        <span class="label-num mono" aria-hidden="true">[02]</span>
-        <span class="label-text">Qué entra en un proyecto</span>
-      </div>
+    <section class="process-section reveal" aria-labelledby="process-title">
+      <header class="process-heading">
+        <div>
+          <span class="process-label mono"><span aria-hidden="true"></span>Proceso</span>
+          <h3 id="process-title">De la primera pregunta al lanzamiento.</h3>
+        </div>
+        <span class="process-count mono"><span class="process-total">04</span><span>FASES</span></span>
+      </header>
 
-      <ul class="capabilities-list" role="list">
-        {
-          capabilities.map((capability) => (
-            <li class="capability-item" role="listitem">
-              <span class="capability-num mono" aria-hidden="true">{capability.num}</span>
-              <div class="capability-content">
-                <h3 class="capability-title">{capability.title}</h3>
-                <p class="capability-desc">{capability.desc}</p>
-              </div>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-
-    <div class="process-section reveal">
-      <div class="section-label">
-        <span class="label-num mono" aria-hidden="true">[03]</span>
-        <span class="label-text">Proceso</span>
-      </div>
-
-      <ol class="process-list" role="list">
+      <ol class="process-list">
         {
           process.map((step) => (
-            <li class="process-item" role="listitem">
+            <li class="process-item">
               <span class="process-num mono" aria-hidden="true">{step.num}</span>
-              <div class="process-body">
-                <h3 class="process-title">{step.title}</h3>
-                <p class="process-does">{step.does}</p>
-                <p class="process-receives">
-                  <span class="process-receives-label mono">Recibes</span>
-                  {step.receives}
-                </p>
+              <div class="process-copy">
+                <h4>{step.title}</h4>
+                <p>{step.desc}</p>
               </div>
             </li>
           ))
         }
       </ol>
-    </div>
-
-    <div class="about-contact reveal">
-      <div class="about-contact-main">
-        <span class="ac-icon" aria-hidden="true">◆</span>
-        <p class="about-contact-text">
-          Contacto directo, sin formularios que se pierden. Cuéntame el
-          proyecto y te respondo con los siguientes pasos.
-        </p>
-      </div>
-      <a href="mailto:hola@frnq.es" class="about-contact-mail">
-        <span>hola@frnq.es</span>
-        <span class="mail-arrow" aria-hidden="true">→</span>
-      </a>
-    </div>
+    </section>
   </div>
 </section>
 
 <style>
   .about {
-    padding: var(--space-4xl) 0;
     position: relative;
+    padding: clamp(var(--space-3xl), 8vw, 8rem) 0;
+    scroll-margin-top: var(--layout-header-height);
   }
 
   .about::before {
     content: "";
     position: absolute;
+    inset: 0 0 auto;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--border) 0 18px, transparent 18px 36px);
+  }
+
+  .mono { font-family: var(--font-mono); }
+
+  .about-intro {
+    position: relative;
+    padding: clamp(var(--space-lg), 4.8vw, var(--space-4xl));
+    border: 2px solid var(--border);
+    background: var(--bg-alt);
+    color: var(--text);
+    box-shadow: 7px 7px 0 var(--border);
+  }
+
+  .about-intro::before {
+    position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    height: 1px;
-    background: repeating-linear-gradient(
-      90deg,
-      var(--border) 0,
-      var(--border) 20px,
-      transparent 20px,
-      transparent 40px
-    );
-  }
-
-  .mono {
-    font-family: var(--font-mono);
-  }
-
-  .section-label {
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
-    margin-bottom: var(--space-xl);
-    padding-bottom: var(--space-md);
-    border-bottom: 2px solid var(--border);
-  }
-
-  .label-num {
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
-    font-weight: 500;
-  }
-
-  .label-text {
-    font-size: 0.875rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  /* ---- Intro ---- */
-  .about-intro {
-    display: grid;
-    gap: var(--space-2xl);
-    margin-bottom: var(--space-4xl);
-  }
-
-  @media (min-width: 768px) {
-    .about-intro {
-      grid-template-columns: 200px 1fr;
-      gap: var(--space-3xl);
-    }
-  }
-
-  .intro-visual {
-    position: relative;
-    height: 200px;
-  }
-
-  @media (max-width: 767px) {
-    .intro-visual {
-      display: none;
-    }
-  }
-
-  .visual-box {
-    position: absolute;
-    width: 120px;
-    height: 120px;
-    border: 2px solid var(--border);
-    background: var(--text);
-    box-shadow: 6px 6px 0 var(--border);
-  }
-
-  .visual-box-small {
-    width: 60px;
-    height: 60px;
-    top: 80px;
-    left: 100px;
-    background: var(--bg);
-    z-index: 1;
-    transition: transform var(--transition-base);
-  }
-
-  .visual-box-small:hover {
-    transform: translate(-4px, -4px);
-  }
-
-  .visual-line {
-    position: absolute;
-    bottom: 20px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--border);
-    opacity: 0.3;
-  }
-
-  .intro-title {
-    font-size: clamp(1.75rem, 5vw, 3.25rem);
-    font-weight: 300;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-    margin-bottom: var(--space-lg);
-  }
-
-  .title-emphasis {
-    display: block;
-    font-weight: 800;
-    margin-top: 0.25rem;
-    position: relative;
-    padding-left: 0;
-  }
-
-  .title-emphasis::before {
+    width: clamp(3rem, 8vw, 6rem);
+    height: 0.3rem;
     content: "";
-    position: absolute;
-    left: -0.85em;
-    top: 0.5em;
-    width: 4px;
-    height: 0.8em;
-    background: var(--text);
+    background: var(--accent);
   }
 
-  .intro-body {
-    display: grid;
-    gap: var(--space-md);
-    margin-bottom: var(--space-xl);
-  }
-
-  .intro-text {
-    font-size: clamp(1rem, 2vw, 1.125rem);
-    line-height: 1.8;
-    color: var(--text-secondary);
-    max-width: 620px;
-    margin: 0;
-  }
-
-  .intro-cta {
+  .about-label,
+  .process-label {
     display: inline-flex;
     align-items: center;
     gap: var(--space-sm);
-    padding: var(--space-md) var(--space-xl);
+    font-size: 0.6875rem;
     font-weight: 700;
-    font-size: 1rem;
-    border: 3px solid var(--border);
-    background: var(--bg);
-    box-shadow: 8px 8px 0 var(--border);
+    letter-spacing: 0.11em;
     text-transform: uppercase;
-    transition:
-      transform var(--transition-fast),
-      box-shadow var(--transition-fast),
-      background var(--transition-fast),
-      color var(--transition-fast);
   }
 
-  .intro-cta:hover {
+  .about-label { color: var(--text-muted); }
+
+  .about-label span,
+  .process-label span {
+    width: 1.5rem;
+    height: 0.45rem;
+    border: 1px solid currentColor;
+    background: var(--bg);
+  }
+
+  .about-intro h2 {
+    max-width: 15ch;
+    margin: clamp(var(--space-xl), 4vw, var(--space-3xl)) 0;
+    font-size: clamp(2.8rem, 7.4vw, 7rem);
+    font-weight: 800;
+    line-height: 0.88;
+    letter-spacing: -0.08em;
+    text-transform: uppercase;
+  }
+
+  .about-intro h2 span {
+    display: inline-block;
+    padding: 0 0.02em 0.08em;
+    color: var(--text-muted);
+    box-shadow: inset 0 -0.16em var(--accent);
+  }
+
+  .about-intro-bottom {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--space-xl);
+  }
+
+  .about-intro-bottom p {
+    max-width: 44ch;
+    margin: 0;
+    font-size: clamp(0.9375rem, 1.5vw, 1.125rem);
+    font-weight: 600;
+    line-height: 1.55;
+  }
+
+  .about-cta {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: var(--space-xl);
+    min-height: 3.25rem;
+    padding: var(--space-sm) var(--space-md);
+    border: 3px solid var(--border);
     background: var(--text);
     color: var(--bg);
-    transform: translate(-6px, -6px);
-    box-shadow: 12px 12px 0 var(--y);
-  }
-
-  .intro-cta:focus-visible {
-    outline: 3px solid var(--text);
-    outline-offset: 3px;
-  }
-
-  .cta-arrow {
-    transition: transform var(--transition-base);
-  }
-
-  .intro-cta:hover .cta-arrow {
-    transform: translateX(4px);
-  }
-
-  /* ---- Capabilities ---- */
-  .capabilities-section,
-  .process-section {
-    margin-bottom: var(--space-4xl);
-  }
-
-  .capabilities-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    border-top: 2px solid var(--border);
-  }
-
-  @media (min-width: 768px) {
-    .capabilities-list {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  .capability-item {
-    display: flex;
-    gap: var(--space-lg);
-    padding: var(--space-lg) 0;
-    border-bottom: 1px solid var(--border-light);
-    transition: background-color var(--transition-fast);
-  }
-
-  .capability-item:hover {
-    background: var(--bg-alt);
-  }
-
-  @media (min-width: 768px) {
-    .capability-item:nth-child(odd) {
-      padding-right: var(--space-2xl);
-      border-right: 1px solid var(--border-light);
-    }
-
-    .capability-item:nth-child(even) {
-      padding-left: var(--space-2xl);
-    }
-
-    .capability-item:nth-child(odd):last-child {
-      padding-right: 0;
-      border-right: none;
-    }
-  }
-
-  .capability-num {
-    font-family: var(--font-mono);
+    box-shadow: 6px 6px 0 var(--accent);
     font-size: 0.8125rem;
-    font-weight: 700;
-    flex-shrink: 0;
-    padding-top: 0.2rem;
-    color: var(--text-muted);
-    transition: all 0.3s ease;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
   }
 
-  .capability-item:hover .capability-num {
-    color: var(--text);
-    background: var(--y);
-    padding: 0 var(--space-xs) var(--space-xs);
+  .about-cta:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 10px 10px 0 var(--accent);
   }
 
-  .capability-title {
-    font-size: 1.0625rem;
-    font-weight: 700;
-    margin-bottom: var(--space-xs);
-    transition: transform 0.4s var(--motion-ease-out);
+  .about-cta:hover span:last-child { transform: translateX(4px); }
+  .about-cta span:last-child { transition: transform var(--transition-fast); }
+
+  .about-cta:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 4px;
   }
 
-  .capability-item:hover .capability-title {
-    transform: translateX(4px);
-  }
-
-  .capability-desc {
-    font-size: 0.9375rem;
-    line-height: 1.6;
-    color: var(--text-secondary);
-    margin: 0;
-  }
-
-  /* ---- Process ---- */
-  .process-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: var(--space-md);
-  }
-
-  @media (min-width: 768px) {
-    .process-list {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  .process-item {
-    display: flex;
-    gap: var(--space-lg);
-    padding: var(--space-xl);
-    border: 3px solid var(--border);
-    background: var(--bg);
-    transition: all 0.4s var(--motion-ease-out);
+  .process-section {
     position: relative;
-    overflow: hidden;
-  }
-
-  /* Top line draw on hover */
-  .process-item::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 3px;
+    margin-top: clamp(var(--space-3xl), 7vw, 7rem);
+    padding: clamp(var(--space-lg), 4vw, var(--space-2xl));
+    border: 3px solid var(--border);
+    border-top: 4px solid var(--accent);
     background: var(--text);
-    transition: width 0.35s var(--motion-ease-out);
-    z-index: 2;
-  }
-
-  .process-item:hover::before {
-    width: 100%;
-  }
-
-  .process-item:hover {
-    transform: translate(-5px, -5px);
+    color: var(--bg);
     box-shadow: 10px 10px 0 var(--border);
   }
 
-  .process-num {
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    font-weight: 700;
-    opacity: 0.45;
-    flex-shrink: 0;
-    padding-top: 0.2rem;
-    transition: all 0.4s var(--motion-ease-out);
+  .process-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid rgb(244 243 239 / 25%);
   }
 
-  .process-item:hover .process-num {
-    opacity: 1;
-    transform: translateX(4px);
+  .process-label { color: var(--accent); }
+  .process-label span { background: var(--accent); }
+
+  .process-heading h3 {
+    max-width: 18ch;
+    margin: var(--space-md) 0 0;
+    font-size: clamp(1.5rem, 3.5vw, 3rem);
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: -0.06em;
   }
 
-  .process-title {
-    font-size: 1.125rem;
-    font-weight: 700;
-    margin-bottom: var(--space-xs);
-  }
-
-  .process-does {
-    font-size: 0.9375rem;
-    line-height: 1.6;
-    color: var(--text-secondary);
-    margin: 0 0 var(--space-md);
-  }
-
-  .process-receives {
+  .process-count {
     display: flex;
     align-items: baseline;
     gap: var(--space-sm);
-    font-size: 0.875rem;
-    line-height: 1.5;
-    margin: 0;
-    padding-top: var(--space-md);
-    border-top: 1px solid var(--border-light);
+    flex: 0 0 auto;
+    color: var(--bg);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.06em;
   }
 
-  .process-receives-label {
-    font-family: var(--font-mono);
+  .process-count span {
+    color: var(--bg);
+    font-size: 0.625rem;
+    letter-spacing: 0.1em;
+  }
+
+  .process-count .process-total {
+    color: var(--accent);
+    font-size: inherit;
+    letter-spacing: inherit;
+  }
+
+  .process-list {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    margin: var(--space-2xl) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .process-list::before {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    left: 1rem;
+    height: 2px;
+    content: "";
+    background: rgb(255 230 0 / 32%);
+  }
+
+  .process-item {
+    position: relative;
+    min-height: 13rem;
+    padding: 0 var(--space-lg);
+    border-left: 1px solid rgb(244 243 239 / 22%);
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .process-item:first-child { padding-left: 0; border-left: 0; }
+  .process-item:last-child { padding-right: 0; }
+  .process-item:hover { background: rgb(244 243 239 / 5%); transform: translateY(-4px); }
+
+  .process-num {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border: 2px solid var(--accent);
+    background: var(--text);
+    color: var(--accent);
     font-size: 0.6875rem;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    flex-shrink: 0;
-    background: var(--y);
-    padding: 0 var(--space-xs);
   }
 
-  /* ---- Contact banner ---- */
-  .about-contact {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-lg);
-    padding: var(--space-2xl);
-    background: var(--text);
-    color: var(--bg);
-    border: 2px solid var(--text);
-    box-shadow: 10px 10px 0 var(--y);
+  .process-copy { padding-top: var(--space-lg); }
+
+  .process-copy h4 {
+    margin: 0 0 var(--space-sm);
+    font-size: clamp(1.125rem, 1.8vw, 1.5rem);
+    font-weight: 800;
+    letter-spacing: -0.045em;
   }
 
-  .about-contact-main {
-    display: flex;
-    align-items: center;
-    gap: var(--space-lg);
-  }
-
-  .ac-icon {
-    font-size: 1.5rem;
-    flex-shrink: 0;
-    opacity: 0.6;
-  }
-
-  .about-contact-text {
-    font-size: clamp(1rem, 2vw, 1.125rem);
-    line-height: 1.6;
-    opacity: 0.95;
-    max-width: 520px;
+  .process-copy p {
+    max-width: 27ch;
     margin: 0;
+    color: rgb(244 243 239 / 76%);
+    font-size: 0.875rem;
+    line-height: 1.55;
   }
 
-  .about-contact-mail {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-md);
-    padding: var(--space-md) var(--space-xl);
-    font-family: var(--font-mono);
-    font-weight: 700;
-    font-size: 1rem;
-    background: var(--bg);
-    color: var(--text);
-    border: 3px solid var(--bg);
-    box-shadow: 4px 4px 0 rgb(0 0 0 / 20%);
-    transition:
-      transform var(--transition-fast),
-      box-shadow var(--transition-fast);
-    flex-shrink: 0;
+  @media (max-width: 760px) {
+    .about-intro h2 { font-size: clamp(2.8rem, 9vw, 5rem); }
+    .process-list { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--space-xl); }
+    .process-list::before { display: none; }
+    .process-item { min-height: 11rem; padding: 0 var(--space-md); border-left: 0; }
+    .process-item:nth-child(even) { border-left: 1px solid rgb(244 243 239 / 22%); }
+    .process-item:first-child, .process-item:nth-child(3) { padding-left: 0; }
+    .process-item:nth-child(even) { padding-right: 0; }
+    .process-item:nth-child(3), .process-item:nth-child(4) { padding-top: var(--space-md); border-top: 1px solid rgb(244 243 239 / 22%); }
   }
 
-  .about-contact-mail:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 7px 7px 0 rgb(0 0 0 / 20%);
-  }
-
-  .about-contact-mail:focus-visible {
-    outline: 3px solid var(--bg);
-    outline-offset: 3px;
-  }
-
-  .mail-arrow {
-    transition: transform var(--transition-base);
-  }
-
-  .about-contact-mail:hover .mail-arrow {
-    transform: translateX(6px);
-  }
-
-  /* ---- Responsive ---- */
-  @media (max-width: 640px) {
-    .about-contact {
-      flex-direction: column;
-      align-items: flex-start;
-      padding: var(--space-lg);
+  @media (max-width: 560px) {
+    .about-intro { box-shadow: 5px 5px 0 var(--border); }
+    .about-intro h2 { font-size: clamp(2.65rem, 12vw, 4.5rem); }
+    .about-intro-bottom { align-items: flex-start; flex-direction: column; }
+    .about-cta { width: fit-content; }
+    .process-section { margin-top: var(--space-3xl); box-shadow: 6px 6px 0 var(--border); }
+    .process-heading { align-items: flex-start; }
+    .process-count { font-size: 1.125rem; }
+    .process-list { grid-template-columns: 1fr; gap: var(--space-lg); margin-top: var(--space-xl); }
+    .process-list::before { display: block; top: 1rem; bottom: 1rem; left: 1rem; right: auto; width: 2px; height: auto; }
+    .process-item, .process-item:first-child, .process-item:nth-child(3), .process-item:nth-child(even), .process-item:nth-child(4) {
+      display: grid;
+      grid-template-columns: 2rem minmax(0, 1fr);
+      min-height: 0;
+      gap: var(--space-md);
+      padding: 0;
+      border: 0;
     }
+    .process-item:nth-child(3), .process-item:nth-child(4) { padding-top: 0; border-top: 0; }
+    .process-copy { padding-top: 0; }
+    .process-copy h4 { margin-bottom: var(--space-xs); }
+    .process-copy p { max-width: 38ch; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .intro-cta,
-    .process-item,
-    .capability-item,
-    .about-contact-mail {
-      transition: none !important;
-    }
+    .about-cta, .about-cta span:last-child, .process-item { transition: none; }
   }
 </style>
