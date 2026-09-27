@@ -7,6 +7,12 @@ const projects = (await getProjects())
   .filter((project: Project) => project.status === "live")
   .slice(0, 3);
 
+// This historic preview still matches the published Fernando Feijoo case.
+// Other archived previews belong to projects no longer published here.
+const historicalMockups: Record<string, string> = {
+  "fernando-feijoo": "/projects/fernando-feijoo.avif",
+};
+
 const cases = await Promise.all(
   projects.map(async (project: Project) => ({
     slug: project.slug,
@@ -15,6 +21,9 @@ const cases = await Promise.all(
     year: project.year,
     sector: project.sector,
     alt: project.cover.alt,
+    host: project.url
+      ? new URL(project.url).hostname.replace(/^www\./, "")
+      : null,
     preview: (
       await getImage({
         src: project.cover.src,
@@ -66,7 +75,12 @@ const projectSchema = {
       {
         cases.map((item, index) => (
           <li class="project-row">
-            <a href={item.href} class="project-link">
+            <a
+              href={item.href}
+              class="project-link"
+              data-image={historicalMockups[item.slug] ?? item.preview}
+              data-host={item.host ?? siteConfig.name}
+            >
               <span class="project-number mono" aria-hidden="true">0{index + 1}</span>
               <figure class="project-image">
                 <img src={item.preview} alt={item.alt} loading="lazy" decoding="async" />
@@ -91,7 +105,131 @@ const projectSchema = {
       </a>
     </div>
   </div>
+
+  <!-- Mockup flotante que sigue al cursor -->
+  <div class="cursor-mockup" id="cursor-mockup" aria-hidden="true">
+    <div class="mockup-chrome">
+      <div class="chrome-dots">
+        <span></span><span></span><span></span>
+      </div>
+      <span class="chrome-url mono" id="mockup-url"></span>
+    </div>
+    <div class="mockup-frame">
+      <img
+        src=""
+        alt=""
+        class="mockup-img"
+        id="mockup-img"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+  </div>
 </section>
+
+<script>
+  const hoverQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+  const reducedQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  function initCursorMockup() {
+    const section = document.querySelector<HTMLElement>(".projects");
+    const mockup = document.getElementById("cursor-mockup");
+    const mockupImg = document.getElementById("mockup-img") as HTMLImageElement | null;
+    const urlLabel = document.getElementById("mockup-url");
+    if (!section || !mockup || !mockupImg || !urlLabel) return;
+
+    const stop = () => {
+      mockup.classList.remove("active");
+      section.classList.remove("mockup-ready");
+    };
+
+    if (!hoverQuery.matches || reducedQuery.matches || window.innerWidth <= 768) {
+      stop();
+      return;
+    }
+    section.classList.add("mockup-ready");
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let mockupX = 0;
+    let mockupY = 0;
+    let isHovering = false;
+    let activeCopy: HTMLElement | null = null;
+    let rafId: number | null = null;
+
+    const lerp = (start: number, end: number, factor: number) =>
+      start + (end - start) * factor;
+
+    const updatePosition = () => {
+      if (!isHovering) {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = null;
+        return;
+      }
+
+      mockupX = lerp(mockupX, mouseX, 0.15);
+      mockupY = lerp(mockupY, mouseY, 0.15);
+
+      const mockupRect = mockup.getBoundingClientRect();
+      const copyRect = activeCopy?.getBoundingClientRect();
+      let x = mockupX + 30;
+      let y = mockupY - 120;
+
+      // Keep the floating window beside, rather than over, the active title.
+      if (copyRect && x + mockupRect.width > copyRect.left) {
+        x = copyRect.left - mockupRect.width - 20;
+      }
+      x = Math.max(12, Math.min(x, window.innerWidth - mockupRect.width - 12));
+      y = Math.max(12, Math.min(y, window.innerHeight - mockupRect.height - 12));
+
+      mockup.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+
+      rafId = requestAnimationFrame(updatePosition);
+    };
+
+    document.addEventListener(
+      "mousemove",
+      (event) => {
+        mouseX = event.clientX;
+        mouseY = event.clientY;
+      },
+      { passive: true },
+    );
+
+    section.querySelectorAll<HTMLElement>(".project-link").forEach((item) => {
+      const imageUrl = item.dataset.image;
+      const host = item.dataset.host ?? "";
+
+      item.addEventListener("mouseenter", () => {
+        if (!imageUrl) return;
+        activeCopy = item.querySelector<HTMLElement>(".project-copy");
+        if (mockupImg.getAttribute("src") !== imageUrl) {
+          mockupImg.src = imageUrl;
+        }
+        urlLabel.textContent = host;
+        mockup.classList.add("active");
+        isHovering = true;
+        if (!rafId) rafId = requestAnimationFrame(updatePosition);
+      });
+
+      item.addEventListener("mouseleave", () => {
+        mockup.classList.remove("active");
+        isHovering = false;
+        activeCopy = null;
+      });
+    });
+
+    section.addEventListener("mouseleave", () => {
+      mockup.classList.remove("active");
+      isHovering = false;
+    });
+  }
+
+  initCursorMockup();
+  hoverQuery.addEventListener("change", initCursorMockup);
+  reducedQuery.addEventListener("change", initCursorMockup);
+  window.addEventListener("resize", initCursorMockup);
+</script>
 
 <style>
   .projects {
@@ -224,7 +362,7 @@ const projectSchema = {
   }
 
   .project-link:hover .project-title,
-  .project-link:focus-visible .project-title { transform: translateX(5px); }
+  .project-link:focus-visible .project-title { transform: translateX(-0.75rem); }
 
   .project-arrow {
     display: grid;
@@ -244,6 +382,90 @@ const projectSchema = {
   }
 
   .projects-footer { display: flex; justify-content: flex-end; margin-top: var(--space-xl); }
+
+  /* ---- Mockup flotante que sigue al cursor ---- */
+  .cursor-mockup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    width: 440px;
+    overflow: hidden;
+    border: 4px solid var(--border);
+    background: var(--bg);
+    box-shadow: 12px 12px 0 var(--border);
+    pointer-events: none;
+    opacity: 0;
+    transform: translate3d(-100%, -100%, 0);
+    transition: opacity 0.2s ease;
+    will-change: transform;
+  }
+
+  .cursor-mockup.active { opacity: 1; }
+
+  .mockup-chrome {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-shrink: 0;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid var(--border);
+    background: var(--bg-alt);
+  }
+
+  .chrome-dots {
+    display: flex;
+    flex-shrink: 0;
+    gap: 5px;
+  }
+
+  .chrome-dots span {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--border);
+    opacity: 0.5;
+  }
+
+  .chrome-dots span:nth-child(1) { opacity: 0.3; }
+  .chrome-dots span:nth-child(3) { opacity: 0.7; }
+
+  .chrome-url {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.55;
+  }
+
+  .mockup-frame {
+    flex: 1;
+    min-height: 0;
+    height: 260px;
+    overflow: hidden;
+  }
+
+  .mockup-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (max-width: 768px) {
+    .cursor-mockup { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cursor-mockup { display: none; }
+  }
+
 
   .all-cases-link {
     display: inline-flex;
@@ -296,6 +518,6 @@ const projectSchema = {
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .project-link, .project-image img, .project-title, .project-arrow, .all-cases-link span:last-child { transition: none; }
+    .project-link, .project-image, .project-image img, .project-title, .project-arrow, .all-cases-link span:last-child { transition: none; }
   }
 </style>
