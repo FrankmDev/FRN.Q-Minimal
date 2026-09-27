@@ -55,11 +55,6 @@
   background: var(--accent);
 }
 
-/* Variant when the offset parent is a content block inside .container. */
-.section-tag--anchored {
-  left: 0;
-}
-
 /* Variant for in-flow use where there is no top rule to straddle. */
 .section-tag--inline {
   position: static;
