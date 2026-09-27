@@ -447,6 +447,12 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     color: var(--bg);
   }
 
+  /* Dark theme: the hamburger inner box turns near-white, so the
+     accent-lined bars need ink to keep their contrast. */
+  :global([data-theme="dark"]) .toggle-line {
+    background: var(--text-on-accent);
+  }
+
   .theme-icon {
     position: absolute;
     inset: 0;

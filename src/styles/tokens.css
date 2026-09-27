@@ -15,6 +15,7 @@
   --y: var(--accent);
 
   --error: #b91c1c;
+  --success: #22c55e;
 
   --border: #111110;
   --border-light: rgb(17 17 16 / 16%);
@@ -82,12 +83,13 @@
   --border: #f4f3ef;
   --border-light: rgb(244 243 239 / 18%);
   --border-strong: #f4f3ef;
-  --grid-color: rgb(244 243 239 / 6%);
+  --grid-color: rgb(244 243 239 / 7%);
 
   --shadow: rgb(0 0 0 / 38%);
-  --shadow-brutal: 6px 6px 0 0 rgb(244 243 239 / 16%);
-  --shadow-brutal-hover: 12px 12px 0 0 rgb(244 243 239 / 20%);
-  --shadow-brutal-lg: 16px 16px 0 0 rgb(244 243 239 / 16%);
+  --shadow-brutal: 6px 6px 0 0 var(--border);
+  --shadow-brutal-hover: 12px 12px 0 0 var(--border);
+  --shadow-brutal-lg: 16px 16px 0 0 var(--border);
 
   --error: #fca5a5;
+  --success: #22c55e;
 }

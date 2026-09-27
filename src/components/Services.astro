@@ -163,6 +163,11 @@ import { serviceAreas, servicesCopy, type ServiceArea } from "../data/services";
 
   .sol-2:hover .card-number { color: var(--text-on-accent); }
 
+  /* Dark theme: the inverted card is near-white, so its numeral stays on ink. */
+  :global([data-theme="dark"]) .sol-1:hover .card-number {
+    color: var(--text-on-accent);
+  }
+
   .service-card:hover .card-title { transform: translateX(4px); }
 
   .service-card:hover .card-corner {

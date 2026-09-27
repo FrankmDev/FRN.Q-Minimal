@@ -93,15 +93,15 @@
 }
 
 .btn-primary {
-  border: 2px solid var(--text);
+  border: 2px solid var(--border);
   background: var(--text);
   color: var(--bg);
-  box-shadow: 6px 6px 0 var(--shadow);
+  box-shadow: 6px 6px 0 var(--border);
 }
 
 .btn-primary:hover {
   transform: translate(-4px, -4px);
-  box-shadow: 10px 10px 0 var(--shadow);
+  box-shadow: 10px 10px 0 var(--border);
 }
 
 .btn-secondary {
