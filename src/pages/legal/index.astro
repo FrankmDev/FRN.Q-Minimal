@@ -1,0 +1,143 @@
+---
+import { siteConfig } from "../../data/site";
+import MainLayout from "../../layouts/MainLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+---
+
+<MainLayout
+  title={`Aviso legal — ${siteConfig.name}`}
+  description="Aviso legal de frnq.es: titulares, identidad de contacto y condiciones de uso del sitio."
+>
+  <Header />
+  <main id="main-content" class="legal">
+    <div class="container">
+      <nav class="crumbs" aria-label="Ruta de navegación">
+        <a href="/">Inicio</a>
+        <span aria-hidden="true">/</span>
+        <span>Aviso legal</span>
+      </nav>
+      <h1>Aviso legal</h1>
+      <div class="legal-body">
+        <section>
+          <h2>Titular</h2>
+          <dl>
+            <dt>Denominación</dt>
+            <dd>FRN.Q — práctica digital independiente de Francisco Muñoz</dd>
+            <dt>NIF</dt>
+            <dd>Pendiente de aportar</dd>
+            <dt>Domicilio</dt>
+            <dd>Granada (Andalucía), España</dd>
+            <dt>Email</dt>
+            <dd><a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a></dd>
+          </dl>
+        </section>
+        <section>
+          <h2>Objeto</h2>
+          <p>
+            Este sitio web presenta la oferta de servicios de FRN.Q y permite
+            ponerse en contacto con el titular a través del formulario de
+            contacto y del correo electrónico indicados arriba.
+          </p>
+        </section>
+        <section>
+          <h2>Condiciones de uso</h2>
+          <p>
+            El contenido de este sitio web —textos, imágenes, marcas y diseño—
+            pertenece a su titular o a sus autores correspondientes y se ofrece
+            a título informativo. No puede reproducirse ni explotarse
+            comercialmente sin autorización expresa.
+          </p>
+        </section>
+        <section>
+          <h2>Responsabilidad</h2>
+          <p>
+            El titular no se responsabiliza del uso que terceros hagan del
+            contenido del sitio ni de los sitios externos a los que se enlaza,
+            como los proyectos publicados que se citan como casos.
+          </p>
+        </section>
+        <section>
+          <h2>Legislación aplicable</h2>
+          <p>
+            Esta relación se rige por la legislación española (LSSI-CE, RGPD y
+            las normas de comercio electrónico y protección de datos
+            aplicables). Para cualquier consulta, escribe a {siteConfig.email}.
+          </p>
+        </section>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</MainLayout>
+
+<style>
+  .legal {
+    padding-top: 120px;
+    padding-bottom: var(--space-4xl);
+  }
+
+  .crumbs {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-2xl);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .crumbs a { opacity: 0.6; transition: opacity var(--transition-fast); }
+  .crumbs a:hover { opacity: 1; }
+  .crumbs span { opacity: 0.4; }
+
+  .legal h1 {
+    margin: 0 0 var(--space-xl);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+
+  .legal-body { max-width: 65ch; }
+
+  .legal-body section { margin-bottom: var(--space-2xl); }
+
+  .legal-body h2 {
+    margin: 0 0 var(--space-md);
+    padding-bottom: var(--space-xs);
+    border-bottom: 2px solid var(--border);
+    font-size: 1.125rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+
+  .legal-body p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    line-height: 1.7;
+  }
+
+  .legal-body dl {
+    display: grid;
+    grid-template-columns: minmax(8rem, max-content) 1fr;
+    column-gap: var(--space-lg);
+    row-gap: var(--space-sm);
+    margin: 0;
+    font-size: 0.9375rem;
+  }
+
+  .legal-body dt {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.55;
+  }
+
+  .legal-body dd { margin: 0; line-height: 1.6; }
+  .legal-body a { text-underline-offset: 3px; }
+</style>

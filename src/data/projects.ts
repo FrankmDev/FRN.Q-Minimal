@@ -15,7 +15,8 @@ export async function getProjects(): Promise<Project[]> {
 
 export const categoryLabels: Record<Project["category"], string> = {
   corporate: "Web corporativa",
-  platform: "Plataforma",
+  web: "Web",
+  website: "Web",
   product: "Producto digital",
   interactive: "Experiencia interactiva",
   // Prepared for the next cases: KingBelt (D2C / Shopify) and

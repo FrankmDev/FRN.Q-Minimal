@@ -9,14 +9,13 @@ order: 6
 
 tagline: "Web que traduce una consultoría energética técnica en un relato claro y una ruta directa a solicitar un análisis."
 context: "Asercord Energía es una consultora energética con sede en Córdoba que asesora a hogares y empresas en electricidad y gas."
-problem: "Asercord necesitaba traducir una consultoría energética especializada en un relato digital sencillo. El sitio debía hacer comprensibles el servicio, la metodología y el siguiente paso para hogares y empresas."
+problem: "Una consultoría energética especializada no es fácil de contar: Asercord necesitaba explicar el servicio y su método en un relato digital sencillo, con un siguiente paso evidente para hogares y empresas."
 objective: "Explicar el servicio, el método y el siguiente paso con una jerarquía clara y vías de contacto directas."
 scope:
   - "Web corporativa"
   - "Estructura de servicios"
   - "Metodología y proceso"
   - "Preguntas frecuentes"
-  - "Contenido educativo"
 solution: "El sitio se estructura alrededor del problema, el método de Asercord, los servicios, el proceso, las preguntas frecuentes y contenido educativo. Una jerarquía clara, tipografía accesible y rutas de contacto directas convierten un tema técnico en una web cercana."
 features:
   - title: "Servicios"
@@ -32,7 +31,7 @@ decisions:
     description: "La estructura sigue el recorrido del visitante en lugar de listar servicios sin contexto."
   - title: "Jerarquía y tipografía accesibles"
     description: "El orden visual y la legibilidad hacen abordable un tema especializado."
-result: "Sitio publicado en asercordenergia.netlify.app que ordena servicios, método y proceso, y conduce al visitante a solicitar un análisis."
+result: "Sitio publicado en asercordenergia.netlify.app que conduce al visitante desde el servicio y el método hasta solicitar un análisis de factura."
 technologies:
   - "Astro"
   - "Tailwind CSS"

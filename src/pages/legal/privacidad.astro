@@ -1,0 +1,135 @@
+---
+import { siteConfig } from "../../data/site";
+import MainLayout from "../../layouts/MainLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+---
+
+<MainLayout
+  title={`Política de privacidad — ${siteConfig.name}`}
+  description="Política de privacidad de frnq.es: datos recogidos por el formulario de contacto, su finalidad, conservación y derechos."
+>
+  <Header />
+  <main id="main-content" class="legal">
+    <div class="container">
+      <nav class="crumbs" aria-label="Ruta de navegación">
+        <a href="/">Inicio</a>
+        <span aria-hidden="true">/</span>
+        <a href="/legal/">Aviso legal</a>
+        <span aria-hidden="true">/</span>
+        <span>Privacidad</span>
+      </nav>
+      <h1>Política de privacidad</h1>
+      <div class="legal-body">
+        <section>
+          <h2>Responsable</h2>
+          <p>
+            FRN.Q — práctica digital independiente de Francisco Muñoz, Granada
+            (España). Contacto: <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>.
+          </p>
+        </section>
+        <section>
+          <h2>Datos que se recogen</h2>
+          <p>
+            A través del formulario de contacto FRN.Q recibe exclusivamente los
+            datos que incluyes: nombre, email, empresa (opcional), tipo de
+            proyecto, descripción del contexto y presupuesto orientativo
+            (opcional). No se usan cookies de seguimiento propias ni se
+            incorporan estos datos a ningún perfil.
+          </p>
+        </section>
+        <section>
+          <h2>Finalidad y base legal</h2>
+          <p>
+            Los datos se usan únicamente para responder a tu consulta,
+            presupuestar el proyecto descrito y, si la conversación sigue, para
+            el trabajo contratado. La base legal es tu consentimiento al enviar
+            el formulario (art. 6.1.a RGPD) y el interés legítimo en atender tu
+            solicitud (art. 6.1.f RGPD).
+          </p>
+        </section>
+        <section>
+          <h2>Conservación</h2>
+          <p>
+            Los mensajes se conservan en el buzón de correo del titular mientras
+            dure la conversación y el tiempo necesario para posibles
+            obligaciones fiscales o contractuales. Si no hay respuesta o el
+            proyecto no sigue, la conversación puede eliminarse.
+          </p>
+        </section>
+        <section>
+          <h2>Destinatarios</h2>
+          <p>
+            Los envíos del formulario se gestionan mediante un formulario
+            automatizado y el servicio de email transaccional Resend
+            (encargado del tratamiento). Los proveedores tratan los datos solo
+            para entregar el mensaje al buzón del titular. No hay cesiones a
+            terceros con fines comerciales ni transferencias publicitarias.
+          </p>
+        </section>
+        <section>
+          <h2>Derechos</h2>
+          <p>
+            Puedes ejercer en cualquier momento tus derechos de acceso,
+            rectificación, supresión, oposición, limitación y portabilidad
+            escribiendo a {siteConfig.email}. También puedes presentar una
+            reclamación ante la AEPD (www.aepd.es) si consideras vulnerados tus
+            derechos.
+          </p>
+        </section>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</MainLayout>
+
+<style>
+  .legal {
+    padding-top: 120px;
+    padding-bottom: var(--space-4xl);
+  }
+
+  .crumbs {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-2xl);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .crumbs a { opacity: 0.6; transition: opacity var(--transition-fast); }
+  .crumbs a:hover { opacity: 1; }
+  .crumbs span { opacity: 0.4; }
+
+  .legal h1 {
+    margin: 0 0 var(--space-xl);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+
+  .legal-body { max-width: 65ch; }
+
+  .legal-body section { margin-bottom: var(--space-2xl); }
+
+  .legal-body h2 {
+    margin: 0 0 var(--space-md);
+    padding-bottom: var(--space-xs);
+    border-bottom: 2px solid var(--border);
+    font-size: 1.125rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+
+  .legal-body p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    line-height: 1.7;
+  }
+</style>

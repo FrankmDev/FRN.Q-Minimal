@@ -38,12 +38,12 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     <div class="header-actions">
       <a
         href={portfolioLink.href}
-        class="studio-button mono"
+        class="studio-link mono"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Visitar FRN.Q Studio en una nueva pestaña"
       >
-        STUDIO <span aria-hidden="true">↗</span>
+        {portfolioLink.label} <span aria-hidden="true">↗</span>
       </a>
       <button
         class="theme-toggle"
@@ -102,6 +102,15 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
       <a href={`/${headerCta.href}`} class="mobile-cta">
         <span>{headerCta.label}</span>
         <span class="cta-arrow" aria-hidden="true">→</span>
+      </a>
+      <a
+        href={portfolioLink.href}
+        class="mobile-studio mono"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={portfolioLink.title}
+      >
+        {portfolioLink.label} <span aria-hidden="true">↗</span>
       </a>
     </div>
   </nav>
@@ -385,30 +394,25 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     gap: var(--space-sm);
   }
 
-  .studio-button {
+  /* Secondary textual link; HABLEMOS is the only highlighted CTA. */
+  .studio-link {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-xs);
-    min-height: 42px;
-    padding: 0 var(--space-sm);
-    border: 2px solid var(--border);
-    background: var(--accent);
-    color: var(--text-on-accent);
-    box-shadow: 4px 4px 0 var(--border);
+    gap: 0.3rem;
+    color: var(--text-muted);
     font-size: 0.6875rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: 0.08em;
-    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    transition: color var(--transition-fast);
   }
 
-  .studio-button:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 var(--border);
+  .studio-link:hover {
+    color: var(--text);
   }
 
-  .studio-button:focus-visible {
+  .studio-link:focus-visible {
     outline: 3px solid var(--text);
-    outline-offset: 3px;
+    outline-offset: 4px;
   }
 
   .theme-toggle {
@@ -609,7 +613,7 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
   }
 
   .mobile-nav.is-open {
-    max-height: 460px;
+    max-height: 540px;
     border-bottom-width: 3px;
     visibility: visible;
   }
@@ -697,6 +701,23 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     outline-offset: 3px;
   }
 
+  .mobile-studio {
+    margin-top: var(--space-md);
+    color: var(--text-muted);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .mobile-studio:hover {
+    color: var(--text);
+  }
+
+  .mobile-studio:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 4px;
+  }
+
   @media (min-width: 900px) {
     :root {
       --layout-header-height: 88px;
@@ -727,7 +748,7 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     .logo-icon { width: 20px; height: 20px; }
     .logo-text { font-size: 1rem; }
     .header-actions { gap: var(--space-xs); }
-    .studio-button { min-height: 36px; padding-inline: var(--space-xs); font-size: 0.6rem; }
+    .studio-link { font-size: 0.6rem; }
     .theme-toggle { width: 44px; min-width: 44px; height: 44px; }
     .menu-toggle { width: 44px; min-width: 44px; height: 44px; }
     .menu-icon { width: 34px; height: 34px; }

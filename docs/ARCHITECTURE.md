@@ -31,14 +31,14 @@ api/
 src/
 ├── assets/projects/<case>/        # cover.avif + gallery AVIF per case
 ├── components/
-│   ├── Header.astro               # sticky nav; anchors + STUDIO ↗ external shortcut
-│   ├── Hero.astro                 # intro, four-solution index, portfolio link
+│   ├── Header.astro               # sticky nav; anchors + STUDIO ↗ (desktop, mobile menu)
+│   ├── Hero.astro                 # intro, solution index, STUDIO ↗ link
 │   ├── Services.astro             # four commercial areas from data/services
 │   ├── HiddenCost.astro           # frequent-operations problems (symptoms)
 │   ├── Projects.astro             # home cases teaser from the collection
 │   ├── About.astro                # studio intro, capabilities, process
-│   ├── Contact.astro              # contact + form + FAQ + portfolio block
-│   ├── Footer.astro               # columns, contact, portfolio, legal
+│   ├── Contact.astro              # contact + form + privacy note + FAQ + STUDIO ↗
+│   ├── Footer.astro               # contact, nav incl. legal links, STUDIO ↗, social
 │   ├── SEOHead.astro              # all <head> primitives + Organization schema
 │   ├── CustomCursor.astro         # desktop cursor enhancement
 │   └── RevealObserver.astro       # scroll reveal for `.reveal`
@@ -57,6 +57,8 @@ src/
 │   ├── index.astro                # Home
 │   ├── casos/index.astro          # /casos/ case archive
 │   ├── casos/[slug].astro         # /casos/<slug>/ case detail
+│   ├── legal/index.astro          # aviso legal
+│   ├── legal/privacidad.astro     # política de privacidad (form notice links here)
 │   └── 404.astro
 ├── scripts/contact-form.ts        # client form handling
 └── styles/                        # app.css cascade: tokens, typography, base, motion, utilities
@@ -85,9 +87,11 @@ src/
 
 | Path | File | Notes |
 |------|------|-------|
-| `/` | `pages/index.astro` | Hero → Services → HiddenCost → Projects → About → Contact |
+| `/` | `pages/index.astro` | Hero → Services → HiddenCost (Operación) → Projects → About → Contact |
 | `/casos/` | `pages/casos/index.astro` | Case archive (`getProjects()`), `ItemList` + `BreadcrumbList` |
 | `/casos/<slug>/` | `pages/casos/[slug].astro` | `getStaticPaths` from the collection, `CreativeWork` schema, next-case link |
+| `/legal/` | `pages/legal/index.astro` | Aviso legal |
+| `/legal/privacidad/` | `pages/legal/privacidad.astro` | Política de privacidad |
 | `/404` | `pages/404.astro` | `noindex` |
 | `POST /api/contact` | `api/contact.ts` | Vercel Function, not an Astro route |
 
@@ -100,7 +104,9 @@ content/projects/*.md  --(astro:content)-->  data/projects.ts (getProjects)
                                                 └── casos/[slug].astro  (/casos/<slug>/)
 
 data/services.ts (serviceAreas)  -->  Services.astro
-data/site.ts (portfolioLink)     -->  Hero.astro, Header/Footer
+data/site.ts (portfolioLink)     -->  Hero.astro, Header/Footer, Contact.astro
+data/site.ts (email = info@frnq.es)     --> footer, contact methods, legal pages
+           (internalEmail = info@frnq.studio) --> api/contact.ts delivery mailbox
 data/contact-contract.ts         -->  Contact.astro, scripts/contact-form.ts, api/contact.ts
 ```
 
@@ -108,7 +114,7 @@ data/contact-contract.ts         -->  Contact.astro, scripts/contact-form.ts, ap
 
 - File: `api/contact.ts` (Vercel `/api` convention). Astro stays static.
 - Provider: Resend HTTP API via `fetch` (`https://api.resend.com/emails`). No SDK.
-- Env (server-only): `RESEND_API_KEY`, plus the destination/sender variables read by the function.
+- Env (server-only): `RESEND_API_KEY`, `CONTACT_FROM_EMAIL`. Delivery target: `siteConfig.internalEmail` (the public `info@frnq.es` redirects internally to it).
 - Contract: POST + JSON or URL-encoded (no-JS fallback); validates against `src/data/contact-contract.ts`; honeypot field; consistent `{ success, error?, errors? }`; no internal errors leaked.
 
 ## CURRENT vs FUTURE

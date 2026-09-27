@@ -7,7 +7,7 @@
 frnq.es is the **Spanish commercial surface** of FRN.Q, the independent digital practice of Francisco Muñoz (Granada, Spain).
 
 - **frnq.es** — commercial. Spanish. Sells outcomes: ecommerce, B2B commerce, systems, web & growth.
-- **frnq.studio** — professional/technical portfolio. English. Evidence of craft and engineering. Linked **externally** as `STUDIO ↗` from the header and `PORTFOLIO / EN ↗` elsewhere, never merged or duplicated.
+- **frnq.studio** — professional/technical portfolio. English. Evidence of craft and engineering. Linked **externally** as `STUDIO ↗` everywhere (header, hero, mobile menu, contact and footer), never merged or duplicated.
 
 frnq.es is **not** a translation of frnq.studio, **not** an English portfolio with a language switch, and **not** an agency site. It is a one-person, named practice with direct execution.
 
@@ -25,7 +25,7 @@ They buy **outcomes and reduced friction**, not technology. They care about thei
 ## Commercial hierarchy (priority order)
 
 1. **ECOMMERCE & SHOPIFY** — D2C selling: catalogue, product, checkout, measurement, connected operations.
-2. **PORTALES / COMMERCE B2B** — professional customers: private prices, orders, accounts, roles, portals.
+2. **PORTALES & SISTEMAS B2B** — professional customers: private prices, orders, accounts, roles, portals.
 3. **SISTEMAS & AUTOMATIZACIÓN** — workflows, integrations, connected data, internal tools.
 4. **WEB, SEO & GROWTH** — corporate web, technical/local SEO, analytics and conversion.
 
@@ -74,15 +74,15 @@ frnq.studio  English, technical  →  shows craft and evidence (external link)
 ```
 
 - Same practice, two surfaces, two jobs. `.es` is not a translation of `.studio`.
-- The portfolio is linked as `STUDIO ↗` in the header and `PORTFOLIO / EN ↗` in contact/footer contexts, always with `target="_blank"`, never embedded.
+- The portfolio is linked as `STUDIO ↗` everywhere (header, hero, mobile menu, contact and footer), always with `target="_blank"`, never embedded. HABLEMOS / Hablemos is the only highlighted CTA; `STUDIO ↗` is a textual secondary link.
 - No hreflang relationship is implied between the two until a deliberate decision says otherwise.
 - Evidence lives in `.studio` and in the published projects listed here; frnq.es borrows credibility by pointing there, it does not restate technical detail.
 
 ## Evidence rules
 
 - Published projects are the only proof of completed work.
-- Future cases (KingBelt, Emilio Faraoni) are **prepared**, not published. They are documented in `src/data/projects.ts` under `futureCases` and must not be rendered as finished work.
-- Project copy is factual and neutral: what was built and for whom, never an invented outcome.
+- Future cases (KingBelt, Emilio Faraoni) are **prepared**, not published. They must not be rendered as finished work.
+- Project copy is factual and neutral: what was built and for whom, never an invented outcome. frnq.studio is the factual source for published projects; frnq.es may reframe commercially but does not add undocumented facts.
 - No testimonials, ratings or reviews unless they are real and attributable.
 
 ## Engagement and pricing philosophy

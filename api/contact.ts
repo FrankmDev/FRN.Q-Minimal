@@ -252,7 +252,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
       },
       body: JSON.stringify({
         from: fromEmail,
-        to: [siteConfig.email],
+        to: [siteConfig.internalEmail],
         reply_to: result.email,
         subject: `FRN.Q — ${result.name} · ${labelFor(CONTACT_TYPES, result.type)}`,
         text: lines.join("\n"),

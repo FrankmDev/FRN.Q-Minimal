@@ -4,7 +4,7 @@
 
 frnq.es is the Spanish **commercial surface** of FRN.Q, the independent digital practice of **Francisco Muñoz** (Granada, Spain). It is a single, static, high-performance Astro site whose job is to explain what FRN.Q solves, show published work, and convert interest into a conversation.
 
-The professional/technical portfolio lives separately at **frnq.studio** (English) and is linked externally as `STUDIO ↗` in the header and `PORTFOLIO / EN ↗` in contact/footer contexts.
+The professional/technical portfolio lives separately at **frnq.studio** (English) and is linked externally as `STUDIO ↗` everywhere (header, hero, mobile menu, contact and footer). HABLEMOS is the only highlighted CTA.
 
 See `POSITIONING.md` for the authoritative business definition and language rules.
 
@@ -33,7 +33,7 @@ See `POSITIONING.md` for the authoritative business definition and language rule
 The hierarchy (see `POSITIONING.md`):
 
 1. ECOMMERCE & SHOPIFY
-2. PORTALES / COMMERCE B2B
+2. PORTALES & SISTEMAS B2B
 3. SISTEMAS & AUTOMATIZACIÓN
 4. WEB, SEO & GROWTH
 
@@ -54,21 +54,22 @@ No dates. Conceptual order.
 
 ### CURRENT — Spanish commercial surface
 
-- Single-page composition: Hero → Services → Problems → Projects → Studio/About → Contact, plus Footer.
-- Content driven by `src/data/*`: `site`, `navigation`, `services`, `process`, `projects`, `engagement`, `contact`, `home`, `about`.
+- Single-page composition: Hero → Solutions → Operation → Cases → Studio → Contact, plus Footer.
+- Content driven by `src/data/*`: `site`, `navigation`, `services`, `contact`, `contact-contract`, `projects`, `engagement`.
+- Contact form with validation contract and Aviso legal / Privacidad pages under `/legal/`.
 - Documentation set in `docs/`.
-- frnq.studio linked externally as portfolio.
+- frnq.studio linked externally as `STUDIO ↗`.
 
 ### CURRENT — Published work
 
-- Six published projects rendered from `src/data/projects.ts`.
+- Six published cases rendered from the `projects` content collection (via `src/data/projects.ts`).
 - Neutral, factual descriptions with no outcome claims.
 
 ### FUTURE — prepared, not shipped
 
 - **KingBelt** — Ecommerce D2C / Shopify. In development.
-- **Emilio Faraoni** — Sistema / Portal B2B. In development.
-- Both are documented as `futureCases` and stay unpublished until they ship with real evidence.
+- **Emilio Faraoni** — Portales & Sistemas B2B. In development.
+- Both stay unpublished until they ship with real evidence; no entries exist yet.
 
 ### FUTURE — not committed
 

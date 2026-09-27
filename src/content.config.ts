@@ -2,12 +2,14 @@ import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
-// Solution categories. Values are prepared for the next cases without
-// creating entries yet: ecommerce (KingBelt, D2C / Shopify) and
-// b2b (Emilio Faraoni, portal / commerce B2B).
+// Solution categories. "web" covers commercial website builds; "website"
+// is the equivalent for professional / portfolio-web cases. Prepared for
+// the next cases without creating entries yet: ecommerce (KingBelt,
+// D2C / Shopify) and b2b (Emilio Faraoni, portal / commerce B2B).
 const categories = [
   "corporate",
-  "platform",
+  "web",
+  "website",
   "product",
   "interactive",
   "ecommerce",

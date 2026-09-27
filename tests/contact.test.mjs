@@ -64,7 +64,7 @@ test("form options are accepted as JSON and URL-encoded without JavaScript", asy
   expect(deliver).toHaveBeenCalledTimes(CONTACT_TYPES.length * CONTACT_BUDGETS.length * 2);
 });
 
-test("form submissions are delivered to the configured public contact address", async () => {
+test("form submissions are delivered to the configured internal contact mailbox", async () => {
   process.env.RESEND_API_KEY = "test";
   process.env.CONTACT_FROM_EMAIL = "from@example.test";
   const deliver = mock((_url, options) => {

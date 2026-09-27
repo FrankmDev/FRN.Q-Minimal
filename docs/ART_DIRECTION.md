@@ -53,4 +53,4 @@ No false metrics, guarantees, testimonials, availability claims or invented outc
 - Structure remains semantic, keyboard-operable and understandable without colour, hover or layout position.
 - Preserve clear focus states, accessible names, form labels and reduced-motion support.
 - The Home redesign changes section composition and scoped component styles; it does not roll back Astro architecture, data modules, Content Collections, case routes, contact validation/API, SEO wiring or shared design tokens.
-- frnq.es and frnq.studio are separate surfaces. The header links to the latter as `STUDIO ↗`; contact and footer may use `PORTFOLIO / EN ↗`. Do not merge or translate its visual system.
+- frnq.es and frnq.studio are separate surfaces. frnq.studio is linked everywhere as `STUDIO ↗` (secondary textual link); HABLEMOS is the only highlighted CTA. Do not merge or translate its visual system.

@@ -44,7 +44,7 @@ import { portfolioLink, siteConfig } from "../data/site";
           target="_blank"
           rel="noopener noreferrer"
         >
-          {portfolioLink.label} ↗
+          {portfolioLink.label} <span aria-hidden="true">↗</span>
         </a>
       </div>
 
@@ -201,6 +201,11 @@ import { portfolioLink, siteConfig } from "../data/site";
               <span id="submit-text">Enviar proyecto</span>
               <span class="submit-icon" aria-hidden="true">↗</span>
             </button>
+
+            <p class="form-privacy">
+              Al enviar aceptas la{" "}
+              <a href="/legal/privacidad/" target="_blank" rel="noopener noreferrer">política de privacidad</a>.
+            </p>
 
             <div
               id="form-loading"
@@ -737,6 +742,25 @@ import { portfolioLink, siteConfig } from "../data/site";
     transition: transform var(--transition-base);
   }
 
+  .form-privacy {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .form-privacy a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--border-light);
+    text-underline-offset: 3px;
+  }
+
+  .form-privacy a:hover {
+    color: var(--text);
+    text-decoration-color: var(--accent);
+  }
+
   .form-submit:hover:not(:disabled) .submit-icon {
     transform: translate(4px, -4px);
   }
@@ -1094,7 +1118,7 @@ import { portfolioLink, siteConfig } from "../data/site";
     width: fit-content;
     margin: var(--space-lg) auto 0;
     color: var(--text-muted);
-    font-size: 0.625rem;
+    font-size: 0.6875rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-decoration: underline;

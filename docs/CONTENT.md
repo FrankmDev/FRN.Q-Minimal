@@ -18,7 +18,8 @@ All editable commercial copy lives in `src/data/*`:
 
 | File | Owns |
 |------|------|
-| `site.ts` | Identity, url, email, location, external portfolio link, social links |
+| `site.ts` | Identity, url, email, location, external `STUDIO ↗` link, social links |
+| `projects.ts` | Collection accessor (`getProjects`), category/status labels, case paths |
 | `navigation.ts` | Primary navigation and header CTA |
 | `services.ts` | The four commercial areas in priority order and their section copy |
 | `engagement.ts` | Pricing/engagement FAQ, also used in FAQ schema |
@@ -35,6 +36,7 @@ Rules:
 - **Collection:** `projects` in `src/content.config.ts`.
 - **Loader:** `glob({ pattern: "**/*.md", base: "./src/content/projects" })`.
 - **Entries (published):** `grn-urban`, `cien-mares`, `fernando-feijoo`, `mata-psicologia`, `wanda-animalart`, `asercord-energia`.
+- **Factual source:** frnq.studio holds the canonical project facts; frnq.es may reinterpret commercially but never adds new facts, audiences or outcomes not present in the canonical case.
 - **Routes:** `/casos/` archive and `/casos/<slug>/` detail via `getStaticPaths`.
 
 ### Schema (fields)
@@ -49,7 +51,7 @@ url?, urlLabel, status, order,
 seo{description,keywords}
 ```
 
-- `category`: `corporate | platform | product | interactive | ecommerce | b2b`.
+- `category`: `corporate | web | website | product | interactive | ecommerce | b2b` (`web` / `website` render as "Web").
 - `status`: `live | in-development | archived`.
 
 ### Case-study model
@@ -82,7 +84,7 @@ The schema already supports the next cases. **No entries exist yet** and they mu
 | Case | Area | Status |
 |------|------|--------|
 | **KingBelt** | Ecommerce D2C / Shopify | In development |
-| **Emilio Faraoni** | Sistema / Portal B2B | In development |
+| **Emilio Faraoni** | Portales & Sistemas B2B | In development |
 
 Publish each only when it ships and can carry real evidence. Until then, do not list it in `/casos/` or link it as completed work.
 

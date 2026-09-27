@@ -1,7 +1,7 @@
 ---
 title: "Cien Mares"
 client: "Cien Mares"
-category: "platform"
+category: "web"
 sector: "Turismo y experiencias náuticas"
 year: "2025"
 status: "live"
@@ -55,7 +55,7 @@ images:
     alt: "Cien Mares — flujo de reserva y llamada a la acción"
     caption: "Ruta hacia la consulta y la reserva."
 seo:
-  description: "Cien Mares: plataforma marítima construida con Astro y Tailwind CSS por FRN.Q, con sistema de diseño propio y entrega de contenido optimizada."
+  description: "Cien Mares: web de experiencias náuticas construida con Astro y Tailwind CSS por FRN.Q, con jerarquía clara y sistema responsive fiable."
   keywords:
     - "web experiencias náuticas"
     - "plataforma Astro"

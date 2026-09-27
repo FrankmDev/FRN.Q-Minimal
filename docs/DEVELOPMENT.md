@@ -20,7 +20,8 @@ There is no separate test runner. Verification is lint + build.
 
 ## Environment
 
-- Contact API (server-only, Vercel): `RESEND_API_KEY` and the destination/sender variables read by `api/contact.ts`.
+- Contact API (server-only, Vercel): `RESEND_API_KEY` and `CONTACT_FROM_EMAIL`.
+- Delivery mailbox: `siteConfig.internalEmail` (the public `info@frnq.es` redirects internally to it).
 - Never commit secrets. Never log keys.
 
 ## Conventions

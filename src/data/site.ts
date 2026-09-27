@@ -3,7 +3,7 @@
  *
  * frnq.es is the Spanish commercial surface of FRN.Q. The English,
  * professional/technical portfolio lives at frnq.studio and is linked
- * externally as STUDIO or PORTFOLIO / EN. This site is not a translation of it.
+ * externally as STUDIO ↗ everywhere. This site is not a translation of it.
  */
 
 export const siteConfig = {
@@ -11,7 +11,13 @@ export const siteConfig = {
   fullName: "Francisco Muñoz",
   tagline: "Ecommerce, portales y sistemas",
   url: "https://frnq.es",
-  email: "info@frnq.studio",
+  /** Public contact address shown across the site. */
+  email: "info@frnq.es",
+  /**
+   * Internal delivery mailbox. Form submissions are sent here; the public
+   * info@frnq.es address redirects internally to this same mailbox.
+   */
+  internalEmail: "info@frnq.studio",
   lang: "es",
   locale: "es_ES",
   location: {
@@ -32,10 +38,9 @@ export const siteConfig = {
  * surface; it is linked, never merged, into the commercial site.
  */
 export const portfolioLink = {
-  label: "PORTFOLIO / EN",
+  label: "STUDIO",
   title: "Portfolio profesional y técnico",
   href: "https://frnq.studio/",
-  display: "frnq.studio",
 } as const;
 
 export interface SocialLink {

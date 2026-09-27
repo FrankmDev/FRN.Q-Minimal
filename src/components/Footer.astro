@@ -28,8 +28,10 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
         <a href="/casos/">Casos</a>
         <a href="#sobre-mi">Estudio</a>
         <a href="#contacto">Contacto</a>
-        <a href={portfolioLink.href} target="_blank" rel="noopener noreferrer" class="portfolio-link mono">
-          {portfolioLink.label} ↗
+        <a href="/legal/">Aviso legal</a>
+        <a href="/legal/privacidad/">Privacidad</a>
+        <a href={portfolioLink.href} target="_blank" rel="noopener noreferrer" class="portfolio-link mono" aria-label={portfolioLink.title}>
+          {portfolioLink.label} <span aria-hidden="true">↗</span>
         </a>
       </nav>
       <div class="footer-meta">

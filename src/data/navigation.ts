@@ -2,8 +2,8 @@
  * Single source of truth for navigation and the contact CTA.
  *
  * Internal links use real anchors on the single-page commercial surface.
- * The external portfolio is linked as STUDIO in the header and PORTFOLIO / EN
- * in contact/footer contexts; both labels point to frnq.studio.
+ * frnq.studio is linked externally only as STUDIO ↗ (textual secondary
+ * link); HABLEMOS remains the only highlighted CTA.
  */
 
 export interface NavItem {
@@ -12,8 +12,8 @@ export interface NavItem {
 }
 
 export const navItems: NavItem[] = [
-  { href: "#servicios", label: "Servicios" },
-  { href: "#proyectos", label: "Proyectos" },
+  { href: "#servicios", label: "Soluciones" },
+  { href: "#proyectos", label: "Casos" },
   { href: "#sobre-mi", label: "Estudio" },
   { href: "#contacto", label: "Contacto" },
 ];

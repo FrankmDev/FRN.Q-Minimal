@@ -3,7 +3,7 @@
  *
  * Order is intentional and reflects priority:
  *   1. ECOMMERCE & SHOPIFY
- *   2. PORTALES / COMMERCE B2B
+ *   2. PORTALES & SISTEMAS B2B
  *   3. SISTEMAS & AUTOMATIZACIÓN
  *   4. WEB, SEO & GROWTH
  *
@@ -48,7 +48,7 @@ export const serviceAreas: ServiceArea[] = [
   {
     num: "02",
     id: "b2b",
-    title: "Portales / Commerce B2B",
+    title: "Portales & Sistemas B2B",
     short:
       "Clientes profesionales, precios privados, pedidos y procesos bajo control.",
     problems: [
