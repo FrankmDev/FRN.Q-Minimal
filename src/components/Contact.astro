@@ -11,17 +11,14 @@ import { portfolioLink, siteConfig } from "../data/site";
 ---
 
 <section class="contact" id="contacto" aria-labelledby="contact-title">
+  <span class="section-tag">Contacto</span>
   <div class="container">
     <div class="contact-layout">
       <div class="contact-info reveal">
         <div class="info-header">
-          <div class="header-label">
-            <span class="label-line" aria-hidden="true"></span>
-            <span class="label-text">Contacto</span>
-          </div>
           <h2 class="info-title" id="contact-title">
             Hablemos del
-            <span class="title-accent">proyecto.</span>
+            <span class="title-mark">proyecto.</span>
           </h2>
           <p class="info-desc">
             Cuéntame qué quieres resolver. Leo cada mensaje y te respondo directamente.
@@ -362,50 +359,12 @@ import { portfolioLink, siteConfig } from "../data/site";
     margin-bottom: var(--space-2xl);
   }
 
-  .header-label {
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
-    margin-bottom: var(--space-lg);
-  }
-
-  .label-line {
-    width: 60px;
-    height: 2px;
-    background: var(--border);
-  }
-
-  .label-text {
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
   .info-title {
     font-size: clamp(2rem, 5vw, 4rem);
-    font-weight: 300;
-    line-height: 1.1;
-    letter-spacing: -0.04em;
-    margin-bottom: var(--space-lg);
-  }
-
-  .title-accent {
     font-weight: 800;
-    position: relative;
-    display: inline-block;
-  }
-
-  .title-accent::after {
-    content: "";
-    position: absolute;
-    bottom: 0.1em;
-    left: 0;
-    right: 0;
-    height: 8px;
-    background: var(--text);
-    opacity: 0.15;
+    line-height: 0.95;
+    letter-spacing: -0.065em;
+    margin-bottom: var(--space-lg);
   }
 
   .info-desc {
@@ -670,14 +629,14 @@ import { portfolioLink, siteConfig } from "../data/site";
   .form-field.is-invalid input,
   .form-field.is-invalid select,
   .form-field.is-invalid textarea {
-    border-color: #dc2626;
+    border-color: var(--error);
   }
 
   .field-error {
     font-family: var(--font-mono);
     font-size: 0.75rem;
     margin-top: var(--space-xs);
-    color: #dc2626;
+    color: var(--error);
   }
 
   .field-error.hidden {
@@ -706,7 +665,7 @@ import { portfolioLink, siteConfig } from "../data/site";
 
   .field-counter.is-warn,
   .field-counter.is-max {
-    color: #dc2626;
+    color: var(--error);
     opacity: 1;
   }
 
@@ -716,7 +675,7 @@ import { portfolioLink, siteConfig } from "../data/site";
     justify-content: space-between;
     gap: var(--space-md);
     padding: var(--space-md);
-    border: 2px solid #dc2626;
+    border: 2px solid var(--error);
     font-size: 0.875rem;
   }
 
@@ -1100,6 +1059,7 @@ import { portfolioLink, siteConfig } from "../data/site";
     place-items: center;
     border: 2px solid var(--border);
     background: var(--accent);
+    color: var(--text-on-accent);
     font-size: 1.125rem;
   }
 
@@ -1198,7 +1158,7 @@ import { portfolioLink, siteConfig } from "../data/site";
     margin: 0;
     font-size: clamp(1.75rem, 4vw, 2.5rem);
     font-family: var(--font-sans);
-    font-weight: 700;
+    font-weight: 800;
     line-height: 0.95;
     letter-spacing: -0.065em;
   }
@@ -1281,7 +1241,7 @@ import { portfolioLink, siteConfig } from "../data/site";
   }
 
   .faq-item.is-open .faq-arrow {
-    color: var(--text);
+    color: var(--text-on-accent);
   }
 
   @media (max-width: 899px) {

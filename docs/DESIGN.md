@@ -41,6 +41,7 @@ The light-first palette and base system live in `src/styles/tokens.css`:
 - **Layout:** `--layout-content-width`, `--layout-gutter`, `--layout-header-height`.
 - **Motion:** `--motion-ease-out`, transition durations and reveal duration.
 - **Corners:** square by default; do not introduce a rounded-card system.
+- **Theme:** light is the default; `[data-theme="dark"]` overrides semantic surface, ink, border and shadow tokens. `--text-on-accent` keeps yellow surfaces readable in either theme.
 
 Do not add identity colours outside `tokens.css`. Semantic error or status colours belong only to their functional UI states.
 

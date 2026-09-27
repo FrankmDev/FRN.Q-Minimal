@@ -66,10 +66,10 @@ const breadcrumbSchema = {
           <span aria-hidden="true">/</span>
           <span aria-current="page">Casos</span>
         </nav>
-        <p class="eyebrow">Trabajo seleccionado</p>
+        <p class="section-tag section-tag--inline">Trabajo seleccionado</p>
         <h1 class="title">
           Casos<br />
-          <span class="title-strong">reales</span>
+          <span class="title-strong title-mark">reales.</span>
         </h1>
         <p class="intro">
           Cada caso empieza por el contexto y el problema de negocio, y termina
@@ -171,25 +171,20 @@ const breadcrumbSchema = {
     opacity: 0.4;
   }
 
-  .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+  .section-tag--inline {
     margin-bottom: var(--space-lg);
-    opacity: 0.65;
   }
 
   .title {
     font-size: clamp(2.5rem, 10vw, 8rem);
-    font-weight: 300;
+    font-weight: 800;
     line-height: 0.9;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.06em;
     text-transform: uppercase;
   }
 
   .title-strong {
-    font-weight: 800;
+    font-weight: inherit;
   }
 
   .intro {

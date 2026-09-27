@@ -3,13 +3,12 @@ import { serviceAreas, servicesCopy, type ServiceArea } from "../data/services";
 ---
 
 <section class="services" id="servicios" aria-labelledby="services-title">
+  <span class="section-tag">{servicesCopy.label}</span>
   <div class="container">
     <header class="services-header reveal">
-      <div class="section-label mono">
-        <span aria-hidden="true"></span>
-        {servicesCopy.label}
-      </div>
-      <h2 id="services-title">Cuatro áreas.<br /><span>Un mismo negocio.</span></h2>
+      <h2 id="services-title" class="section-title">
+        {servicesCopy.titleLine}<br /><span class="title-mark">{servicesCopy.titleHighlight}</span>
+      </h2>
     </header>
 
     <ul class="solutions-grid reveal" role="list" id="services-grid">
@@ -55,29 +54,9 @@ import { serviceAreas, servicesCopy, type ServiceArea } from "../data/services";
   .services-header {
     display: flex;
     align-items: end;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: var(--space-xl);
     margin-bottom: clamp(var(--space-2xl), 5vw, var(--space-4xl));
-  }
-
-  .section-label {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-sm);
-    flex: 0 0 auto;
-    margin-bottom: 0.25em;
-    color: var(--text-muted);
-    font-size: 0.6875rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  .section-label span {
-    width: 1.75rem;
-    height: 0.5rem;
-    border: 1px solid var(--border);
-    background: var(--accent);
   }
 
   .services-header h2 {
@@ -88,8 +67,6 @@ import { serviceAreas, servicesCopy, type ServiceArea } from "../data/services";
     letter-spacing: -0.065em;
     text-align: right;
   }
-
-  .services-header h2 span { color: var(--text-muted); }
 
   .solutions-grid {
     display: grid;
@@ -118,7 +95,7 @@ import { serviceAreas, servicesCopy, type ServiceArea } from "../data/services";
   }
 
   .sol-1 { --card-ink: var(--bg); --card-paper: var(--text); }
-  .sol-2 { --card-paper: var(--accent); }
+  .sol-2 { --card-ink: var(--text-on-accent); --card-paper: var(--accent); }
 
   .card-number {
     width: fit-content;
@@ -184,18 +161,19 @@ import { serviceAreas, servicesCopy, type ServiceArea } from "../data/services";
     opacity: 1;
   }
 
+  .sol-2:hover .card-number { color: var(--text-on-accent); }
+
   .service-card:hover .card-title { transform: translateX(4px); }
 
   .service-card:hover .card-corner {
     transform: translate(3px, -3px);
     background: var(--accent);
-    color: var(--text);
+    color: var(--text-on-accent);
   }
 
   @media (max-width: 760px) {
     .services-header { display: block; }
     .services-header h2 {
-      margin-top: var(--space-lg);
       font-size: clamp(2.35rem, 9vw, 4.25rem);
       line-height: 0.9;
       text-align: left;

@@ -22,7 +22,7 @@ This document covers **how SEO is wired**, not a keyword plan. Semantic territor
 | `og:image:type` | `image/svg+xml` | Matches the default OG asset |
 | Twitter card | `summary_large_image` + mirrored title/description/image | — |
 | favicons | `/favicon.svg`, `/favicon.ico`, apple-touch | — |
-| `theme-color` | `#f4f3ef` | Light theme |
+| `theme-color` | `#f4f3ef` / `#171715` | Updated to match the persisted light/dark theme |
 | `application/ld+json` | `Organization` | `name: FRN.Q`, `url`, `email`, `PostalAddress` (Granada, ES) |
 
 No `<meta name="keywords">`. No geo meta. No fabricated ratings or reviews.

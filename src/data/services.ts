@@ -104,6 +104,6 @@ export const serviceAreas: ServiceArea[] = [
 /** Section header copy for the Services block. */
 export const servicesCopy = {
   label: "Qué hago",
-  titleLine: "Lo que",
-  titleHighlight: "construyo",
+  titleLine: "Cuatro áreas.",
+  titleHighlight: "Un mismo negocio.",
 } as const;

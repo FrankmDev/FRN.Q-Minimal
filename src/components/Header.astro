@@ -45,6 +45,18 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
       >
         STUDIO <span aria-hidden="true">↗</span>
       </a>
+      <button
+        class="theme-toggle"
+        id="theme-toggle"
+        type="button"
+        aria-label="Alternar tema claro y oscuro"
+        aria-pressed="false"
+      >
+        <span class="theme-icons" aria-hidden="true">
+          <span class="theme-symbol theme-sun">☼</span>
+          <span class="theme-symbol theme-moon">☾</span>
+        </span>
+      </button>
       <a href={`/${headerCta.href}`} class="header-cta">
         <span class="cta-text">{headerCta.label}</span>
         <span class="cta-arrow" aria-hidden="true">→</span>
@@ -90,6 +102,30 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
 </header>
 
 <script>
+  const themeToggle = document.getElementById("theme-toggle");
+  const themeMetaColor = document.querySelector('meta[name="theme-color"]');
+
+  function setTheme(theme: "light" | "dark", persist = false) {
+    const isDark = theme === "dark";
+    document.documentElement.setAttribute("data-theme", theme);
+    document.documentElement.style.colorScheme = theme;
+    themeToggle?.setAttribute("aria-pressed", String(isDark));
+    themeMetaColor?.setAttribute("content", isDark ? "#171715" : "#f4f3ef");
+
+    if (persist) {
+      try {
+        localStorage.setItem("theme", theme);
+      } catch {
+        // The toggle still works for this page when storage is unavailable.
+      }
+    }
+  }
+
+  setTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light");
+  themeToggle?.addEventListener("click", () => {
+    setTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark", true);
+  });
+
   const menuButton = document.getElementById("menu-toggle");
   const mobileNav = document.getElementById("mobile-nav");
   const header = document.getElementById("header");
@@ -167,7 +203,7 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
 
   .header.is-scrolled {
     background: color-mix(in srgb, var(--bg) 97%, transparent);
-    box-shadow: 0 4px 24px rgb(0 0 0 / 8%);
+    box-shadow: 0 4px 24px var(--shadow);
   }
 
   /* Industrial top strip: line + offset blocks */
@@ -351,6 +387,7 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     padding: 0 var(--space-sm);
     border: 2px solid var(--border);
     background: var(--accent);
+    color: var(--text-on-accent);
     box-shadow: 4px 4px 0 var(--border);
     font-size: 0.6875rem;
     font-weight: 800;
@@ -366,6 +403,55 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
   .studio-button:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
+  }
+
+  .theme-toggle {
+    position: relative;
+    display: grid;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 auto;
+    place-items: center;
+    overflow: hidden;
+    border: 0;
+    background: transparent;
+    color: var(--text-muted);
+    transition: color var(--transition-fast);
+  }
+
+  .theme-toggle:hover { color: var(--accent); }
+
+  .theme-toggle:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 3px;
+  }
+
+  .theme-icons,
+  .theme-symbol {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+
+  .theme-symbol {
+    font-size: 1.25rem;
+    transition: opacity var(--transition-fast), transform var(--transition-base);
+  }
+
+  .theme-moon {
+    opacity: 0;
+    transform: rotate(-90deg);
+  }
+
+  [data-theme="dark"] .theme-sun {
+    opacity: 0;
+    transform: rotate(90deg);
+  }
+
+  [data-theme="dark"] .theme-moon {
+    opacity: 1;
+    transform: rotate(0);
   }
 
   .header-cta {
@@ -611,11 +697,25 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     }
   }
 
+  @media (max-width: 380px) {
+    .header-inner { gap: var(--space-sm); }
+    .logo { gap: var(--space-xs); padding: var(--space-xs) var(--space-sm); }
+    .logo-icon { width: 20px; height: 20px; }
+    .logo-text { font-size: 1rem; }
+    .header-actions { gap: var(--space-xs); }
+    .studio-button { min-height: 36px; padding-inline: var(--space-xs); font-size: 0.6rem; }
+    .theme-toggle { width: 40px; height: 40px; }
+    .menu-toggle { width: 44px; min-width: 44px; height: 44px; }
+    .menu-icon { width: 34px; height: 34px; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .header,
     .logo,
     .header-cta,
     .menu-toggle,
+    .theme-toggle,
+    .theme-symbol,
     .mobile-nav,
     .mobile-link,
     .mobile-cta,

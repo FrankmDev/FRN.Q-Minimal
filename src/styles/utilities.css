@@ -25,6 +25,55 @@
   transform: translateY(var(--space-md));
 }
 
+/* Section label plate: shared signage anchored to each section's top rule. */
+.section-tag {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: var(--layout-gutter);
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.75rem;
+  border: 2px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.section-tag::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--accent);
+}
+
+/* Variant when the offset parent is a content block inside .container. */
+.section-tag--anchored {
+  left: 0;
+}
+
+/* Variant for in-flow use where there is no top rule to straddle. */
+.section-tag--inline {
+  position: static;
+  transform: none;
+}
+
+/* Marker slab under the emphasized line of a section title. */
+.title-mark {
+  display: inline-block;
+  padding: 0 0.02em 0.06em;
+  color: var(--text-muted);
+  box-shadow: inset 0 -0.16em var(--accent);
+}
+
 .custom-cursor {
   position: fixed;
   z-index: 10001;

@@ -9,9 +9,12 @@
   --text-secondary: #343431;
   --text-muted: #686862;
 
-  /* Single restrained accent. Used as a hard offset shadow on primary CTAs. */
+  /* Single restrained accent and its high-contrast ink. */
   --accent: #ffe600;
+  --text-on-accent: #111110;
   --y: var(--accent);
+
+  --error: #b91c1c;
 
   --border: #111110;
   --border-light: rgb(17 17 16 / 16%);
@@ -62,4 +65,29 @@
   --z-modal: 500;
   --z-popover: 600;
   --z-tooltip: 700;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #171715;
+  --bg-alt: #242421;
+  --bg-elevated: #2b2b27;
+
+  --text: #f4f3ef;
+  --text-secondary: #d8d7d1;
+  --text-muted: #aaa99f;
+  --text-on-accent: #111110;
+
+  --border: #f4f3ef;
+  --border-light: rgb(244 243 239 / 18%);
+  --border-strong: #f4f3ef;
+  --grid-color: rgb(244 243 239 / 6%);
+
+  --shadow: rgb(0 0 0 / 38%);
+  --shadow-brutal: 6px 6px 0 0 rgb(244 243 239 / 16%);
+  --shadow-brutal-hover: 12px 12px 0 0 rgb(244 243 239 / 20%);
+  --shadow-brutal-lg: 16px 16px 0 0 rgb(244 243 239 / 16%);
+
+  --error: #fca5a5;
 }

@@ -56,11 +56,10 @@ const projectSchema = {
     set:html={JSON.stringify(projectSchema)}
     slot="head"
   />
-
+  <span class="section-tag">Selección de casos</span>
   <div class="container">
     <header class="projects-header reveal">
-      <span class="projects-label mono"><span aria-hidden="true"></span>Selección de casos</span>
-      <h2 id="projects-title">Trabajo<br /><span>en contexto.</span></h2>
+      <h2 id="projects-title" class="section-title">Trabajo<br /><span class="title-mark">en contexto.</span></h2>
     </header>
 
     <ol class="projects-list reveal" aria-label="Casos seleccionados">
@@ -114,29 +113,9 @@ const projectSchema = {
   .projects-header {
     display: flex;
     align-items: end;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: var(--space-xl);
     margin-bottom: clamp(var(--space-2xl), 5vw, var(--space-4xl));
-  }
-
-  .projects-label {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-sm);
-    flex: 0 0 auto;
-    margin-bottom: 0.25em;
-    color: var(--text-muted);
-    font-size: 0.6875rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  .projects-label span {
-    width: 1.75rem;
-    height: 0.5rem;
-    border: 1px solid var(--border);
-    background: var(--accent);
   }
 
   .projects-header h2 {
@@ -147,8 +126,6 @@ const projectSchema = {
     letter-spacing: -0.065em;
     text-align: right;
   }
-
-  .projects-header h2 span { color: var(--text-muted); }
 
   .projects-list {
     margin: 0;
@@ -263,7 +240,7 @@ const projectSchema = {
   .project-link:focus-visible .project-arrow {
     transform: translate(4px, -4px);
     background: var(--accent);
-    color: var(--text);
+    color: var(--text-on-accent);
   }
 
   .projects-footer { display: flex; justify-content: flex-end; margin-top: var(--space-xl); }
@@ -304,7 +281,6 @@ const projectSchema = {
   @media (max-width: 760px) {
     .projects-header { display: block; }
     .projects-header h2 {
-      margin-top: var(--space-lg);
       font-size: clamp(2.35rem, 9vw, 4.25rem);
       line-height: 0.9;
       text-align: left;

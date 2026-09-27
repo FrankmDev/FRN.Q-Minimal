@@ -26,7 +26,7 @@ const canonicalURL = new URL(
 ---
 
 <!doctype html>
- <html lang={siteConfig.lang}>
+<html lang={siteConfig.lang} data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -37,6 +37,25 @@ const canonicalURL = new URL(
       ogImage={ogImage}
       noindex={noindex}
     />
+    <script is:inline>
+      (() => {
+        let savedTheme = "light";
+
+        try {
+          savedTheme = localStorage.getItem("theme") === "dark" ? "dark" : "light";
+        } catch {
+          // Storage can be unavailable; keep the light default.
+        }
+
+        const theme = savedTheme;
+        const root = document.documentElement;
+        root.setAttribute("data-theme", theme);
+        root.style.colorScheme = theme;
+
+        const themeColor = document.querySelector('meta[name="theme-color"]');
+        themeColor?.setAttribute("content", theme === "dark" ? "#171715" : "#f4f3ef");
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

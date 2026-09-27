@@ -13,10 +13,10 @@ const system = [
 ---
 
 <section class="operation" id="operacion" aria-labelledby="operation-title">
+  <span class="section-tag">Operación</span>
   <div class="container">
     <header class="operation-header reveal">
-      <span class="operation-label mono"><span aria-hidden="true"></span>Operación</span>
-      <h2 id="operation-title">Menos fricción.<br /><span>Mejor conectada.</span></h2>
+      <h2 id="operation-title" class="section-title">Menos fricción.<br /><span class="title-mark">Mejor conectada.</span></h2>
     </header>
 
     <div class="comparison reveal">
@@ -63,29 +63,9 @@ const system = [
   .operation-header {
     display: flex;
     align-items: end;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: var(--space-xl);
     margin-bottom: clamp(var(--space-2xl), 5vw, var(--space-4xl));
-  }
-
-  .operation-label {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-sm);
-    flex: 0 0 auto;
-    margin-bottom: 0.25em;
-    color: var(--text-muted);
-    font-size: 0.6875rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  .operation-label span {
-    width: 1.75rem;
-    height: 0.5rem;
-    border: 1px solid var(--border);
-    background: var(--accent);
   }
 
   .operation-header h2 {
@@ -96,8 +76,6 @@ const system = [
     letter-spacing: -0.065em;
     text-align: right;
   }
-
-  .operation-header h2 span { color: var(--text-muted); }
 
   .comparison {
     display: grid;
@@ -152,7 +130,7 @@ const system = [
   .system-side h3 {
     padding: 0.1em 0.22em;
     background: var(--accent);
-    color: var(--text);
+    color: var(--text-on-accent);
     transform: rotate(-1deg);
   }
 
@@ -180,7 +158,6 @@ const system = [
   @media (max-width: 760px) {
     .operation-header { display: block; }
     .operation-header h2 {
-      margin-top: var(--space-lg);
       font-size: clamp(2.35rem, 9vw, 4.25rem);
       line-height: 0.9;
       text-align: left;

@@ -555,6 +555,14 @@ const facts = [
     margin-bottom: var(--space-lg);
   }
 
+  .section-head::after {
+    content: "";
+    flex: 1 1 auto;
+    height: 2px;
+    align-self: center;
+    background: repeating-linear-gradient(90deg, var(--border-light) 0 12px, transparent 12px 24px);
+  }
+
   .section-num {
     font-family: var(--font-mono);
     font-size: 0.875rem;

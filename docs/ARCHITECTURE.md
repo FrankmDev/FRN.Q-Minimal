@@ -119,6 +119,6 @@ data/contact-contract.ts         -->  Contact.astro, scripts/contact-form.ts, ap
 | Cases | 6 published, evidence-based | KingBelt, Emilio Faraoni when shipped |
 | Commercial copy | Shared identity, navigation, services, cases, contact and FAQ in `src/data/*` and the collection; unique section copy local to components | Evolve as required |
 | i18n | Spanish only | Not planned (`.studio` is the English surface) |
-| Theme | Single light theme | Not planned |
+| Theme | Light by default; persistent light/dark toggle in the header | — |
 
 Do not document future work as shipped.

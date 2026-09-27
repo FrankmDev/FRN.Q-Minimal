@@ -15,6 +15,8 @@ frnq.es is the Spanish commercial surface of FRN.Q: an independent digital pract
 
 The warm off-white `#f4f3ef`, near-black `#111110` and yellow `#ffe600` remain the shared palette. Manrope carries display and body text; JetBrains Mono is reserved for concise functional details. Do not add identity colours per section.
 
+An optional dark theme inverts the paper and ink roles while retaining the same yellow accent and hard-edged composition.
+
 ## Composition and content density
 
 - One main idea per section; use one strong heading and at most one short supporting paragraph.
