@@ -6,6 +6,7 @@ interface Props {
   description: string;
   canonicalURL: URL;
   noindex?: boolean;
+  nofollow?: boolean;
   ogImage?: string;
   ogImageAlt?: string;
 }
@@ -15,6 +16,7 @@ const {
   description,
   canonicalURL,
   noindex = false,
+  nofollow = false,
   ogImage = "/og-image.png",
   ogImageAlt = "FRN.Q en Granada, España: ecommerce, Shopify y portales B2B",
 } = Astro.props;
@@ -66,7 +68,10 @@ const siteSchema = {
 
 <title>{title}</title>
 <meta name="description" content={description} />
-<meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
+<meta
+  name="robots"
+  content={noindex ? (nofollow ? "noindex, nofollow" : "noindex, follow") : "index, follow"}
+/>
 <link rel="canonical" href={canonicalURL} />
 
 <meta property="og:type" content="website" />

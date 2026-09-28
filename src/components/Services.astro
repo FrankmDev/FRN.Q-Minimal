@@ -33,7 +33,7 @@ import { getSolutionForService, solutionPath } from "../data/solutions";
                 class="service-link"
                 href={solution ? solutionPath(solution.slug) : "/#contacto"}
               >
-                {solution ? "Ver solución" : "Consultar alcance"}
+                {solution ? solution.h1 : "Consultar alcance"}
                 <span aria-hidden="true">→</span>
               </a>
               <span class="card-corner" aria-hidden="true">↗</span>

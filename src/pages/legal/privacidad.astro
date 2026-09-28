@@ -7,7 +7,8 @@ import Footer from "../../components/Footer.astro";
 
 <MainLayout
   title={`Política de privacidad — ${siteConfig.name}`}
-  description="Política de privacidad de FRN.Q (frnq.es y frnq.studio): datos recogidos por los formularios de contacto, finalidad, conservación y derechos."
+  description="Política de privacidad de frnq.es: datos del formulario de contacto, proveedores técnicos, conservación y derechos."
+  noindex={true}
 >
   <Header />
   <main id="main-content" class="legal">
@@ -31,23 +32,23 @@ import Footer from "../../components/Footer.astro";
         <section>
           <h2>Ámbito de aplicación</h2>
           <p>
-            Esta política de privacidad cubre las superficies digitales de FRN.Q:
-            <strong>frnq.es</strong> y <strong>frnq.studio</strong>, y los
-            formularios de contacto publicados en ellas, cuando existan. El
-            responsable del tratamiento es el mismo para ambas.
+            Esta política cubre <strong>frnq.es</strong> y el formulario de
+            contacto publicado aquí. Los enlaces a otros sitios, incluido
+            frnq.studio, conducen a servicios externos con sus propias políticas.
           </p>
         </section>
         <section>
           <h2>Datos que se recogen</h2>
           <p>
-            A través del formulario de contacto FRN.Q recibe exclusivamente los
-            datos que incluyes: nombre, email, empresa (opcional), tipo de
-            proyecto, descripción del contexto y presupuesto orientativo
-            (opcional). No se usan cookies de seguimiento propias ni se
-            incorporan estos datos a ningún perfil. La preferencia de tema
-            claro/oscuro se guarda en el almacenamiento local del navegador
-            (localStorage): es un dato técnico que no se comparte ni identifica
-            al usuario.
+            El formulario recibe nombre, email, tipo de proyecto, contexto y,
+            opcionalmente, empresa y presupuesto orientativo. Incluye también un
+            campo anti-spam oculto; si se rellena, el mensaje se descarta. Para
+            limitar envíos repetidos, la función de contacto usa temporalmente la
+            dirección IP recibida de Vercel en memoria durante una ventana de diez
+            minutos. La preferencia de tema claro/oscuro se guarda en
+            localStorage del navegador y no se envía al servidor. No hay cookies
+            propias de seguimiento ni una herramienta de analítica o publicidad
+            configurada en este sitio.
           </p>
         </section>
         <section>
@@ -72,17 +73,15 @@ import Footer from "../../components/Footer.astro";
         <section>
           <h2>Destinatarios y encargados</h2>
           <p>
-            Para prestar el servicio se usan únicamente proveedores técnicos
-            necesarios: el alojamiento y las funciones de servidor de
-            <strong>Vercel</strong>; el envío de correo transaccional de
-            <strong>Resend</strong>, que entrega el mensaje en el buzón del
-            titular; y, en la carga de las tipografías del sitio,
-            <strong>Google Fonts</strong>. Estos proveedores tratan los datos
-            solo para prestar dichos servicios. Algunos pueden estar ubicados
-            fuera del Espacio Económico Europeo y aplican garantías
-            contractuales (cláusulas contractuales tipo) para las transferencias
-            internacionales. No hay cesiones a terceros con fines comerciales ni
-            publicidad.
+            <strong>Vercel</strong> aloja el sitio y ejecuta la función que recibe
+            el formulario. <strong>Resend</strong> recibe los datos incluidos en
+            el mensaje y lo entrega al buzón del titular
+            (<code>info@frnq.studio</code>). Las tipografías se solicitan a
+            <strong>Google Fonts</strong> desde el navegador; esa petición técnica
+            comunica a Google la dirección IP y los datos necesarios para servir
+            la fuente. Estos proveedores intervienen para prestar las funciones
+            descritas; no se ceden datos para publicidad ni para perfiles
+            comerciales.
           </p>
         </section>
         <section>

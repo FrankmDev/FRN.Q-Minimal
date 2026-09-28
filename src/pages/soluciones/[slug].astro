@@ -2,7 +2,7 @@
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import MainLayout from "../../layouts/MainLayout.astro";
-import { getProjects, casePath, type Project } from "../../data/projects";
+import { getPublishedProjects, casePath, type Project } from "../../data/projects";
 import {
   getServiceForSolution,
   solutionPages,
@@ -27,8 +27,8 @@ const service = getServiceForSolution(solution);
 if (!service) throw new Error(`No existe el área de servicio ${solution.id}.`);
 
 const canonical = new URL(Astro.url.pathname, Astro.site || siteConfig.url);
-const projects: Project[] = (await getProjects()).filter(
-  (project) => project.status === "live" && project.serviceArea === solution.id,
+const projects: Project[] = (await getPublishedProjects()).filter(
+  (project) => project.serviceArea === solution.id,
 );
 const relatedSolutions = solution.relatedSolutions
   .map((id) => solutionPages.find((item) => item.id === id))
@@ -38,16 +38,13 @@ const personId = `${canonical.origin}/#person`;
 const serviceSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
-  "@id": `${siteConfig.url}/#service-${solution.id}`,
+  "@id": `${canonical.toString()}#service`,
   name: service.title,
   serviceType: service.title,
-  description: solution.intro,
+  description: solution.description,
   url: canonical.toString(),
   provider: { "@id": personId },
-  areaServed: [
-    { "@type": "City", name: siteConfig.location.city },
-    { "@type": "Country", name: "España" },
-  ],
+  areaServed: { "@type": "Country", name: "España" },
 };
 const breadcrumbSchema = {
   "@context": "https://schema.org",
@@ -62,12 +59,6 @@ const breadcrumbSchema = {
     {
       "@type": "ListItem",
       position: 2,
-      name: "Soluciones",
-      item: new URL("/#servicios", Astro.site).toString(),
-    },
-    {
-      "@type": "ListItem",
-      position: 3,
       name: service.title,
       item: canonical.toString(),
     },
@@ -188,7 +179,7 @@ const faqSchema = {
               ) : (
                 <>
                   <p>
-                    Aún no hay casos publicados en esta área. Solo publico proyectos terminados y documentados.
+                    Todavía no hay un caso publicado directamente relacionado con esta solución.
                   </p>
                   <a class="solution-text-link" href="/casos/">Ver los casos publicados</a>
                 </>

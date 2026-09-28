@@ -11,6 +11,7 @@ interface Props {
   ogImage?: string;
   ogImageAlt?: string;
   noindex?: boolean;
+  nofollow?: boolean;
 }
 
 const {
@@ -19,6 +20,7 @@ const {
   ogImage = "/og-image.png",
   ogImageAlt,
   noindex = false,
+  nofollow = false,
 } = Astro.props;
 
 const canonicalURL = new URL(
@@ -39,6 +41,7 @@ const canonicalURL = new URL(
       ogImage={ogImage}
       ogImageAlt={ogImageAlt}
       noindex={noindex}
+      nofollow={nofollow}
     />
     <script is:inline>
       (() => {

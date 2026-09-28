@@ -30,7 +30,7 @@ export const siteConfig = {
     longitude: "-3.5986",
   },
   description:
-    "Ecommerce, Shopify, portales B2B e integraciones para empresas. Estudio independiente de Francisco Muñoz, en Granada.",
+    "FRN.Q es el estudio independiente de Francisco Muñoz. Diseño soluciones digitales para empresas y conecto ventas, clientes y operación. Hablemos de tu proyecto.",
 } as const;
 
 /**

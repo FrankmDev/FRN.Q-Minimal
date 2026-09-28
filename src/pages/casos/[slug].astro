@@ -5,15 +5,16 @@ import MainLayout from "../../layouts/MainLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import {
-  getProjects,
+  getPublishedProjects,
   categoryLabels,
   statusLabels,
   casePath,
   type Project,
 } from "../../data/projects";
+import { getServiceForSolution, getSolutionForService, solutionPath } from "../../data/solutions";
 
 export async function getStaticPaths() {
-  const projects = await getProjects();
+  const projects = await getPublishedProjects();
   return projects.map((project, index) => ({
     params: { slug: project.slug },
     props: {
@@ -32,6 +33,11 @@ const { project, next }: Props = Astro.props;
 const categoryLabel = categoryLabels[project.category];
 const statusLabel = statusLabels[project.status];
 const canonical = new URL(casePath(project.slug), Astro.site).toString();
+const caseSolution = project.serviceArea
+  ? getSolutionForService(project.serviceArea)
+  : undefined;
+const caseService = caseSolution ? getServiceForSolution(caseSolution) : undefined;
+const personId = `${siteConfig.url}/#person`;
 
 const og = await getImage({
   src: project.cover.src,
@@ -60,10 +66,7 @@ const caseSchema = {
   keywords: project.seo.keywords.join(", "),
   about: project.sector,
   author: {
-    "@type": "Person",
-    name: siteConfig.fullName,
-    alternateName: siteConfig.name,
-    url: siteConfig.url,
+    "@id": personId,
   },
 };
 const breadcrumbSchema = {
@@ -349,7 +352,14 @@ const facts = [
             <span class="next-arrow" aria-hidden="true">→</span>
           </a>
           <a class="back-link" href="/casos/">← Volver a todos los casos</a>
-          <a class="back-link" href="/#servicios">Ver soluciones</a>
+          {
+            caseSolution && caseService && (
+              <a class="back-link" href={solutionPath(caseSolution.slug)}>
+                Ver la solución de {caseService.title}
+              </a>
+            )
+          }
+          <a class="back-link" href="/#servicios">Ver todas las soluciones</a>
         </div>
       </section>
     </article>

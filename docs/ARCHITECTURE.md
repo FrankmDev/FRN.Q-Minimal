@@ -52,13 +52,13 @@ src/
 │   ├── engagement.ts              # pricing/engagement FAQ (also used for FAQ schema)
 │   ├── contact.ts                 # contact methods
 │   ├── contact-contract.ts        # shared form contract (limits, types, budgets)
-│   └── projects.ts                # getProjects / categoryLabels / statusLabels / casePath
+│   └── projects.ts                # getProjects / getPublishedProjects / getFeaturedProjects / categoryLabels / casePath
 ├── layouts/MainLayout.astro       # html shell: SEOHead + fonts + styles + Cursor/Reveal
 ├── pages/
 │   ├── index.astro                # Home
 │   ├── soluciones/[slug].astro    # /soluciones/{ecommerce,b2b,sistemas}/
-│   ├── casos/index.astro          # /casos/ case archive
-│   ├── casos/[slug].astro         # /casos/<slug>/ case detail
+│   ├── casos/index.astro          # /casos/ published-case archive
+│   ├── casos/[slug].astro         # /casos/<slug>/ published case detail
 │   ├── legal/index.astro          # aviso legal
 │   ├── legal/privacidad.astro     # política de privacidad (form notice links here)
 │   └── 404.astro
@@ -90,25 +90,26 @@ src/
 | Path | File | Notes |
 |------|------|-------|
 | `/` | `pages/index.astro` | Hero → Services → HiddenCost (Operación) → Projects → About → Contact |
-| `/soluciones/<slug>/` | `pages/soluciones/[slug].astro` | Static route from `data/solutions.ts`; `Service`, `BreadcrumbList`, visible FAQ + `FAQPage` |
-| `/casos/` | `pages/casos/index.astro` | Case archive (`getProjects()`), `ItemList` + `BreadcrumbList` |
-| `/casos/<slug>/` | `pages/casos/[slug].astro` | `getStaticPaths` from the collection, `CreativeWork` schema, next-case link |
-| `/legal/` | `pages/legal/index.astro` | Aviso legal |
-| `/legal/privacidad/` | `pages/legal/privacidad.astro` | Política de privacidad |
-| `/404` | `pages/404.astro` | `noindex` |
+| `/soluciones/<slug>/` | `pages/soluciones/[slug].astro` | Static route from `data/solutions.ts`; page-specific `Service`, Inicio → solution `BreadcrumbList`, visible FAQ + `FAQPage` |
+| `/casos/` | `pages/casos/index.astro` | Published-case archive (`getPublishedProjects()`), `ItemList` + `BreadcrumbList` |
+| `/casos/<slug>/` | `pages/casos/[slug].astro` | `getStaticPaths` from published entries, `CreativeWork` schema, next-case link |
+| `/legal/` | `pages/legal/index.astro` | Aviso legal; accessible, `noindex, follow`, excluded from sitemap |
+| `/legal/privacidad/` | `pages/legal/privacidad.astro` | Política de privacidad; accessible, `noindex, follow`, excluded from sitemap |
+| `/404/` | `pages/404.astro` | `noindex, nofollow`, excluded from sitemap |
 | `POST /api/contact` | `api/contact.ts` | Vercel Function, not an Astro route |
 
 ## Data flow
 
 ```
-content/projects/*.md  --(astro:content)-->  data/projects.ts (getProjects)
+content/projects/*.md  --(astro:content)-->  data/projects.ts (getProjects / getPublishedProjects)
                                                 ├── Projects.astro      (home teaser)
                                                 ├── casos/index.astro   (/casos/)
                                                 └── casos/[slug].astro  (/casos/<slug>/)
 
 data/services.ts (serviceAreas)  -->  Services.astro
 data/solutions.ts (solutionPages) -->  pages/soluciones/[slug].astro + service-card links
-content/projects/*.md (serviceArea) --> related solution-case lists (live entries only)
+content/projects/*.md (status: live) --> public case archive and static detail routes
+content/projects/*.md (serviceArea) --> related solution-case lists + contextual case-to-solution link
 data/site.ts (portfolioLink)     -->  Hero.astro, Header/Footer, Contact.astro
 data/site.ts (email = info@frnq.es)     --> footer, contact methods, legal pages
            (internalEmail = info@frnq.studio) --> api/contact.ts delivery mailbox
@@ -129,7 +130,7 @@ data/contact-contract.ts         -->  Contact.astro, scripts/contact-form.ts, ap
 | Area | Current | Future |
 |------|---------|--------|
 | Commercial surface | `/`, `/soluciones/{ecommerce,b2b,sistemas}/`, `/casos/`, Spanish | Further routes only with distinct intent and useful evidence |
-| Cases | 6 published, evidence-based | KingBelt, Emilio Faraoni when shipped |
+| Cases | 6 published, evidence-based; public routes expose `status: live` only | KingBelt, Emilio Faraoni when shipped |
 | Commercial copy | Shared identity, navigation, services and solution pages in `src/data/*`; cases in the collection | Evolve as required |
 | i18n | Spanish only | Not planned (`.studio` is the English surface) |
 | Theme | Light by default; persistent light/dark toggle in the header | — |

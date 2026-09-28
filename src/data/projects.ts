@@ -13,10 +13,12 @@ export async function getProjects(): Promise<Project[]> {
     .sort((a, b) => a.order - b.order);
 }
 
+export async function getPublishedProjects(): Promise<Project[]> {
+  return (await getProjects()).filter((project) => project.status === "live");
+}
+
 export async function getFeaturedProjects(limit = 3): Promise<Project[]> {
-  return (await getProjects())
-    .filter((project) => project.status === "live")
-    .slice(0, limit);
+  return (await getPublishedProjects()).slice(0, limit);
 }
 
 export const categoryLabels: Record<Project["category"], string> = {

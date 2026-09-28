@@ -39,8 +39,8 @@ Rules:
 - **Loader:** `glob({ pattern: "**/*.md", base: "./src/content/projects" })`.
 - **Entries (published):** `grn-urban`, `cien-mares`, `fernando-feijoo`, `mata-psicologia`, `wanda-animalart`, `asercord-energia`.
 - **Factual source:** frnq.studio holds the canonical project facts; frnq.es may reinterpret commercially but never adds new facts, audiences or outcomes not present in the canonical case.
-- **Routes:** `/casos/` archive and `/casos/<slug>/` detail via `getStaticPaths`.
-- Optional `serviceArea` connects a published case to `ecommerce`, `b2b` or `sistemas`; solution routes show only matching cases with `status: live`.
+- **Routes:** `/casos/` archive and `/casos/<slug>/` detail via `getStaticPaths`; public archive and routes include only entries with `status: live` (`getPublishedProjects()` in `src/data/projects.ts`).
+- Optional `serviceArea` connects a published case to `ecommerce`, `b2b` or `sistemas`; solution routes show only matching published cases, and a matched case links directly back to its solution. The six current cases have no `serviceArea`; do not assign one without documented evidence.
 
 ### Schema (fields)
 

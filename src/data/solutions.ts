@@ -29,14 +29,14 @@ export const solutionPages: SolutionPage[] = [
     slug: "ecommerce",
     title: "Desarrollo ecommerce y Shopify para empresas | FRN.Q",
     description:
-      "Tiendas online en Shopify o a medida: catálogo, compra, pagos, envíos e integraciones según las necesidades del negocio.",
+      "Desarrollo de tiendas online en Shopify o a medida, con catálogo, checkout e integraciones definidos según cada negocio.",
     h1: "Ecommerce y Shopify para vender con más control",
     intro:
-      "Diseño y desarrollo tiendas online para empresas que necesitan ordenar catálogo, compra y operación. La solución puede partir de Shopify o de una base a medida, según el negocio y sus requisitos.",
+      "Desarrollo tiendas online para marcas que necesitan presentar sus productos, facilitar la compra y conectar la venta con su operativa. La base puede ser Shopify o una solución a medida.",
     audience:
       "Marcas y empresas que venden producto directamente a sus clientes y necesitan una tienda conectada con su forma de trabajar.",
     systemDescription:
-      "La tienda reúne catálogo, variantes, disponibilidad, checkout y medición. El alcance se define a partir del catálogo, la operativa y los sistemas que ya utiliza la empresa.",
+      "El proyecto puede cubrir catálogo, variantes, disponibilidad, checkout y medición, según los requisitos de la tienda y sus conexiones.",
     integrationDescription:
       "Antes de elegir una plataforma, reviso qué datos deben circular entre la tienda y las herramientas existentes. La integración depende de las interfaces disponibles y se concreta dentro del alcance del proyecto.",
     integrationExamples: [
@@ -91,7 +91,7 @@ export const solutionPages: SolutionPage[] = [
       "Portales B2B para fabricantes, distribuidores y mayoristas: precios por cliente, catálogo privado, pedidos y cuentas profesionales.",
     h1: "Catálogo, precios privados y pedidos B2B",
     intro:
-      "Desarrollo portales para empresas que venden a clientes profesionales. El catálogo, las condiciones comerciales y el proceso de pedido se organizan según las cuentas, los roles y la operativa de cada negocio.",
+      "Desarrollo portales de pedido para organizar el acceso, las condiciones comerciales y la compra recurrente en un canal digital adaptado al proceso de cada empresa.",
     audience:
       "Fabricantes, distribuidores y mayoristas que gestionan clientes profesionales, tarifas, pedidos o documentación por canales dispersos.",
     systemDescription:
@@ -150,7 +150,7 @@ export const solutionPages: SolutionPage[] = [
       "Integro herramientas y datos para ordenar pedidos, stock y procesos internos. El alcance depende de los sistemas y sus interfaces.",
     h1: "Conecta los sistemas y datos de tu empresa",
     intro:
-      "Diseño integraciones, workflows y herramientas internas para empresas cuyos datos y procesos viven en sistemas desconectados o requieren trabajo manual repetitivo.",
+      "Diseño integraciones, workflows y herramientas internas cuando la información no circula bien entre sistemas o una tarea depende de pasos manuales repetitivos.",
     audience:
       "Equipos que gestionan pedidos, stock, facturación, clientes o reporting en varias herramientas y necesitan entender cómo hacerlas trabajar juntas.",
     systemDescription:

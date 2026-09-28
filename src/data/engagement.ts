@@ -19,14 +19,6 @@ export const faqItems: FaqItem[] = [
     a: "Aclaro contigo el objetivo, el alcance y las integraciones. Después recibes una propuesta por escrito con entregables, calendario y coste.",
   },
   {
-    q: "¿Shopify o desarrollo a medida?",
-    a: "Depende del catálogo, el flujo de venta y las integraciones. Valoro esas necesidades para elegir la base adecuada para el proyecto.",
-  },
-  {
-    q: "¿Hay que rehacer lo que ya tengo?",
-    a: "No necesariamente. Reviso contigo la web y los sistemas actuales para decidir qué conservar, ajustar o sustituir.",
-  },
-  {
     q: "¿Cuánto tarda un proyecto?",
     a: "El calendario depende del alcance, los contenidos y las integraciones. Lo concretamos en la propuesta, con hitos y dependencias.",
   },
