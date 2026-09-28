@@ -55,10 +55,10 @@ images:
     alt: "Fernando Feijoo — cuadernos de bocetos y técnica mixta"
     caption: "Cuadernos y técnica mixta."
 seo:
-  description: "Fernando Feijoo: portfolio de artista con efectos WebGL y animaciones GSAP, construido con Astro por FRN.Q para presentar una obra extensa y en evolución."
+  title: "Fernando Feijoo: portfolio de artista y obra gráfica | FRN.Q"
+  description: "Portfolio de Fernando Feijoo para explorar grabado, cerámica, cuadernos de bocetos y técnica mixta por categorías."
   keywords:
-    - "portfolio artista Astro"
-    - "web artistas"
-    - "web para artistas"
-    - "desarrollo web Granada"
+    - "portfolio artista"
+    - "portfolio obra gráfica"
+    - "catálogo digital de arte"
 ---

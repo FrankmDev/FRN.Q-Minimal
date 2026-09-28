@@ -52,10 +52,11 @@ images:
     alt: "Mata Psicología — llamada a la acción y flujo de contacto"
     caption: "Ruta de contacto."
 seo:
-  description: "Mata Psicología: web para consulta de psicología construida con Astro y Tailwind CSS por FRN.Q, centrada en claridad, accesibilidad y contacto."
+  title: "Mata Psicología: web de consulta en Córdoba | FRN.Q"
+  description: "Web de psicología en Córdoba para explicar servicios, enfoque terapéutico y facilitar una primera conversación."
   keywords:
-    - "web psicología"
-    - "web consulta salud"
-    - "Astro web corporativa"
+    - "web consulta psicología"
+    - "web psicóloga"
+    - "diseño web salud"
     - "desarrollo web Córdoba"
 ---

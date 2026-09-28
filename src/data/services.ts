@@ -4,7 +4,7 @@
  * Order is intentional and reflects priority:
  *   1. ECOMMERCE & SHOPIFY
  *   2. PORTALES & SISTEMAS B2B
- *   3. SISTEMAS & AUTOMATIZACIÓN
+ *   3. SISTEMAS & INTEGRACIONES
  *   4. WEB, SEO & GROWTH
  *
  * Each area is sold as a solution to a business problem, not as a list of
@@ -66,7 +66,7 @@ export const serviceAreas: ServiceArea[] = [
   {
     num: "03",
     id: "sistemas",
-    title: "Sistemas & Automatización",
+    title: "Sistemas & Integraciones",
     short:
       "Workflows, integraciones y datos que dejan de trabajarse a mano.",
     problems: [

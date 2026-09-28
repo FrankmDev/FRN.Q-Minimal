@@ -1,0 +1,291 @@
+---
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import MainLayout from "../../layouts/MainLayout.astro";
+import { getProjects, casePath, type Project } from "../../data/projects";
+import {
+  getServiceForSolution,
+  solutionPages,
+  solutionPath,
+  type SolutionPage,
+} from "../../data/solutions";
+import { siteConfig } from "../../data/site";
+
+export function getStaticPaths() {
+  return solutionPages.map((solution) => ({
+    params: { slug: solution.slug },
+    props: { solution },
+  }));
+}
+
+interface Props {
+  solution: SolutionPage;
+}
+
+const { solution }: Props = Astro.props;
+const service = getServiceForSolution(solution);
+if (!service) throw new Error(`No existe el área de servicio ${solution.id}.`);
+
+const canonical = new URL(Astro.url.pathname, Astro.site || siteConfig.url);
+const projects: Project[] = (await getProjects()).filter(
+  (project) => project.status === "live" && project.serviceArea === solution.id,
+);
+const relatedSolutions = solution.relatedSolutions
+  .map((id) => solutionPages.find((item) => item.id === id))
+  .filter((item): item is SolutionPage => Boolean(item));
+const personId = `${canonical.origin}/#person`;
+
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": `${siteConfig.url}/#service-${solution.id}`,
+  name: service.title,
+  serviceType: service.title,
+  description: solution.intro,
+  url: canonical.toString(),
+  provider: { "@id": personId },
+  areaServed: [
+    { "@type": "City", name: siteConfig.location.city },
+    { "@type": "Country", name: "España" },
+  ],
+};
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Inicio",
+      item: new URL("/", Astro.site).toString(),
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Soluciones",
+      item: new URL("/#servicios", Astro.site).toString(),
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: service.title,
+      item: canonical.toString(),
+    },
+  ],
+};
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: solution.faqs.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+---
+
+<MainLayout title={solution.title} description={solution.description}>
+  <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+
+  <Header />
+  <main id="main-content" class="solution-page">
+    <article>
+      <header class="solution-hero">
+        <div class="container">
+          <nav class="solution-breadcrumb" aria-label="Ruta de navegación">
+            <a href="/">Inicio</a>
+            <span aria-hidden="true">/</span>
+            <a href="/#servicios">Soluciones</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">{service.title}</span>
+          </nav>
+          <p class="solution-eyebrow">{service.title}</p>
+          <h1>{solution.h1}</h1>
+          <p class="solution-intro">{solution.intro}</p>
+          <p class="solution-audience">
+            <strong>Para quién:</strong> {solution.audience}
+          </p>
+          <a class="solution-contact" href="/#contacto">
+            Hablemos de tu proyecto <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </header>
+
+      <section class="solution-section" aria-labelledby="problems-title">
+        <div class="container solution-grid">
+          <div>
+            <p class="section-tag">Punto de partida</p>
+            <h2 id="problems-title">El problema que ordenamos</h2>
+          </div>
+          <ul class="solution-list">
+            {service.problems.map((problem) => <li>{problem}</li>)}
+          </ul>
+        </div>
+      </section>
+
+      <section class="solution-section solution-section--dark" aria-labelledby="scope-title">
+        <div class="container solution-grid">
+          <div>
+            <p class="section-tag">Alcance posible</p>
+            <h2 id="scope-title">Qué puede incluir</h2>
+            <p>{solution.systemDescription}</p>
+          </div>
+          <ul class="solution-list">
+            {service.includes.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      </section>
+
+      <section class="solution-section" aria-labelledby="integrations-title">
+        <div class="container solution-grid">
+          <div>
+            <p class="section-tag">Datos y herramientas</p>
+            <h2 id="integrations-title">Conexiones según tu operación</h2>
+            <p>{solution.integrationDescription}</p>
+          </div>
+          <ul class="solution-list">
+            {solution.integrationExamples.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      </section>
+
+      <section class="solution-section solution-section--ruled" aria-labelledby="process-title">
+        <div class="container">
+          <p class="section-tag">Cómo trabajo</p>
+          <h2 id="process-title">Del proceso al sistema</h2>
+          <ol class="solution-process">
+            {solution.process.map((step) => (
+              <li>
+                <h3>{step.title}</h3>
+                <p>{step.description}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section class="solution-section" aria-labelledby="cases-title">
+        <div class="container solution-grid">
+          <div>
+            <p class="section-tag">Evidencia publicada</p>
+            <h2 id="cases-title">Casos relacionados</h2>
+          </div>
+          <div>
+            {
+              projects.length > 0 ? (
+                <ul class="solution-cases">
+                  {projects.map((project) => (
+                    <li>
+                      <a href={casePath(project.slug)}>
+                        <span>{project.title}</span>
+                        <span aria-hidden="true">↗</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <>
+                  <p>
+                    Aún no hay casos publicados en esta área. Solo publico proyectos terminados y documentados.
+                  </p>
+                  <a class="solution-text-link" href="/casos/">Ver los casos publicados</a>
+                </>
+              )
+            }
+          </div>
+        </div>
+      </section>
+
+      <section class="solution-section solution-section--ruled" aria-labelledby="faq-title">
+        <div class="container solution-grid">
+          <div>
+            <p class="section-tag">Preguntas frecuentes</p>
+            <h2 id="faq-title">Antes de empezar</h2>
+          </div>
+          <div class="solution-faqs">
+            {solution.faqs.map((item) => (
+              <details>
+                <summary>{item.q}</summary>
+                <p>{item.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <nav class="solution-related" aria-label="Otras soluciones">
+        <div class="container solution-related-inner">
+          <p>También puede encajar</p>
+          <ul>
+            {relatedSolutions.map((related) => {
+              const relatedService = getServiceForSolution(related);
+              return relatedService ? (
+                <li>
+                  <a href={solutionPath(related.slug)}>{relatedService.title} <span aria-hidden="true">→</span></a>
+                </li>
+              ) : null;
+            })}
+          </ul>
+          <a class="solution-contact" href="/#contacto">
+            Cuéntame qué necesitas resolver <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <Footer />
+</MainLayout>
+
+<style>
+  .solution-page { padding-top: 120px; }
+  .solution-hero { padding: var(--space-2xl) 0 var(--space-3xl); border-bottom: 4px solid var(--border); }
+  .solution-breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-2xl); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .solution-breadcrumb a { opacity: 0.65; text-underline-offset: 0.25em; }
+  .solution-breadcrumb span { opacity: 0.55; }
+  .solution-eyebrow { margin-bottom: var(--space-md); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .solution-hero h1 { max-width: 16ch; font-size: clamp(2.7rem, 8vw, 7rem); font-weight: 800; line-height: 0.92; letter-spacing: -0.065em; text-transform: uppercase; }
+  .solution-intro { max-width: 66ch; margin-top: var(--space-xl); font-size: clamp(1.0625rem, 1.8vw, 1.25rem); line-height: 1.6; color: var(--text-secondary); }
+  .solution-audience { max-width: 68ch; margin-top: var(--space-lg); line-height: 1.6; }
+  .solution-contact, .solution-text-link { display: inline-flex; align-items: center; gap: var(--space-sm); margin-top: var(--space-xl); font-weight: 800; text-decoration: underline; text-underline-offset: 0.3em; }
+  .solution-contact:focus-visible, .solution-text-link:focus-visible, .solution-cases a:focus-visible, .solution-related a:focus-visible, .solution-breadcrumb a:focus-visible { outline: 3px solid var(--text); outline-offset: 4px; }
+  .solution-section { padding: clamp(var(--space-2xl), 6vw, var(--space-4xl)) 0; border-bottom: 1px solid var(--border-light); }
+  .solution-grid { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(var(--space-xl), 6vw, var(--space-4xl)); }
+  .solution-section h2 { max-width: 17ch; font-size: clamp(1.8rem, 4vw, 3.5rem); font-weight: 800; line-height: 0.98; letter-spacing: -0.055em; text-transform: uppercase; }
+  .solution-section p:not(.section-tag) { max-width: 68ch; margin-top: var(--space-lg); line-height: 1.65; color: var(--text-secondary); }
+  .solution-list { display: grid; align-content: start; gap: var(--space-md); margin: 0; padding: 0; list-style: none; }
+  .solution-list li { padding: var(--space-md) 0; border-bottom: 2px solid var(--border); font-size: clamp(1rem, 1.7vw, 1.25rem); font-weight: 700; line-height: 1.4; }
+  .solution-section--dark { background: var(--text); color: var(--bg); }
+  .solution-section--dark .section-tag { color: var(--accent); }
+  .solution-section--dark p:not(.section-tag) { color: var(--bg); opacity: 0.78; }
+  .solution-section--dark .solution-list li { border-color: var(--border-light); }
+  .solution-section--ruled { border-top: 3px solid var(--border); }
+  .solution-process { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-lg); margin: var(--space-2xl) 0 0; padding: 0; list-style: none; }
+  .solution-process li { padding-top: var(--space-md); border-top: 3px solid var(--border); }
+  .solution-process h3 { font-size: 1.125rem; font-weight: 800; line-height: 1.2; }
+  .solution-process p { margin-top: var(--space-sm) !important; font-size: 0.9375rem; }
+  .solution-cases { margin: 0; padding: 0; list-style: none; border-top: 2px solid var(--border); }
+  .solution-cases li { border-bottom: 2px solid var(--border); }
+  .solution-cases a { display: flex; justify-content: space-between; gap: var(--space-lg); padding: var(--space-md) 0; font-weight: 700; }
+  .solution-faqs details { padding: var(--space-md) 0; border-bottom: 1px solid var(--border-light); }
+  .solution-faqs details:first-child { border-top: 2px solid var(--border); }
+  .solution-faqs summary { cursor: pointer; font-weight: 700; line-height: 1.5; }
+  .solution-faqs p { margin-top: var(--space-sm) !important; }
+  .solution-related { padding: var(--space-2xl) 0 var(--space-4xl); }
+  .solution-related-inner { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-lg); }
+  .solution-related-inner > p { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .solution-related ul { display: flex; flex-wrap: wrap; gap: var(--space-md) var(--space-xl); margin: 0; padding: 0; list-style: none; }
+  .solution-related a { font-weight: 700; text-decoration: underline; text-underline-offset: 0.3em; }
+  .solution-related .solution-contact { margin-top: 0; }
+  @media (max-width: 760px) {
+    .solution-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
+    .solution-process { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 540px) {
+    .solution-page { padding-top: 104px; }
+    .solution-breadcrumb { margin-bottom: var(--space-xl); }
+    .solution-process { grid-template-columns: 1fr; gap: var(--space-md); }
+    .solution-related-inner { align-items: flex-start; flex-direction: column; }
+  }
+</style>

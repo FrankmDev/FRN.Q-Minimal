@@ -53,10 +53,10 @@ images:
     alt: "Asercord Energía — llamada a la acción para el análisis gratuito"
     caption: "Llamada a la acción para el análisis."
 seo:
-  description: "Asercord Energía: web corporativa para consultoría energética construida con Astro, Tailwind CSS y Node.js por FRN.Q."
+  title: "Asercord Energía: web corporativa en Córdoba | FRN.Q"
+  description: "Web para consultoría energética en Córdoba: servicios, metodología y solicitud de análisis de factura para hogares y empresas."
   keywords:
     - "web consultoría energética"
-    - "web corporativa Astro"
+    - "análisis de factura de energía"
     - "desarrollo web Córdoba"
-    - "diseño web empresas"
 ---

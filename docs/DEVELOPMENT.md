@@ -14,9 +14,10 @@ bun run build    # → dist/
 bun run preview  # serve dist
 bun run check    # astro check
 bun run lint     # astro check (alias)
+bun test         # unit tests (tests/*.test.mjs)
 ```
 
-There is no separate test runner. Verification is lint + build.
+Verification is tests + `astro check` + build.
 
 ## Environment
 

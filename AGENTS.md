@@ -8,6 +8,8 @@ frnq.es is the **Spanish commercial surface** of FRN.Q, the independent digital 
 
 It is **not** a translation of frnq.studio, **not** an agency, and has **no** language switch or Business Mode.
 
+**Status: CURRENT.** The existing home composition and visual identity remain frozen. The organic-search scope now includes three static solution pages for ecommerce, B2B and systems/integrations; add further routes only when distinct search intent and useful evidence-led content justify them.
+
 - Read `docs/POSITIONING.md` for the business definition and language rules.
 - Read `docs/PRODUCT.md` for principles and roadmap.
 
@@ -23,6 +25,7 @@ bun dev
 bun run build
 bun run check    # astro check
 bun run lint     # alias of check
+bun test         # contact API tests
 ```
 
 ## Structure
@@ -32,9 +35,9 @@ src/
 ├── components/   Header, Hero, Services, HiddenCost, Projects, About, Contact, Footer, SEOHead, CustomCursor, RevealObserver
 ├── content/projects/*.md   case studies (slug = filename)
 ├── content.config.ts
-├── data/         site, navigation, services, engagement, contact, contact-contract, projects
+├── data/         site, navigation, services, solutions, engagement, contact, contact-contract, projects
 ├── layouts/MainLayout.astro
-├── pages/        index, casos/index, casos/[slug], legal/index, legal/privacidad, 404
+├── pages/        index, soluciones/[slug], casos/index, casos/[slug], legal/index, legal/privacidad, 404
 ├── scripts/      contact-form
 └── styles/       app → tokens, typography, base, motion, composition, utilities
 api/contact.ts
@@ -46,9 +49,9 @@ See `docs/ARCHITECTURE.md` for the full tree and responsibilities.
 ## Critical rules
 
 - **Read before significant changes:** `docs/POSITIONING.md` → `docs/PRODUCT.md` → `docs/ARCHITECTURE.md` → `docs/CONTENT.md`.
-- **Single source of truth.** Commercial copy lives in `src/data/*`; case content lives in `src/content/projects/*`. Do not duplicate.
+- **Single source of truth.** Commercial copy and solution pages live in `src/data/*`; case content lives in `src/content/projects/*`. Do not duplicate.
 - **Evidence only.** No invented metrics, guarantees, testimonials, ratings or outcomes. Future cases (KingBelt, Emilio Faraoni) are prepared, not published.
-- **Commercial hierarchy** (priority order): 1 Ecommerce & Shopify · 2 Portales & Sistemas B2B · 3 Sistemas & Automatización · 4 Web, SEO & Growth. Design, frontend, SEO, analytics, CRO, accessibility, performance and integrations are supporting capabilities, never the headline.
+- **Commercial hierarchy** (priority order): 1 Ecommerce & Shopify · 2 Portales & Sistemas B2B · 3 Sistemas & Integraciones · 4 Web, SEO & Growth. Design, frontend, SEO, analytics, CRO, accessibility, performance and integrations are supporting capabilities, never the headline. Automation is a capability inside Sistemas & Integraciones, not a separate specialisation.
 - **Voice.** Yo / el estudio / FRN.Q. Never "nosotros" implying a team that does not exist.
 - **No visual work in content tasks.** Content and documentation changes do not touch CSS, tokens or composition. See `docs/ART_DIRECTION.md` and `docs/DESIGN.md`.
 - **`.studio` is external.** Link `STUDIO ↗` as the only portfolio label — header desktop and mobile menu, hero, contact and footer; HABLEMOS stays the only highlighted CTA. Never merge or translate the two surfaces.

@@ -55,10 +55,10 @@ images:
     alt: "Cien Mares — flujo de reserva y llamada a la acción"
     caption: "Ruta hacia la consulta y la reserva."
 seo:
-  description: "Cien Mares: web de experiencias náuticas construida con Astro y Tailwind CSS por FRN.Q, con jerarquía clara y sistema responsive fiable."
+  title: "Cien Mares: web de experiencias náuticas en Cádiz | FRN.Q"
+  description: "Rediseño web para experiencias náuticas en Cádiz: arquitectura responsive clara y rutas de contacto directas."
   keywords:
     - "web experiencias náuticas"
-    - "plataforma Astro"
-    - "diseño web a medida"
-    - "desarrollo web Granada"
+    - "rediseño web turismo"
+    - "desarrollo web Cádiz"
 ---

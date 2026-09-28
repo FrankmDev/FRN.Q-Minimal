@@ -2,6 +2,8 @@
 
 Sitio estático de FRN.Q construido con Astro y Bun.
 
+**Estado: CURRENT.** La composición e identidad visual de la Home permanecen congeladas. El alcance orgánico incluye páginas estáticas de solución para Ecommerce, B2B y Sistemas & Integraciones.
+
 ## Requisitos
 
 - Bun 1.3.14 o compatible.
@@ -23,6 +25,7 @@ bun run dev
 | `bun run lint` | Alias de la validación estática del proyecto. |
 | `bun run build` | Genera el sitio estático en `dist/`. |
 | `bun run preview` | Sirve localmente el último build. |
+| `bun test` | Ejecuta los tests de la API de contacto. |
 
 ## Arquitectura
 

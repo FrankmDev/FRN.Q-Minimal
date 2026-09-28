@@ -8,7 +8,7 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
     <div class="container footer-top-inner">
       <div class="footer-brand">
         <span class="brand-caption mono">{siteConfig.location.city} / España</span>
-        <a href="#inicio" class="brand-name" aria-label={`${siteConfig.name} — Inicio`}>
+        <a href="/#inicio" class="brand-name" aria-label={`${siteConfig.name} — Inicio`}>
           {siteConfig.name}
         </a>
       </div>
@@ -24,10 +24,11 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
   <div class="footer-bottom">
     <div class="container footer-bottom-inner">
       <nav class="footer-nav" aria-label="Navegación del pie">
-        <a href="#inicio">Inicio</a>
+        <a href="/#inicio">Inicio</a>
+        <a href="/#servicios">Soluciones</a>
         <a href="/casos/">Casos</a>
-        <a href="#sobre-mi">Estudio</a>
-        <a href="#contacto">Contacto</a>
+        <a href="/#sobre-mi">Estudio</a>
+        <a href="/#contacto">Contacto</a>
         <a href="/legal/">Aviso legal</a>
         <a href="/legal/privacidad/">Privacidad</a>
         <a href={portfolioLink.href} target="_blank" rel="noopener noreferrer" class="portfolio-link mono" aria-label={portfolioLink.title}>

@@ -48,19 +48,22 @@ const techLabel = project.technologies.join(" · ");
 const caseSchema = {
   "@context": "https://schema.org",
   "@type": "CreativeWork",
+  "@id": `${canonical}#project`,
   name: project.title,
   headline: project.tagline,
   description: project.seo.description,
   url: canonical,
-  dateCreated: project.year,
-  datePublished: project.year,
+  mainEntityOfPage: canonical,
+  isPartOf: { "@id": `${siteConfig.url}/#website` },
+  inLanguage: "es-ES",
   image: ogImage,
   keywords: project.seo.keywords.join(", "),
   about: project.sector,
   author: {
-    "@type": "Organization",
-     name: siteConfig.name,
-     url: siteConfig.url,
+    "@type": "Person",
+    name: siteConfig.fullName,
+    alternateName: siteConfig.name,
+    url: siteConfig.url,
   },
 };
 const breadcrumbSchema = {
@@ -87,9 +90,10 @@ const facts = [
 ---
 
 <MainLayout
-   title={`${project.title} — Caso | ${siteConfig.name}`}
+  title={project.seo.title}
   description={project.seo.description}
   ogImage={ogImage}
+  ogImageAlt={project.cover.alt}
 >
   <script
     type="application/ld+json"
@@ -345,6 +349,7 @@ const facts = [
             <span class="next-arrow" aria-hidden="true">→</span>
           </a>
           <a class="back-link" href="/casos/">← Volver a todos los casos</a>
+          <a class="back-link" href="/#servicios">Ver soluciones</a>
         </div>
       </section>
     </article>

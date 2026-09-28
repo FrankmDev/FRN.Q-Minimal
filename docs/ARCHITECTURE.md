@@ -18,7 +18,7 @@ No React. No state library. No animation library. No CMS. No Resend SDK.
 ## Rendering strategy
 
 - Static generation only. Every page is pre-rendered at build (`astro build` → `dist/`).
-- `getStaticPaths` for `/casos/[slug]/` from the `projects` collection.
+- `getStaticPaths` for `/casos/[slug]/` from the `projects` collection and `/soluciones/[slug]/` from `src/data/solutions.ts`.
 - `site: "https://frnq.es"`, `@astrojs/sitemap` integration.
 - No Astro SSR, adapter or middleware. Contact is a separate Vercel Function.
 
@@ -39,7 +39,7 @@ src/
 │   ├── About.astro                # studio intro, capabilities, process
 │   ├── Contact.astro              # contact + form + privacy note + FAQ + STUDIO ↗
 │   ├── Footer.astro               # contact, nav incl. legal links, STUDIO ↗, social
-│   ├── SEOHead.astro              # all <head> primitives + Organization schema
+│   ├── SEOHead.astro              # all <head> primitives + Person/WebSite graph
 │   ├── CustomCursor.astro         # desktop cursor enhancement
 │   └── RevealObserver.astro       # scroll reveal for `.reveal`
 ├── content.config.ts              # defineCollection("projects")
@@ -48,6 +48,7 @@ src/
 │   ├── site.ts                    # identity, url, email, location, portfolioLink, socialLinks
 │   ├── navigation.ts              # navItems, headerCta
 │   ├── services.ts                # serviceAreas (4, priority order) + servicesCopy
+│   ├── solutions.ts               # copy, metadata, FAQs and process for 3 solution routes
 │   ├── engagement.ts              # pricing/engagement FAQ (also used for FAQ schema)
 │   ├── contact.ts                 # contact methods
 │   ├── contact-contract.ts        # shared form contract (limits, types, budgets)
@@ -55,6 +56,7 @@ src/
 ├── layouts/MainLayout.astro       # html shell: SEOHead + fonts + styles + Cursor/Reveal
 ├── pages/
 │   ├── index.astro                # Home
+│   ├── soluciones/[slug].astro    # /soluciones/{ecommerce,b2b,sistemas}/
 │   ├── casos/index.astro          # /casos/ case archive
 │   ├── casos/[slug].astro         # /casos/<slug>/ case detail
 │   ├── legal/index.astro          # aviso legal
@@ -88,6 +90,7 @@ src/
 | Path | File | Notes |
 |------|------|-------|
 | `/` | `pages/index.astro` | Hero → Services → HiddenCost (Operación) → Projects → About → Contact |
+| `/soluciones/<slug>/` | `pages/soluciones/[slug].astro` | Static route from `data/solutions.ts`; `Service`, `BreadcrumbList`, visible FAQ + `FAQPage` |
 | `/casos/` | `pages/casos/index.astro` | Case archive (`getProjects()`), `ItemList` + `BreadcrumbList` |
 | `/casos/<slug>/` | `pages/casos/[slug].astro` | `getStaticPaths` from the collection, `CreativeWork` schema, next-case link |
 | `/legal/` | `pages/legal/index.astro` | Aviso legal |
@@ -104,6 +107,8 @@ content/projects/*.md  --(astro:content)-->  data/projects.ts (getProjects)
                                                 └── casos/[slug].astro  (/casos/<slug>/)
 
 data/services.ts (serviceAreas)  -->  Services.astro
+data/solutions.ts (solutionPages) -->  pages/soluciones/[slug].astro + service-card links
+content/projects/*.md (serviceArea) --> related solution-case lists (live entries only)
 data/site.ts (portfolioLink)     -->  Hero.astro, Header/Footer, Contact.astro
 data/site.ts (email = info@frnq.es)     --> footer, contact methods, legal pages
            (internalEmail = info@frnq.studio) --> api/contact.ts delivery mailbox
@@ -119,11 +124,13 @@ data/contact-contract.ts         -->  Contact.astro, scripts/contact-form.ts, ap
 
 ## CURRENT vs FUTURE
 
+**Status: CURRENT.** The home composition and visual identity are frozen; three intent-led solution routes extend the existing static surface.
+
 | Area | Current | Future |
 |------|---------|--------|
-| Commercial surface | `/` + `/casos/` shipped, Spanish | Case detail refinement |
+| Commercial surface | `/`, `/soluciones/{ecommerce,b2b,sistemas}/`, `/casos/`, Spanish | Further routes only with distinct intent and useful evidence |
 | Cases | 6 published, evidence-based | KingBelt, Emilio Faraoni when shipped |
-| Commercial copy | Shared identity, navigation, services, cases, contact and FAQ in `src/data/*` and the collection; unique section copy local to components | Evolve as required |
+| Commercial copy | Shared identity, navigation, services and solution pages in `src/data/*`; cases in the collection | Evolve as required |
 | i18n | Spanish only | Not planned (`.studio` is the English surface) |
 | Theme | Light by default; persistent light/dark toggle in the header | — |
 

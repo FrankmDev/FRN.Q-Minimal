@@ -9,13 +9,15 @@ interface Props {
   title: string;
   description: string;
   ogImage?: string;
+  ogImageAlt?: string;
   noindex?: boolean;
 }
 
 const {
   title,
   description,
-  ogImage = "/og-image.svg",
+  ogImage = "/og-image.png",
+  ogImageAlt,
   noindex = false,
 } = Astro.props;
 
@@ -35,6 +37,7 @@ const canonicalURL = new URL(
       description={description}
       canonicalURL={canonicalURL}
       ogImage={ogImage}
+      ogImageAlt={ogImageAlt}
       noindex={noindex}
     />
     <script is:inline>

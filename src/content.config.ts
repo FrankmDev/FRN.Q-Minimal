@@ -17,6 +17,7 @@ const categories = [
 ] as const;
 
 const statuses = ["live", "in-development", "archived"] as const;
+const solutionIds = ["ecommerce", "b2b", "sistemas"] as const;
 
 const projects = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/projects" }),
@@ -76,8 +77,10 @@ const projects = defineCollection({
       urlLabel: z.string().default("Ver proyecto"),
       status: z.enum(statuses).default("live"),
       order: z.number().int().positive(),
+      serviceArea: z.enum(solutionIds).optional(),
 
       seo: z.object({
+        title: z.string().max(65),
         description: z.string().max(160),
         keywords: z.array(z.string()),
       }),

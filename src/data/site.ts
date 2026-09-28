@@ -30,7 +30,7 @@ export const siteConfig = {
     longitude: "-3.5986",
   },
   description:
-    "Estudio digital de Francisco Muñoz en Granada. Ecommerce, portales B2B, sistemas y automatización para negocios que necesitan vender mejor, ordenar sus procesos y medir lo que importa.",
+    "Ecommerce, Shopify, portales B2B e integraciones para empresas. Estudio independiente de Francisco Muñoz, en Granada.",
 } as const;
 
 /**
@@ -50,7 +50,5 @@ export interface SocialLink {
 }
 
 export const socialLinks: SocialLink[] = [
-  { label: "LI", title: "LinkedIn", href: "https://linkedin.com/in/frnq" },
-  { label: "GH", title: "GitHub", href: "https://github.com/frnq" },
-  { label: "DR", title: "Dribbble", href: "https://dribbble.com/frnq" },
+  { label: "GH", title: "GitHub", href: "https://github.com/FrankmDev" },
 ];

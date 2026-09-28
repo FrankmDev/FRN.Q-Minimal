@@ -1,11 +1,9 @@
 ---
 import { getImage } from "astro:assets";
 import { siteConfig } from "../data/site";
-import { getProjects, casePath, type Project } from "../data/projects";
+import { getFeaturedProjects, casePath, type Project } from "../data/projects";
 
-const projects = (await getProjects())
-  .filter((project: Project) => project.status === "live")
-  .slice(0, 3);
+const projects = await getFeaturedProjects();
 
 // This historic preview still matches the published Fernando Feijoo case.
 // Other archived previews belong to projects no longer published here.
@@ -35,36 +33,9 @@ const cases = await Promise.all(
   })),
 );
 
-const projectSchema = {
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  name: `Casos seleccionados de ${siteConfig.name}`,
-  description: `Casos de clientes y productos digitales desarrollados por ${siteConfig.name}.`,
-  numberOfItems: cases.length,
-  itemListElement: cases.map((item, index) => ({
-    "@type": "ListItem",
-    position: index + 1,
-    item: {
-      "@type": "CreativeWork",
-      name: item.title,
-      url: new URL(item.href, Astro.site).toString(),
-      dateCreated: item.year,
-      creator: {
-        "@type": "Organization",
-        name: siteConfig.name,
-        url: siteConfig.url,
-      },
-    },
-  })),
-};
 ---
 
 <section class="projects" id="proyectos" aria-labelledby="projects-title">
-  <script
-    type="application/ld+json"
-    set:html={JSON.stringify(projectSchema)}
-    slot="head"
-  />
   <span class="section-tag">Selección de casos</span>
   <div class="container">
     <header class="projects-header reveal">
@@ -116,7 +87,6 @@ const projectSchema = {
     </div>
     <div class="mockup-frame">
       <img
-        src=""
         alt=""
         class="mockup-img"
         id="mockup-img"

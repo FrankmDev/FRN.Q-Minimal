@@ -1,7 +1,8 @@
 /**
  * Single source of truth for navigation and the contact CTA.
  *
- * Internal links use real anchors on the single-page commercial surface.
+ * Internal links use real anchors on the home commercial surface, including
+ * when navigation starts from a case, legal or solution route.
  * frnq.studio is linked externally only as STUDIO ↗ (textual secondary
  * link); HABLEMOS remains the only highlighted CTA.
  */

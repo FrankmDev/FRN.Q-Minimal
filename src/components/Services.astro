@@ -1,5 +1,6 @@
 ---
 import { serviceAreas, servicesCopy, type ServiceArea } from "../data/services";
+import { getSolutionForService, solutionPath } from "../data/solutions";
 ---
 
 <section class="services" id="servicios" aria-labelledby="services-title">
@@ -13,22 +14,32 @@ import { serviceAreas, servicesCopy, type ServiceArea } from "../data/services";
 
     <ul class="solutions-grid reveal" role="list" id="services-grid">
       {
-        serviceAreas.map((service: ServiceArea, index) => (
-          <li
-            class:list={["service-card", `sol-${index}`]}
-            id={`sol-${service.id}`}
-            aria-labelledby={`sol-${service.id}-title`}
-          >
-            <span class="card-number mono" aria-hidden="true">{service.num}</span>
-            <div class="card-content">
-              <h3 class="card-title" id={`sol-${service.id}-title`}>
-                {service.title}
-              </h3>
-              <p class="card-desc">{service.short}</p>
-            </div>
-            <span class="card-corner" aria-hidden="true">↗</span>
-          </li>
-        ))
+        serviceAreas.map((service: ServiceArea, index) => {
+          const solution = getSolutionForService(service.id);
+          return (
+            <li
+              class:list={["service-card", `sol-${index}`]}
+              id={`sol-${service.id}`}
+              aria-labelledby={`sol-${service.id}-title`}
+            >
+              <span class="card-number mono" aria-hidden="true">{service.num}</span>
+              <div class="card-content">
+                <h3 class="card-title" id={`sol-${service.id}-title`}>
+                  {service.title}
+                </h3>
+                <p class="card-desc">{service.short}</p>
+              </div>
+              <a
+                class="service-link"
+                href={solution ? solutionPath(solution.slug) : "/#contacto"}
+              >
+                {solution ? "Ver solución" : "Consultar alcance"}
+                <span aria-hidden="true">→</span>
+              </a>
+              <span class="card-corner" aria-hidden="true">↗</span>
+            </li>
+          );
+        })
       }
     </ul>
   </div>
@@ -148,6 +159,28 @@ import { serviceAreas, servicesCopy, type ServiceArea } from "../data/services";
     border: 2px solid currentColor;
     font-size: 1.125rem;
     transition: transform 280ms var(--motion-ease-out), background-color 280ms ease;
+  }
+
+  .service-link {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    width: fit-content;
+    margin-top: var(--space-md);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+    text-transform: uppercase;
+  }
+
+  .service-link:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 4px;
   }
 
   .service-card:hover {

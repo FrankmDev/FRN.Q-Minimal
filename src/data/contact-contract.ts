@@ -10,7 +10,7 @@ export const CONTACT_EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const CONTACT_TYPES = [
   { value: "ecommerce", label: "Ecommerce / Shopify" },
   { value: "portal", label: "Portal / B2B" },
-  { value: "sistema", label: "Sistema / automatización" },
+  { value: "sistema", label: "Sistema / integración" },
   { value: "web", label: "Web" },
   { value: "seo", label: "SEO / Growth" },
   { value: "otro", label: "Otro" },

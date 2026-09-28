@@ -58,10 +58,10 @@ images:
     alt: "GRN Urban — planificador de itinerarios"
     caption: "Planificador de itinerarios."
 seo:
-  description: "GRN Urban: guía cultural de Granada con agenda de eventos, rutas curadas, guías editoriales y planificador de itinerarios, desarrollada por FRN.Q."
+  title: "GRN Urban: guía cultural digital de Granada | FRN.Q"
+  description: "Producto digital con agenda de eventos, rutas, guías y planificador de itinerarios para descubrir Granada."
   keywords:
     - "guía cultural Granada"
-    - "producto digital Astro"
-    - "diseño editorial web"
-    - "desarrollo web Granada"
+    - "agenda cultural Granada"
+    - "rutas por Granada"
 ---

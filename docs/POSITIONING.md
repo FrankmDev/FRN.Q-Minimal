@@ -1,6 +1,6 @@
 # POSITIONING — frnq.es
 
-> **Status:** CURRENT. This is the authoritative business definition for the Spanish commercial surface.
+> **Status:** CURRENT / FROZEN. This is the authoritative business definition for the Spanish commercial surface.
 
 ## Definition
 
@@ -26,7 +26,7 @@ They buy **outcomes and reduced friction**, not technology. They care about thei
 
 1. **ECOMMERCE & SHOPIFY** — D2C selling: catalogue, product, checkout, measurement, connected operations.
 2. **PORTALES & SISTEMAS B2B** — professional customers: private prices, orders, accounts, roles, portals.
-3. **SISTEMAS & AUTOMATIZACIÓN** — workflows, integrations, connected data, internal tools.
+3. **SISTEMAS & INTEGRACIONES** — integrations, workflows, connected data, internal tools. Automation is one capability inside this area, never a separate specialisation.
 4. **WEB, SEO & GROWTH** — corporate web, technical/local SEO, analytics and conversion.
 
 Design (UI/UX), frontend development, web, technical/local SEO, analytics, CRO, accessibility, performance and integrations are **capabilities** used across those areas. They are supporting means, never the headline or a separate top-level service. Do not promise every capability on every engagement.
@@ -93,9 +93,10 @@ frnq.studio  English, technical  →  shows craft and evidence (external link)
 - Models: closed project, continuous collaboration (no mandatory retainer), discovery session.
 - The contact flow asks for context, not commitment.
 
-## Explicit exclusions from this reconstruction
+## Current status
 
-- No visual redesign, no CSS change, no component restyling.
-- No new routes, no language switch, no "Business Mode".
-- No fabricated metrics, guarantees, testimonials or exclusivity language.
-- No changes to the visual system; content and documentation only.
+- **CURRENT.** The business definition, hierarchy and existing home composition remain frozen.
+- The organic-search scope includes static solution routes for Ecommerce & Shopify, Portales & Sistemas B2B, and Sistemas & Integraciones; these deepen the existing offer without creating new specialisations.
+- Further routes require distinct search intent and useful evidence-led content; no city doorway pages.
+- Only publish cases such as KingBelt and Emilio Faraoni after they ship with verifiable facts.
+- No language switch, no "Business Mode", no fabricated metrics, guarantees, testimonials or exclusivity language.

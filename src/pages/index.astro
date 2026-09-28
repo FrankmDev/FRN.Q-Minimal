@@ -8,9 +8,44 @@ import Projects from "../components/Projects.astro";
 import About from "../components/About.astro";
 import Contact from "../components/Contact.astro";
 import Footer from "../components/Footer.astro";
+import { serviceAreas } from "../data/services";
+import { getFeaturedProjects, casePath } from "../data/projects";
 import { faqItems } from "../data/engagement";
 import { siteConfig } from "../data/site";
 
+const featuredProjects = await getFeaturedProjects();
+const personId = `${siteConfig.url}/#person`;
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@graph": serviceAreas.map((service) => ({
+    "@type": "Service",
+    "@id": `${siteConfig.url}/#service-${service.id}`,
+    name: service.title,
+    serviceType: service.title,
+    description: service.short,
+    provider: { "@id": personId },
+    areaServed: [
+      { "@type": "City", name: siteConfig.location.city },
+      { "@type": "Country", name: "España" },
+    ],
+  })),
+};
+const featuredProjectsSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: `Casos seleccionados de ${siteConfig.name}`,
+  numberOfItems: featuredProjects.length,
+  itemListElement: featuredProjects.map((project, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    item: {
+      "@type": "CreativeWork",
+      name: project.title,
+      url: new URL(casePath(project.slug), Astro.site).toString(),
+      creator: { "@id": personId },
+    },
+  })),
+};
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -23,9 +58,19 @@ const faqSchema = {
 ---
 
 <MainLayout
-   title={`${siteConfig.name} — Ecommerce, Portales B2B y Sistemas Digitales para Empresas`}
-   description={siteConfig.description}
+  title="Soluciones digitales para empresas | FRN.Q"
+  description={siteConfig.description}
 >
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(serviceSchema)}
+    slot="head"
+  />
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(featuredProjectsSchema)}
+    slot="head"
+  />
   <script
     type="application/ld+json"
     set:html={JSON.stringify(faqSchema)}

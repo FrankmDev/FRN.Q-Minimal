@@ -2,7 +2,7 @@
 
 ## What this is
 
-frnq.es is the Spanish **commercial surface** of FRN.Q, the independent digital practice of **Francisco Muñoz** (Granada, Spain). It is a single, static, high-performance Astro site whose job is to explain what FRN.Q solves, show published work, and convert interest into a conversation.
+frnq.es is the Spanish **commercial surface** of FRN.Q, the independent digital practice of **Francisco Muñoz** (Granada, Spain). It is a static Astro site whose job is to explain what FRN.Q solves, show published work, and convert interest into a conversation. The homepage summarizes the offer; three focused solution routes cover distinct commercial search intents.
 
 The professional/technical portfolio lives separately at **frnq.studio** (English) and is linked externally as `STUDIO ↗` everywhere (header, hero, mobile menu, contact and footer). HABLEMOS is the only highlighted CTA.
 
@@ -25,7 +25,7 @@ See `POSITIONING.md` for the authoritative business definition and language rule
 6. **Capabilities as means.** Design, frontend, SEO, analytics, CRO, accessibility, performance and integrations support the commercial areas; they are never sold as the headline.
 7. **Simplicity over cleverness.** Static Astro, minimal JS, CSS-driven motion, no unnecessary runtime.
 8. **Performance and accessibility are requirements**, not aspirations.
-9. **No visual work in the content reconstruction.** Copy and documentation change; composition and CSS do not.
+9. **Keep the home identity stable.** The existing home composition, visual identity and shared tokens remain frozen. Focused SEO routes reuse the existing design language; do not redesign the commercial surface.
 10. **Progressive enhancement.** The site works without JS; JS adds polish.
 
 ## Commercial model
@@ -34,7 +34,7 @@ The hierarchy (see `POSITIONING.md`):
 
 1. ECOMMERCE & SHOPIFY
 2. PORTALES & SISTEMAS B2B
-3. SISTEMAS & AUTOMATIZACIÓN
+3. SISTEMAS & INTEGRACIONES
 4. WEB, SEO & GROWTH
 
 Engagement is either a closed project, a continuous (non-retainer) collaboration, or a discovery session. Pricing is scope-specific and agreed after discovery; public numbers are orientation only.
@@ -50,17 +50,25 @@ Engagement is either a closed project, a continuous (non-retainer) collaboration
 
 ## Roadmap
 
-No dates. Conceptual order.
+**Status: CURRENT.** The homepage composition is frozen. The current organic-search scope includes three static solution pages supported by distinct intent and enough factual scope to explain the services. No redesign, city doorway pages or additional routes without separate evidence.
 
-### CURRENT — Spanish commercial surface
+### COMPLETE — Spanish commercial surface
 
 - Single-page composition: Hero → Solutions → Operation → Cases → Studio → Contact, plus Footer.
-- Content driven by `src/data/*`: `site`, `navigation`, `services`, `contact`, `contact-contract`, `projects`, `engagement`.
+- Content driven by `src/data/*`: `site`, `navigation`, `services`, `solutions`, `contact`, `contact-contract`, `projects`, `engagement`.
 - Contact form with validation contract and Aviso legal / Privacidad pages under `/legal/`.
 - Documentation set in `docs/`.
 - frnq.studio linked externally as `STUDIO ↗`.
 
-### CURRENT — Published work
+### CURRENT — Search-intent solution pages
+
+- `/soluciones/ecommerce/` — ecommerce and Shopify development for D2C businesses.
+- `/soluciones/b2b/` — customer portals, private catalogues/pricing and B2B orders.
+- `/soluciones/sistemas/` — business-system integrations and operational workflows.
+- `/soluciones/web-seo/` is not created: web/SEO remains the fourth supporting capability, and current evidence does not justify a distinct broad landing page.
+- Pages explain scope, audiences, process, integrations and FAQs. They state clearly when no directly related case has been published.
+
+### COMPLETE — Published work
 
 - Six published cases rendered from the `projects` content collection (via `src/data/projects.ts`).
 - Neutral, factual descriptions with no outcome claims.
@@ -74,7 +82,7 @@ No dates. Conceptual order.
 ### FUTURE — not committed
 
 - Case studies with evidenced outcomes (context, problem, users, system, flow, architecture, measurement).
-- Dedicated service pages if a distinct product decision requires them.
+- More service or location pages only if distinct intent and useful evidence-led content justify them.
 - No language switch, no Business Mode, no hreflang work.
 
 No deliverable is documented as done before its code and content exist. Documents mark CURRENT vs FUTURE explicitly.

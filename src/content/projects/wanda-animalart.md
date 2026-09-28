@@ -50,10 +50,11 @@ images:
     alt: "Wanda Animalart — información de encargo y vías de contacto"
     caption: "Información de encargo y contacto."
 seo:
-  description: "Wanda Animalart: portfolio de retratos de animales y proceso de encargo en Astro por FRN.Q, con vías de contacto directas."
+  title: "Wanda Animalart: portfolio de artista en Córdoba | FRN.Q"
+  description: "Portfolio web de artista en Córdoba: retratos de animales hechos a mano, proceso de encargo y vías directas de contacto."
   keywords:
-    - "portfolio artista"
-    - "web encargos arte"
-    - "optimización de imágenes Astro"
+    - "retratos de animales por encargo"
+    - "portfolio de artista"
+    - "web encargos de arte"
     - "desarrollo web Córdoba"
 ---

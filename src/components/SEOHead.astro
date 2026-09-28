@@ -1,11 +1,13 @@
 ---
-import { siteConfig } from "../data/site";
+import { siteConfig, socialLinks } from "../data/site";
+import { serviceAreas } from "../data/services";
 interface Props {
   title: string;
   description: string;
   canonicalURL: URL;
   noindex?: boolean;
   ogImage?: string;
+  ogImageAlt?: string;
 }
 
 const {
@@ -13,7 +15,8 @@ const {
   description,
   canonicalURL,
   noindex = false,
-  ogImage = "/og-image.svg",
+  ogImage = "/og-image.png",
+  ogImageAlt = "FRN.Q en Granada, España: ecommerce, Shopify y portales B2B",
 } = Astro.props;
 
 const imageURL = new URL(ogImage, canonicalURL.origin);
@@ -28,18 +31,36 @@ const imageType =
         : imageExtension === "avif"
           ? "image/avif"
           : "image/svg+xml";
-const organization = {
+const personId = `${canonicalURL.origin}/#person`;
+const person = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "@id": `${canonicalURL.origin}/#organization`,
-   name: siteConfig.name,
-   url: siteConfig.url,
-   email: siteConfig.email,
+  "@type": "Person",
+  "@id": personId,
+  name: siteConfig.fullName,
+  alternateName: siteConfig.name,
+  url: siteConfig.url,
+  email: siteConfig.email,
   address: {
     "@type": "PostalAddress",
-     addressLocality: siteConfig.location.city,
-     addressCountry: siteConfig.location.country,
+    addressLocality: siteConfig.location.city,
+    addressRegion: siteConfig.location.region,
+    addressCountry: siteConfig.location.country,
   },
+  knowsAbout: serviceAreas.map((area) => area.title),
+  sameAs: socialLinks.map((social) => social.href),
+};
+const website = {
+  "@type": "WebSite",
+  "@id": `${canonicalURL.origin}/#website`,
+  url: new URL("/", canonicalURL.origin).toString(),
+  name: siteConfig.name,
+  description: siteConfig.description,
+  inLanguage: "es-ES",
+  publisher: { "@id": personId },
+};
+const siteSchema = {
+  "@context": "https://schema.org",
+  "@graph": [person, website],
 };
 ---
 
@@ -58,15 +79,16 @@ const organization = {
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:image:type" content={imageType} />
-<meta property="og:image:alt" content="FRN.Q — Desarrollo de soluciones digitales" />
+<meta property="og:image:alt" content={ogImageAlt} />
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={imageURL} />
+<meta name="twitter:image:alt" content={ogImageAlt} />
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <meta name="theme-color" content="#f4f3ef" />
 
-<script type="application/ld+json" set:html={JSON.stringify(organization)} />
+<script type="application/ld+json" set:html={JSON.stringify(siteSchema)} />
