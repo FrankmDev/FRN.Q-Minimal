@@ -117,7 +117,7 @@ Each published case has a unique, factual `seo.title` and `seo.description`. Pub
 
 ### Host and redirect audit — 2026-10-08
 
-Re-checked against real production HTTP (not assumptions). The deployed production SHA equals repository `HEAD` (`83f1699`), and the live output matches the local build.
+Re-checked against real production HTTP (not assumptions). The deployed production matches repository `HEAD` (`3e3b1cb`), and the live output matches the local build. Every repository-controlled surface is apex-only; the only remaining mismatch is the Vercel primary-domain setting below.
 
 - `https://www.frnq.es/*` serves `200`; live canonicals, `og:url`, JSON-LD, sitemap index and `robots.txt` are all apex-only (`https://frnq.es`), and the commercial sitemap lists only the published commercial routes.
 - Live directives confirmed: `index, follow` on Home, `/casos/` and the `/soluciones/` routes; `noindex, follow` on `/legal/` and `/legal/privacidad/`; `noindex, nofollow` on `/404/`; `Disallow: /api/`. Unknown paths return `404` and `/api/contact` is not crawlable.
