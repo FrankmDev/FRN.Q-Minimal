@@ -75,5 +75,9 @@ const canonicalURL = new URL(
     <slot />
     <CustomCursor />
     <RevealObserver />
+    <script>
+      import { initTracking } from "../scripts/analytics";
+      initTracking();
+    </script>
   </body>
 </html>

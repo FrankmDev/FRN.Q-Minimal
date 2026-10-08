@@ -64,7 +64,13 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
           </svg>
         </span>
       </button>
-      <a href={`/${headerCta.href}`} class="header-cta">
+      <a
+        href={`/${headerCta.href}`}
+        class="header-cta"
+        data-track="cta_click"
+        data-track-location="header"
+        data-track-label={headerCta.label}
+      >
         <span class="cta-text">{headerCta.label}</span>
         <span class="cta-arrow" aria-hidden="true">→</span>
       </a>
@@ -170,7 +176,7 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     }
   });
 
-  const desktopQuery = window.matchMedia("(min-width: 900px)");
+  const desktopQuery = window.matchMedia("(min-width: 1024px)");
   desktopQuery.addEventListener("change", (event) => {
     if (event.matches) setMenuOpen(false);
   });
@@ -613,9 +619,10 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
   }
 
   .mobile-nav.is-open {
-    max-height: 540px;
+    max-height: min(640px, calc(100svh - var(--layout-header-height)));
     border-bottom-width: 3px;
     visibility: visible;
+    overflow-y: auto;
   }
 
   .mobile-nav .container {
@@ -718,7 +725,7 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     outline-offset: 4px;
   }
 
-  @media (min-width: 900px) {
+  @media (min-width: 1024px) {
     :root {
       --layout-header-height: 88px;
     }

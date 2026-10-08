@@ -8,6 +8,7 @@ import {
   CONTACT_NAME_MIN,
   CONTACT_OPTIONAL_MAX,
 } from "../data/contact-contract";
+import { track, trackOnce, type TrackProps } from "./analytics";
 
 export {};
 
@@ -17,15 +18,43 @@ type ContactResponse = {
   success?: boolean;
   error?: string;
   errors?: Record<string, string>;
+  ref?: string;
 };
 
-declare global {
-  interface Window {
-    gtag?: (...args: unknown[]) => void;
+const COUNTER_WARN_THRESHOLD = 1800;
+const REQUEST_TIMEOUT_MS = 15000;
+
+function newSubmissionId(): string {
+  const cryptoObj = globalThis.crypto;
+  if (cryptoObj && typeof cryptoObj.randomUUID === "function") {
+    return cryptoObj.randomUUID();
   }
+  return `sub-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 }
 
-const COUNTER_WARN_THRESHOLD = 1800;
+function ensureSubmissionId(form: HTMLFormElement, force = false): string {
+  let input = form.elements.namedItem("submissionId") as HTMLInputElement | null;
+  if (!input) {
+    input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "submissionId";
+    form.appendChild(input);
+  }
+  if (input.value && !force) return input.value;
+  const id = newSubmissionId();
+  input.value = id;
+  return id;
+}
+
+function leadProps(data: Record<string, unknown>): TrackProps {
+  // Non-personal, categorical data only: never name, email or message.
+  return {
+    type: typeof data.type === "string" ? data.type : undefined,
+    budget: typeof data.budget === "string" ? data.budget : undefined,
+    hasCompany:
+      typeof data.company === "string" && data.company.trim().length > 0,
+  };
+}
 
 function getFormFields(form: HTMLFormElement): FormField[] {
   return Array.from(
@@ -149,6 +178,11 @@ function initContactForm(): void {
   if (form.dataset.enhanced === "true") return;
   form.dataset.enhanced = "true";
 
+  // The enhanced flow owns validation so every error renders in our own
+  // accessible UI. Without JS the native constraint validation still runs.
+  form.noValidate = true;
+  ensureSubmissionId(form);
+
   const fields = getFormFields(form);
   const controller = new AbortController();
 
@@ -165,7 +199,10 @@ function initContactForm(): void {
       validateField(field);
     });
     add(field, "input", () => {
-      validateField(field);
+      // Do not flag a field while the visitor is still typing. If it was
+      // already invalid, re-validate so the error clears as soon as it is fixed.
+      const fieldUnitEl = field.closest("[data-field-id]");
+      if (fieldUnitEl?.classList.contains("is-invalid")) validateField(field);
       if (field.name === "message") updateMessageCounter(field as HTMLTextAreaElement);
     });
     add(field, "change", () => validateField(field));
@@ -183,7 +220,9 @@ function initContactForm(): void {
       }
     }
 
+    const submissionId = ensureSubmissionId(form);
     const data = Object.fromEntries(new FormData(form).entries());
+    data.submissionId = submissionId;
 
     const send = async () => {
       submitBtn.disabled = true;
@@ -192,9 +231,14 @@ function initContactForm(): void {
       formLoading?.classList.remove("hidden");
       formLoading?.classList.add("flex");
 
+      track("contact_form_submit", leadProps(data));
+
+      const requestController = new AbortController();
+      const timeoutId = window.setTimeout(() => requestController.abort(), REQUEST_TIMEOUT_MS);
+
       try {
         const res = await fetch("/api/contact", {
-          signal: controller.signal,
+          signal: requestController.signal,
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
@@ -221,8 +265,11 @@ function initContactForm(): void {
           successBlock.classList.add("flex");
           successBlock.focus();
 
-          if (window.gtag) window.gtag("event", "contact_form_submitted");
-          else window.dispatchEvent(new CustomEvent("contact_form_submitted"));
+          trackOnce(
+            `submit:${result.ref || submissionId}`,
+            "contact_form_success",
+            leadProps(data),
+          );
           return;
         }
 
@@ -247,10 +294,15 @@ function initContactForm(): void {
           errorField?.focus();
         }
       } catch {
-        if (!controller.signal.aborted) {
+        if (requestController.signal.aborted) {
+          showFormError("El envío ha tardado demasiado. Inténtalo de nuevo.", formErrorBanner, formErrorText);
+        } else if (typeof navigator !== "undefined" && navigator.onLine === false) {
+          showFormError("Parece que no hay conexión. Revisa tu red e inténtalo de nuevo.", formErrorBanner, formErrorText);
+        } else {
           showFormError("Error de conexión. Inténtalo de nuevo.", formErrorBanner, formErrorText);
         }
       } finally {
+        window.clearTimeout(timeoutId);
         submitBtn.disabled = false;
         form.removeAttribute("aria-busy");
         if (submitText) submitText.textContent = "Enviar proyecto";
@@ -265,10 +317,12 @@ function initContactForm(): void {
   if (resetBtn) {
     add(resetBtn, "click", () => {
       form.reset();
+      ensureSubmissionId(form, true);
       form.classList.remove("hidden");
       successBlock.classList.add("hidden");
       successBlock.classList.remove("flex");
       hideFormError(formErrorBanner);
+      track("contact_form_reset");
 
       fields.forEach((field) => {
         field.closest("[data-field-id]")?.classList.remove("is-focus", "is-valid", "is-invalid");
@@ -295,12 +349,14 @@ function handleReturnState(): void {
   const successBlock = document.getElementById("contact-success");
   const banner = document.getElementById("form-error-banner");
   const bannerText = document.getElementById("form-error-text");
+  const ref = params.get("ref") || "";
 
   if (state === "enviado" && form && successBlock) {
     form.classList.add("hidden");
     successBlock.classList.remove("hidden");
     successBlock.classList.add("flex");
     successBlock.focus();
+    trackOnce(`submit:${ref || "no-js"}`, "contact_form_success");
   } else if (state === "error" && banner && bannerText) {
     bannerText.textContent = "No se ha podido enviar. Revisa los campos e inténtalo de nuevo.";
     banner.classList.remove("hidden");

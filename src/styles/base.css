@@ -11,6 +11,8 @@ html {
   -moz-tab-size: 4;
   tab-size: 4;
   scroll-behavior: smooth;
+  /* Fixed header: every in-page anchor lands clear of it. */
+  scroll-padding-top: calc(var(--layout-header-height) + var(--space-sm));
 }
 
 body {

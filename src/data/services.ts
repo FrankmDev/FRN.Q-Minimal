@@ -5,7 +5,7 @@
  *   1. ECOMMERCE & SHOPIFY
  *   2. PORTALES & SISTEMAS B2B
  *   3. SISTEMAS & INTEGRACIONES
- *   4. WEB, SEO & GROWTH
+ *   4. WEB, SEO & GROWTH — presented to visitors as "Web corporativa & SEO"
  *
  * Each area is sold as a solution to a business problem, not as a list of
  * technologies. Cross-cutting capabilities (UI/UX, frontend, integrations,
@@ -18,8 +18,12 @@ export interface ServiceArea {
   id: string;
   /** Card title used by the Services section. */
   title: string;
-  /** Card description used by the Services section. */
+  /** One-line outcome used by the Services card. */
   short: string;
+  /** Type of business this area is for, shown as the card kicker. */
+  audience: string;
+  /** Link label used by the card to reach the matching page. */
+  linkLabel: string;
   /** Real business problems this area addresses. */
   problems: string[];
   /** What the engagement can cover. Not a promise on every project. */
@@ -32,7 +36,9 @@ export const serviceAreas: ServiceArea[] = [
     id: "ecommerce",
     title: "Ecommerce & Shopify",
     short:
-      "Tiendas que venden: catálogo, producto, checkout y operación conectados.",
+      "Tienda online con catálogo, pago y pedidos conectados a tu operación.",
+    audience: "Marcas y empresas que venden producto online",
+    linkLabel: "Ver tienda online",
     problems: [
       "Vender online sin que el catálogo, el stock y los pedidos se descuadren",
       "Depender de una tienda lenta o difícil de gestionar",
@@ -50,17 +56,20 @@ export const serviceAreas: ServiceArea[] = [
     id: "b2b",
     title: "Portales & Sistemas B2B",
     short:
-      "Clientes profesionales, precios privados, pedidos y procesos bajo control.",
+      "Tus clientes profesionales consultan sus precios y hacen pedidos online.",
+    audience: "Fabricantes, distribuidores y mayoristas",
+    linkLabel: "Ver portal B2B",
     problems: [
-      "Atender pedidos de clientes profesionales por email, teléfono o WhatsApp",
-      "Gestionar precios privados y condiciones por cliente en hojas de cálculo",
-      "Dar acceso a catálogos y documentos sin exponer información interna",
+      "Dar de alta y validar empresas antes de mostrarles catálogo y precios",
+      "Gestionar referencias, tarifas restringidas, roles y condiciones por cuenta",
+      "Recibir pedidos y solicitudes de presupuesto entre email, teléfono y hojas de cálculo",
+      "Coordinar al comprador y al equipo comercial sin un recorrido claro de seguimiento",
     ],
     includes: [
-      "Áreas privadas con acceso por cliente, roles y permisos",
-      "Catálogos y tarifas por cliente profesional",
-      "Flujos de pedido, aprobación y reposición",
-      "Portal de cliente, documentación y seguimiento",
+      "Registro y validación de empresas; usuarios, roles y permisos según el alcance",
+      "Catálogo privado, referencias y precios o tarifas restringidas por cuenta",
+      "Solicitudes de presupuesto, pedidos, reposición y seguimiento comercial",
+      "CRM, ERP u otras conexiones solo cuando sean necesarias y viables",
     ],
   },
   {
@@ -68,7 +77,9 @@ export const serviceAreas: ServiceArea[] = [
     id: "sistemas",
     title: "Sistemas & Integraciones",
     short:
-      "Workflows, integraciones y datos que dejan de trabajarse a mano.",
+      "Conecto tus herramientas y automatizo tareas que hoy se hacen a mano.",
+    audience: "Equipos con datos repartidos y tareas manuales",
+    linkLabel: "Ver integraciones",
     problems: [
       "Datos de venta, stock, facturación o CRM repartidos en sistemas que no se hablan",
       "Tareas repetitivas que consumen horas y generan errores",
@@ -84,9 +95,11 @@ export const serviceAreas: ServiceArea[] = [
   {
     num: "04",
     id: "growth",
-    title: "Web, SEO & Growth",
+    title: "Web corporativa & SEO",
     short:
-      "Web, visibilidad técnica y local, analítica y conversión para crecer con criterio.",
+      "Web de empresa, posicionamiento y medición para que te encuentren.",
+    audience: "Empresas que necesitan presencia y visibilidad web",
+    linkLabel: "Cuéntame tu web",
     problems: [
       "Web que no comunica lo que haces ni genera consultas",
       "No aparecer en búsquedas locales o sectoriales",
@@ -104,6 +117,8 @@ export const serviceAreas: ServiceArea[] = [
 /** Section header copy for the Services block. */
 export const servicesCopy = {
   label: "Qué hago",
-  titleLine: "Cuatro áreas.",
-  titleHighlight: "Un mismo negocio.",
+  titleLine: "Tiendas, portales",
+  titleHighlight: "y sistemas.",
+  lead:
+    "Construyo tiendas online, portales de pedidos y sistemas a medida para empresas que venden por internet. La web corporativa también entra aquí, sin perder el foco en vender y operar.",
 } as const;

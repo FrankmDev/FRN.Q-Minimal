@@ -2,7 +2,7 @@
 
 ## What this is
 
-frnq.es is the Spanish **commercial surface** of FRN.Q, the independent digital practice of **Francisco Muñoz** (Granada, Spain). It is a static Astro site whose job is to explain what FRN.Q solves, show published work, and convert interest into a conversation. The homepage summarizes the offer; three focused solution routes cover distinct commercial search intents.
+frnq.es is the Spanish **commercial surface** of FRN.Q, the independent digital practice of **Francisco Muñoz** (Granada, Spain). It is a static Astro site whose job is to explain what FRN.Q solves, show published work, and convert interest into a conversation. The homepage summarizes the offer; four focused solution routes cover distinct commercial search intents.
 
 The professional/technical portfolio lives separately at **frnq.studio** (English) and is linked externally as `STUDIO ↗` everywhere (header, hero, mobile menu, contact and footer). HABLEMOS is the only highlighted CTA.
 
@@ -50,7 +50,7 @@ Engagement is either a closed project, a continuous (non-retainer) collaboration
 
 ## Roadmap
 
-**Status: CURRENT.** The homepage composition is frozen. The current organic-search scope includes three static solution pages supported by distinct intent and enough factual scope to explain the services. No redesign, city doorway pages or additional routes without separate evidence.
+**Status: CURRENT.** The homepage composition is frozen. The current organic-search scope includes four static solution pages supported by distinct intent and enough factual scope to explain the services. No redesign, city doorway pages or additional routes without separate evidence.
 
 ### COMPLETE — Spanish commercial surface
 
@@ -65,8 +65,9 @@ Engagement is either a closed project, a continuous (non-retainer) collaboration
 - `/soluciones/ecommerce/` — ecommerce and Shopify development for D2C businesses.
 - `/soluciones/b2b/` — customer portals, private catalogues/pricing and B2B orders.
 - `/soluciones/sistemas/` — business-system integrations and operational workflows.
-- `/soluciones/web-seo/` is not created: web/SEO remains the fourth supporting capability, and current evidence does not justify a distinct broad landing page.
-- Pages explain scope, audiences, process, integrations and FAQs. They state clearly when no directly related case has been published.
+- `/soluciones/desarrollo-web/` — corporate and custom web design/development, technical SEO, performance, accessibility and measurement, with national scope and natural Granada relevance on one canonical page.
+- Pages explain scope, audiences, typologies, capabilities, process, deliverables/maintenance, integrations and FAQs. They state clearly when no directly related case has been published.
+- No separate `/soluciones/web-seo/` or city page is created: those intents fold into the corporate-web route to avoid duplication.
 
 ### COMPLETE — Published work
 

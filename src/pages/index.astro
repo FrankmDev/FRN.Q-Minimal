@@ -27,6 +27,7 @@ const featuredProjectsSchema = {
       name: project.title,
       url: new URL(casePath(project.slug), Astro.site).toString(),
       creator: { "@id": personId },
+      isPartOf: { "@id": `${siteConfig.url}/#website` },
     },
   })),
 };
@@ -42,7 +43,7 @@ const faqSchema = {
 ---
 
 <MainLayout
-  title="Soluciones digitales para empresas | FRN.Q"
+  title="Ecommerce, portales B2B y desarrollo web | FRN.Q"
   description={siteConfig.description}
 >
   <script

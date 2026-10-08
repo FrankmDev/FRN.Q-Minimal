@@ -8,7 +8,7 @@ frnq.es is the **Spanish commercial surface** of FRN.Q, the independent digital 
 
 It is **not** a translation of frnq.studio, **not** an agency, and has **no** language switch or Business Mode.
 
-**Status: CURRENT.** The existing home composition and visual identity remain frozen. The organic-search scope now includes three static solution pages for ecommerce, B2B and systems/integrations; add further routes only when distinct search intent and useful evidence-led content justify them.
+**Status: CURRENT.** The existing home composition and visual identity remain frozen. The organic-search scope now includes four static solution pages for ecommerce, B2B, systems/integrations and corporate web (`desarrollo-web`); add further routes only when distinct search intent and useful evidence-led content justify them. No city or doorway pages.
 
 - Read `docs/POSITIONING.md` for the business definition and language rules.
 - Read `docs/PRODUCT.md` for principles and roadmap.

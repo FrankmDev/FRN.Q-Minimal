@@ -10,12 +10,14 @@ import { getSolutionForService, solutionPath } from "../data/solutions";
       <h2 id="services-title" class="section-title">
         {servicesCopy.titleLine}<br /><span class="title-mark">{servicesCopy.titleHighlight}</span>
       </h2>
+      <p class="services-lead">{servicesCopy.lead}</p>
     </header>
 
     <ul class="solutions-grid reveal" role="list" id="services-grid">
       {
         serviceAreas.map((service: ServiceArea, index) => {
           const solution = getSolutionForService(service.id);
+          const href = solution ? solutionPath(solution.slug) : "/#contacto";
           return (
             <li
               class:list={["service-card", `sol-${index}`]}
@@ -24,6 +26,7 @@ import { getSolutionForService, solutionPath } from "../data/solutions";
             >
               <span class="card-number mono" aria-hidden="true">{service.num}</span>
               <div class="card-content">
+                <span class="card-audience mono">{service.audience}</span>
                 <h3 class="card-title" id={`sol-${service.id}-title`}>
                   {service.title}
                 </h3>
@@ -31,9 +34,10 @@ import { getSolutionForService, solutionPath } from "../data/solutions";
               </div>
               <a
                 class="service-link"
-                href={solution ? solutionPath(solution.slug) : "/#contacto"}
+                href={href}
+                aria-label={`${service.linkLabel}: ${service.title}`}
               >
-                {solution ? solution.h1 : "Consultar alcance"}
+                {service.linkLabel}
                 <span aria-hidden="true">→</span>
               </a>
               <span class="card-corner" aria-hidden="true">↗</span>
@@ -49,7 +53,6 @@ import { getSolutionForService, solutionPath } from "../data/solutions";
   .services {
     position: relative;
     padding: clamp(var(--space-3xl), 8vw, 8rem) 0;
-    scroll-margin-top: var(--layout-header-height);
   }
 
   .services::before {
@@ -65,18 +68,28 @@ import { getSolutionForService, solutionPath } from "../data/solutions";
   .services-header {
     display: flex;
     align-items: end;
-    justify-content: flex-end;
-    gap: var(--space-xl);
+    justify-content: space-between;
+    gap: clamp(var(--space-xl), 5vw, var(--space-4xl));
     margin-bottom: clamp(var(--space-2xl), 5vw, var(--space-4xl));
   }
 
   .services-header h2 {
+    order: 2;
     margin: 0;
     font-size: clamp(2rem, 5.7vw, 5rem);
     font-weight: 800;
     line-height: 0.95;
     letter-spacing: -0.065em;
     text-align: right;
+  }
+
+  .services-lead {
+    order: 1;
+    max-width: 29rem;
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+    line-height: 1.55;
   }
 
   .solutions-grid {
@@ -105,8 +118,9 @@ import { getSolutionForService, solutionPath } from "../data/solutions";
     transition: transform 280ms var(--motion-ease-out), box-shadow 280ms var(--motion-ease-out), background-color 280ms var(--motion-ease-out), color 280ms var(--motion-ease-out);
   }
 
+  /* Priority 1 gets the accent plate; priority 2 the inverted ink card. */
+  .sol-0 { --card-ink: var(--text-on-accent); --card-paper: var(--accent); }
   .sol-1 { --card-ink: var(--bg); --card-paper: var(--text); }
-  .sol-2 { --card-ink: var(--text-on-accent); --card-paper: var(--accent); }
 
   .card-number {
     width: fit-content;
@@ -124,6 +138,16 @@ import { getSolutionForService, solutionPath } from "../data/solutions";
     z-index: 1;
     max-width: 33rem;
     padding-right: var(--space-2xl);
+  }
+
+  .card-audience {
+    display: block;
+    margin-bottom: var(--space-sm);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.62;
   }
 
   .card-title {
@@ -145,7 +169,7 @@ import { getSolutionForService, solutionPath } from "../data/solutions";
     line-height: 1.5;
     opacity: 0.76;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
   }
 
   .card-corner {
@@ -194,7 +218,7 @@ import { getSolutionForService, solutionPath } from "../data/solutions";
     opacity: 1;
   }
 
-  .sol-2:hover .card-number { color: var(--text-on-accent); }
+  .sol-0:hover .card-number { color: var(--text-on-accent); }
 
   /* Dark theme: the inverted card is near-white, so its numeral stays on ink. */
   :global([data-theme="dark"]) .sol-1:hover .card-number {
@@ -211,6 +235,10 @@ import { getSolutionForService, solutionPath } from "../data/solutions";
 
   @media (max-width: 760px) {
     .services-header { display: block; }
+    .services-lead {
+      max-width: 46ch;
+      margin-bottom: var(--space-lg);
+    }
     .services-header h2 {
       font-size: clamp(2.35rem, 9vw, 4.25rem);
       line-height: 0.9;

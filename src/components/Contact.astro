@@ -27,7 +27,13 @@ import { portfolioLink, siteConfig } from "../data/site";
 
         <div class="contact-methods">
           {contactMethods.map((method) => (
-            <a href={method.href} class="method-card">
+            <a
+              href={method.href}
+              class="method-card"
+              data-track="contact_method_click"
+              data-track-method={method.label}
+              data-track-location="contact"
+            >
               <span class="method-icon" aria-hidden="true">{method.icon}</span>
               <span class="method-info">
                 <span class="method-label">{method.label}</span>
@@ -43,6 +49,8 @@ import { portfolioLink, siteConfig } from "../data/site";
           href={portfolioLink.href}
           target="_blank"
           rel="noopener noreferrer"
+          data-track="studio_link_click"
+          data-track-location="contact"
         >
           {portfolioLink.label} <span aria-hidden="true">↗</span>
         </a>
@@ -81,8 +89,11 @@ import { portfolioLink, siteConfig } from "../data/site";
                 name="website"
                 tabindex="-1"
                 autocomplete="off"
+                aria-hidden="true"
               />
             </div>
+
+            <input type="hidden" name="submissionId" value="" />
 
             <div class="form-row">
               <div class="form-field" data-field-id="name">
@@ -155,11 +166,11 @@ import { portfolioLink, siteConfig } from "../data/site";
                 required
                 minlength={CONTACT_MESSAGE_MIN}
                 maxlength={CONTACT_MESSAGE_MAX}
-                aria-describedby="message-error"
+                aria-describedby="message-error message-counter"
               ></textarea>
               <div class="field-foot">
                 <span id="message-error" class="field-error hidden" role="alert"></span>
-                <span class="field-counter" data-field-counter aria-live="polite">
+                <span id="message-counter" class="field-counter" data-field-counter>
                   <span data-counter-current>0</span> / {CONTACT_MESSAGE_MAX}
                 </span>
               </div>
@@ -332,14 +343,8 @@ import { portfolioLink, siteConfig } from "../data/site";
     top: 0;
     left: 0;
     right: 0;
-    height: 1px;
-    background: repeating-linear-gradient(
-      90deg,
-      var(--border) 0,
-      var(--border) 20px,
-      transparent 20px,
-      transparent 40px
-    );
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--border) 0 18px, transparent 18px 36px);
   }
 
   .contact-layout {
@@ -443,7 +448,7 @@ import { portfolioLink, siteConfig } from "../data/site";
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    opacity: 0.5;
+    color: var(--text-muted);
     margin-bottom: 0.25rem;
   }
 
@@ -489,29 +494,6 @@ import { portfolioLink, siteConfig } from "../data/site";
   .form-title {
     font-size: clamp(1.125rem, 3vw, 1.25rem);
     font-weight: 700;
-  }
-
-  .form-status {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    flex-shrink: 0;
-  }
-
-  .status-dot {
-    width: 8px;
-    height: 8px;
-    background: var(--success);
-    border-radius: 50%;
-    animation:
-      pulse 2s infinite,
-      pulseGlow 2s infinite;
-    flex-shrink: 0;
   }
 
   .form-noscript {
@@ -575,7 +557,7 @@ import { portfolioLink, siteConfig } from "../data/site";
     text-transform: none;
     letter-spacing: 0;
     font-weight: 500;
-    opacity: 0.5;
+    opacity: 0.7;
   }
 
   .form-field input,
@@ -667,7 +649,7 @@ import { portfolioLink, siteConfig } from "../data/site";
   .field-counter {
     font-family: var(--font-mono);
     font-size: 0.75rem;
-    opacity: 0.5;
+    color: var(--text-muted);
     margin-left: auto;
     white-space: nowrap;
   }
@@ -806,7 +788,7 @@ import { portfolioLink, siteConfig } from "../data/site";
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    opacity: 0.6;
+    opacity: 0.7;
     margin-bottom: var(--space-md);
   }
 
@@ -842,69 +824,6 @@ import { portfolioLink, siteConfig } from "../data/site";
   .success-reset:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
-  }
-
-  .studio-link {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: var(--space-md) var(--space-xl);
-    padding: var(--space-xl) var(--space-2xl);
-    margin-bottom: var(--space-4xl);
-    border: 3px solid var(--border);
-    box-shadow: 8px 8px 0 var(--border);
-    transition:
-      transform var(--transition-fast),
-      box-shadow var(--transition-fast);
-  }
-
-  .studio-link:hover {
-    transform: translate(-5px, -5px);
-    box-shadow: 12px 12px 0 var(--y, var(--accent));
-  }
-
-  .studio-link-anchor {
-    display: inline-flex;
-    align-items: baseline;
-    gap: var(--space-md);
-    font-family: var(--font-mono);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    transition: opacity var(--transition-fast);
-  }
-
-  .studio-link-anchor:hover {
-    opacity: 0.75;
-  }
-
-  .studio-link-anchor:focus-visible {
-    outline: 3px solid var(--text);
-    outline-offset: 3px;
-  }
-
-  .studio-link-label {
-    font-size: 0.875rem;
-    font-weight: 700;
-  }
-
-  .studio-link-url {
-    font-size: 0.8125rem;
-    opacity: 0.6;
-  }
-
-  .studio-link-arrow {
-    transition: transform var(--transition-base);
-  }
-
-  .studio-link-anchor:hover .studio-link-arrow {
-    transform: translate(4px, -4px);
-  }
-
-  .studio-link-desc {
-    font-size: 0.875rem;
-    line-height: 1.5;
-    opacity: 0.6;
-    margin: 0;
   }
 
   .faq-section {
@@ -1039,7 +958,6 @@ import { portfolioLink, siteConfig } from "../data/site";
   /* Compact closing section: the form remains the primary interaction. */
   .contact {
     padding: clamp(var(--space-3xl), 7vw, 7rem) 0;
-    scroll-margin-top: var(--layout-header-height);
   }
 
   .contact-layout {

@@ -205,7 +205,6 @@ const cases = await Promise.all(
   .projects {
     position: relative;
     padding: clamp(var(--space-3xl), 8vw, 8rem) 0;
-    scroll-margin-top: var(--layout-header-height);
   }
 
   .projects::before {
@@ -274,8 +273,8 @@ const cases = await Promise.all(
   .project-link:focus-visible::before { opacity: 1; }
 
   .project-link:focus-visible {
-    outline: 3px solid var(--text);
-    outline-offset: 5px;
+    outline: 3px solid var(--accent);
+    outline-offset: -3px;
   }
 
   .project-number {

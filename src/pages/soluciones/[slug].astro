@@ -28,12 +28,15 @@ if (!service) throw new Error(`No existe el área de servicio ${solution.id}.`);
 
 const canonical = new URL(Astro.url.pathname, Astro.site || siteConfig.url);
 const projects: Project[] = (await getPublishedProjects()).filter(
-  (project) => project.serviceArea === solution.id,
+  (project) =>
+    project.serviceArea === solution.id ||
+    (solution.evidenceCategories?.includes(project.category) ?? false),
 );
 const relatedSolutions = solution.relatedSolutions
   .map((id) => solutionPages.find((item) => item.id === id))
   .filter((item): item is SolutionPage => Boolean(item));
 const personId = `${canonical.origin}/#person`;
+const brandId = `${canonical.origin}/#brand`;
 
 const serviceSchema = {
   "@context": "https://schema.org",
@@ -45,6 +48,7 @@ const serviceSchema = {
   url: canonical.toString(),
   provider: { "@id": personId },
   areaServed: { "@type": "Country", name: "España" },
+  brand: { "@id": brandId },
 };
 const breadcrumbSchema = {
   "@context": "https://schema.org",
@@ -99,8 +103,23 @@ const faqSchema = {
             <strong>Para quién:</strong> {solution.audience}
           </p>
           <a class="solution-contact" href="/#contacto">
-            Hablemos de tu proyecto <span aria-hidden="true">→</span>
+            {solution.id === "b2b" ? "Revisemos tu proceso comercial" : "Hablemos de tu proyecto"} <span aria-hidden="true">→</span>
           </a>
+          {solution.id === "ecommerce" && (
+            <nav class="solution-jump" aria-label="En esta página">
+              <a href="#plataforma">Plataforma</a>
+              <a href="#proceso">Proceso y alcance</a>
+              <a href="#faq-title">Preguntas frecuentes</a>
+            </nav>
+          )}
+          {solution.id === "growth" && (
+            <nav class="solution-jump" aria-label="En esta página">
+              <a href="#alcance">Alcance</a>
+              <a href="#tipologias">Tipologías</a>
+              <a href="#proceso">Proceso</a>
+              <a href="#faq-title">Preguntas frecuentes</a>
+            </nav>
+          )}
         </div>
       </header>
 
@@ -116,7 +135,7 @@ const faqSchema = {
         </div>
       </section>
 
-      <section class="solution-section solution-section--dark" aria-labelledby="scope-title">
+      <section class="solution-section solution-section--dark" id="alcance" aria-labelledby="scope-title">
         <div class="container solution-grid">
           <div>
             <p class="section-tag">Alcance posible</p>
@@ -129,12 +148,82 @@ const faqSchema = {
         </div>
       </section>
 
+      {solution.b2bDetails && (
+        <>
+          <section class="solution-section solution-section--ruled" aria-labelledby="portal-levels-title">
+            <div class="container">
+              <p class="section-tag">El alcance adecuado</p>
+              <h2 id="portal-levels-title">De catálogo privado a portal comercial</h2>
+              <p class="b2b-lead">No todos los negocios necesitan el mismo nivel de ecommerce B2B. La solución puede empezar sencilla y crecer cuando el proceso lo justifique.</p>
+              <div class="b2b-levels">
+                {solution.b2bDetails.levels.map((level) => (
+                  <article class="b2b-card">
+                    <h3>{level.title}</h3>
+                    <p>{level.description}</p>
+                    <ul>{level.includes.map((item) => <li>{item}</li>)}</ul>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section class="solution-section" aria-labelledby="buyer-title">
+            <div class="container">
+              <p class="section-tag">Recorrido del comprador</p>
+              <h2 id="buyer-title">De empresa interesada a pedido</h2>
+              <ol class="b2b-journey">
+                {solution.b2bDetails.buyerJourney.map((step, index) => (
+                  <li>
+                    <span class="b2b-step-number">0{index + 1}</span>
+                    <h3>{step.title}</h3>
+                    <p>{step.description}</p>
+                  </li>
+                ))}
+              </ol>
+              <a class="solution-contact" href="/#contacto">Cuéntame cómo compran tus clientes <span aria-hidden="true">→</span></a>
+            </div>
+          </section>
+
+          <section class="solution-section solution-section--dark" aria-labelledby="phases-title">
+            <div class="container">
+              <p class="section-tag">Implantación progresiva</p>
+              <h2 id="phases-title">Empieza por lo necesario</h2>
+              <p class="b2b-lead">Las fases se priorizan según el negocio; no es necesario implantarlas todas ni conectar un ERP para lanzar un catálogo.</p>
+              <ol class="b2b-phases">
+                {solution.b2bDetails.phases.map((phase) => (
+                  <li><h3>{phase.title}</h3><p>{phase.description}</p></li>
+                ))}
+              </ol>
+            </div>
+          </section>
+        </>
+      )}
+
+      {solution.id === "ecommerce" && solution.platformOptions && (
+        <section class="solution-section solution-platform" id="plataforma" aria-labelledby="platform-title">
+          <div class="container">
+            <p class="section-tag">La tecnología depende del proceso</p>
+            <h2 id="platform-title">Shopify estándar, personalizado o a medida</h2>
+            <p class="platform-intro">No todo ecommerce necesita desarrollo a medida. Elijo la opción más sencilla que cubra los requisitos reales y pueda mantenerse.</p>
+            <ul class="platform-options">
+              {solution.platformOptions.map((option) => (
+                <li>
+                  <h3>{option.title}</h3>
+                  <p>{option.description}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
       <section class="solution-section" aria-labelledby="integrations-title">
         <div class="container solution-grid">
           <div>
-            <p class="section-tag">Datos y herramientas</p>
-            <h2 id="integrations-title">Conexiones según tu operación</h2>
+          <p class="section-tag">{solution.headings?.integrations?.tag ?? "Datos y herramientas"}</p>
+          <h2 id="integrations-title">{solution.headings?.integrations?.title ?? (solution.id === "ecommerce" ? "Compra y operación conectadas" : solution.id === "b2b" ? "Conexiones opcionales, según tu operación" : "Conexiones según tu operación")}</h2>
             <p>{solution.integrationDescription}</p>
+            {solution.b2bDetails && <a class="solution-text-link" href={solutionPath("sistemas")}>{solution.b2bDetails.systemsCta} <span aria-hidden="true">→</span></a>}
           </div>
           <ul class="solution-list">
             {solution.integrationExamples.map((item) => <li>{item}</li>)}
@@ -142,10 +231,44 @@ const faqSchema = {
         </div>
       </section>
 
-      <section class="solution-section solution-section--ruled" aria-labelledby="process-title">
+      {solution.webDetails && (
+        <section class="solution-section" id="tipologias" aria-labelledby="web-types-title">
+          <div class="container">
+            <p class="section-tag">Tipologías de proyecto</p>
+            <h2 id="web-types-title">Qué tipo de web necesitas</h2>
+            <ul class="web-cards">
+              {solution.webDetails.projectTypes.map((type) => (
+                <li>
+                  <h3>{type.title}</h3>
+                  <p>{type.description}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      {solution.webDetails && (
+        <section class="solution-section solution-section--dark" aria-labelledby="web-capabilities-title">
+          <div class="container">
+            <p class="section-tag">Capacidades integradas</p>
+            <h2 id="web-capabilities-title">Diseño, SEO y medición en cada web</h2>
+            <ul class="web-cards">
+              {solution.webDetails.capabilities.map((capability) => (
+                <li>
+                  <h3>{capability.title}</h3>
+                  <p>{capability.description}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      <section class="solution-section solution-section--ruled" id="proceso" aria-labelledby="process-title">
         <div class="container">
-          <p class="section-tag">Cómo trabajo</p>
-          <h2 id="process-title">Del proceso al sistema</h2>
+          <p class="section-tag">{solution.headings?.process?.tag ?? "Cómo trabajo"}</p>
+          <h2 id="process-title">{solution.headings?.process?.title ?? "Del proceso al sistema"}</h2>
           <ol class="solution-process">
             {solution.process.map((step) => (
               <li>
@@ -157,11 +280,56 @@ const faqSchema = {
         </div>
       </section>
 
+      {solution.id === "ecommerce" && solution.clientInputs && solution.deliverables && solution.projectLimits && (
+        <section class="solution-section solution-section--dark" aria-labelledby="scope-details-title">
+          <div class="container">
+            <p class="section-tag">Alcance claro desde el inicio</p>
+            <h2 id="scope-details-title">Qué aporta cada parte</h2>
+            <div class="scope-columns">
+              <div>
+                <h3>Información del cliente</h3>
+                <ul class="solution-list">
+                  {solution.clientInputs.map((item) => <li>{item}</li>)}
+                </ul>
+              </div>
+              <div>
+                <h3>Entregables acordados</h3>
+                <ul class="solution-list">
+                  {solution.deliverables.map((item) => <li>{item}</li>)}
+                </ul>
+              </div>
+            </div>
+            <div class="scope-limits">
+              <h3>Lo que se delimita</h3>
+              <ul>
+                {solution.projectLimits.map((item) => <li>{item}</li>)}
+              </ul>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {solution.webDetails && (
+        <section class="solution-section solution-section--ruled" aria-labelledby="web-deliverables-title">
+          <div class="container solution-grid">
+            <div>
+              <p class="section-tag">Entregables y mantenimiento</p>
+              <h2 id="web-deliverables-title">Lo que recibes al terminar</h2>
+              <p>{solution.webDetails.maintenance}</p>
+              <a class="solution-contact" href="/#contacto">Hablemos de tu web <span aria-hidden="true">→</span></a>
+            </div>
+            <ul class="solution-list">
+              {solution.webDetails.deliverables.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+        </section>
+      )}
+
       <section class="solution-section" aria-labelledby="cases-title">
         <div class="container solution-grid">
           <div>
-            <p class="section-tag">Evidencia publicada</p>
-            <h2 id="cases-title">Casos relacionados</h2>
+            <p class="section-tag">{solution.headings?.evidence?.tag ?? "Evidencia publicada"}</p>
+            <h2 id="cases-title">{solution.headings?.evidence?.title ?? "Casos relacionados"}</h2>
           </div>
           <div>
             {
@@ -220,7 +388,7 @@ const faqSchema = {
             })}
           </ul>
           <a class="solution-contact" href="/#contacto">
-            Cuéntame qué necesitas resolver <span aria-hidden="true">→</span>
+            {solution.id === "b2b" ? "Hablemos de tu catálogo o portal B2B" : "Cuéntame qué necesitas resolver"} <span aria-hidden="true">→</span>
           </a>
         </div>
       </nav>
@@ -235,23 +403,46 @@ const faqSchema = {
   .solution-breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-2xl); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; }
   .solution-breadcrumb a { opacity: 0.65; text-underline-offset: 0.25em; }
   .solution-breadcrumb span { opacity: 0.55; }
+  .solution-breadcrumb [aria-current="page"] { opacity: 1; }
   .solution-eyebrow { margin-bottom: var(--space-md); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
   .solution-hero h1 { max-width: 16ch; font-size: clamp(2.7rem, 8vw, 7rem); font-weight: 800; line-height: 0.92; letter-spacing: -0.065em; text-transform: uppercase; }
   .solution-intro { max-width: 66ch; margin-top: var(--space-xl); font-size: clamp(1.0625rem, 1.8vw, 1.25rem); line-height: 1.6; color: var(--text-secondary); }
   .solution-audience { max-width: 68ch; margin-top: var(--space-lg); line-height: 1.6; }
   .solution-contact, .solution-text-link { display: inline-flex; align-items: center; gap: var(--space-sm); margin-top: var(--space-xl); font-weight: 800; text-decoration: underline; text-underline-offset: 0.3em; }
+  .solution-jump { display: flex; flex-wrap: wrap; gap: var(--space-md) var(--space-xl); margin-top: var(--space-2xl); font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; }
+  .solution-jump a { text-underline-offset: 0.3em; }
   .solution-contact:focus-visible, .solution-text-link:focus-visible, .solution-cases a:focus-visible, .solution-related a:focus-visible, .solution-breadcrumb a:focus-visible { outline: 3px solid var(--text); outline-offset: 4px; }
+  .solution-jump a:focus-visible { outline: 3px solid var(--text); outline-offset: 4px; }
   .solution-section { padding: clamp(var(--space-2xl), 6vw, var(--space-4xl)) 0; border-bottom: 1px solid var(--border-light); }
+  /* Solution sections use the shared plate as an in-flow label above the heading. */
+  .solution-section .section-tag { position: static; transform: none; margin-bottom: var(--space-md); }
   .solution-grid { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(var(--space-xl), 6vw, var(--space-4xl)); }
   .solution-section h2 { max-width: 17ch; font-size: clamp(1.8rem, 4vw, 3.5rem); font-weight: 800; line-height: 0.98; letter-spacing: -0.055em; text-transform: uppercase; }
   .solution-section p:not(.section-tag) { max-width: 68ch; margin-top: var(--space-lg); line-height: 1.65; color: var(--text-secondary); }
   .solution-list { display: grid; align-content: start; gap: var(--space-md); margin: 0; padding: 0; list-style: none; }
   .solution-list li { padding: var(--space-md) 0; border-bottom: 2px solid var(--border); font-size: clamp(1rem, 1.7vw, 1.25rem); font-weight: 700; line-height: 1.4; }
+  .web-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-xl); margin: var(--space-2xl) 0 0; padding: 0; list-style: none; }
+  .web-cards li { padding-top: var(--space-md); border-top: 3px solid var(--border); }
+  .web-cards h3 { font-size: clamp(1.125rem, 2vw, 1.4rem); font-weight: 800; line-height: 1.2; letter-spacing: -0.03em; }
+  .web-cards p { margin-top: var(--space-sm) !important; font-size: 0.9375rem; line-height: 1.6; }
+  .solution-section--dark .web-cards li { border-color: color-mix(in srgb, var(--bg) 26%, transparent); }
+  .solution-section--dark .web-cards p { color: var(--bg); opacity: 0.78; }
   .solution-section--dark { background: var(--text); color: var(--bg); }
-  .solution-section--dark .section-tag { color: var(--accent); }
   .solution-section--dark p:not(.section-tag) { color: var(--bg); opacity: 0.78; }
-  .solution-section--dark .solution-list li { border-color: var(--border-light); }
+  .solution-section--dark .solution-list li { border-color: color-mix(in srgb, var(--bg) 26%, transparent); }
   .solution-section--ruled { border-top: 3px solid var(--border); }
+  .solution-platform h2 { max-width: 22ch; }
+  .platform-intro { max-width: 65ch; }
+  .platform-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-md); margin: var(--space-2xl) 0 0; padding: 0; list-style: none; }
+  .platform-options li { padding: var(--space-lg); border: 2px solid var(--border); box-shadow: 5px 5px 0 var(--border); }
+  .platform-options h3, .scope-columns h3, .scope-limits h3 { font-size: 1.125rem; font-weight: 800; line-height: 1.25; }
+  .platform-options p { margin-top: var(--space-md) !important; font-size: 0.9375rem; }
+  .scope-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(var(--space-xl), 5vw, var(--space-4xl)); margin-top: var(--space-2xl); }
+  .scope-columns .solution-list { margin-top: var(--space-md); }
+  .scope-limits { margin-top: var(--space-2xl); padding-top: var(--space-lg); border-top: 1px solid color-mix(in srgb, var(--bg) 24%, transparent); }
+  .scope-limits ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-lg); margin: var(--space-lg) 0 0; padding-left: 1.2em; }
+  .scope-limits li { padding-left: 0.25em; line-height: 1.55; }
+  .solution-section--dark .scope-limits li { color: var(--bg); opacity: 0.78; }
   .solution-process { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-lg); margin: var(--space-2xl) 0 0; padding: 0; list-style: none; }
   .solution-process li { padding-top: var(--space-md); border-top: 3px solid var(--border); }
   .solution-process h3 { font-size: 1.125rem; font-weight: 800; line-height: 1.2; }
@@ -261,7 +452,11 @@ const faqSchema = {
   .solution-cases a { display: flex; justify-content: space-between; gap: var(--space-lg); padding: var(--space-md) 0; font-weight: 700; }
   .solution-faqs details { padding: var(--space-md) 0; border-bottom: 1px solid var(--border-light); }
   .solution-faqs details:first-child { border-top: 2px solid var(--border); }
-  .solution-faqs summary { cursor: pointer; font-weight: 700; line-height: 1.5; }
+  .solution-faqs summary { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-md); cursor: pointer; font-weight: 700; line-height: 1.5; list-style: none; }
+  .solution-faqs summary::-webkit-details-marker { display: none; }
+  .solution-faqs summary::after { content: "+"; flex: 0 0 auto; font-family: var(--font-mono); font-weight: 700; }
+  .solution-faqs details[open] summary::after { content: "−"; }
+  .solution-faqs summary:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
   .solution-faqs p { margin-top: var(--space-sm) !important; }
   .solution-related { padding: var(--space-2xl) 0 var(--space-4xl); }
   .solution-related-inner { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-lg); }
@@ -269,14 +464,34 @@ const faqSchema = {
   .solution-related ul { display: flex; flex-wrap: wrap; gap: var(--space-md) var(--space-xl); margin: 0; padding: 0; list-style: none; }
   .solution-related a { font-weight: 700; text-decoration: underline; text-underline-offset: 0.3em; }
   .solution-related .solution-contact { margin-top: 0; }
+  .b2b-lead { max-width: 68ch; margin-top: var(--space-lg); line-height: 1.65; color: var(--text-secondary); }
+  .b2b-levels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-xl); margin-top: var(--space-2xl); }
+  .b2b-card { padding: var(--space-xl); border: 2px solid var(--border); }
+  .b2b-card h3, .b2b-journey h3, .b2b-phases h3 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); font-weight: 800; line-height: 1.15; }
+  .b2b-card > p, .b2b-journey p, .b2b-phases p { margin-top: var(--space-md); line-height: 1.6; color: var(--text-secondary); }
+  .b2b-card ul { display: grid; gap: var(--space-sm); margin: var(--space-lg) 0 0; padding-left: 1.2em; line-height: 1.5; }
+  .b2b-journey { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-lg); margin: var(--space-2xl) 0 0; padding: 0; list-style: none; }
+  .b2b-journey li, .b2b-phases li { padding-top: var(--space-md); border-top: 3px solid var(--border); }
+  .b2b-step-number { display: block; margin-bottom: var(--space-lg); font-family: var(--font-mono); font-size: 0.75rem; }
+  .b2b-journey + .solution-contact { margin-top: var(--space-2xl); }
+  .b2b-phases { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-xl); margin: var(--space-2xl) 0 0; padding: 0; list-style: none; }
+  .solution-section--dark .b2b-lead, .solution-section--dark .b2b-phases p { color: var(--bg); opacity: 0.78; }
+  .solution-section--dark .b2b-phases li { border-color: var(--bg); }
+  .solution-section--dark .b2b-step-number { color: var(--accent); }
   @media (max-width: 760px) {
     .solution-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
     .solution-process { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .b2b-journey { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .platform-options { grid-template-columns: 1fr; }
+    .scope-limits ul { grid-template-columns: 1fr; gap: var(--space-md); }
   }
   @media (max-width: 540px) {
     .solution-page { padding-top: 104px; }
     .solution-breadcrumb { margin-bottom: var(--space-xl); }
     .solution-process { grid-template-columns: 1fr; gap: var(--space-md); }
+    .b2b-levels, .b2b-journey, .b2b-phases { grid-template-columns: 1fr; }
+    .web-cards { grid-template-columns: 1fr; gap: var(--space-lg); }
     .solution-related-inner { align-items: flex-start; flex-direction: column; }
+    .scope-columns { grid-template-columns: 1fr; }
   }
 </style>

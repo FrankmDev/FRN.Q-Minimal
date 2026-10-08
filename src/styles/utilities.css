@@ -25,12 +25,17 @@
   transform: translateY(var(--space-md));
 }
 
-/* Section label plate: shared signage anchored to each section's top rule. */
+/* Section label plate: shared signage anchored to each section's top rule.
+   The left offset tracks the container content edge, so the plate stays
+   aligned with section headings on wide viewports too. */
 .section-tag {
   position: absolute;
   z-index: 2;
   top: 0;
-  left: var(--layout-gutter);
+  left: max(
+    var(--layout-gutter),
+    calc(50% - (var(--layout-content-width) / 2) + var(--layout-gutter))
+  );
   transform: translateY(-50%);
   display: inline-flex;
   align-items: center;
@@ -133,6 +138,12 @@
 @media (hover: hover) and (pointer: fine) {
   html.has-custom-cursor {
     cursor: none;
+  }
+
+  /* Keep the native text caret affordance inside form fields. */
+  html.has-custom-cursor input,
+  html.has-custom-cursor textarea {
+    cursor: auto;
   }
 
   .has-custom-cursor a,

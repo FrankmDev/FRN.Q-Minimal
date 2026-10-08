@@ -1,5 +1,7 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 ---
 
 <MainLayout 
@@ -8,6 +10,7 @@ import MainLayout from '../layouts/MainLayout.astro';
   noindex={true}
   nofollow={true}
 >
+  <Header />
   <main id="main-content" class="error-page">
     <div class="container">
       <div class="error-content">
@@ -43,16 +46,16 @@ import MainLayout from '../layouts/MainLayout.astro';
       </div>
     </div>
   </main>
+  <Footer />
 </MainLayout>
 
 <style>
   .error-page {
-    min-height: 100vh;
-    min-height: 100dvh;
+    min-height: calc(100svh - var(--layout-header-height));
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 140px var(--space-md) var(--space-2xl);
+    padding: calc(var(--layout-header-height) + var(--space-3xl)) var(--space-md) var(--space-4xl);
     background: var(--bg);
   }
 

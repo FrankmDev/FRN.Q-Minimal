@@ -43,12 +43,19 @@ import Footer from "../../components/Footer.astro";
             El formulario recibe nombre, email, tipo de proyecto, contexto y,
             opcionalmente, empresa y presupuesto orientativo. Incluye también un
             campo anti-spam oculto; si se rellena, el mensaje se descarta. Para
-            limitar envíos repetidos, la función de contacto usa temporalmente la
-            dirección IP recibida de Vercel en memoria durante una ventana de diez
-            minutos. La preferencia de tema claro/oscuro se guarda en
-            localStorage del navegador y no se envía al servidor. No hay cookies
-            propias de seguimiento ni una herramienta de analítica o publicidad
-            configurada en este sitio.
+            limitar envíos repetidos, la función de contacto calcula un
+            identificador derivado (hash) de la dirección IP recibida de Vercel y
+            lo conserva durante una ventana de diez minutos; ese identificador se
+            guarda en el propio servidor y, si el sitio tiene configurado un
+            almacén de contadores externo, también en ese almacén, con la única
+            finalidad de aplicar el límite. La dirección IP no se guarda en claro.
+            La preferencia de tema claro/oscuro se guarda en localStorage del
+            navegador y no se envía al servidor. El sitio no carga cookies de
+            seguimiento ni herramientas de analítica o publicidad externas. Los
+            eventos de medición (por ejemplo, el envío correcto del formulario) se
+            generan en el navegador; solo se enviarían a una herramienta externa si
+            esta se configurara y existiera consentimiento previo, y sin duplicar
+            herramientas.
           </p>
         </section>
         <section>
@@ -120,6 +127,7 @@ import Footer from "../../components/Footer.astro";
   .crumbs a { opacity: 0.6; transition: opacity var(--transition-fast); }
   .crumbs a:hover { opacity: 1; }
   .crumbs span { opacity: 0.4; }
+  .crumbs span:last-child { opacity: 1; }
 
   .legal h1 {
     margin: 0 0 var(--space-xl);

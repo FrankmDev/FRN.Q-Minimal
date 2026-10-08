@@ -168,6 +168,11 @@ const breadcrumbSchema = {
     opacity: 0.4;
   }
 
+  .crumbs [aria-current="page"],
+  .crumbs span:last-child {
+    opacity: 1;
+  }
+
   .section-tag--inline {
     margin-bottom: var(--space-lg);
   }
@@ -351,7 +356,7 @@ const breadcrumbSchema = {
     background: var(--text);
     color: var(--bg);
     border: 3px solid var(--text);
-    box-shadow: 8px 8px 0 var(--border);
+    box-shadow: 8px 8px 0 var(--accent);
     transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
@@ -359,7 +364,7 @@ const breadcrumbSchema = {
 
   .cta:hover {
     transform: translate(-4px, -4px);
-    box-shadow: 12px 12px 0 var(--border);
+    box-shadow: 12px 12px 0 var(--accent);
   }
 
   @media (prefers-reduced-motion: reduce) {

@@ -21,7 +21,8 @@ Verification is tests + `astro check` + build.
 
 ## Environment
 
-- Contact API (server-only, Vercel): `RESEND_API_KEY` and `CONTACT_FROM_EMAIL`.
+- Contact API (server-only, Vercel): `RESEND_API_KEY` and `CONTACT_FROM_EMAIL` (a verified sender, e.g. `FRN.Q <hola@frnq.es>`).
+- Optional durable rate limiting: `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` (or `KV_REST_API_URL` + `KV_REST_API_TOKEN`). Without them the limiter uses per-instance memory only. `RATE_LIMIT_SALT` salts the client-IP hash.
 - Delivery mailbox: `siteConfig.internalEmail` (the public `info@frnq.es` redirects internally to it).
 - Never commit secrets. Never log keys.
 

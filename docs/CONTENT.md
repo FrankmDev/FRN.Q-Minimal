@@ -23,7 +23,7 @@ All editable commercial copy lives in `src/data/*`:
 | `projects.ts` | Collection accessor (`getProjects`), category/status labels, case paths |
 | `navigation.ts` | Primary navigation and header CTA |
 | `services.ts` | The four commercial areas in priority order and their section copy |
-| `solutions.ts` | The three focused solution pages: unique metadata, audience, process, integration scope, FAQs and cross-links |
+| `solutions.ts` | The four focused solution pages: unique metadata, audience, process, integration scope, page-specific blocks (`webDetails`, `b2bDetails`), evidence selection, FAQs and cross-links |
 | `engagement.ts` | Pricing/engagement FAQ, also used in FAQ schema |
 | `contact.ts` | Contact methods |
 
@@ -41,6 +41,7 @@ Rules:
 - **Factual source:** frnq.studio holds the canonical project facts; frnq.es may reinterpret commercially but never adds new facts, audiences or outcomes not present in the canonical case.
 - **Routes:** `/casos/` archive and `/casos/<slug>/` detail via `getStaticPaths`; public archive and routes include only entries with `status: live` (`getPublishedProjects()` in `src/data/projects.ts`).
 - Optional `serviceArea` connects a published case to `ecommerce`, `b2b` or `sistemas`; solution routes show only matching published cases, and a matched case links directly back to its solution. The six current cases have no `serviceArea`; do not assign one without documented evidence.
+- `/soluciones/desarrollo-web/` selects evidence by `category` (`corporate`, `web`, `website`) through `evidenceCategories`, so it can show published corporate-web projects as proof without asserting an unverified `serviceArea`. It does not receive a case-to-solution back-link, which stays tied to `serviceArea`.
 
 ### Schema (fields)
 
@@ -102,7 +103,7 @@ The contact form asks for context, not commitment. It must never pressure or imp
 
 ## Vocabulary
 
-**Use:** ecommerce, Shopify, catálogo, producto, pedidos, clientes profesionales, precios privados, portal, workflow, integración, datos, medición, conversión, SEO técnico/local, analítica, accesibilidad, rendimiento.
+**Use:** ecommerce, Shopify, catálogo, producto, pedidos, clientes profesionales, precios privados, portal, workflow, integración, datos, medición, conversión, diseño y desarrollo web a medida, web corporativa, SEO técnico/local, analítica, accesibilidad, rendimiento.
 
 **Avoid:** "webs premium", "cero plantillas" as the main pitch, "infraestructura premium", "legados digitales", "tecnología que no caduca", "seguridad bancaria", "ROI garantizado", invented metrics, guarantees without evidence, artificial exclusivity, simplistic attacks on WordPress/plugins, and "nosotros" implying a team.
 
@@ -121,11 +122,11 @@ Edit shared copy in `src/data/*.ts`; edit unique section copy in its component.
 
 ## CURRENT vs FUTURE
 
-**Status: CURRENT.** Home composition is frozen; three search-intent solution routes are part of the static commercial surface.
+**Status: CURRENT.** Home composition is frozen; four search-intent solution routes are part of the static commercial surface.
 
 | Area | Current | Future |
 |------|---------|--------|
-| Commercial surfaces | Single Spanish site; `/`, three `/soluciones/` routes and `/casos/` present | Further routes only with distinct intent and useful evidence |
+| Commercial surfaces | Single Spanish site; `/`, four `/soluciones/` routes and `/casos/` present | Further routes only with distinct intent and useful evidence |
 | Cases | 6 published, evidence-based | KingBelt and Emilio Faraoni when they ship |
 | Pricing | Orientation ranges in the form | No fixed public price list is planned |
 | i18n | Spanish only | Not planned; `.studio` is the English surface |

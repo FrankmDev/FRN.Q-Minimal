@@ -14,7 +14,13 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
       </div>
       <div class="footer-contact">
         <span class="contact-caption mono">Escríbeme</span>
-        <a href={`mailto:${siteConfig.email}`} class="contact-address">
+        <a
+          href={`mailto:${siteConfig.email}`}
+          class="contact-address"
+          data-track="contact_method_click"
+          data-track-method="email"
+          data-track-location="footer"
+        >
           {siteConfig.email}<span aria-hidden="true">↗</span>
         </a>
       </div>
@@ -134,7 +140,13 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
   .footer-nav { flex-wrap: wrap; gap: var(--space-lg); }
 
   .footer-nav a { font-size: 0.8125rem; font-weight: 700; transition: color var(--transition-fast); }
-  .footer-nav a:hover { color: var(--text-muted); }
+  .footer-nav a:hover {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
 
   .footer-nav a:focus-visible, .social-link:focus-visible, .back-top:focus-visible, .contact-address:focus-visible {
     outline: 3px solid var(--text);

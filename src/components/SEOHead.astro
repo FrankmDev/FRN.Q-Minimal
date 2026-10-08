@@ -34,22 +34,30 @@ const imageType =
           ? "image/avif"
           : "image/svg+xml";
 const personId = `${canonicalURL.origin}/#person`;
+const brandId = `${canonicalURL.origin}/#brand`;
 const person = {
   "@context": "https://schema.org",
   "@type": "Person",
   "@id": personId,
   name: siteConfig.fullName,
-  alternateName: siteConfig.name,
   url: siteConfig.url,
   email: siteConfig.email,
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: siteConfig.location.city,
-    addressRegion: siteConfig.location.region,
-    addressCountry: siteConfig.location.country,
+  jobTitle: "Profesional independiente",
+  brand: { "@id": brandId },
+  homeLocation: {
+    "@type": "Place",
+    name: `${siteConfig.location.city}, ${siteConfig.location.region}, España`,
   },
   knowsAbout: serviceAreas.map((area) => area.title),
   sameAs: socialLinks.map((social) => social.href),
+};
+const brand = {
+  "@type": "Brand",
+  "@id": brandId,
+  name: siteConfig.name,
+  url: siteConfig.url,
+  description: siteConfig.description,
+  subjectOf: { "@id": `${canonicalURL.origin}/#website` },
 };
 const website = {
   "@type": "WebSite",
@@ -59,10 +67,12 @@ const website = {
   description: siteConfig.description,
   inLanguage: "es-ES",
   publisher: { "@id": personId },
+  about: { "@id": brandId },
+  creator: { "@id": personId },
 };
 const siteSchema = {
   "@context": "https://schema.org",
-  "@graph": [person, website],
+  "@graph": [person, brand, website],
 };
 ---
 

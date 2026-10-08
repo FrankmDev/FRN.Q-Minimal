@@ -5,6 +5,7 @@ import { portfolioLink } from "../data/site";
 <section class="hero" id="inicio" aria-labelledby="hero-title">
   <div class="container hero-container">
     <div class="hero-top">
+      <p class="hero-eyebrow mono">Estudio independiente · Granada</p>
       <a
         class="portfolio-link mono"
         href={portfolioLink.href}
@@ -17,16 +18,25 @@ import { portfolioLink } from "../data/site";
     </div>
 
     <h1 class="hero-title" id="hero-title">
-      <span class="hero-line">Soluciones</span>
-      <span class="hero-line hero-line-bottom"><span class="hero-accent">digitales</span></span>
+      <span class="hero-line">Ecommerce</span>
+      <span class="hero-line hero-line-bottom"><span class="hero-accent">y B2B</span></span>
     </h1>
 
     <div class="hero-bottom">
       <p class="hero-desc">
-        Diseño y desarrollo soluciones digitales que conectan ventas, clientes y operación.
+        Desarrollo web para empresas que venden online o a otras empresas:
+        tiendas, portales de pedidos B2B y sistemas a medida. Con Shopify o
+        desarrollo propio, para que catálogo, precios y pedidos dejen de
+        llevarse a mano.
       </p>
       <div class="hero-actions">
-        <a href="#contacto" class="hero-cta">
+        <a
+          href="#contacto"
+          class="hero-cta"
+          data-track="cta_click"
+          data-track-location="hero"
+          data-track-label="Plantear un proyecto"
+        >
           <span>Plantear un proyecto</span>
           <span aria-hidden="true">→</span>
         </a>
@@ -76,9 +86,19 @@ import { portfolioLink } from "../data/site";
   .hero-top {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    gap: var(--space-md);
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-sm) var(--space-md);
     margin-bottom: clamp(var(--space-2xl), 6vw, var(--space-4xl));
+  }
+
+  .hero-eyebrow {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 
   .portfolio-link {
@@ -156,7 +176,7 @@ import { portfolioLink } from "../data/site";
   }
 
   .hero-desc {
-    max-width: 34ch;
+    max-width: 40ch;
     margin: 0;
     font-size: clamp(1rem, 1.6vw, 1.25rem);
     line-height: 1.55;
@@ -231,6 +251,11 @@ import { portfolioLink } from "../data/site";
       font-size: 0.58rem;
       letter-spacing: 0.04em;
       white-space: nowrap;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.58rem;
+      letter-spacing: 0.04em;
     }
 
     .hero-title {

@@ -9,14 +9,18 @@ import {
   CONTACT_NAME_MAX,
   CONTACT_NAME_MIN,
   CONTACT_OPTIONAL_MAX,
+  CONTACT_SUBMISSION_ID_PATTERN,
   CONTACT_TYPES,
   CONTACT_TYPE_VALUES,
 } from "../src/data/contact-contract";
 import { siteConfig } from "../src/data/site";
 
 declare const process: { env: Record<string, string | undefined> };
+declare const crypto: {
+  subtle: { digest: (algorithm: string, data: Uint8Array) => Promise<ArrayBuffer> };
+};
 
-type ContactSuccess = { success: true };
+type ContactSuccess = { success: true; ref?: string };
 type ContactFailure = {
   success: false;
   error: string;
@@ -41,11 +45,23 @@ const UNAVAILABLE_ERROR = "El formulario no está disponible ahora mismo.";
 const INVALID_REQUEST_ERROR = "Solicitud no válida.";
 
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const RATE_LIMIT_WINDOW_SECONDS = RATE_LIMIT_WINDOW_MS / 1000;
 const RATE_LIMIT_MAX = 5;
-const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_TIMEOUT_MS = 3000;
+const RESEND_TIMEOUT_MS = 10000;
+const MAX_BODY_BYTES = 16000;
+
+type RateLimitResult = { limited: boolean; retryAfterSeconds: number };
+
+/** Per-instance fallback. Not durable across serverless instances on its own. */
+const memoryRateLimitStore = new Map<string, { count: number; resetAt: number }>();
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function firstHeader(value: string | string[] | undefined): string {
+  return (Array.isArray(value) ? value[0] : value) ?? "";
 }
 
 function readString(value: unknown): string {
@@ -90,28 +106,105 @@ function labelFor(
   return list.find((item) => item.value === value)?.label ?? value;
 }
 
-function getClientKey(request: VercelRequest): string {
-  const forwarded = request.headers?.["x-forwarded-for"];
-  const value = Array.isArray(forwarded) ? forwarded[0] : forwarded;
-  return value?.split(",")[0]?.trim() || "unknown";
+/** External rate-limit store (Upstash Redis / Vercel KV REST), when configured. */
+function externalStore(): { url: string; token: string } | null {
+  const url =
+    process.env.UPSTASH_REDIS_REST_URL ?? process.env.KV_REST_API_URL ?? "";
+  const token =
+    process.env.UPSTASH_REDIS_REST_TOKEN ?? process.env.KV_REST_API_TOKEN ?? "";
+  if (!url || !token) return null;
+  return { url: url.replace(/\/+$/, ""), token };
 }
 
-function isRateLimited(key: string): boolean {
+function memoryRateLimit(key: string): RateLimitResult {
   const now = Date.now();
-  const entry = rateLimitStore.get(key);
+  const entry = memoryRateLimitStore.get(key);
 
   if (!entry || entry.resetAt <= now) {
-    rateLimitStore.set(key, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return false;
+    memoryRateLimitStore.set(key, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return { limited: false, retryAfterSeconds: RATE_LIMIT_WINDOW_SECONDS };
   }
 
   entry.count += 1;
-  if (rateLimitStore.size > 5000) {
-    for (const [storedKey, stored] of rateLimitStore) {
-      if (stored.resetAt <= now) rateLimitStore.delete(storedKey);
+  if (memoryRateLimitStore.size > 5000) {
+    for (const [storedKey, stored] of memoryRateLimitStore) {
+      if (stored.resetAt <= now) memoryRateLimitStore.delete(storedKey);
     }
   }
-  return entry.count > RATE_LIMIT_MAX;
+
+  const retryAfterSeconds = Math.max(1, Math.ceil((entry.resetAt - now) / 1000));
+  return { limited: entry.count > RATE_LIMIT_MAX, retryAfterSeconds };
+}
+
+async function externalRateLimit(
+  store: { url: string; token: string },
+  key: string,
+): Promise<RateLimitResult> {
+  const res = await fetch(`${store.url}/pipeline`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${store.token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify([
+      ["INCR", key],
+      ["EXPIRE", key, String(RATE_LIMIT_WINDOW_SECONDS), "NX"],
+      ["TTL", key],
+    ]),
+    signal: AbortSignal.timeout(RATE_LIMIT_TIMEOUT_MS),
+  });
+
+  if (!res.ok) throw new Error(`rate-limit store responded ${res.status}`);
+  const data: unknown = await res.json();
+  if (!Array.isArray(data)) throw new Error("unexpected rate-limit response");
+
+  const count = Number((data[0] as { result?: unknown } | undefined)?.result);
+  const ttl = Number((data[2] as { result?: unknown } | undefined)?.result);
+  if (!Number.isFinite(count)) throw new Error("missing rate-limit count");
+
+  return {
+    limited: count > RATE_LIMIT_MAX,
+    retryAfterSeconds:
+      Number.isFinite(ttl) && ttl > 0 ? ttl : RATE_LIMIT_WINDOW_SECONDS,
+  };
+}
+
+async function checkRateLimit(key: string): Promise<RateLimitResult> {
+  const store = externalStore();
+  if (store) {
+    try {
+      return await externalRateLimit(store, key);
+    } catch {
+      // A store outage must not block real leads; degrade to instance memory.
+    }
+  }
+  return memoryRateLimit(key);
+}
+
+/**
+ * Hashes the client IP with a salt so the limiter never stores a raw address,
+ * in memory or in the external store.
+ */
+async function hashClientKey(raw: string): Promise<string> {
+  const salt = process.env.RATE_LIMIT_SALT ?? "frnq-contact";
+  try {
+    const digest = await crypto.subtle.digest(
+      "SHA-256",
+      new TextEncoder().encode(`${salt}:${raw}`),
+    );
+    return Array.from(new Uint8Array(digest))
+      .map((byte) => byte.toString(16).padStart(2, "0"))
+      .join("");
+  } catch {
+    return raw;
+  }
+}
+
+function rawClientIp(request: VercelRequest): string {
+  const forwarded = firstHeader(request.headers?.["x-forwarded-for"]);
+  const realIp = firstHeader(request.headers?.["x-real-ip"]);
+  const value = forwarded || realIp;
+  return value.split(",")[0]?.trim() || "unknown";
 }
 
 function validate(body: Record<string, unknown>):
@@ -123,6 +216,7 @@ function validate(body: Record<string, unknown>):
       type: string;
       message: string;
       budget: string;
+      submissionId: string;
     }
   | { ok: false; errors: Record<string, string> } {
   const errors: Record<string, string> = {};
@@ -132,6 +226,10 @@ function validate(body: Record<string, unknown>):
   const type = readString(body.type);
   const message = readMessage(body.message);
   const budget = readString(body.budget);
+  const rawSubmissionId = readString(body.submissionId);
+  const submissionId = CONTACT_SUBMISSION_ID_PATTERN.test(rawSubmissionId)
+    ? rawSubmissionId
+    : "";
 
   if (name.length < CONTACT_NAME_MIN) errors.name = `Indica al menos ${CONTACT_NAME_MIN} caracteres.`;
   else if (name.length > CONTACT_NAME_MAX) errors.name = "El nombre es demasiado largo.";
@@ -153,13 +251,12 @@ function validate(body: Record<string, unknown>):
   if (budget.length > CONTACT_OPTIONAL_MAX) errors.budget = "Valor no válido.";
 
   if (Object.keys(errors).length > 0) return { ok: false, errors };
-  return { ok: true, name, email, company, type, message, budget };
+  return { ok: true, name, email, company, type, message, budget, submissionId };
 }
 
 function wantsHtml(request: VercelRequest): boolean {
-  const accept = request.headers?.["accept"];
-  const value = Array.isArray(accept) ? accept[0] : accept;
-  return typeof value === "string" && value.includes("text/html");
+  const accept = firstHeader(request.headers?.["accept"]);
+  return accept.includes("text/html");
 }
 
 function reply(
@@ -168,9 +265,13 @@ function reply(
   status: number,
   payload: ContactResponse,
   htmlState: "enviado" | "error",
+  ref = "",
 ) {
   if (wantsHtml(request)) {
-    response.setHeader("Location", `/?contacto=${htmlState}#contacto`);
+    const query = ref
+      ? `?contacto=${htmlState}&ref=${encodeURIComponent(ref)}`
+      : `?contacto=${htmlState}`;
+    response.setHeader("Location", `/${query}#contacto`);
     return response
       .status(303)
       .json(status < 400 ? { success: true } : { success: false, error: "See form." });
@@ -187,13 +288,17 @@ export default async function handler(request: VercelRequest, response: VercelRe
     return reply(request, response, 405, { success: false, error: "Method not allowed." }, "error");
   }
 
-  const contentTypeHeader = request.headers?.["content-type"];
-  const contentType = (Array.isArray(contentTypeHeader) ? contentTypeHeader[0] : contentTypeHeader) ?? "";
-  const isUrlEncoded = contentType.toLowerCase().includes("application/x-www-form-urlencoded");
-  const isJson = contentType.toLowerCase().includes("application/json");
+  const contentType = firstHeader(request.headers?.["content-type"]).toLowerCase();
+  const isUrlEncoded = contentType.includes("application/x-www-form-urlencoded");
+  const isJson = contentType.includes("application/json");
 
   if (!isJson && !isUrlEncoded) {
     return reply(request, response, 415, { success: false, error: INVALID_REQUEST_ERROR }, "error");
+  }
+
+  const declaredLength = Number(firstHeader(request.headers?.["content-length"]));
+  if (Number.isFinite(declaredLength) && declaredLength > MAX_BODY_BYTES) {
+    return reply(request, response, 413, { success: false, error: INVALID_REQUEST_ERROR }, "error");
   }
 
   const rawBody = request.body;
@@ -206,12 +311,15 @@ export default async function handler(request: VercelRequest, response: VercelRe
     return reply(request, response, 400, { success: false, error: INVALID_REQUEST_ERROR }, "error");
   }
 
+  // Honeypot: silently accepted, never delivered, never rate-limited.
   if (readString(body.website) !== "") {
     return reply(request, response, 200, { success: true }, "enviado");
   }
 
-  const clientKey = getClientKey(request);
-  if (isRateLimited(clientKey)) {
+  const clientKey = await hashClientKey(rawClientIp(request));
+  const rate = await checkRateLimit(clientKey);
+  if (rate.limited) {
+    response.setHeader("Retry-After", String(rate.retryAfterSeconds));
     return reply(request, response, 429, { success: false, error: "Demasiados envíos. Inténtalo más tarde." }, "error");
   }
 
@@ -229,7 +337,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
   const apiKey = process.env.RESEND_API_KEY;
   const fromEmail = process.env.CONTACT_FROM_EMAIL;
 
-  if (!apiKey || !fromEmail) {
+  if (!apiKey || !fromEmail || !fromEmail.includes("@")) {
     return reply(request, response, 503, { success: false, error: UNAVAILABLE_ERROR }, "error");
   }
 
@@ -243,6 +351,8 @@ export default async function handler(request: VercelRequest, response: VercelRe
     result.message,
   ].filter((line, index, all) => line !== "" || all[index - 1] !== "");
 
+  const subject = `FRN.Q — ${result.name} · ${labelFor(CONTACT_TYPES, result.type)}`.slice(0, 180);
+
   try {
     const resendResponse = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -254,17 +364,34 @@ export default async function handler(request: VercelRequest, response: VercelRe
         from: fromEmail,
         to: [siteConfig.internalEmail],
         reply_to: result.email,
-        subject: `FRN.Q — ${result.name} · ${labelFor(CONTACT_TYPES, result.type)}`,
+        subject,
         text: lines.join("\n"),
       }),
+      signal: AbortSignal.timeout(RESEND_TIMEOUT_MS),
     });
 
     if (!resendResponse.ok) {
+      const detail = await resendResponse.text().catch(() => "");
+      console.error("contact: Resend delivery failed", {
+        status: resendResponse.status,
+        detail: detail.slice(0, 400),
+      });
       return reply(request, response, 502, { success: false, error: GENERIC_ERROR }, "error");
     }
 
-    return reply(request, response, 200, { success: true }, "enviado");
-  } catch {
+    return reply(
+      request,
+      response,
+      200,
+      { success: true, ref: result.submissionId || undefined },
+      "enviado",
+      result.submissionId,
+    );
+  } catch (error) {
+    console.error(
+      "contact: Resend request error",
+      error instanceof Error ? error.name : "unknown",
+    );
     return reply(request, response, 502, { success: false, error: GENERIC_ERROR }, "error");
   }
 }

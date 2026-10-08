@@ -25,12 +25,8 @@ export const siteConfig = {
     region: "Andalucía",
     country: "ES",
   },
-  geo: {
-    latitude: "37.1773",
-    longitude: "-3.5986",
-  },
   description:
-    "FRN.Q es el estudio independiente de Francisco Muñoz. Diseño soluciones digitales para empresas y conecto ventas, clientes y operación. Hablemos de tu proyecto.",
+    "FRN.Q es el estudio independiente de Francisco Muñoz, en Granada. Ecommerce, portales B2B, sistemas y web para empresas de España y otros países.",
 } as const;
 
 /**

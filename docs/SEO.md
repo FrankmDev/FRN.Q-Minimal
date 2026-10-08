@@ -6,7 +6,7 @@ This document covers the SEO implementation and current keyword-intent map. Busi
 
 `src/components/SEOHead.astro` owns every `<head>` primitive. Pages do not write raw `<meta>`, canonical, OG or JSON-LD outside their own page-level schema block.
 
-`MainLayout.astro` computes `canonicalURL` from `Astro.url.pathname` and passes `title`, `description`, `canonicalURL`, `ogImage`, `ogImageAlt`, `noindex` and `nofollow` to `SEOHead`. `astro.config.mjs` sets `trailingSlash: "always"`; query strings are not copied into canonical URLs.
+`MainLayout.astro` computes `canonicalURL` from `Astro.url.pathname` and passes `title`, `description`, `canonicalURL`, `ogImage`, `ogImageAlt`, `noindex` and `nofollow` to `SEOHead`. `astro.config.mjs` sets `trailingSlash: "always"` and `vercel.json` mirrors it with `"trailingSlash": true` so the host enforces the same normalization; query strings are not copied into canonical URLs.
 
 ## What `SEOHead` emits (current)
 
@@ -23,7 +23,7 @@ This document covers the SEO implementation and current keyword-intent map. Busi
 | Twitter card | `summary_large_image` + mirrored title/description/image and image alt | — |
 | favicons | `/favicon.svg`, `/favicon.ico` | — |
 | `theme-color` | `#f4f3ef` / `#171715` | Updated to match the persisted light/dark theme |
-| `application/ld+json` | `Person` + `WebSite` graph | Person is Francisco Muñoz / FRN.Q, with email, Granada `PostalAddress`, four `knowsAbout` areas and verified GitHub `sameAs`; WebSite publisher points to the Person |
+| `application/ld+json` | `Person` + `Brand` + `WebSite` graph | The Person is Francisco Muñoz; FRN.Q is the practice's brand. Person location is Granada without a street address or coordinates; four service areas and verified GitHub `sameAs` are linked. WebSite publisher/creator points to the Person and its subject is the Brand. |
 
 No `<meta name="keywords">`. No geo meta. No fabricated ratings or reviews.
 
@@ -34,12 +34,19 @@ No `<meta name="keywords">`. No geo meta. No fabricated ratings or reviews.
 - `og:locale = es_ES`.
 - frnq.studio is an external link; there is **no** `hreflang` relationship declared between the two sites.
 
+## Canonical host, HTTPS and trailing slashes
+
+- **Canonical host is the apex `frnq.es`** (never `www.frnq.es`). `astro.config.mjs` (`site`), `src/data/site.ts` (`url`), the canonicals/`og:url` emitted by `SEOHead.astro`, the JSON-LD graph and `public/robots.txt` all use `https://frnq.es`. No absolute production URL may use `www` or `http://`.
+- The apex ↔ `www` redirect is a **Vercel project domain setting**, not a repository concern. In Vercel the primary domain must be `frnq.es`, with `www.frnq.es` redirecting to it permanently. Do **not** encode the `www` → apex redirect in `vercel.json`: it would conflict with the panel rule and risk a redirect loop.
+- HTTPS is enforced by Vercel: `http://` responds with a permanent `308` to the matching `https://` URL and `Strict-Transport-Security` is sent.
+- Trailing slashes: `astro.config.mjs` `trailingSlash: "always"` and `vercel.json` `"trailingSlash": true` agree, so the host issues a permanent `308` from `/casos` to `/casos/` (paths with a file extension are unaffected). Canonicals and internal links already use the trailing-slash form, so no internal link passes through a redirect.
+
 ## Sitemap
 
 - Integration: `@astrojs/sitemap`; filter excludes `/404/` and `/legal/`.
 - `robots.txt` points to `https://frnq.es/sitemap-index.xml`.
 - `robots.txt` allows public pages and disallows `/api/`, which is a POST-only contact endpoint.
-- The sitemap contains 11 commercial URLs with the current six published cases: `/`, the three `/soluciones/` routes, `/casos/`, and six `/casos/<slug>/` pages. It has no build-time `lastmod` values.
+- The sitemap contains 12 commercial URLs with the current six published cases: `/`, the four `/soluciones/` routes (`ecommerce`, `b2b`, `sistemas`, `desarrollo-web`), `/casos/`, and six `/casos/<slug>/` pages. It has no build-time `lastmod` values.
 - Legal pages remain accessible with self canonicals and `noindex, follow`; they are not search-target pages and are excluded from the commercial sitemap. This keeps required policy pages available to visitors without presenting them as organic landing pages.
 
 ## Robots / noindex
@@ -65,22 +72,25 @@ No `<meta name="keywords">`. No geo meta. No fabricated ratings or reviews.
 | `/casos/` | Published-work `ItemList` + `BreadcrumbList` | `pages/casos/index.astro` |
 | `/casos/<slug>/` | `CreativeWork` + `BreadcrumbList` | `pages/casos/[slug].astro` |
 
-The solution `Service` has a page-specific `@id` and uses the `Person` as provider. Its service area is Spain; Granada remains the Person's location rather than a forced service-area claim on national-intent pages. Solution breadcrumbs contain exactly two levels, because `/#servicios` is a section anchor rather than an independent page. Case `seo.keywords` are editorial data for JSON-LD, not a `<meta name="keywords">` feed. The case year is visible editorial content; structured data does not infer exact dates from it.
-No `Organization` is asserted as the primary entity. `LocalBusiness` is not used because there is no verified public street address or business listing to support it. Person location and visible Granada copy provide the truthful local signal.
+The solution `Service` has a page-specific `@id`, uses the `Person` as provider and references the FRN.Q `Brand`; its declared service area is Spain. Granada remains the Person's city, not a forced service-area claim on national-intent pages. Solution breadcrumbs contain exactly two levels, because `/#servicios` is a section anchor rather than an independent page. Case `seo.keywords` are editorial data for JSON-LD, not a `<meta name="keywords">` feed. The case year is visible editorial content; structured data does not infer exact dates from it.
+No `Organization` or `LocalBusiness` is asserted: there is no verified public office, street address or listing. Do not publish the approximate city-centre coordinates as the person's location. Person location and visible Granada copy provide the truthful local signal; the legal notice gives the titular and city-level domicile without inventing a street address.
+
+Google Business Profile is an external eligibility decision, not a site schema target. Do not create or claim a profile for an online-only business with no in-person customer contact. If the business is eligible as a service-area business, use the real-world name and service area, and hide the address if customers are not received there. Never invent a public office, phone, hours, reviews or service areas.
 
 ## Search intent and URL map
 
 | Canonical URL | Primary intent | Target boundary |
 |------|------|------|
-| `/` | General digital solutions for businesses; brand/entity and contact conversion | Summarizes the four areas without turning the page into a long guide |
+| `/` | Ecommerce, B2B portals and corporate web for businesses; brand/entity and contact conversion | Summarizes the four areas without turning the page into a long guide |
 | `/soluciones/ecommerce/` | Ecommerce development, Shopify stores and D2C online shops | Storefront/catalogue/checkout; B2B-specific customer pricing stays on the B2B page |
 | `/soluciones/b2b/` | B2B order portals, customer accounts, private catalogues/prices | Manufacturers, distributors and wholesalers with professional buyers; platform-agnostic |
 | `/soluciones/sistemas/` | ERP/CRM/system integrations and operational workflows | Data flows and internal operations; automation is a supporting capability |
 | `/casos/` | Published client/project work | Archive and navigation, not a service landing page |
+| `/soluciones/desarrollo-web/` | Corporate and custom web design/development, technical SEO, performance, accessibility and measurement | One canonical page covers national and Granada-local relevance; no city or doorway page. B2B portals stay on the B2B page, integrations on systems |
 | `/casos/<slug>/` | Project/client/sector-specific long-tail | Each page targets its own documented project and does not claim ecommerce/B2B outcomes without a published case |
-| Home section `#sol-growth` | Web, SEO & Growth, including natural Granada-local relevance | Remains the fourth supporting area; no `/soluciones/web-seo/` page |
+| Home section `#sol-growth` | Web corporativa & SEO overview, linking to the canonical page | Remains the fourth commercial area; the dedicated route carries the search intent |
 
-Each published case has a unique, factual `seo.title` and `seo.description`. Public case routes and archive entries are filtered to `status: live`. The six current cases have no `serviceArea`, so none is presented as evidence for ecommerce, B2B or systems. KingBelt and Emilio Faraoni remain unpublished; after delivery and documentation, they may set `serviceArea: ecommerce` / `serviceArea: b2b` and appear on the matching solution route with a contextual solution link.
+Each published case has a unique, factual `seo.title` and `seo.description`. Public case routes and archive entries are filtered to `status: live`. The six current cases have no `serviceArea`; `/soluciones/desarrollo-web/` adds them as evidence by `category` (`corporate`, `web`, `website`) so published corporate/web projects are shown without asserting an unverified `serviceArea`. KingBelt and Emilio Faraoni remain unpublished; after delivery and documentation, they may set `serviceArea: ecommerce` / `serviceArea: b2b` and appear on the matching solution route with a contextual solution link.
 
 ### Demand evidence and limits (reviewed 2026-09-28)
 
@@ -89,7 +99,7 @@ Each published case has a unique, factual `seo.title` and `seo.description`. Pub
 - `integración ERP` expanded to ERP/CRM, WMS, system and data-integration wording, supporting a distinct integrations route. `conector ERP Shopify` had no suggestion expansion and its SERP was vendor-led, so it is not a primary target.
 - Distributor/wholesaler wording was weaker: `software para distribuidores` had little expansion; `software para mayoristas` suggested a wholesale-software variant. These stay supporting use-case language, not dedicated pages.
 - Shopify/ecommerce development showed a separate commercial and price-comparison intent; the B2B results were predominantly platform/demo-led. Pages are problem-led, scope-based and do not promise results or list invented prices.
-- `diseño web Granada` and `SEO Granada` have local-commercial suggestions, but those terms are more competitive and the offer is secondary; they stay supporting content rather than a broad new landing page.
+- `diseño web Granada` and `SEO Granada` have local-commercial suggestions, but those terms are more competitive. The decision (2026-10-08) was to fold local Granada relevance into the single corporate-web route as natural copy rather than create a city page or a separate local landing page.
 - Evidence sources: [Google Suggest: pedidos B2B](https://suggestqueries.google.com/complete/search?client=firefox&hl=es&q=pedidos%20B2B), [Google Suggest: integración ERP](https://suggestqueries.google.com/complete/search?client=firefox&hl=es&q=integraci%C3%B3n%20ERP), [Google Suggest: tienda online Granada](https://suggestqueries.google.com/complete/search?client=firefox&hl=es&q=tienda%20online%20Granada), [Google Suggest: Shopify Granada](https://suggestqueries.google.com/complete/search?client=firefox&hl=es&q=shopify%20Granada), [Google Suggest: diseño web Granada](https://suggestqueries.google.com/complete/search?client=firefox&hl=es&q=dise%C3%B1o%20web%20Granada), [Shopify B2B commerce](https://www.shopify.com/es-es/plus/solutions/b2b-ecommerce).
 - Autocomplete and provider SERP snippets are query/intent evidence, not search volume, CPC, ranking difficulty or proof of traffic. Search Console and paid keyword-tool data were not available.
 
@@ -103,14 +113,24 @@ Each published case has a unique, factual `seo.title` and `seo.description`. Pub
 
 ## Freeze status
 
-**READY FOR INDEXING / FROZEN.** Verified 2026-09-28: `bun test` (3 passing), `bun run check` (0 errors/warnings), `bun run build` (14 static pages). The generated commercial sitemap contains exactly 11 URLs; canonicals, titles, descriptions, robots directives, JSON-LD, page headings, internal routes/fragments and OG image dimensions passed the output audit. The route set is `/`, `/soluciones/ecommerce/`, `/soluciones/b2b/`, `/soluciones/sistemas/`, `/casos/` and the six currently published cases. No blog, city page or `/soluciones/web-seo/` is part of this release. Only post-deployment evidence remains external: Search Console indexing, field Core Web Vitals and backlinks.
+**READY FOR INDEXING / FROZEN.** Verified 2026-09-28 (base surface) and re-verified 2026-10-08 (corporate-web route): `bun test` (15 passing), `bun run check` (0 errors/warnings), `bun run build` (15 static pages). The generated commercial sitemap contains exactly 12 URLs; canonicals, titles, descriptions, robots directives, JSON-LD, page headings, internal routes/fragments and OG image dimensions passed the output audit. The route set is `/`, `/soluciones/ecommerce/`, `/soluciones/b2b/`, `/soluciones/sistemas/`, `/soluciones/desarrollo-web/`, `/casos/` and the six currently published cases. No blog, city page or separate `/soluciones/web-seo/` route is part of this release. Only post-deployment evidence remains external: Search Console indexing, field Core Web Vitals and backlinks.
+
+### Host and redirect audit — 2026-10-08
+
+Re-checked against real production HTTP (not assumptions). The deployed production SHA equals repository `HEAD` (`83f1699`), and the live output matches the local build.
+
+- `https://www.frnq.es/*` serves `200`; live canonicals, `og:url`, JSON-LD, sitemap index and `robots.txt` are all apex-only (`https://frnq.es`), and the commercial sitemap lists only the published commercial routes.
+- Live directives confirmed: `index, follow` on Home, `/casos/` and the `/soluciones/` routes; `noindex, follow` on `/legal/` and `/legal/privacidad/`; `noindex, nofollow` on `/404/`; `Disallow: /api/`. Unknown paths return `404` and `/api/contact` is not crawlable.
+- **Open panel action (not a repository fix):** `https://frnq.es/*` still responds `307` → `https://www.frnq.es/*` because `www` is the Vercel primary domain. This is a Vercel dashboard setting and makes every apex canonical target redirect. Set `frnq.es` as the project's primary domain so `www` redirects to the apex permanently, then re-verify. Do not add a `www` redirect to `vercel.json`.
+- Non-slash routes (`/casos`, `/soluciones/b2b`, `/legal`) returned `200` with the same content as their trailing-slash URL. `vercel.json` (`trailingSlash: true`) adds the missing permanent `308` and takes effect on the next deployment; `http://` already responds `308` to `https://`.
 
 ## Current semantic territory
 
-The copy may describe ecommerce, Shopify, B2B commerce, portals, private pricing, orders, systems, automation, integrations, data, visibility, measurement, conversion, technical/local SEO, analytics, CRO, accessibility and performance — only where accurate to the page and actual scope. This is not a keyword list.
+The copy may describe ecommerce, Shopify, B2B commerce, portals, private pricing, orders, systems, automation, integrations, data, corporate and custom web design/development, web architecture, frontend, visibility, measurement, conversion, technical/local SEO, analytics, CRO, accessibility and performance — only where accurate to the page and actual scope. This is not a keyword list.
 
 ## Deferred
 
 - `hreflang`: not applicable while frnq.studio is a separate external surface.
-- `/soluciones/web-seo/`: deferred; the current site evidence does not justify a distinct broad landing page, and Web/SEO remains a supporting commercial area.
+- `/soluciones/web-seo/` as a separate URL: not created. The corporate-web intent lives in `/soluciones/desarrollo-web/`; a second, overlapping SEO landing page would duplicate it.
+- City/local pages (e.g. `/desarrollo-web-granada/`): not created. Granada relevance is covered inside the single canonical page to avoid doorway pages.
 - Search Console indexing, deployed HTTP/status behavior, field Core Web Vitals and backlinks: verify after deployment using Search Console, URL Inspection and field data. The repository contains no measured ranking or traffic data.
