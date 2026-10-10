@@ -42,9 +42,12 @@ technologies:
 url: "https://www.granadaurban.com/"
 urlLabel: "Ver GRN Urban"
 cover:
-  src: "../../assets/projects/grn-urban/cover.avif"
-  alt: "GRN Urban — guía cultural de Granada"
+  src: "../../assets/projects/grn-urban/hero-capture.avif"
+  alt: "Captura real de la portada de GRN Urban"
 images:
+  - src: "../../assets/projects/grn-urban/hero-capture.avif"
+    alt: "Captura original de la web de GRN Urban en escritorio"
+    caption: "Portada real de la web publicada. Captura de octubre de 2026."
   - src: "../../assets/projects/grn-urban/granada1.avif"
     alt: "GRN Urban — portada de la guía cultural con la ciudad"
     caption: "Portada de la guía cultural."

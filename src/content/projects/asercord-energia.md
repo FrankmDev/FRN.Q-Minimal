@@ -37,9 +37,12 @@ technologies:
   - "Tailwind CSS"
   - "Node.js"
 cover:
-  src: "../../assets/projects/asercord-energia/cover.avif"
-  alt: "Asercord Energía — consultoría energética"
+  src: "../../assets/projects/asercord-energia/hero-capture.avif"
+  alt: "Captura real de la portada de Asercord Energía"
 images:
+  - src: "../../assets/projects/asercord-energia/hero-capture.avif"
+    alt: "Captura original de la web de Asercord Energía en escritorio"
+    caption: "Portada real de la web publicada. Captura de octubre de 2026."
   - src: "../../assets/projects/asercord-energia/asercord1.avif"
     alt: "Asercord Energía — portada con la propuesta de valor"
     caption: "Portada con la propuesta de valor."

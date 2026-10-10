@@ -39,9 +39,12 @@ technologies:
 url: "https://fernando-feijoo.vercel.app/"
 urlLabel: "Ver Fernando Feijoo"
 cover:
-  src: "../../assets/projects/fernando-feijoo/cover.avif"
-  alt: "Fernando Feijoo — portfolio de artista"
+  src: "../../assets/projects/fernando-feijoo/hero-capture.avif"
+  alt: "Captura real de la portada de Fernando Feijoo"
 images:
+  - src: "../../assets/projects/fernando-feijoo/hero-capture.avif"
+    alt: "Captura original de la web de Fernando Feijoo en escritorio"
+    caption: "Portada real de la web publicada. Captura de octubre de 2026."
   - src: "../../assets/projects/fernando-feijoo/fernando1.avif"
     alt: "Fernando Feijoo — portada del portfolio de grabado"
     caption: "Portada del portfolio."
