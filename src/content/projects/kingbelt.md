@@ -44,8 +44,8 @@ technologies:
 url: "https://kingbelt.es/"
 urlLabel: "Ver tienda"
 cover:
-  src: "../../assets/projects/kingbelt/cover.avif"
-  alt: "Fotografía de marca y accesorios de piel KingBelt"
+  src: "../../assets/projects/kingbelt/hero-capture.avif"
+  alt: "Captura real de la portada de KingBelt con navegación, titular y acceso al catálogo"
 images:
   - src: "../../assets/projects/kingbelt/detail.avif"
     alt: "Fotografía editorial del proyecto KingBelt"
