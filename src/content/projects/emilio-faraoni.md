@@ -46,8 +46,8 @@ technologies:
   - "PostgreSQL"
   - "Vercel"
 cover:
-  src: "../../assets/projects/emilio-faraoni/cover.avif"
-  alt: "Fotografía editorial de Emilio Faraoni y su proyecto de marroquinería"
+  src: "../../assets/projects/emilio-faraoni/hero-capture.avif"
+  alt: "Captura de la portada de Emilio Faraoni con marca, fotografía y acceso profesional"
 images:
   - src: "../../assets/projects/emilio-faraoni/detail.avif"
     alt: "Material fotográfico editorial del proyecto Emilio Faraoni"
