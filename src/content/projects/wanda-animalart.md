@@ -34,9 +34,12 @@ result: "Sitio publicado en wanda-animalart.com: retratos, proceso de encargo y 
 technologies:
   - "Astro"
 cover:
-  src: "../../assets/projects/wanda-animalart/cover.avif"
-  alt: "Wanda Animalart — retratos de animales hechos a mano"
+  src: "../../assets/projects/wanda-animalart/hero-capture.avif"
+  alt: "Captura real de la portada de Wanda Animalart"
 images:
+  - src: "../../assets/projects/wanda-animalart/hero-capture.avif"
+    alt: "Captura original de la web de Wanda Animalart en escritorio"
+    caption: "Portada real de la web publicada. Captura de octubre de 2026."
   - src: "../../assets/projects/wanda-animalart/wanda1.avif"
     alt: "Wanda Animalart — portada con retratos de mascotas"
     caption: "Portada con retratos hechos a mano."

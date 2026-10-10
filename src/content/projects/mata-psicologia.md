@@ -36,9 +36,12 @@ technologies:
   - "Astro"
   - "Tailwind CSS"
 cover:
-  src: "../../assets/projects/mata-psicologia/cover.avif"
-  alt: "Mata Psicología — consulta de psicología"
+  src: "../../assets/projects/mata-psicologia/hero-capture.avif"
+  alt: "Captura real de la portada de Mata Cala Psicología"
 images:
+  - src: "../../assets/projects/mata-psicologia/hero-capture.avif"
+    alt: "Captura original de la web de Mata Cala Psicología en escritorio"
+    caption: "Portada real de la web publicada. Captura de octubre de 2026."
   - src: "../../assets/projects/mata-psicologia/mata1.avif"
     alt: "Mata Psicología — portada calmada y de bienvenida"
     caption: "Portada de la consulta."
