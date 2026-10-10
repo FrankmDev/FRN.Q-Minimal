@@ -5,6 +5,8 @@ category: "b2b"
 sector: "Fabricación y distribución mayorista"
 year: "2026"
 status: "in-development"
+url: "https://emiliofaraoni.es/"
+urlLabel: "Ver web"
 publicPreview: true
 order: 1
 serviceArea: "b2b"
@@ -36,7 +38,7 @@ decisions:
     description: "El catálogo sigue siendo visible y los precios solo aparecen tras la autorización profesional."
   - title: "Estructurar los datos desde el inicio"
     description: "Referencias, variantes, categorías e imágenes se gestionan con un modelo central en Supabase para facilitar futuras evoluciones."
-result: "La aplicación incorpora catálogo, registro y aprobación profesional, precios restringidos y solicitudes de pedido en el repositorio. El nuevo despliegue público no se pudo verificar externamente; el proyecto se presenta expresamente en desarrollo."
+result: "El sistema reúne catálogo público, verificación de empresas, tarifas restringidas y preparación de solicitudes de pedido. La implantación y revisión del catálogo siguen en desarrollo, sin atribuir todavía resultados comerciales cuantificados."
 technologies:
   - "Astro"
   - "TypeScript"
@@ -44,12 +46,12 @@ technologies:
   - "PostgreSQL"
   - "Vercel"
 cover:
-  src: "../../assets/projects/emilio-faraoni/cover.avif"
-  alt: "Fotografía editorial de Emilio Faraoni y su proyecto de marroquinería"
+  src: "../../assets/projects/emilio-faraoni/hero-capture.avif"
+  alt: "Captura de la portada de Emilio Faraoni con marca, fotografía y acceso profesional"
 images:
   - src: "../../assets/projects/emilio-faraoni/detail.avif"
     alt: "Material fotográfico editorial del proyecto Emilio Faraoni"
-    caption: "Fotografía de la marca. Las capturas del catálogo y el área privada se añadirán una vez preparadas."
+    caption: "Fotografía editorial de la marca Emilio Faraoni."
 seo:
   title: "Emilio Faraoni: catálogo y portal B2B | FRN.Q"
   description: "Caso B2B para Emilio Faraoni: catálogo mayorista, precios privados, aprobación profesional y solicitudes de pedido con Astro y Supabase."
