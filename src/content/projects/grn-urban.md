@@ -5,7 +5,7 @@ category: "product"
 sector: "Cultura y turismo"
 year: "2023"
 status: "live"
-order: 1
+order: 3
 
 tagline: "Guía cultural de Granada que reúne agenda, rutas, guías editoriales y un planificador de itinerarios en un único producto."
 context: "GRN Urban es una plataforma editorial independiente sobre cultura, ciudad y vida contemporánea en Granada, con contenido en español e inglés."

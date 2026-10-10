@@ -5,7 +5,7 @@ category: "corporate"
 sector: "Salud y bienestar"
 year: "2025"
 status: "live"
-order: 4
+order: 6
 
 tagline: "Web de consulta de psicología que explica el servicio en lenguaje humano y facilita una primera conversación."
 context: "María Ángeles Mata es psicóloga y ejerce en Córdoba, con un enfoque terapéutico que combina rigor profesional y cercanía."

@@ -5,7 +5,7 @@ category: "interactive"
 sector: "Arte y cultura"
 year: "2025"
 status: "live"
-order: 3
+order: 5
 
 tagline: "Portfolio de artista que organiza una obra extensa y en crecimiento sin diluir la voz creativa de su autor."
 context: "Fernando Feijoo es artista y grabador. Su práctica abarca obra gráfica, cerámica, cuadernos de bocetos, libros de artista y trabajos de técnica mixta."

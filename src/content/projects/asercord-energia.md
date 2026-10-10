@@ -5,7 +5,7 @@ category: "corporate"
 sector: "Energía"
 year: "2024"
 status: "live"
-order: 6
+order: 8
 
 tagline: "Web que traduce una consultoría energética técnica en un relato claro y una ruta directa a solicitar un análisis."
 context: "Asercord Energía es una consultora energética con sede en Córdoba que asesora a hogares y empresas en electricidad y gas."

@@ -50,7 +50,7 @@ See `docs/ARCHITECTURE.md` for the full tree and responsibilities.
 
 - **Read before significant changes:** `docs/POSITIONING.md` → `docs/PRODUCT.md` → `docs/ARCHITECTURE.md` → `docs/CONTENT.md`.
 - **Single source of truth.** Commercial copy and solution pages live in `src/data/*`; case content lives in `src/content/projects/*`. Do not duplicate.
-- **Evidence only.** No invented metrics, guarantees, testimonials, ratings or outcomes. Future cases (KingBelt, Emilio Faraoni) are prepared, not published.
+- **Evidence only.** No invented metrics, guarantees, testimonials, ratings or outcomes. KingBelt and Emilio Faraoni are public in-development reference cases. Never present them as completed launches or invent sales metrics.
 - **Commercial hierarchy** (priority order): 1 Ecommerce & Shopify · 2 Portales & Sistemas B2B · 3 Sistemas & Integraciones · 4 Web, SEO & Growth. Design, frontend, SEO, analytics, CRO, accessibility, performance and integrations are supporting capabilities, never the headline. Automation is a capability inside Sistemas & Integraciones, not a separate specialisation.
 - **Voice.** Yo / el estudio / FRN.Q. Never "nosotros" implying a team that does not exist.
 - **No visual work in content tasks.** Content and documentation changes do not touch CSS, tokens or composition. See `docs/ART_DIRECTION.md` and `docs/DESIGN.md`.

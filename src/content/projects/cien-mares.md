@@ -5,7 +5,7 @@ category: "web"
 sector: "Turismo y experiencias náuticas"
 year: "2025"
 status: "live"
-order: 2
+order: 4
 
 tagline: "Rediseño y reconstrucción de la web de una marca de experiencias náuticas, con jerarquía clara y una base responsive fiable."
 context: "Cien Mares es una marca de experiencias náuticas con sede en Cádiz que necesitaba una presencia digital a la altura de su propuesta."

@@ -14,7 +14,11 @@ export async function getProjects(): Promise<Project[]> {
 }
 
 export async function getPublishedProjects(): Promise<Project[]> {
-  return (await getProjects()).filter((project) => project.status === "live");
+  return (await getProjects()).filter(
+    (project) =>
+      project.status === "live" ||
+      (project.status === "in-development" && project.publicPreview),
+  );
 }
 
 export async function getFeaturedProjects(limit = 3): Promise<Project[]> {

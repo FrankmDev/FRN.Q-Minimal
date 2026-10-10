@@ -4,8 +4,7 @@ import { z } from "astro/zod";
 
 // Solution categories. "web" covers commercial website builds; "website"
 // is the equivalent for professional / portfolio-web cases. Prepared for
-// the next cases without creating entries yet: ecommerce (KingBelt,
-// D2C / Shopify) and b2b (Emilio Faraoni, portal / commerce B2B).
+// publicly selected cases: ecommerce (KingBelt, D2C) and B2B (Emilio Faraoni).
 const categories = [
   "corporate",
   "web",
@@ -76,6 +75,8 @@ const projects = defineCollection({
       url: z.url().optional(),
       urlLabel: z.string().default("Ver proyecto"),
       status: z.enum(statuses).default("live"),
+      // In-progress cases require explicit editorial consent before appearing publicly.
+      publicPreview: z.boolean().default(false),
       order: z.number().int().positive(),
       serviceArea: z.enum(solutionIds).optional(),
 
