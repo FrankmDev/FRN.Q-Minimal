@@ -5,6 +5,8 @@ category: "b2b"
 sector: "Fabricación y distribución mayorista"
 year: "2026"
 status: "in-development"
+url: "https://emiliofaraoni.es/"
+urlLabel: "Ver web"
 publicPreview: true
 order: 1
 serviceArea: "b2b"
