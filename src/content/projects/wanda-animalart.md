@@ -5,7 +5,7 @@ category: "website"
 sector: "Arte y encargos personalizados"
 year: "2024"
 status: "live"
-order: 5
+order: 7
 
 tagline: "Portfolio y proceso de encargo que reúne en la web las peticiones que antes llegaban dispersas por redes sociales."
 context: "Wanda Animalart es el estudio de retratos de animales de Virginia en Córdoba: retratos pintados a mano con acuarela, pastel y lápices de colores."

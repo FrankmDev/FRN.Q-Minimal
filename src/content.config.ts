@@ -76,6 +76,8 @@ const projects = defineCollection({
       url: z.url().optional(),
       urlLabel: z.string().default("Ver proyecto"),
       status: z.enum(statuses).default("live"),
+      // In-progress cases require explicit editorial consent before appearing publicly.
+      publicPreview: z.boolean().default(false),
       order: z.number().int().positive(),
       serviceArea: z.enum(solutionIds).optional(),
 
