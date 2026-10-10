@@ -71,14 +71,15 @@ Engagement is either a closed project, a continuous (non-retainer) collaboration
 
 ### COMPLETE — Published work
 
-- Six published cases rendered from the `projects` content collection (via `src/data/projects.ts`).
+- Ten published cases rendered from the `projects` content collection (via `src/data/projects.ts`).
 - Neutral, factual descriptions with no outcome claims.
+- Eight are `status: live`; KingBelt, Emilio Faraoni and Ilifielt are published as `status: in-development` with `publicPreview: true` and a visible status label.
 
 ### FUTURE — prepared, not shipped
 
-- **KingBelt** — Ecommerce D2C / Shopify. In development.
-- **Emilio Faraoni** — Portales & Sistemas B2B. In development.
-- Both stay unpublished until they ship with real evidence; no entries exist yet.
+- **KingBelt** and **Emilio Faraoni** remain in development: the storefront and the B2B system are publicly visible, but operational validation and commercial metrics are not asserted.
+- Both already expose `serviceArea` (`ecommerce` / `b2b`) so the matching solution route can list them as evidence.
+- Assigned outcomes are added only when real, verifiable evidence exists.
 
 ### FUTURE — not committed
 

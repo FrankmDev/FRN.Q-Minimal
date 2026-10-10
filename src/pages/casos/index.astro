@@ -78,7 +78,7 @@ const breadcrumbSchema = {
     </section>
 
     <section class="cases-list" aria-label="Lista de casos">
-      <div class="container">
+      <div class="cases-shell">
         <ul class="grid">
           {
             projects.map((project: Project, i) => (
@@ -88,10 +88,10 @@ const breadcrumbSchema = {
                     <Image
                       src={project.cover.src}
                       alt={project.cover.alt}
-                      widths={[480, 800, 1200]}
+                      widths={[480, 800, 1200, 1600]}
                       sizes="(max-width: 768px) 100vw, 50vw"
                       format="avif"
-                      quality={68}
+                      quality={88}
                       loading={i < 2 ? "eager" : "lazy"}
                     />
                     <span class="card-index" aria-hidden="true">
@@ -201,6 +201,14 @@ const breadcrumbSchema = {
     padding: var(--space-3xl) 0 var(--space-4xl);
   }
 
+  /* Wider than the standard content column so case cards fill more screen. */
+  .cases-shell {
+    width: 100%;
+    max-width: 96rem;
+    margin-inline: auto;
+    padding-inline: var(--layout-gutter);
+  }
+
   .grid {
     list-style: none;
     display: grid;
@@ -208,9 +216,10 @@ const breadcrumbSchema = {
     gap: var(--space-2xl);
   }
 
-  @media (min-width: 800px) {
+  @media (min-width: 760px) {
     .grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(var(--space-lg), 2.2vw, var(--space-2xl));
     }
   }
 
@@ -234,7 +243,7 @@ const breadcrumbSchema = {
     position: relative;
     border-bottom: 3px solid var(--border);
     background: var(--bg-alt);
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 16 / 9;
     overflow: hidden;
   }
 
@@ -265,7 +274,7 @@ const breadcrumbSchema = {
     display: flex;
     flex-direction: column;
     gap: var(--space-sm);
-    padding: var(--space-lg);
+    padding: clamp(var(--space-lg), 2vw, var(--space-2xl));
     flex: 1;
   }
 
@@ -286,16 +295,17 @@ const breadcrumbSchema = {
   }
 
   .card-title {
-    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-size: clamp(1.75rem, 3.4vw, 3.25rem);
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: -0.03em;
-    line-height: 1;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
   }
 
   .card-value {
     color: var(--text-muted);
     line-height: 1.5;
+    font-size: clamp(1rem, 1.3vw, 1.125rem);
   }
 
   .card-status {

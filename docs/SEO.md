@@ -46,7 +46,7 @@ No `<meta name="keywords">`. No geo meta. No fabricated ratings or reviews.
 - Integration: `@astrojs/sitemap`; filter excludes `/404/` and `/legal/`.
 - `robots.txt` points to `https://frnq.es/sitemap-index.xml`.
 - `robots.txt` allows public pages and disallows `/api/`, which is a POST-only contact endpoint.
-- The sitemap contains 12 commercial URLs with the current six published cases: `/`, the four `/soluciones/` routes (`ecommerce`, `b2b`, `sistemas`, `desarrollo-web`), `/casos/`, and six `/casos/<slug>/` pages. It has no build-time `lastmod` values.
+- The sitemap contains 16 commercial URLs with the current ten published cases: `/`, the four `/soluciones/` routes (`ecommerce`, `b2b`, `sistemas`, `desarrollo-web`), `/casos/`, and ten `/casos/<slug>/` pages. It has no build-time `lastmod` values.
 - Legal pages remain accessible with self canonicals and `noindex, follow`; they are not search-target pages and are excluded from the commercial sitemap. This keeps required policy pages available to visitors without presenting them as organic landing pages.
 
 ## Robots / noindex
@@ -90,7 +90,7 @@ Google Business Profile is an external eligibility decision, not a site schema t
 | `/casos/<slug>/` | Project/client/sector-specific long-tail | Each page targets its own documented project and does not claim ecommerce/B2B outcomes without a published case |
 | Home section `#sol-growth` | Web corporativa & SEO overview, linking to the canonical page | Remains the fourth commercial area; the dedicated route carries the search intent |
 
-Each published case has a unique, factual `seo.title` and `seo.description`. Public case routes and archive entries are filtered to `status: live`. The six current cases have no `serviceArea`; `/soluciones/desarrollo-web/` adds them as evidence by `category` (`corporate`, `web`, `website`) so published corporate/web projects are shown without asserting an unverified `serviceArea`. KingBelt and Emilio Faraoni remain unpublished; after delivery and documentation, they may set `serviceArea: ecommerce` / `serviceArea: b2b` and appear on the matching solution route with a contextual solution link.
+Each published case has a unique, factual `seo.title` and `seo.description`. Public case routes and archive entries include `status: live` plus authorised `in-development` entries (`publicPreview: true`). `kingbelt` sets `serviceArea: ecommerce` and `emilio-faraoni` sets `serviceArea: b2b`, so the matching solution routes list them as evidence with a contextual solution link. `/soluciones/desarrollo-web/` adds corporate/web/website cases (including `asercord-energia`, `cien-mares`, `lucia-millan-psicologia`, `wanda-animalart` and `ilifielt`) as evidence by `category` without asserting an unverified `serviceArea`.
 
 ### Demand evidence and limits (reviewed 2026-09-28)
 
@@ -113,7 +113,7 @@ Each published case has a unique, factual `seo.title` and `seo.description`. Pub
 
 ## Freeze status
 
-**READY FOR INDEXING / FROZEN.** Verified 2026-09-28 (base surface) and re-verified 2026-10-08 (corporate-web route): `bun test` (15 passing), `bun run check` (0 errors/warnings), `bun run build` (15 static pages). The generated commercial sitemap contains exactly 12 URLs; canonicals, titles, descriptions, robots directives, JSON-LD, page headings, internal routes/fragments and OG image dimensions passed the output audit. The route set is `/`, `/soluciones/ecommerce/`, `/soluciones/b2b/`, `/soluciones/sistemas/`, `/soluciones/desarrollo-web/`, `/casos/` and the six currently published cases. No blog, city page or separate `/soluciones/web-seo/` route is part of this release. Only post-deployment evidence remains external: Search Console indexing, field Core Web Vitals and backlinks.
+**READY FOR INDEXING / FROZEN.** Verified 2026-09-28 (base surface), re-verified 2026-10-08 (corporate-web route) and 2026-10-10 (case media refresh): `bun test` (15 passing), `bun run check` (0 errors/warnings), `bun run build` (19 static pages). The generated commercial sitemap contains 16 URLs; canonicals, titles, descriptions, robots directives, JSON-LD, page headings, internal routes/fragments and OG image dimensions passed the output audit. The route set is `/`, `/soluciones/ecommerce/`, `/soluciones/b2b/`, `/soluciones/sistemas/`, `/soluciones/desarrollo-web/`, `/casos/` and the ten currently published cases. No blog, city page or separate `/soluciones/web-seo/` route is part of this release. Only post-deployment evidence remains external: Search Console indexing, field Core Web Vitals and backlinks.
 
 ### Host and redirect audit — 2026-10-08
 

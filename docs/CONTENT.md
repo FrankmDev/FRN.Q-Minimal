@@ -37,10 +37,10 @@ Rules:
 
 - **Collection:** `projects` in `src/content.config.ts`.
 - **Loader:** `glob({ pattern: "**/*.md", base: "./src/content/projects" })`.
-- **Entries (public):** `emilio-faraoni`, `kingbelt`, `grn-urban`, `cien-mares`, `fernando-feijoo`, `mata-psicologia`, `wanda-animalart`, `asercord-energia`.
+- **Entries (public):** `emilio-faraoni`, `kingbelt`, `grn-urban`, `cien-mares`, `fernando-feijoo`, `mata-psicologia`, `wanda-animalart`, `asercord-energia`, `lucia-millan-psicologia`, `ilifielt`.
 - **Factual source:** frnq.studio holds the canonical project facts; frnq.es may reinterpret commercially but never adds new facts, audiences or outcomes not present in the canonical case.
 - **Routes:** `/casos/` archive and `/casos/<slug>/` detail via `getStaticPaths`; public archive and routes include `status: live` plus selected entries with `status: in-development` and `publicPreview: true` (`getPublishedProjects()` in `src/data/projects.ts`).
-- Optional `serviceArea` connects a published case to `ecommerce`, `b2b` or `sistemas`; solution routes show only matching published cases, and a matched case links directly back to its solution. The six current cases have no `serviceArea`; do not assign one without documented evidence.
+- Optional `serviceArea` connects a published case to `ecommerce`, `b2b` or `sistemas`; solution routes show only matching published cases, and a matched case links directly back to its solution. Only assign it when the case genuinely evidences that service (currently `kingbelt` → `ecommerce`, `emilio-faraoni` → `b2b`).
 - `/soluciones/desarrollo-web/` selects evidence by `category` (`corporate`, `web`, `website`) through `evidenceCategories`, so it can show published corporate-web projects as proof without asserting an unverified `serviceArea`. It does not receive a case-to-solution back-link, which stays tied to `serviceArea`.
 
 ### Schema (fields)
@@ -77,8 +77,8 @@ Do not invent metrics. If a number cannot be evidenced, it does not appear.
 
 Images are part of the same case entry and resolved by Astro `image()`:
 
-- `cover` — listing card (`src/assets/projects/<case>/cover.avif`).
-- `images[]` — gallery (`src/assets/projects/<case>/*.avif`).
+- `cover` — listing card (`src/assets/projects/<case>/mockup-01.avif`).
+- `images[]` — gallery (`src/assets/projects/<case>/mockup-01.avif` … `mockup-05.avif`; `mockup-01` is both the cover and the first gallery image).
 - Every image has `alt`; captions are optional.
 
 ## Ecommerce and B2B reference cases
@@ -87,7 +87,7 @@ Both **KingBelt** and **Emilio Faraoni** are published with status `in-developme
 
 - **KingBelt:** publicly accessible storefront with catalogue and product UI. Shopify commerce architecture is documented, but operational readiness and commercial metrics are not asserted.
 - **Emilio Faraoni:** catalogue, verified professional access, protected pricing, baskets and order requests implemented in the repository. The new canonical public deployment was not externally reachable at review time.
-- Current project media is authentic client imagery. UI captures and mockups will be added in the next media phase.
+- Every case now ships five optimised AVIF UI mockups per project (`mockup-01.avif` … `mockup-05.avif`); `mockup-01` is the cover and first gallery image. Source PNGs are not kept in the repository.
 
 ## Engagement and pricing copy
 
@@ -124,7 +124,7 @@ Edit shared copy in `src/data/*.ts`; edit unique section copy in its component.
 | Area | Current | Future |
 |------|---------|--------|
 | Commercial surfaces | Single Spanish site; `/`, four `/soluciones/` routes and `/casos/` present | Further routes only with distinct intent and useful evidence |
-| Cases | 6 existing live cases and 2 explicitly labelled in-development references | Add verified UI captures and measurable outcomes as evidence becomes available |
+| Cases | 10 cases: 8 live plus 2 explicitly labelled in-development references | Add verified UI captures and measurable outcomes as evidence becomes available |
 | Pricing | Orientation ranges in the form | No fixed public price list is planned |
 | i18n | Spanish only | Not planned; `.studio` is the English surface |
 

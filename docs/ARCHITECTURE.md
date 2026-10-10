@@ -33,7 +33,7 @@ api/
 └── contact.ts                     # Vercel Function — POST /api/contact (Resend via fetch)
 
 src/
-├── assets/projects/<case>/        # cover.avif + gallery AVIF per case
+├── assets/projects/<case>/        # mockup-01.avif … mockup-05.avif per case (01 = cover + first gallery image)
 ├── components/
 │   ├── Header.astro               # sticky nav; anchors + STUDIO ↗ (desktop, mobile menu)
 │   ├── Hero.astro                 # intro, solution index, STUDIO ↗ link
@@ -47,7 +47,7 @@ src/
 │   ├── CustomCursor.astro         # desktop cursor enhancement
 │   └── RevealObserver.astro       # scroll reveal for `.reveal`
 ├── content.config.ts              # defineCollection("projects")
-├── content/projects/*.md          # 6 published cases (slug = filename)
+├── content/projects/*.md          # 10 published cases (slug = filename)
 ├── data/
 │   ├── site.ts                    # identity, url, email, location, portfolioLink, socialLinks
 │   ├── navigation.ts              # navItems, headerCta
@@ -118,7 +118,7 @@ content/projects/*.md (status: live) --> public case archive and static detail r
 content/projects/*.md (serviceArea) --> related solution-case lists + contextual case-to-solution link
 content/projects/*.md (category, via evidenceCategories) --> corporate-web solution evidence list
 data/site.ts (portfolioLink)     -->  Hero.astro, Header/Footer, Contact.astro
-data/site.ts (email = info@frnq.es)     --> footer, contact methods, legal pages
+data/site.ts (email = info@frnq.studio)     --> footer, contact methods, legal pages
            (internalEmail = info@frnq.studio) --> api/contact.ts delivery mailbox
 data/contact-contract.ts         -->  Contact.astro, scripts/contact-form.ts, api/contact.ts
 scripts/analytics.ts             -->  MainLayout.astro (all pages) + scripts/contact-form.ts
@@ -128,7 +128,7 @@ scripts/analytics.ts             -->  MainLayout.astro (all pages) + scripts/con
 
 - File: `api/contact.ts` (Vercel `/api` convention). Astro stays static.
 - Provider: Resend HTTP API via `fetch` (`https://api.resend.com/emails`). No SDK. The request carries an explicit timeout.
-- Env (server-only): `RESEND_API_KEY`, `CONTACT_FROM_EMAIL`. Delivery target: `siteConfig.internalEmail` (the public `info@frnq.es` redirects internally to it).
+- Env (server-only): `RESEND_API_KEY`, `CONTACT_FROM_EMAIL`. Delivery target: `siteConfig.internalEmail` (the public `info@frnq.studio` address, same mailbox).
 - Optional env: `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` (or `KV_REST_API_URL` + `KV_REST_API_TOKEN`) enable a durable rate-limit store shared across serverless instances; without them the limiter degrades to instance memory. `RATE_LIMIT_SALT` salts the client-IP hash. The memory fallback is best-effort burst damping (5 accepted / 10 min per salted IP, per warm instance), not durable enforcement across instances; the exact scope is documented in `DEVELOPMENT.md`.
 - Contract: POST + JSON or URL-encoded (no-JS fallback); validates against `src/data/contact-contract.ts`; honeypot field; rate limited on a salted client-IP hash (not the raw address) with `Retry-After` on 429; consistent `{ success, error?, errors? }`; Resend failures and timeouts are logged server-side and never leaked. Success echoes an opaque `ref` used only for analytics de-duplication.
 
@@ -143,7 +143,7 @@ scripts/analytics.ts             -->  MainLayout.astro (all pages) + scripts/con
 | Area | Current | Future |
 |------|---------|--------|
 | Commercial surface | `/`, `/soluciones/{ecommerce,b2b,sistemas,desarrollo-web}/`, `/casos/`, Spanish | Further routes only with distinct intent and useful evidence |
-| Cases | 6 published, evidence-based; public routes expose `status: live` only | KingBelt, Emilio Faraoni when shipped |
+| Cases | 10 published, evidence-based; public routes expose `status: live` plus authorised `in-development` entries (`publicPreview: true`) | Add verified outcomes as evidence becomes available |
 | Commercial copy | Shared identity, navigation, services and solution pages in `src/data/*`; cases in the collection | Evolve as required |
 | i18n | Spanish only | Not planned (`.studio` is the English surface) |
 | Theme | Light by default; persistent light/dark toggle in the header | — |

@@ -12,10 +12,10 @@ export const siteConfig = {
   tagline: "Ecommerce, portales y sistemas",
   url: "https://frnq.es",
   /** Public contact address shown across the site. */
-  email: "info@frnq.es",
+  email: "info@frnq.studio",
   /**
-   * Internal delivery mailbox. Form submissions are sent here; the public
-   * info@frnq.es address redirects internally to this same mailbox.
+   * Internal delivery mailbox. Form submissions are sent here. It is the same
+   * address as the public one, so no redirect is involved.
    */
   internalEmail: "info@frnq.studio",
   lang: "es",
