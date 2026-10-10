@@ -37,9 +37,9 @@ Rules:
 
 - **Collection:** `projects` in `src/content.config.ts`.
 - **Loader:** `glob({ pattern: "**/*.md", base: "./src/content/projects" })`.
-- **Entries (published):** `grn-urban`, `cien-mares`, `fernando-feijoo`, `mata-psicologia`, `wanda-animalart`, `asercord-energia`.
+- **Entries (public):** `emilio-faraoni`, `kingbelt`, `grn-urban`, `cien-mares`, `fernando-feijoo`, `mata-psicologia`, `wanda-animalart`, `asercord-energia`.
 - **Factual source:** frnq.studio holds the canonical project facts; frnq.es may reinterpret commercially but never adds new facts, audiences or outcomes not present in the canonical case.
-- **Routes:** `/casos/` archive and `/casos/<slug>/` detail via `getStaticPaths`; public archive and routes include only entries with `status: live` (`getPublishedProjects()` in `src/data/projects.ts`).
+- **Routes:** `/casos/` archive and `/casos/<slug>/` detail via `getStaticPaths`; public archive and routes include `status: live` plus selected entries with `status: in-development` and `publicPreview: true` (`getPublishedProjects()` in `src/data/projects.ts`).
 - Optional `serviceArea` connects a published case to `ecommerce`, `b2b` or `sistemas`; solution routes show only matching published cases, and a matched case links directly back to its solution. The six current cases have no `serviceArea`; do not assign one without documented evidence.
 - `/soluciones/desarrollo-web/` selects evidence by `category` (`corporate`, `web`, `website`) through `evidenceCategories`, so it can show published corporate-web projects as proof without asserting an unverified `serviceArea`. It does not receive a case-to-solution back-link, which stays tied to `serviceArea`.
 
@@ -81,16 +81,13 @@ Images are part of the same case entry and resolved by Astro `image()`:
 - `images[]` — gallery (`src/assets/projects/<case>/*.avif`).
 - Every image has `alt`; captions are optional.
 
-## FUTURE cases — prepared, not published
+## Ecommerce and B2B reference cases
 
-The schema already supports the next cases. **No entries exist yet** and they must not be rendered as finished work:
+Both **KingBelt** and **Emilio Faraoni** are published with status `in-development` and `publicPreview: true`, rather than represented as completed launches.
 
-| Case | Area | Status |
-|------|------|--------|
-| **KingBelt** | Ecommerce D2C / Shopify | In development |
-| **Emilio Faraoni** | Portales & Sistemas B2B | In development |
-
-Publish each only when it ships and can carry real evidence. Until then, do not list it in `/casos/` or link it as completed work.
+- **KingBelt:** publicly accessible storefront with catalogue and product UI. Shopify commerce architecture is documented, but operational readiness and commercial metrics are not asserted.
+- **Emilio Faraoni:** catalogue, verified professional access, protected pricing, baskets and order requests implemented in the repository. The new canonical public deployment was not externally reachable at review time.
+- Current project media is authentic client imagery. UI captures and mockups will be added in the next media phase.
 
 ## Engagement and pricing copy
 
@@ -112,7 +109,7 @@ The contact form asks for context, not commitment. It must never pressure or imp
 ### New case study
 
 1. Add images under `src/assets/projects/<case>/`.
-2. Create `src/content/projects/<slug>.md` with the schema above. Set `order` to continue the sequence, `status:"live"` to publish, and provide a unique `seo.title` (≤ 65 characters) and `seo.description` (≤ 160 characters). Set `serviceArea` only when the case genuinely evidences that service.
+2. Create `src/content/projects/<slug>.md` with the schema above. Set `order` to maintain the intended ranking, `status:"live"` for completed work (or explicit `publicPreview:true` with `in-development` for an in-progress case), and provide a unique `seo.title` (≤ 65 characters) and `seo.description` (≤ 160 characters). Set `serviceArea` only when the case genuinely evidences that service.
 3. Keep `result` observable and neutral; add `metrics` only if verified.
 4. Run the build and confirm `/casos/<slug>/` is generated.
 
@@ -127,7 +124,7 @@ Edit shared copy in `src/data/*.ts`; edit unique section copy in its component.
 | Area | Current | Future |
 |------|---------|--------|
 | Commercial surfaces | Single Spanish site; `/`, four `/soluciones/` routes and `/casos/` present | Further routes only with distinct intent and useful evidence |
-| Cases | 6 published, evidence-based | KingBelt and Emilio Faraoni when they ship |
+| Cases | 6 existing live cases and 2 explicitly labelled in-development references | Add verified UI captures and measurable outcomes as evidence becomes available |
 | Pricing | Orientation ranges in the form | No fixed public price list is planned |
 | i18n | Spanish only | Not planned; `.studio` is the English surface |
 
