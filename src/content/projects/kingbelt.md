@@ -35,7 +35,7 @@ decisions:
     description: "Utilizar Astro para la experiencia y Shopify como base del catálogo y el proceso de compra."
   - title: "Validación antes de prometer resultados"
     description: "Distinguir una tienda visible de una operación comercial auditada y de resultados medidos de ventas."
-result: "Storefront público con navegación de colecciones y fichas de producto, apoyado por una integración headless documentada. La puesta a punto del comercio continúa y no se publican métricas de venta o conversión sin evidencia."
+result: "KingBelt cuenta con una tienda pública que reúne navegación por colecciones, fichas con variantes y contenido editorial en una experiencia de compra coherente. La integración Shopify forma parte del desarrollo y su puesta a punto operativa continúa."
 technologies:
   - "Astro"
   - "TypeScript"
@@ -49,7 +49,7 @@ cover:
 images:
   - src: "../../assets/projects/kingbelt/detail.avif"
     alt: "Fotografía editorial del proyecto KingBelt"
-    caption: "Material de marca utilizado en el proyecto. Las capturas de interfaz se incorporarán posteriormente."
+    caption: "Fotografía editorial y detalles de producto de la marca KingBelt."
 seo:
   title: "KingBelt: tienda online Shopify Headless | FRN.Q"
   description: "Caso KingBelt: catálogo, variantes, diseño ecommerce y arquitectura Shopify Headless desarrollada con Astro y TypeScript."
