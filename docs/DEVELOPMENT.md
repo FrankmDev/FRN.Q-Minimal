@@ -40,7 +40,7 @@ When no store is configured, `checkRateLimit` in `api/contact.ts` uses an in-mem
 
 `src/scripts/analytics.ts` is dependency-free and **not connected to any provider by default** (verified against the live site). With no `window.__FRNQ_ANALYTICS__` configured it dispatches in-page `frnq:track` CustomEvents only: no network request, no cookies, no PII. The code supports `gtag`, `plausible`, `umami`, `dataLayer` or a custom `beacon` endpoint, but only one sink is ever used.
 
-Events already emitted (no provider required to fire them): `cta_click` (header/hero, declarative `[data-track]`), `contact_method_click`, `studio_link_click`, and the form's `contact_form_submit`, `contact_form_success`, `contact_form_reset`, with categorical, non-personal props.
+Events already emitted (no provider required to fire them): `cta_click` (header, hero, about, casos and solution CTAs), `case_click` (home teaser, `/casos/`, solution evidence and next-case links), `contact_view` (contact section first visible in the session), `contact_method_click`, `studio_link_click`, and the form's `contact_form_submit`, `contact_form_success`, `contact_form_error` (with a non-personal `reason`), `contact_form_reset`, with categorical, non-personal props. Every event also carries `page` (the current pathname); no query string, name, email, message or other personal data is ever sent.
 
 ### Minimal connection (choose exactly one provider)
 

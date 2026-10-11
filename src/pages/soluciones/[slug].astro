@@ -102,7 +102,13 @@ const faqSchema = {
           <p class="solution-audience">
             <strong>Para quién:</strong> {solution.audience}
           </p>
-          <a class="solution-contact" href="/#contacto">
+          <a
+            class="solution-contact"
+            href="/#contacto"
+            data-track="cta_click"
+            data-track-location="solution"
+            data-track-slug={solution.slug}
+          >
             {solution.id === "b2b" ? "Revisemos tu proceso comercial" : "Hablemos de tu proyecto"} <span aria-hidden="true">→</span>
           </a>
           {solution.id === "ecommerce" && (
@@ -180,7 +186,13 @@ const faqSchema = {
                   </li>
                 ))}
               </ol>
-              <a class="solution-contact" href="/#contacto">Cuéntame cómo compran tus clientes <span aria-hidden="true">→</span></a>
+              <a
+                class="solution-contact"
+                href="/#contacto"
+                data-track="cta_click"
+                data-track-location="solution"
+                data-track-slug={solution.slug}
+              >Cuéntame cómo compran tus clientes <span aria-hidden="true">→</span></a>
             </div>
           </section>
 
@@ -316,7 +328,13 @@ const faqSchema = {
               <p class="section-tag">Entregables y mantenimiento</p>
               <h2 id="web-deliverables-title">Lo que recibes al terminar</h2>
               <p>{solution.webDetails.maintenance}</p>
-              <a class="solution-contact" href="/#contacto">Hablemos de tu web <span aria-hidden="true">→</span></a>
+              <a
+                class="solution-contact"
+                href="/#contacto"
+                data-track="cta_click"
+                data-track-location="solution"
+                data-track-slug={solution.slug}
+              >Hablemos de tu web <span aria-hidden="true">→</span></a>
             </div>
             <ul class="solution-list">
               {solution.webDetails.deliverables.map((item) => <li>{item}</li>)}
@@ -337,7 +355,12 @@ const faqSchema = {
                 <ul class="solution-cases">
                   {projects.map((project) => (
                     <li>
-                      <a href={casePath(project.slug)}>
+                      <a
+                        href={casePath(project.slug)}
+                        data-track="case_click"
+                        data-track-location="solution"
+                        data-track-slug={project.slug}
+                      >
                         <span>{project.title}</span>
                         <span aria-hidden="true">↗</span>
                       </a>
@@ -387,7 +410,13 @@ const faqSchema = {
               ) : null;
             })}
           </ul>
-          <a class="solution-contact" href="/#contacto">
+          <a
+            class="solution-contact"
+            href="/#contacto"
+            data-track="cta_click"
+            data-track-location="solution_related"
+            data-track-slug={solution.slug}
+          >
             {solution.id === "b2b" ? "Hablemos de tu catálogo o portal B2B" : "Cuéntame qué necesitas resolver"} <span aria-hidden="true">→</span>
           </a>
         </div>

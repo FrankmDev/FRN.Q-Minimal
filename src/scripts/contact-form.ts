@@ -152,11 +152,13 @@ function showFormError(
   message: string,
   banner: HTMLElement | null,
   textEl: HTMLElement | null,
+  reason = "unknown",
 ): void {
   if (!banner || !textEl) return;
   textEl.textContent = message;
   banner.classList.remove("hidden");
   banner.focus();
+  track("contact_form_error", { reason });
 }
 
 function hideFormError(banner: HTMLElement | null): void {
@@ -216,6 +218,7 @@ function initContactForm(): void {
     for (const field of fields) {
       if (!validateField(field)) {
         field.focus();
+        track("contact_form_error", { reason: "validation" });
         return;
       }
     }
@@ -251,11 +254,11 @@ function initContactForm(): void {
           try {
             result = JSON.parse(raw) as ContactResponse;
           } catch {
-            showFormError("Respuesta inesperada del servidor. Inténtalo de nuevo.", formErrorBanner, formErrorText);
+            showFormError("Respuesta inesperada del servidor. Inténtalo de nuevo.", formErrorBanner, formErrorText, "invalid_response");
             return;
           }
         } else if (!res.ok) {
-          showFormError("No se ha podido enviar. Inténtalo de nuevo.", formErrorBanner, formErrorText);
+          showFormError("No se ha podido enviar. Inténtalo de nuevo.", formErrorBanner, formErrorText, "request_failed");
           return;
         }
 
@@ -279,7 +282,7 @@ function initContactForm(): void {
             ? "No se ha podido enviar. Inténtalo de nuevo más tarde."
             : "Revisa los campos marcados.");
 
-        showFormError(errorMessage, formErrorBanner, formErrorText);
+        showFormError(errorMessage, formErrorBanner, formErrorText, res.status >= 500 ? "server" : "validation");
 
         if (result.errors) {
           Object.entries(result.errors).forEach(([key, message]) => {
@@ -295,11 +298,11 @@ function initContactForm(): void {
         }
       } catch {
         if (requestController.signal.aborted) {
-          showFormError("El envío ha tardado demasiado. Inténtalo de nuevo.", formErrorBanner, formErrorText);
+          showFormError("El envío ha tardado demasiado. Inténtalo de nuevo.", formErrorBanner, formErrorText, "timeout");
         } else if (typeof navigator !== "undefined" && navigator.onLine === false) {
-          showFormError("Parece que no hay conexión. Revisa tu red e inténtalo de nuevo.", formErrorBanner, formErrorText);
+          showFormError("Parece que no hay conexión. Revisa tu red e inténtalo de nuevo.", formErrorBanner, formErrorText, "offline");
         } else {
-          showFormError("Error de conexión. Inténtalo de nuevo.", formErrorBanner, formErrorText);
+          showFormError("Error de conexión. Inténtalo de nuevo.", formErrorBanner, formErrorText, "network");
         }
       } finally {
         window.clearTimeout(timeoutId);

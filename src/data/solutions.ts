@@ -80,12 +80,12 @@ export const solutionPages: SolutionPage[] = [
   {
     id: "ecommerce",
     slug: "ecommerce",
-    title: "Desarrollo de tiendas online y Shopify | FRN.Q",
+    title: "Tiendas online Shopify y desarrollo ecommerce | FRN.Q",
     description:
-      "Construyo o mejoro tiendas online con Shopify o desarrollo a medida: catálogo, checkout, pagos, envíos, SEO e integraciones.",
+      "Construyo, migro o mejoro tiendas online con Shopify o desarrollo a medida: catálogo, checkout, pagos, envíos, SEO e integraciones.",
     h1: "Desarrollo de tiendas online y Shopify",
     intro:
-      "Construyo, migro y mejoro ecommerce para empresas que necesitan ordenar el catálogo, facilitar la compra y conectar la tienda con su operativa. Shopify es una buena base para muchos proyectos; cuando el flujo o las integraciones lo requieren, definimos una solución más personalizada.",
+      "Construyo tiendas nuevas, rediseño las existentes y migro proyectos que ya no encajan en su plataforma, para empresas que necesitan ordenar el catálogo, facilitar la compra y conectar la tienda con su operativa. Shopify es una buena base para muchos proyectos; cuando el flujo o las integraciones lo requieren, definimos una solución más personalizada.",
     audience:
       "Marcas y empresas que venden producto online y necesitan lanzar una tienda, cambiar de plataforma o resolver fricciones concretas sin perder de vista cómo se gestionará después.",
     systemDescription:
@@ -181,7 +181,7 @@ export const solutionPages: SolutionPage[] = [
   {
     id: "b2b",
     slug: "b2b",
-    title: "Portal B2B para fabricantes y distribuidores | FRN.Q",
+    title: "Portal B2B y catálogo mayorista para distribuidores | FRN.Q",
     description:
       "Portal B2B y catálogo mayorista para fabricantes y distribuidores. Ecommerce B2B, precios privados, referencias y pedidos online para mayoristas.",
     h1: "Portal B2B para vender a clientes profesionales",
@@ -336,17 +336,21 @@ export const solutionPages: SolutionPage[] = [
         q: "¿También puedes crear una herramienta o panel interno?",
         a: "Sí. El alcance puede incluir interfaces de operación, paneles o herramientas internas cuando resuelven una necesidad concreta del proceso.",
       },
+      {
+        q: "¿Hasta dónde se puede automatizar sin rehacer toda la operación?",
+        a: "Se empieza por los pasos que más tiempo o errores generan. Una automatización avanzada o una integración completa se plantean solo después de revisar los sistemas y comprobar que son viables; no se promete un ERP nuevo ni conectar todo sin ese análisis.",
+      },
     ],
   },
   {
     id: "growth",
     slug: "desarrollo-web",
-    title: "Diseño y desarrollo web a medida para empresas | FRN.Q",
+    title: "Diseño y desarrollo web a medida en Granada | FRN.Q",
     description:
-      "Diseño y desarrollo web a medida: web corporativa, SEO técnico, rendimiento, accesibilidad y analítica. Trabajo desde Granada con empresas de toda España.",
+      "Diseño y desarrollo web en Granada: web corporativa y profesional, SEO técnico, rendimiento y analítica. En remoto, con empresas de toda España.",
     h1: "Diseño y desarrollo web a medida",
     intro:
-      "Diseño y desarrollo webs corporativas a medida: sitios que explican con claridad qué hace una empresa, ordenan sus servicios y facilitan el contacto. Cada proyecto se construye para ser rápido, accesible y medible desde el primer día. Trabajo desde Granada con empresas de toda España.",
+      "Diseño y desarrollo webs profesionales y corporativas a medida: desde una landing de campaña hasta un sitio completo que explica con claridad qué hace una empresa, ordena sus servicios y facilita el contacto. Cada proyecto se construye para ser rápido, accesible y medible desde el primer día. Trabajo desde Granada con empresas de toda España.",
     audience:
       "Empresas que necesitan una web propia para presentar su actividad, transmitir confianza y generar consultas, y que quieren una base sólida sobre la que construir su presencia online.",
     systemDescription:
@@ -362,24 +366,24 @@ export const solutionPages: SolutionPage[] = [
     webDetails: {
       projectTypes: [
         {
-          title: "Web corporativa completa",
+          title: "Landing o página de campaña",
           description:
-            "Sitio nuevo para presentar la empresa, sus servicios y su forma de trabajar, con contenido ordenado y rutas de contacto claras.",
+            "Una sola página para presentar un servicio, producto o lanzamiento con un siguiente paso claro. Útil para campañas y acciones concretas.",
         },
         {
-          title: "Rediseño y reconstrucción",
+          title: "Web corporativa o profesional",
           description:
-            "Revisión de una web existente para corregir estructura, diseño y rendimiento sin arrastrar los problemas anteriores.",
+            "Sitio completo para presentar la empresa o el servicio, ordenar la oferta y dejar claro cómo contactar. Sirve para empresas, despachos y consultas.",
         },
         {
-          title: "Web de servicios o profesional",
+          title: "Proyecto web a medida",
           description:
-            "Sitios para despachos, consultas y estudios que necesitan explicar un servicio especializado con claridad.",
+            "Estructura o funcionalidad específica que no encaja en una web convencional: catálogos, áreas privadas, calculadoras o herramientas propias.",
         },
         {
-          title: "Evolución por fases",
+          title: "Rediseño y mejora",
           description:
-            "Publicar una primera versión sólida y ampliar secciones, idiomas o integraciones según las prioridades del negocio.",
+            "Revisión de una web existente para corregir estructura, diseño y rendimiento, o para ampliar el sitio por fases sin rehacerlo todo.",
         },
       ],
       capabilities: [
@@ -469,6 +473,10 @@ export const solutionPages: SolutionPage[] = [
       {
         q: "¿La web incluye SEO y analítica?",
         a: "Incluye un trabajo de base: estructura, metadatos, datos estructurados, rendimiento y una medición configurada. Un plan de posicionamiento continuado se acota aparte.",
+      },
+      {
+        q: "¿Qué diferencia hay entre una landing, una web corporativa y una web a medida?",
+        a: "Una landing concentra una sola acción, normalmente una campaña o un lanzamiento. Una web corporativa reúne la actividad completa, los servicios y el contacto. Un proyecto a medida añade estructura o funciones específicas —catálogo, área privada, calculadora— que una web convencional no cubre.",
       },
     ],
   },

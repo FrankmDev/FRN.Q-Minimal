@@ -41,7 +41,7 @@ Rules:
 - **Factual source:** frnq.studio holds the canonical project facts; frnq.es may reinterpret commercially but never adds new facts, audiences or outcomes not present in the canonical case.
 - **Routes:** `/casos/` archive and `/casos/<slug>/` detail via `getStaticPaths`; public archive and routes include `status: live` plus selected entries with `status: in-development` and `publicPreview: true` (`getPublishedProjects()` in `src/data/projects.ts`).
 - Optional `serviceArea` connects a published case to `ecommerce`, `b2b` or `sistemas`; solution routes show only matching published cases, and a matched case links directly back to its solution. Only assign it when the case genuinely evidences that service (currently `kingbelt` → `ecommerce`, `emilio-faraoni` → `b2b`).
-- `/soluciones/desarrollo-web/` selects evidence by `category` (`corporate`, `web`, `website`) through `evidenceCategories`, so it can show published corporate-web projects as proof without asserting an unverified `serviceArea`. It does not receive a case-to-solution back-link, which stays tied to `serviceArea`.
+- `/soluciones/desarrollo-web/` selects evidence by `category` (`corporate`, `web`, `website`) through `evidenceCategories`, so it can show published corporate-web projects as proof without asserting an unverified `serviceArea`. `corporate` / `web` / `website` cases link back to it from `/casos/<slug>/`, mirroring the evidence list; the `serviceArea`-based back-link remains reserved for `ecommerce`, `b2b` and `sistemas`.
 
 ### Schema (fields)
 
@@ -124,7 +124,7 @@ Edit shared copy in `src/data/*.ts`; edit unique section copy in its component.
 | Area | Current | Future |
 |------|---------|--------|
 | Commercial surfaces | Single Spanish site; `/`, four `/soluciones/` routes and `/casos/` present | Further routes only with distinct intent and useful evidence |
-| Cases | 10 cases: 8 live plus 2 explicitly labelled in-development references | Add verified UI captures and measurable outcomes as evidence becomes available |
+| Cases | 10 cases: 7 live plus 3 explicitly labelled in-development references | Add verified UI captures and measurable outcomes as evidence becomes available |
 | Pricing | Orientation ranges in the form | No fixed public price list is planned |
 | i18n | Spanish only | Not planned; `.studio` is the English surface |
 

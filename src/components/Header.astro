@@ -42,6 +42,8 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Visitar FRN.Q Studio en una nueva pestaña"
+        data-track="studio_link_click"
+        data-track-location="header"
       >
         {portfolioLink.label} <span aria-hidden="true">↗</span>
       </a>
@@ -105,7 +107,13 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
           </a>
         ))
       }
-      <a href={`/${headerCta.href}`} class="mobile-cta">
+      <a
+        href={`/${headerCta.href}`}
+        class="mobile-cta"
+        data-track="cta_click"
+        data-track-location="mobile_menu"
+        data-track-label={headerCta.label}
+      >
         <span>{headerCta.label}</span>
         <span class="cta-arrow" aria-hidden="true">→</span>
       </a>
@@ -115,6 +123,8 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
         target="_blank"
         rel="noopener noreferrer"
         aria-label={portfolioLink.title}
+        data-track="studio_link_click"
+        data-track-location="mobile_menu"
       >
         {portfolioLink.label} <span aria-hidden="true">↗</span>
       </a>

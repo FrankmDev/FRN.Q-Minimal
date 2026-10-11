@@ -306,6 +306,7 @@ import { portfolioLink, siteConfig } from "../data/site";
 
 <script>
   import "../scripts/contact-form";
+  import { trackOnce } from "../scripts/analytics";
 
   const faqItems = document.querySelectorAll("[data-faq-item]");
 
@@ -329,6 +330,23 @@ import { portfolioLink, siteConfig } from "../data/site";
        item.querySelector(".faq-answer-wrapper")?.toggleAttribute("inert", isOpen);
     });
   });
+
+  // Fires once per session when the contact section becomes visible, so the
+  // funnel can distinguish reaching contact from clicking a CTA.
+  const contactSection = document.getElementById("contacto");
+  if (contactSection && "IntersectionObserver" in window) {
+    const contactObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          trackOnce("contact-view", "contact_view", { location: "contact" });
+          contactObserver.disconnect();
+        }
+      },
+      { threshold: 0.35 },
+    );
+    contactObserver.observe(contactSection);
+  }
 </script>
 
 <style>

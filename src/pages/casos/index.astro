@@ -83,7 +83,13 @@ const breadcrumbSchema = {
           {
             projects.map((project: Project, i) => (
               <li>
-                <a class="card" href={casePath(project.slug)}>
+                <a
+                  class="card"
+                  href={casePath(project.slug)}
+                  data-track="case_click"
+                  data-track-location="casos"
+                  data-track-slug={project.slug}
+                >
                   <div class="card-media">
                     <Image
                       src={project.cover.src}
@@ -122,7 +128,13 @@ const breadcrumbSchema = {
 
         <div class="cases-cta">
           <p>¿Quieres un caso aplicado a tu negocio?</p>
-        <a class="cta" href="/#contacto">
+        <a
+          class="cta"
+          href="/#contacto"
+          data-track="cta_click"
+          data-track-location="casos"
+          data-track-label="Hablemos"
+        >
           <span>Hablemos</span>
             <span aria-hidden="true">→</span>
           </a>

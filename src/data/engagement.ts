@@ -24,7 +24,7 @@ export const faqItems: FaqItem[] = [
   },
   {
     q: "¿Qué pasa después del lanzamiento?",
-    a: "Entrego documentación y accesos. Si lo necesitas, puedo seguir con mejoras y mantenimiento.",
+    a: "Entrego documentación y accesos. Si lo necesitas, puedo seguir con mejoras y mantenimiento. En los proyectos que lo incluyen, tienes acceso a FRN.Q Portal, un espacio privado para consultar la información y los materiales del proyecto.",
   },
   {
     q: "¿Trabajas fuera de Granada?",

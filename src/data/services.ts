@@ -83,6 +83,8 @@ export const serviceAreas: ServiceArea[] = [
     problems: [
       "Datos de venta, stock, facturación o CRM repartidos en sistemas que no se hablan",
       "Tareas repetitivas que consumen horas y generan errores",
+      "Pedidos y solicitudes que se copian a mano entre email, teléfono y hojas de cálculo",
+      "Sin una vista clara de qué se ha hecho, qué falta y en qué estado está cada pedido",
       "Procesos internos que solo funcionan si los hace una persona concreta",
     ],
     includes: [
@@ -97,8 +99,8 @@ export const serviceAreas: ServiceArea[] = [
     id: "growth",
     title: "Web corporativa & SEO",
     short:
-      "Web de empresa, posicionamiento y medición para que te encuentren.",
-    audience: "Empresas que necesitan presencia y visibilidad web",
+      "Web profesional o corporativa, con posicionamiento y medición.",
+    audience: "Empresas y profesionales que necesitan presencia web",
     linkLabel: "Cuéntame tu web",
     problems: [
       "Web que no comunica lo que haces ni genera consultas",
@@ -120,5 +122,5 @@ export const servicesCopy = {
   titleLine: "Tiendas, portales",
   titleHighlight: "y sistemas.",
   lead:
-    "Construyo tiendas online, portales de pedidos y sistemas a medida para empresas que venden por internet. La web corporativa también entra aquí, sin perder el foco en vender y operar.",
+    "Tiendas online, portales de pedidos, sistemas a medida y webs profesionales para empresas. Trabajo la venta y la operación, y también la web que presenta tu negocio y genera consultas.",
 } as const;

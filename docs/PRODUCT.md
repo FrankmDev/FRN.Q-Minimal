@@ -6,6 +6,8 @@ frnq.es is the Spanish **commercial surface** of FRN.Q, the independent digital 
 
 The professional/technical portfolio lives separately at **frnq.studio** (English) and is linked externally as `STUDIO ↗` everywhere (header, hero, mobile menu, contact and footer). HABLEMOS is the only highlighted CTA.
 
+Client delivery uses **FRN.Q Portal** (`client.frnq.studio`), a separate private surface: an invite-only, read-only reference center for invited clients (project status, files, billing, published site and configured systems). It is not a public SaaS and has no open registration. frnq.es only mentions it editorially in the after-launch FAQ; no public "Acceso clientes" link is published while the `client.frnq.studio` domain does not resolve (the portal is reachable at its Vercel alias). Revisit that link once the domain is attached.
+
 See `POSITIONING.md` for the authoritative business definition and language rules.
 
 ## Purpose of the site
@@ -73,7 +75,7 @@ Engagement is either a closed project, a continuous (non-retainer) collaboration
 
 - Ten published cases rendered from the `projects` content collection (via `src/data/projects.ts`).
 - Neutral, factual descriptions with no outcome claims.
-- Eight are `status: live`; KingBelt, Emilio Faraoni and Ilifielt are published as `status: in-development` with `publicPreview: true` and a visible status label.
+- Seven are `status: live`; KingBelt, Emilio Faraoni and Ilifielt are published as `status: in-development` with `publicPreview: true` and a visible status label.
 
 ### FUTURE — prepared, not shipped
 

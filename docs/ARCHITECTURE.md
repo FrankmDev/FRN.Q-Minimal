@@ -117,6 +117,7 @@ data/solutions.ts (solutionPages) -->  pages/soluciones/[slug].astro + service-c
 content/projects/*.md (status: live) --> public case archive and static detail routes
 content/projects/*.md (serviceArea) --> related solution-case lists + contextual case-to-solution link
 content/projects/*.md (category, via evidenceCategories) --> corporate-web solution evidence list
+content/projects/*.md (category corporate/web/website) --> corporate-web case-to-solution back-link
 data/site.ts (portfolioLink)     -->  Hero.astro, Header/Footer, Contact.astro
 data/site.ts (email = info@frnq.studio)     --> footer, contact methods, legal pages
            (internalEmail = info@frnq.studio) --> api/contact.ts delivery mailbox
@@ -134,7 +135,7 @@ scripts/analytics.ts             -->  MainLayout.astro (all pages) + scripts/con
 
 ## Analytics
 
-`src/scripts/analytics.ts` is a first-party, dependency-free event layer initialized once from `MainLayout.astro`. It always dispatches in-page `frnq:track` events (no network, no cookies, no PII) and forwards to at most one external sink (`gtag`, `plausible`, `umami`, `dataLayer` or a beacon endpoint) only when one is configured in `window.__FRNQ_ANALYTICS__` and consent has been granted. Commercial clicks use declarative `[data-track]` attributes; the form reports submit/success/reset with categorical, non-personal props, de-duplicated by the server-returned `ref`. **No provider is configured in the repository**, so in production it dispatches in-page events only and sends nothing to any third party. The minimal single-provider connection (script + `window.__FRNQ_ANALYTICS__` + consent) is documented in `DEVELOPMENT.md` → Analytics.
+`src/scripts/analytics.ts` is a first-party, dependency-free event layer initialized once from `MainLayout.astro`. It always dispatches in-page `frnq:track` events (no network, no cookies, no PII) and forwards to at most one external sink (`gtag`, `plausible`, `umami`, `dataLayer` or a beacon endpoint) only when one is configured in `window.__FRNQ_ANALYTICS__` and consent has been granted. Commercial clicks use declarative `[data-track]` attributes (`cta_click`, `case_click`, `contact_method_click`, `studio_link_click`), the contact section reports `contact_view` once per session, and the form reports `contact_form_submit` / `contact_form_success` / `contact_form_error` / `contact_form_reset` with categorical, non-personal props (de-duplicated by the server-returned `ref`). Every event carries the current `page` pathname. **No provider is configured in the repository**, so in production it dispatches in-page events only and sends nothing to any third party. The minimal single-provider connection (script + `window.__FRNQ_ANALYTICS__` + consent) is documented in `DEVELOPMENT.md` → Analytics.
 
 ## CURRENT vs FUTURE
 

@@ -37,6 +37,21 @@ const caseSolution = project.serviceArea
   ? getSolutionForService(project.serviceArea)
   : undefined;
 const caseService = caseSolution ? getServiceForSolution(caseSolution) : undefined;
+// Published corporate/web cases point back to the corporate-web solution even
+// though they carry no `serviceArea`, mirroring the evidence list on that page.
+const webEvidenceCategories = ["corporate", "web", "website"];
+const webSolution = getSolutionForService("growth");
+const webSolutionService = webSolution ? getServiceForSolution(webSolution) : undefined;
+const webBackLink =
+  !caseSolution &&
+  webSolution &&
+  webSolutionService &&
+  webEvidenceCategories.includes(project.category)
+    ? {
+        href: solutionPath(webSolution.slug),
+        label: `Ver la solución de ${webSolutionService.title}`,
+      }
+    : undefined;
 const personId = `${siteConfig.url}/#person`;
 
 const og = await getImage({
@@ -350,6 +365,9 @@ const facts = [
             class="next-case"
             href={casePath(next.slug)}
             aria-label={`Siguiente caso: ${next.title}`}
+            data-track="case_click"
+            data-track-location="case"
+            data-track-slug={next.slug}
           >
             <span class="next-label">Siguiente caso</span>
             <span class="next-title">{next.title}</span>
@@ -360,6 +378,13 @@ const facts = [
             caseSolution && caseService && (
               <a class="back-link" href={solutionPath(caseSolution.slug)}>
                 Ver la solución de {caseService.title}
+              </a>
+            )
+          }
+          {
+            webBackLink && (
+              <a class="back-link" href={webBackLink.href}>
+                {webBackLink.label}
               </a>
             )
           }

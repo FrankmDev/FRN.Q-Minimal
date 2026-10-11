@@ -150,7 +150,12 @@ function resolveSink(): ((name: string, props: TrackProps) => void) | null {
 export function track(name: string, props: TrackProps = {}): void {
   if (typeof window === "undefined") return;
 
-  window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: { name, props } }));
+  // The current path is added to every event so a click or form event always
+  // carries where it happened. It is never a full URL and contains no query
+  // string or personal data.
+  const detail: TrackProps = { page: window.location.pathname, ...props };
+
+  window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: { name, props: detail } }));
 
   const sink = resolveSink();
   if (!sink) return;
@@ -159,7 +164,7 @@ export function track(name: string, props: TrackProps = {}): void {
   if (requireConsent && getConsent() !== true) return;
 
   try {
-    sink(name, props);
+    sink(name, detail);
   } catch {
     // A failing provider must never break the page or the form.
   }

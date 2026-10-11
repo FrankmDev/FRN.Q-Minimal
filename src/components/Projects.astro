@@ -46,6 +46,9 @@ const cases = await Promise.all(
               class="project-link"
               data-image={item.preview}
               data-host={item.host ?? siteConfig.name}
+              data-track="case_click"
+              data-track-location="home"
+              data-track-slug={item.slug}
             >
               <span class="project-number mono" aria-hidden="true">0{index + 1}</span>
               <figure class="project-image">
@@ -66,7 +69,13 @@ const cases = await Promise.all(
     </ol>
 
     <div class="projects-footer">
-      <a href="/casos/" class="all-cases-link">
+      <a
+        href="/casos/"
+        class="all-cases-link"
+        data-track="cta_click"
+        data-track-location="home"
+        data-track-label="Todos los casos publicados"
+      >
         <span>Todos los casos publicados</span>
         <span aria-hidden="true">→</span>
       </a>
