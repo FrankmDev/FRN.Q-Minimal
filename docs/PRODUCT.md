@@ -6,7 +6,7 @@ frnq.es is the Spanish **commercial surface** of FRN.Q, the independent digital 
 
 The professional/technical portfolio lives separately at **frnq.studio** (English) and is linked externally as `STUDIO ↗` everywhere (header, hero, mobile menu, contact and footer). HABLEMOS is the only highlighted CTA.
 
-Client delivery uses **FRN.Q Portal** (`client.frnq.studio`), a separate private surface: an invite-only, read-only reference center for invited clients (project status, files, billing, published site and configured systems). It is not a public SaaS and has no open registration. frnq.es only mentions it editorially in the after-launch FAQ; no public "Acceso clientes" link is published while the `client.frnq.studio` domain does not resolve (the portal is reachable at its Vercel alias). Revisit that link once the domain is attached.
+Client delivery can include **FRN.Q Portal** (`client.frnq.studio`), a separate private surface: an invite-only, read-only reference center (project information, files, billing and configured systems). It is not a public SaaS and has no open registration. frnq.es only mentions it in the after-launch FAQ. At the 2026-10-11 check the domain resolves, but its HTTPS certificate does not cover `client.frnq.studio` (`curl` error 60); the Vercel alias reaches the login page. No public "Acceso clientes" link is published until canonical HTTPS works. Domain attachment/DNS and certificate provisioning are an external hosting action, not a portal-backend change.
 
 See `POSITIONING.md` for the authoritative business definition and language rules.
 

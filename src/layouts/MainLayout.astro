@@ -3,6 +3,8 @@ import CustomCursor from "../components/CustomCursor.astro";
 import RevealObserver from "../components/RevealObserver.astro";
 import SEOHead from "../components/SEOHead.astro";
 import { siteConfig } from "../data/site";
+import { getPublishedProjects, casePath } from "../data/projects";
+import { solutionPages, solutionPath } from "../data/solutions";
 import "../styles/app.css";
 
 interface Props {
@@ -27,10 +29,16 @@ const canonicalURL = new URL(
   Astro.url.pathname,
    Astro.site || siteConfig.url,
 );
+// Build-only route allowlist: the browser never imports case or solution copy.
+const trackingPages = [
+  "/", "/casos/", "/legal/", "/legal/privacidad/", "/404/",
+  ...solutionPages.map((solution) => solutionPath(solution.slug)),
+  ...(await getPublishedProjects()).map((project) => casePath(project.slug)),
+];
 ---
 
 <!doctype html>
-<html lang={siteConfig.lang} data-theme="light">
+<html lang={siteConfig.lang} data-theme="light" data-track-pages={trackingPages.join("|")}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />

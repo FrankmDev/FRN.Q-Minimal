@@ -9,7 +9,7 @@ order: 3
 url: "https://granadaurban.com/"
 urlLabel: "Ver GRN Urban"
 tagline: "Una plataforma cultural para descubrir Granada y organizar planes, rutas y experiencias."
-context: "GRN Urban es un producto digital propio de FRN.Q centrado en la cultura, los eventos y la vida urbana de Granada. Reúne contenidos locales en español e inglés."
+context: "GRN Urban es un producto propio y laboratorio SEO de FRN.Q centrado en la cultura, los eventos y la vida urbana de Granada. Reúne contenidos locales en español e inglés y sirve para trabajar estructura editorial, enlazado e indexación."
 problem: "La información sobre eventos, lugares y recorridos suele estar repartida entre múltiples fuentes. Resulta difícil pasar de descubrir una actividad a planificar una visita con tiempo y contexto."
 objective: "Centralizar contenidos culturales y herramientas de planificación en una plataforma que responda de forma práctica a qué hacer en Granada."
 scope:
@@ -35,7 +35,7 @@ decisions:
     description: "La tipografía, las referencias de coordenadas y las etiquetas de sección refuerzan la identidad de guía de ciudad contemporánea."
   - title: "Estático primero, interactividad donde aporta"
     description: "Generación estática para el contenido y una interacción más rica reservada al configurador de itinerarios."
-result: "GRN Urban funciona como una plataforma digital de consulta y planificación: eventos, rutas, guías y un configurador de planes dentro de la misma experiencia. Es un producto propio de FRN.Q, no un encargo para un cliente externo."
+result: "GRN Urban reúne eventos, rutas, guías y un configurador de planes en una plataforma de consulta y planificación. Es un producto propio y laboratorio SEO de FRN.Q, no un encargo externo; no se atribuyen cifras de tráfico o crecimiento sin verificar."
 technologies:
   - "Astro"
   - "Tailwind CSS"
@@ -61,7 +61,7 @@ images:
     caption: "Rutas a pie por duración y temática."
 seo:
   title: "GRN Urban: guía cultural digital de Granada | FRN.Q"
-  description: "Producto propio de FRN.Q: plataforma cultural de Granada con agenda de eventos, rutas a pie, guías y configurador de itinerarios."
+  description: "Producto propio y laboratorio SEO de FRN.Q: guía cultural de Granada con agenda de eventos, rutas, guías y configurador de itinerarios."
   keywords:
     - "guía cultural Granada"
     - "agenda cultural Granada"

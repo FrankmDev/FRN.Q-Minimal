@@ -114,7 +114,7 @@ content/projects/*.md  --(astro:content)-->  data/projects.ts (getProjects / get
 
 data/services.ts (serviceAreas)  -->  Services.astro
 data/solutions.ts (solutionPages) -->  pages/soluciones/[slug].astro + service-card links
-content/projects/*.md (status: live) --> public case archive and static detail routes
+content/projects/*.md (live or in-development + publicPreview) --> public case archive and static detail routes
 content/projects/*.md (serviceArea) --> related solution-case lists + contextual case-to-solution link
 content/projects/*.md (category, via evidenceCategories) --> corporate-web solution evidence list
 content/projects/*.md (category corporate/web/website) --> corporate-web case-to-solution back-link
@@ -135,7 +135,7 @@ scripts/analytics.ts             -->  MainLayout.astro (all pages) + scripts/con
 
 ## Analytics
 
-`src/scripts/analytics.ts` is a first-party, dependency-free event layer initialized once from `MainLayout.astro`. It always dispatches in-page `frnq:track` events (no network, no cookies, no PII) and forwards to at most one external sink (`gtag`, `plausible`, `umami`, `dataLayer` or a beacon endpoint) only when one is configured in `window.__FRNQ_ANALYTICS__` and consent has been granted. Commercial clicks use declarative `[data-track]` attributes (`cta_click`, `case_click`, `contact_method_click`, `studio_link_click`), the contact section reports `contact_view` once per session, and the form reports `contact_form_submit` / `contact_form_success` / `contact_form_error` / `contact_form_reset` with categorical, non-personal props (de-duplicated by the server-returned `ref`). Every event carries the current `page` pathname. **No provider is configured in the repository**, so in production it dispatches in-page events only and sends nothing to any third party. The minimal single-provider connection (script + `window.__FRNQ_ANALYTICS__` + consent) is documented in `DEVELOPMENT.md` → Analytics.
+`src/scripts/analytics.ts` is the existing first-party, dependency-free event layer initialized once from `MainLayout.astro`. Events stay local until one provider is explicitly enabled and its consent requirements are satisfied. `MainLayout` builds a route allowlist from the solution data and published cases; unknown paths are represented as `/404/`. Only categorical props and allowlisted last-consulted solution/case context are eligible. Per-tab context is discarded on denial and is not collected before consent for a consent-required provider. Confirmed form conversions require the live JSON response to echo the current opaque request ID; legacy URL parameters are not receipts. Dedup stores only validated IDs. **No provider is configured in the repository.** Event names, placement values, storage degradation, error categories and the minimal one-provider connection are documented in `DEVELOPMENT.md` → Analytics.
 
 ## CURRENT vs FUTURE
 

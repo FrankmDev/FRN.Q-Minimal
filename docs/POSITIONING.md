@@ -18,7 +18,7 @@ Decision-makers in small and medium businesses who need to sell, order or operat
 - Owners and managers who sell online and need a store or catalogue that works.
 - Businesses with professional customers (distribution, wholesale, B2B) who manage orders, private prices and accounts by hand.
 - Teams whose data and processes live in disconnected tools.
-- Businesses that need visibility, measurement and conversion, not just a brochure website.
+- Small businesses, local businesses and independent professionals who need a trustworthy website, clear services and accessible contact, whether or not they sell online.
 
 They buy **outcomes and reduced friction**, not technology. They care about their process, their customers and what they can measure.
 
@@ -80,8 +80,8 @@ frnq.studio  English, technical  →  shows craft and evidence (external link)
 
 ## Evidence rules
 
-- Published projects are the only proof of completed work.
-- Future cases (KingBelt, Emilio Faraoni) are **prepared**, not published. They must not be rendered as finished work.
+- Published projects with `status: live` are the only proof of completed work; public previews are evidence of work in progress.
+- KingBelt, Emilio Faraoni and Ilifielt are public **in-development references**, not completed launches. Their state must remain explicit in the archive, detail pages and solution evidence links.
 - Project copy is factual and neutral: what was built and for whom, never an invented outcome. frnq.studio is the factual source for published projects; frnq.es may reframe commercially but does not add undocumented facts.
 - No testimonials, ratings or reviews unless they are real and attributable.
 
@@ -98,5 +98,5 @@ frnq.studio  English, technical  →  shows craft and evidence (external link)
 - **CURRENT.** The business definition, hierarchy and existing home composition remain frozen.
 - The organic-search scope includes static solution routes for Ecommerce & Shopify, Portales & Sistemas B2B, Sistemas & Integraciones and Web corporativa & SEO (`/soluciones/desarrollo-web/`, covering diseño y desarrollo web a medida, including natural Granada relevance on one canonical page); these deepen the existing offer without creating new specialisations or city doorway pages.
 - Further routes require distinct search intent and useful evidence-led content; no city doorway pages.
-- Only publish cases such as KingBelt and Emilio Faraoni after they ship with verifiable facts.
+- Public in-development previews require explicit editorial approval and visible status. Only label KingBelt, Emilio Faraoni or Ilifielt as completed after operational acceptance and verifiable evidence.
 - No language switch, no "Business Mode", no fabricated metrics, guarantees, testimonials or exclusivity language.

@@ -1,5 +1,6 @@
 import {
   CONTACT_COMPANY_MAX,
+  CONTACT_BUDGET_VALUES,
   CONTACT_EMAIL_MAX,
   CONTACT_EMAIL_PATTERN,
   CONTACT_MESSAGE_MAX,
@@ -7,6 +8,8 @@ import {
   CONTACT_NAME_MAX,
   CONTACT_NAME_MIN,
   CONTACT_OPTIONAL_MAX,
+  CONTACT_SUBMISSION_ID_PATTERN,
+  CONTACT_TYPE_VALUES,
 } from "../data/contact-contract";
 import { track, trackOnce, type TrackProps } from "./analytics";
 
@@ -46,14 +49,24 @@ function ensureSubmissionId(form: HTMLFormElement, force = false): string {
   return id;
 }
 
-function leadProps(data: Record<string, unknown>): TrackProps {
+export function leadProps(data: Record<string, unknown>): TrackProps {
   // Non-personal, categorical data only: never name, email or message.
   return {
-    type: typeof data.type === "string" ? data.type : undefined,
-    budget: typeof data.budget === "string" ? data.budget : undefined,
+    type: typeof data.type === "string" && CONTACT_TYPE_VALUES.includes(data.type) ? data.type : undefined,
+    budget: typeof data.budget === "string" && CONTACT_BUDGET_VALUES.includes(data.budget) ? data.budget : undefined,
     hasCompany:
       typeof data.company === "string" && data.company.trim().length > 0,
   };
+}
+
+export function responseErrorReason(status: number, hasFieldErrors: boolean): string {
+  if (status === 429) return "rate_limited";
+  if (status >= 500) return "server";
+  return hasFieldErrors ? "validation" : "request_failed";
+}
+
+export function isConfirmedSubmission(result: ContactResponse, submissionId: string): boolean {
+  return result.success === true && result.ref === submissionId && CONTACT_SUBMISSION_ID_PATTERN.test(submissionId);
 }
 
 function getFormFields(form: HTMLFormElement): FormField[] {
@@ -252,27 +265,29 @@ function initContactForm(): void {
 
         if (raw) {
           try {
-            result = JSON.parse(raw) as ContactResponse;
+            const parsed: unknown = JSON.parse(raw);
+            if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) throw new Error("Invalid response");
+            result = parsed as ContactResponse;
           } catch {
             showFormError("Respuesta inesperada del servidor. Inténtalo de nuevo.", formErrorBanner, formErrorText, "invalid_response");
             return;
           }
         } else if (!res.ok) {
-          showFormError("No se ha podido enviar. Inténtalo de nuevo.", formErrorBanner, formErrorText, "request_failed");
+          showFormError("No se ha podido enviar. Inténtalo de nuevo.", formErrorBanner, formErrorText, responseErrorReason(res.status, false));
           return;
         }
 
-        if (res.ok && result.success) {
+        if (res.ok && result.success === true) {
           form.classList.add("hidden");
           successBlock.classList.remove("hidden");
           successBlock.classList.add("flex");
           successBlock.focus();
 
-          trackOnce(
-            `submit:${result.ref || submissionId}`,
-            "contact_form_success",
-            leadProps(data),
-          );
+          // The honeypot also returns success, but only delivered submissions
+          // echo our opaque ID. Never use an arbitrary response or URL ref.
+          if (isConfirmedSubmission(result, submissionId)) {
+            trackOnce(`submit:${submissionId}`, "contact_form_success", leadProps(data));
+          }
           return;
         }
 
@@ -282,7 +297,7 @@ function initContactForm(): void {
             ? "No se ha podido enviar. Inténtalo de nuevo más tarde."
             : "Revisa los campos marcados.");
 
-        showFormError(errorMessage, formErrorBanner, formErrorText, res.status >= 500 ? "server" : "validation");
+        showFormError(errorMessage, formErrorBanner, formErrorText, responseErrorReason(res.status, Boolean(result.errors && Object.keys(result.errors).length)));
 
         if (result.errors) {
           Object.entries(result.errors).forEach(([key, message]) => {
@@ -343,30 +358,26 @@ function initContactForm(): void {
   }
 }
 
-function handleReturnState(): void {
+export function handleReturnState(): void {
   const params = new URLSearchParams(window.location.search);
   const state = params.get("contacto");
-  if (!state) return;
-
-  const form = document.getElementById("contact-form");
-  const successBlock = document.getElementById("contact-success");
-  const banner = document.getElementById("form-error-banner");
-  const bannerText = document.getElementById("form-error-text");
-  const ref = params.get("ref") || "";
-
-  if (state === "enviado" && form && successBlock) {
-    form.classList.add("hidden");
-    successBlock.classList.remove("hidden");
-    successBlock.classList.add("flex");
-    successBlock.focus();
-    trackOnce(`submit:${ref || "no-js"}`, "contact_form_success");
-  } else if (state === "error" && banner && bannerText) {
-    bannerText.textContent = "No se ha podido enviar. Revisa los campos e inténtalo de nuevo.";
-    banner.classList.remove("hidden");
-    banner.focus();
+  if (!state && !params.has("ref")) return;
+  // Legacy 303 parameters are not authenticated receipts. They must never
+  // hide the form, report confirmed success or enter analytics storage.
+  if (state === "error") {
+    const banner = document.getElementById("form-error-banner");
+    const bannerText = document.getElementById("form-error-text");
+    if (banner && bannerText) {
+      bannerText.textContent = "No se ha podido enviar. Revisa los campos e inténtalo de nuevo.";
+      banner.classList.remove("hidden");
+      banner.focus();
+    }
   }
 
-  window.history.replaceState(null, "", window.location.pathname + window.location.hash);
+  params.delete("contacto");
+  params.delete("ref");
+  const query = params.toString();
+  window.history.replaceState(null, "", window.location.pathname + (query ? `?${query}` : "") + window.location.hash);
 }
 
 function boot(): void {
@@ -374,8 +385,8 @@ function boot(): void {
   handleReturnState();
 }
 
-if (document.readyState === "loading") {
+if (typeof document !== "undefined" && document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", boot, { once: true });
-} else {
+} else if (typeof document !== "undefined") {
   boot();
 }

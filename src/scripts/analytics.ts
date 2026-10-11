@@ -11,11 +11,13 @@
  * Enabling a provider:
  *   window.__FRNQ_ANALYTICS__ = { enabled: true, provider: "plausible" };
  *
- * Consent is read from localStorage (`frnq:analytics:consent`) and can be set
+ * Consent is retained in memory and localStorage (`frnq:analytics:consent`) and can be set
  * by any existing CMP through `window.__frnqAnalytics.setConsent(true|false)`.
  * With no provider configured there is nothing to consent to and no network
  * request is made.
  */
+
+import { CONTACT_SUBMISSION_ID_PATTERN } from "../data/contact-contract";
 
 export type TrackProps = Record<string, string | number | boolean | undefined>;
 
@@ -51,11 +53,104 @@ declare global {
 
 const CONSENT_KEY = "frnq:analytics:consent";
 const SEEN_KEY = "frnq:track:seen";
+const CONTEXT_KEY = "frnq:track:context";
 const SEEN_LIMIT = 25;
 const EVENT_NAME = "frnq:track";
 
 const memorySeen = new Set<string>();
 let initialized = false;
+let memoryConsent: boolean | null = null;
+
+type FunnelContext = { last_solution?: string; last_case?: string };
+
+function allowedPages(): Set<string> {
+  const paths = typeof document === "undefined"
+    ? ""
+    : document.documentElement.dataset.trackPages ?? "";
+  return new Set(paths.split("|").filter(Boolean));
+}
+
+function currentPage(pages = allowedPages()): string {
+  // Unknown URLs can contain personal data; never emit them, even on a 404.
+  return pages.has(window.location.pathname) ? window.location.pathname : "/404/";
+}
+
+function removeSession(key: string): void {
+  try {
+    window.sessionStorage.removeItem(key);
+  } catch {
+    // Storage is optional, not a prerequisite for contact or navigation.
+  }
+}
+
+function canRememberContext(): boolean {
+  const consent = getConsent();
+  if (consent === false) return false;
+  const config = window.__FRNQ_ANALYTICS__;
+  return !config?.enabled || config.requireConsent === false || consent === true;
+}
+
+function funnelContext(pages = allowedPages()): FunnelContext {
+  if (!canRememberContext()) {
+    removeSession(CONTEXT_KEY);
+    return {};
+  }
+
+  const raw = readSession(CONTEXT_KEY);
+  const context: FunnelContext = {};
+  if (raw) {
+    try {
+      const stored: unknown = JSON.parse(raw);
+      if (stored && typeof stored === "object") {
+        for (const key of ["last_solution", "last_case"] as const) {
+          const value = (stored as Record<string, unknown>)[key];
+          const prefix = key === "last_solution" ? "/soluciones/" : "/casos/";
+          if (typeof value === "string" && pages.has(value) && value.startsWith(prefix) && value !== "/casos/") {
+            context[key] = value;
+          }
+        }
+      }
+    } catch {
+      // Malformed context is discarded, never forwarded.
+    }
+  }
+
+  const page = currentPage(pages);
+  if (page.startsWith("/soluciones/")) {
+    if (context.last_solution !== page) delete context.last_case;
+    context.last_solution = page;
+  } else if (page.startsWith("/casos/") && page !== "/casos/") {
+    context.last_case = page;
+  }
+
+  const serialized = JSON.stringify(context);
+  if (raw !== serialized) {
+    if (Object.keys(context).length) writeSession(CONTEXT_KEY, serialized);
+    else removeSession(CONTEXT_KEY);
+  }
+  return context;
+}
+
+function safeProps(props: TrackProps): TrackProps {
+  const result: TrackProps = {};
+  // Only the categorical props used by this site are eligible for forwarding.
+  for (const key of ["location", "label", "method", "slug", "type", "budget", "reason", "hasCompany"]) {
+    const value = props[key];
+    if (key === "hasCompany") {
+      if (typeof value === "boolean") result[key] = value;
+    } else if (typeof value === "string" && value.length <= 120 && !/[@\u0000-\u001F\u007F]/.test(value)) {
+      result[key] = value;
+    }
+  }
+  return result;
+}
+
+function isSeenId(id: unknown): id is string {
+  return typeof id === "string" && (
+    id === "contact-view" ||
+    (id.startsWith("submit:") && CONTACT_SUBMISSION_ID_PATTERN.test(id.slice(7)))
+  );
+}
 
 function readStorage(key: string): string | null {
   try {
@@ -90,6 +185,8 @@ function writeSession(key: string, value: string): void {
 }
 
 export function getConsent(): boolean | null {
+  // An explicit choice must take effect even if persistence fails or is stale.
+  if (memoryConsent !== null) return memoryConsent;
   const value = readStorage(CONSENT_KEY);
   if (value === "granted") return true;
   if (value === "denied") return false;
@@ -97,7 +194,12 @@ export function getConsent(): boolean | null {
 }
 
 export function setConsent(granted: boolean): void {
+  memoryConsent = granted;
   writeStorage(CONSENT_KEY, granted ? "granted" : "denied");
+  if (!granted) {
+    removeSession(CONTEXT_KEY);
+    removeSession(SEEN_KEY);
+  }
   window.dispatchEvent(
     new CustomEvent("frnq:consent", { detail: { granted } }),
   );
@@ -150,10 +252,8 @@ function resolveSink(): ((name: string, props: TrackProps) => void) | null {
 export function track(name: string, props: TrackProps = {}): void {
   if (typeof window === "undefined") return;
 
-  // The current path is added to every event so a click or form event always
-  // carries where it happened. It is never a full URL and contains no query
-  // string or personal data.
-  const detail: TrackProps = { page: window.location.pathname, ...props };
+  const pages = allowedPages();
+  const detail: TrackProps = { ...safeProps(props), ...funnelContext(pages), page: currentPage(pages) };
 
   window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: { name, props: detail } }));
 
@@ -161,7 +261,8 @@ export function track(name: string, props: TrackProps = {}): void {
   if (!sink) return;
 
   const requireConsent = window.__FRNQ_ANALYTICS__?.requireConsent !== false;
-  if (requireConsent && getConsent() !== true) return;
+  const consent = getConsent();
+  if (consent === false || (requireConsent && consent !== true)) return;
 
   try {
     sink(name, detail);
@@ -172,14 +273,16 @@ export function track(name: string, props: TrackProps = {}): void {
 
 /** Fires once per id, across reloads within the session, to avoid duplicates. */
 export function trackOnce(id: string, name: string, props: TrackProps = {}): void {
+  if (typeof window === "undefined" || !isSeenId(id)) return;
   if (memorySeen.has(id)) return;
 
-  const seen = readSession(SEEN_KEY);
+  const remember = canRememberContext();
+  const seen = remember ? readSession(SEEN_KEY) : null;
   let ids: string[] = [];
   if (seen) {
     try {
       const parsed: unknown = JSON.parse(seen);
-      if (Array.isArray(parsed)) ids = parsed.filter((id): id is string => typeof id === "string");
+      if (Array.isArray(parsed)) ids = parsed.filter(isSeenId);
     } catch {
       ids = [];
     }
@@ -190,7 +293,7 @@ export function trackOnce(id: string, name: string, props: TrackProps = {}): voi
   }
 
   memorySeen.add(id);
-  writeSession(SEEN_KEY, JSON.stringify([...ids, id].slice(-SEEN_LIMIT)));
+  if (remember) writeSession(SEEN_KEY, JSON.stringify([...ids, id].slice(-SEEN_LIMIT)));
   track(name, props);
 }
 
@@ -208,6 +311,7 @@ function dataProps(el: Element): TrackProps {
 export function initTracking(): void {
   if (initialized || typeof document === "undefined") return;
   initialized = true;
+  funnelContext();
 
   document.addEventListener(
     "click",

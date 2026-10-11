@@ -40,11 +40,17 @@ When no store is configured, `checkRateLimit` in `api/contact.ts` uses an in-mem
 
 `src/scripts/analytics.ts` is dependency-free and **not connected to any provider by default** (verified against the live site). With no `window.__FRNQ_ANALYTICS__` configured it dispatches in-page `frnq:track` CustomEvents only: no network request, no cookies, no PII. The code supports `gtag`, `plausible`, `umami`, `dataLayer` or a custom `beacon` endpoint, but only one sink is ever used.
 
-Events already emitted (no provider required to fire them): `cta_click` (header, hero, about, casos and solution CTAs), `case_click` (home teaser, `/casos/`, solution evidence and next-case links), `contact_view` (contact section first visible in the session), `contact_method_click`, `studio_link_click`, and the form's `contact_form_submit`, `contact_form_success`, `contact_form_error` (with a non-personal `reason`), `contact_form_reset`, with categorical, non-personal props. Every event also carries `page` (the current pathname); no query string, name, email, message or other personal data is ever sent.
+Events already emitted (no provider required to fire them): `cta_click`, `case_click`, `contact_view` (first contact view in the session), `contact_method_click`, `studio_link_click`, `contact_form_submit`, `contact_form_success`, `contact_form_error` and `contact_form_reset`. Solution CTA placements are distinct: `solution_hero`, `solution_buyer_journey`, `solution_deliverables` and `solution_related`; case links use `solution_evidence`.
+
+- `page` is checked against a build-generated route allowlist from the existing solutions and published cases (`MainLayout.astro`); unknown paths become `/404/`. Query strings and unknown props are never forwarded.
+- `last_solution` / `last_case` retain only allowlisted, last-consulted paths in per-tab `sessionStorage`, so contact events keep commercial context without changing the API payload. This is last-viewed context, not a claim of first-touch/campaign attribution. With no provider the context stays local. It is not remembered for a consent-required provider before permission, and denial clears it and blocks forwarding even for an exempt provider. An explicit consent choice also applies in memory when `localStorage` fails; blocked session storage degrades safely, without cross-page context.
+- Form props contain only approved type/budget values and `hasCompany`, never name, email, company text or message. Error reasons distinguish `rate_limited` (429), `validation`, `request_failed`, `server`, `invalid_response`, `timeout`, `offline` and `network`.
+- `contact_form_success` requires an OK JSON response with `success: true` and the current opaque submission ID echoed by the API; honeypot acknowledgements are not counted. Dedup storage accepts only opaque submission IDs and `contact-view`.
+- Legacy `?contacto=enviado&ref=…` is not a verified receipt: it neither hides the form nor reports conversion. Return parameters are removed without storing their values; unrelated campaign parameters are preserved. The existing native POST/303 API fallback is unchanged. Without an authenticated receipt, no-JS returns are not measured as confirmed conversions.
 
 ### Minimal connection (choose exactly one provider)
 
-1. Load one provider's script once, in `MainLayout.astro` before the tracking module runs.
+1. Load exactly one provider through a consent-aware integration in `MainLayout.astro`. For consent-required providers, load the vendor script only after permission: gating this layer's events does not prevent a preloaded vendor from sending its own page views.
 2. Configure the layer before `initTracking()`:
 
 ```html
@@ -61,7 +67,7 @@ Provider options (do not install more than one):
 - **GTM dataLayer** — `window.dataLayer = window.dataLayer || []`, `provider: "dataLayer"`.
 - **Custom collector** — `{ enabled: true, provider: "beacon", endpoint: "https://…" }`; events are POSTed with `sendBeacon` (fetch fallback).
 
-3. Consent: forwarding requires `getConsent() === true` unless `requireConsent: false`. There is no CMP installed, so a consent UI must call `window.__frnqAnalytics.setConsent(true)`. Set `requireConsent: false` only for a cookieless provider that legally needs no consent — that is a legal decision, not a code default.
+3. Consent: forwarding requires `getConsent() === true` unless `requireConsent: false`; explicit denial blocks both. There is no CMP installed, so the consent integration must call `window.__frnqAnalytics.setConsent(true|false)` and manage vendor loading/withdrawal itself. Set `requireConsent: false` only for a cookieless provider that legally needs no consent — that is a legal decision, not a code default. Review the privacy notice and provider's own page-view collection before enabling it.
 
 ## Conventions
 

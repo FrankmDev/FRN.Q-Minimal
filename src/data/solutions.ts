@@ -350,7 +350,7 @@ export const solutionPages: SolutionPage[] = [
       "Diseño y desarrollo web en Granada: web corporativa y profesional, SEO técnico, rendimiento y analítica. En remoto, con empresas de toda España.",
     h1: "Diseño y desarrollo web a medida",
     intro:
-      "Diseño y desarrollo webs profesionales y corporativas a medida: desde una landing de campaña hasta un sitio completo que explica con claridad qué hace una empresa, ordena sus servicios y facilita el contacto. Cada proyecto se construye para ser rápido, accesible y medible desde el primer día. Trabajo desde Granada con empresas de toda España.",
+      "Diseño y desarrollo webs profesionales y corporativas a medida: desde una landing de campaña hasta un sitio completo que explica los servicios y facilita el contacto. Trabajo la velocidad y la accesibilidad; la medición se define cuando forma parte del alcance. Trabajo desde Granada con empresas de toda España.",
     audience:
       "Empresas que necesitan una web propia para presentar su actividad, transmitir confianza y generar consultas, y que quieren una base sólida sobre la que construir su presencia online.",
     systemDescription:
@@ -410,7 +410,7 @@ export const solutionPages: SolutionPage[] = [
         {
           title: "Analítica y medición",
           description:
-            "Eventos y objetivos definidos para entender qué páginas y qué recorridos generan contacto.",
+            "Cuando se incluye, defino eventos y objetivos para medir consultas, con un proveedor acordado y el consentimiento necesario.",
         },
       ],
       deliverables: [
@@ -418,8 +418,8 @@ export const solutionPages: SolutionPage[] = [
         "Diseño de todas las páginas incluidas en el alcance",
         "Código y repositorio del proyecto",
         "SEO técnico base y datos estructurados",
-        "Analítica configurada y objetivos definidos",
-        "Documentación de edición y accesos",
+        "Medición y objetivos cuando forman parte del alcance",
+        "Documentación de la solución y accesos acordados",
       ],
       maintenance:
         "Entrego la web documentada y con accesos propios, para que puedas mantenerla sin depender del estudio. Si lo necesitas, continúo con mejoras de contenido, nuevas secciones o ajustes de rendimiento y medición, sin obligar a una cuota permanente.",
@@ -443,7 +443,7 @@ export const solutionPages: SolutionPage[] = [
       {
         title: "Medir y evolucionar",
         description:
-          "Reviso el comportamiento una vez publicado y planifico mejoras con datos.",
+          "Si se incluye medición, reviso los datos disponibles para proponer mejoras. El mantenimiento y la evolución se acuerdan aparte.",
       },
     ],
     relatedSolutions: ["ecommerce", "sistemas"],
@@ -468,11 +468,11 @@ export const solutionPages: SolutionPage[] = [
       },
       {
         q: "¿Puedo actualizar el contenido yo mismo?",
-        a: "Sí. Defino una estructura editable y entrego documentación y accesos para que puedas mantener textos, imágenes y páginas.",
+        a: "Si necesitas editar sin tocar código, acordamos un sistema de gestión de contenido y qué podrás actualizar. No todas las webs lo necesitan ni lo incluyen. Entrego los accesos y la documentación correspondientes a la solución contratada.",
       },
       {
         q: "¿La web incluye SEO y analítica?",
-        a: "Incluye un trabajo de base: estructura, metadatos, datos estructurados, rendimiento y una medición configurada. Un plan de posicionamiento continuado se acota aparte.",
+        a: "La base técnica cubre estructura, metadatos y rendimiento. La medición se configura cuando está incluida, con un proveedor y los objetivos acordados, y el consentimiento necesario. Un plan de posicionamiento continuado se acota aparte; no se garantizan posiciones ni consultas.",
       },
       {
         q: "¿Qué diferencia hay entre una landing, una web corporativa y una web a medida?",

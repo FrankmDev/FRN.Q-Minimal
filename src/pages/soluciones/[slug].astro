@@ -2,7 +2,7 @@
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import MainLayout from "../../layouts/MainLayout.astro";
-import { getPublishedProjects, casePath, type Project } from "../../data/projects";
+import { getPublishedProjects, casePath, statusLabels, type Project } from "../../data/projects";
 import {
   getServiceForSolution,
   solutionPages,
@@ -106,7 +106,7 @@ const faqSchema = {
             class="solution-contact"
             href="/#contacto"
             data-track="cta_click"
-            data-track-location="solution"
+            data-track-location="solution_hero"
             data-track-slug={solution.slug}
           >
             {solution.id === "b2b" ? "Revisemos tu proceso comercial" : "Hablemos de tu proyecto"} <span aria-hidden="true">→</span>
@@ -190,7 +190,7 @@ const faqSchema = {
                 class="solution-contact"
                 href="/#contacto"
                 data-track="cta_click"
-                data-track-location="solution"
+                data-track-location="solution_buyer_journey"
                 data-track-slug={solution.slug}
               >Cuéntame cómo compran tus clientes <span aria-hidden="true">→</span></a>
             </div>
@@ -264,7 +264,7 @@ const faqSchema = {
         <section class="solution-section solution-section--dark" aria-labelledby="web-capabilities-title">
           <div class="container">
             <p class="section-tag">Capacidades integradas</p>
-            <h2 id="web-capabilities-title">Diseño, SEO y medición en cada web</h2>
+            <h2 id="web-capabilities-title">Diseño, SEO y medición según alcance</h2>
             <ul class="web-cards">
               {solution.webDetails.capabilities.map((capability) => (
                 <li>
@@ -332,7 +332,7 @@ const faqSchema = {
                 class="solution-contact"
                 href="/#contacto"
                 data-track="cta_click"
-                data-track-location="solution"
+                data-track-location="solution_deliverables"
                 data-track-slug={solution.slug}
               >Hablemos de tu web <span aria-hidden="true">→</span></a>
             </div>
@@ -358,10 +358,10 @@ const faqSchema = {
                       <a
                         href={casePath(project.slug)}
                         data-track="case_click"
-                        data-track-location="solution"
+                        data-track-location="solution_evidence"
                         data-track-slug={project.slug}
                       >
-                        <span>{project.title}</span>
+                        <span>{project.title}{project.status === "in-development" && ` · ${statusLabels[project.status]}`}</span>
                         <span aria-hidden="true">↗</span>
                       </a>
                     </li>

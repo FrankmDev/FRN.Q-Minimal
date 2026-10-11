@@ -83,7 +83,7 @@ Images are part of the same case entry and resolved by Astro `image()`:
 
 ## Ecommerce and B2B reference cases
 
-Both **KingBelt** and **Emilio Faraoni** are published with status `in-development` and `publicPreview: true`, rather than represented as completed launches.
+Both **KingBelt** and **Emilio Faraoni** are published with status `in-development` and `publicPreview: true`, rather than represented as completed launches. Solution evidence links also display the in-development status (including Ilifielt on the web solution). GRN Urban is explicitly a product owned by FRN.Q and an SEO laboratory, with no unverified traffic or growth figures.
 
 - **KingBelt:** publicly accessible storefront with catalogue and product UI. Shopify commerce architecture is documented, but operational readiness and commercial metrics are not asserted.
 - **Emilio Faraoni:** catalogue, verified professional access, protected pricing, baskets and order requests implemented in the repository. The new canonical public deployment was not externally reachable at review time.
