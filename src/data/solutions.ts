@@ -1,4 +1,5 @@
 import { serviceAreas } from "./services";
+import { webRescueDiagnosis } from "./web-rescue";
 
 export type SolutionId = "ecommerce" | "b2b" | "sistemas" | "growth";
 
@@ -345,12 +346,12 @@ export const solutionPages: SolutionPage[] = [
   {
     id: "growth",
     slug: "desarrollo-web",
-    title: "Diseño y desarrollo web a medida en Granada | FRN.Q",
+    title: "Diseño, desarrollo y reparación web en Granada | FRN.Q",
     description:
-      "Diseño y desarrollo web en Granada: web corporativa y profesional, SEO técnico, rendimiento y analítica. En remoto, con empresas de toda España.",
+      "Diseño y desarrollo web a medida en Granada y reparación de webs existentes: WordPress, Elementor, WooCommerce, SEO técnico, rendimiento y medición.",
     h1: "Diseño y desarrollo web a medida",
     intro:
-      "Diseño y desarrollo webs profesionales y corporativas a medida: desde una landing de campaña hasta un sitio completo que explica los servicios y facilita el contacto. Trabajo la velocidad y la accesibilidad; la medición se define cuando forma parte del alcance. Trabajo desde Granada con empresas de toda España.",
+      "Diseño y desarrollo webs profesionales y corporativas a medida: desde una landing de campaña hasta un sitio completo que explica los servicios y facilita el contacto. También recupero, reparo y amplío webs existentes —WordPress, Elementor o WooCommerce— cuando rehacerlas no es la mejor opción. Trabajo la velocidad y la accesibilidad; la medición se define cuando forma parte del alcance. Trabajo desde Granada con empresas de toda España.",
     audience:
       "Empresas que necesitan una web propia para presentar su actividad, transmitir confianza y generar consultas, y que quieren una base sólida sobre la que construir su presencia online.",
     systemDescription:
@@ -381,6 +382,11 @@ export const solutionPages: SolutionPage[] = [
             "Estructura o funcionalidad específica que no encaja en una web convencional: catálogos, áreas privadas, calculadoras o herramientas propias.",
         },
         {
+          title: "Reparación de web existente",
+          description:
+            "Recupero webs en marcha —WordPress, Elementor o WooCommerce— que han dejado de funcionar o se han quedado atrás, corrigiendo lo acordado sin rehacer el sitio completo.",
+        },
+        {
           title: "Rediseño y mejora",
           description:
             "Revisión de una web existente para corregir estructura, diseño y rendimiento, o para ampliar el sitio por fases sin rehacerlo todo.",
@@ -396,6 +402,11 @@ export const solutionPages: SolutionPage[] = [
           title: "SEO técnico",
           description:
             "Estructura, enlazado, metadatos, datos estructurados y rendimiento para que el sitio sea rastreable y comprensible.",
+        },
+        {
+          title: "WordPress, Elementor y WooCommerce",
+          description:
+            "Trabajo sobre la web que ya tienes: tema, plugins, páginas y tienda, evaluando qué conviene ajustar y qué no tocar.",
         },
         {
           title: "Rendimiento",
@@ -457,6 +468,14 @@ export const solutionPages: SolutionPage[] = [
       {
         q: "¿Cuánto cuesta una web a medida?",
         a: "Depende del número de páginas, el contenido y las integraciones. Después de entender el alcance recibes una propuesta por escrito con entregables, calendario y coste.",
+      },
+      {
+        q: "¿Puedes reparar o mejorar una web que ya tengo?",
+        a: `Sí. Reviso la web existente, localizo qué falla o se puede mejorar y propongo qué reparar, ampliar o dejar como está. Empiezo con el ${webRescueDiagnosis.title} (${webRescueDiagnosis.price}), que se descuenta de una reparación elegible contratada en los 30 días siguientes.`,
+      },
+      {
+        q: "¿Trabajas con WordPress, Elementor o WooCommerce?",
+        a: "Sí. Son plataformas habituales en webs y tiendas que ya están en marcha. Reviso tema, plugins, contenidos, rendimiento y SEO técnico, y propongo una reparación o una mejora concreta según el estado real del sitio.",
       },
       {
         q: "¿En cuánto tiempo se publica?",

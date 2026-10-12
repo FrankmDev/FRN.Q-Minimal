@@ -97,7 +97,10 @@ async function submitFixture(status, responseBody) {
     readyState: "loading",
     documentElement: { dataset: { trackPages: "/|/404/" } },
     getElementById: (id) => ids[id] ?? null,
-    addEventListener: (_name, callback) => { boot = callback; },
+    addEventListener: (name, callback) => {
+      if (name === "DOMContentLoaded") boot = callback;
+      else listeners.set(`doc:${name}`, callback);
+    },
   };
   globalThis.window = {
     location: { pathname: "/", search: "", hash: "" },
@@ -158,3 +161,41 @@ for (const [status, reason, response] of [
     expect(form.attributes.has("aria-busy")).toBe(false);
   });
 }
+
+function preselectFixture(search) {
+  const select = {
+    value: "",
+    closest: () => ({ classList: { remove: () => {} } }),
+    removeAttribute: () => {},
+  };
+  const error = { textContent: "keep", classList: { add: () => {} } };
+  const changed = [];
+  const listeners = [];
+  globalThis.document = {
+    getElementById: (id) => (id === "type" ? select : id === "type-error" ? error : null),
+    addEventListener: (name, callback) => listeners.push([name, callback]),
+  };
+  globalThis.window = {
+    location: { pathname: "/", search, hash: "#contacto" },
+    history: { replaceState: (_state, _title, url) => changed.push(url) },
+  };
+  return { select, error, changed, listeners };
+}
+
+test("a ?tipo= deep link preselects a known contact type and strips the parameter", async () => {
+  const { select, error, changed, listeners } = preselectFixture("?tipo=reparacion&utm_source=x");
+  await import(`../src/scripts/contact-form.ts?preselect=${++moduleId}`);
+
+  expect(select.value).toBe("reparacion");
+  expect(error.textContent).toBe("");
+  expect(changed).toEqual(["/?utm_source=x#contacto"]);
+  expect(listeners.map(([name]) => name)).toContain("click");
+});
+
+test("an unknown ?tipo= value is ignored and leaves the URL untouched", async () => {
+  const { select, changed } = preselectFixture("?tipo=not-a-real-type");
+  await import(`../src/scripts/contact-form.ts?preselect=${++moduleId}`);
+
+  expect(select.value).toBe("");
+  expect(changed).toEqual([]);
+});

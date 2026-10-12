@@ -3,6 +3,7 @@ import MainLayout from "../layouts/MainLayout.astro";
 import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
 import Services from "../components/Services.astro";
+import WebRescue from "../components/WebRescue.astro";
 import HiddenCost from "../components/HiddenCost.astro";
 import Projects from "../components/Projects.astro";
 import About from "../components/About.astro";
@@ -10,6 +11,7 @@ import Contact from "../components/Contact.astro";
 import Footer from "../components/Footer.astro";
 import { getFeaturedProjects, casePath } from "../data/projects";
 import { faqItems } from "../data/engagement";
+import { webRescueCopy } from "../data/web-rescue";
 import { siteConfig } from "../data/site";
 
 const featuredProjects = await getFeaturedProjects();
@@ -40,11 +42,50 @@ const faqSchema = {
      acceptedAnswer: { "@type": "Answer", text: item.a },
    })),
 };
+
+// Productized review/repair offer shown in the Home "Revisión web" block.
+// Only offers with a fixed public amount become schema; larger repairs are
+// quoted after the review and are not published as a price.
+const rescueSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": `${siteConfig.url}/#revision-web`,
+  name: "Revisión y reparación de webs",
+  serviceType: "Revisión y reparación de webs existentes",
+  description: webRescueCopy.lead,
+  url: `${siteConfig.url}/#revision-web`,
+  provider: { "@id": personId },
+  areaServed: [
+    { "@type": "City", name: siteConfig.location.city },
+    { "@type": "Country", name: "España" },
+  ],
+  offers: webRescueCopy.prices
+    .filter((price) => typeof price.amount === "number")
+    .map((price) =>
+      price.from
+        ? {
+            "@type": "Offer",
+            name: price.title,
+            priceCurrency: "EUR",
+            priceSpecification: {
+              "@type": "PriceSpecification",
+              minPrice: price.amount,
+              priceCurrency: "EUR",
+            },
+          }
+        : {
+            "@type": "Offer",
+            name: price.title,
+            priceCurrency: "EUR",
+            price: price.amount,
+          },
+    ),
+};
 ---
 
 <MainLayout
   title="Desarrollo web en Granada, ecommerce y B2B | FRN.Q"
-  description="Estudio independiente en Granada. Tiendas online, portales B2B, sistemas y webs profesionales para empresas: catálogo, pedidos, precios y medición."
+  description="Estudio independiente en Granada. Tiendas online, portales B2B, sistemas y webs profesionales; también reparo y mejoro webs existentes."
 >
   <script
     type="application/ld+json"
@@ -56,11 +97,17 @@ const faqSchema = {
     set:html={JSON.stringify(faqSchema)}
     slot="head"
   />
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(rescueSchema)}
+    slot="head"
+  />
 
   <Header />
   <main id="main-content">
     <Hero />
     <Services />
+    <WebRescue />
     <HiddenCost />
     <Projects />
     <About />

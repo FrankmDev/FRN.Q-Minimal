@@ -1,0 +1,348 @@
+---
+import { webRescueCopy } from "../data/web-rescue";
+---
+
+<section class="rescue" id="revision-web" aria-labelledby="rescue-title">
+  <span class="section-tag">{webRescueCopy.label}</span>
+  <div class="container">
+    <header class="rescue-header reveal">
+      <h2 id="rescue-title" class="section-title">
+        {webRescueCopy.titleLine}<br /><span class="title-mark">{webRescueCopy.titleHighlight}</span>
+      </h2>
+      <p class="rescue-lead">{webRescueCopy.lead}</p>
+    </header>
+
+    <ol class="rescue-steps reveal" aria-label="Proceso de revisión y reparación">
+      {
+        webRescueCopy.steps.map((step) => (
+          <li class="rescue-step">
+            <span class="step-num mono" aria-hidden="true">{step.num}</span>
+            <h3 class="step-title">{step.title}</h3>
+            <p class="step-desc">{step.description}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="rescue-body">
+      <ul class="rescue-prices reveal" aria-label="Ofertas de revisión y reparación">
+        {
+          webRescueCopy.prices.map((price, index) => (
+            <li class:list={["rescue-price", { "rescue-price-primary": index === 0 }]}>
+              <h3 class="price-title">{price.title}</h3>
+              <p class="price-value mono">{price.price}</p>
+              <p class="price-detail">{price.detail}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <aside class="rescue-market reveal" aria-labelledby="rescue-market-title">
+        <h3 class="market-title" id="rescue-market-title">{webRescueCopy.market.title}</h3>
+        <p class="market-lead">{webRescueCopy.market.lead}</p>
+        <ul class="market-list">
+          {webRescueCopy.market.cases.map((item) => (
+            <li><span class="market-plus" aria-hidden="true"></span>{item}</li>
+          ))}
+        </ul>
+        <p class="market-note">{webRescueCopy.market.disclaimer}</p>
+      </aside>
+    </div>
+
+    <div class="rescue-footer reveal">
+      <p class="rescue-note">{webRescueCopy.note}</p>
+      <a
+        href="#contacto"
+        class="rescue-cta"
+        data-contact-type={webRescueCopy.cta.type}
+        data-track="cta_click"
+        data-track-location="revision_web"
+        data-track-label={webRescueCopy.cta.label}
+      >
+        <span>{webRescueCopy.cta.label}</span>
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .rescue {
+    position: relative;
+    padding: clamp(var(--space-3xl), 8vw, 8rem) 0;
+  }
+
+  .rescue::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--border) 0 18px, transparent 18px 36px);
+  }
+
+  .mono { font-family: var(--font-mono); }
+
+  .rescue-header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: clamp(var(--space-xl), 5vw, var(--space-4xl));
+    margin-bottom: clamp(var(--space-2xl), 5vw, var(--space-4xl));
+  }
+
+  .rescue-header h2 {
+    order: 2;
+    margin: 0;
+    font-size: clamp(2rem, 5.7vw, 5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.065em;
+    text-align: right;
+  }
+
+  .rescue-lead {
+    order: 1;
+    max-width: 34rem;
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+    line-height: 1.55;
+  }
+
+  .rescue-steps {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-lg);
+    margin: 0 0 clamp(var(--space-2xl), 5vw, var(--space-3xl));
+    padding: 0;
+    list-style: none;
+  }
+
+  .rescue-step {
+    padding-top: var(--space-md);
+    border-top: 3px solid var(--border);
+  }
+
+  .step-num {
+    display: block;
+    margin-bottom: var(--space-md);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+  }
+
+  .step-title {
+    margin: 0 0 var(--space-sm);
+    font-size: clamp(1.125rem, 2vw, 1.4rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+  }
+
+  .step-desc {
+    max-width: 30ch;
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  .rescue-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(var(--space-xl), 4vw, var(--space-3xl));
+    align-items: start;
+  }
+
+  .rescue-prices {
+    display: grid;
+    gap: var(--space-md);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rescue-price {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding: var(--space-lg);
+    border: 3px solid var(--border);
+    background: var(--bg);
+    box-shadow: 8px 8px 0 var(--border);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .rescue-price:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0 var(--border);
+  }
+
+  .rescue-price-primary {
+    background: var(--accent);
+    color: var(--text-on-accent);
+  }
+
+  .price-title {
+    margin: 0;
+    font-size: clamp(1.125rem, 2vw, 1.375rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  .price-value {
+    margin: 0;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .price-detail {
+    margin: 0;
+    max-width: 46ch;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    opacity: 0.85;
+  }
+
+  .rescue-market {
+    padding: clamp(var(--space-lg), 3vw, var(--space-xl));
+    border: 3px solid var(--border);
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  .market-title {
+    margin: 0 0 var(--space-sm);
+    font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+  }
+
+  .market-lead {
+    margin: 0 0 var(--space-lg);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    opacity: 0.78;
+  }
+
+  .market-list {
+    display: grid;
+    gap: var(--space-sm);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .market-list li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-sm);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .market-plus {
+    flex: 0 0 auto;
+    width: 0.55rem;
+    height: 0.55rem;
+    align-self: center;
+    background: var(--accent);
+    border: 1px solid currentColor;
+  }
+
+  .market-note {
+    margin: var(--space-lg) 0 0;
+    padding-top: var(--space-md);
+    border-top: 1px solid color-mix(in srgb, var(--bg) 24%, transparent);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    opacity: 0.72;
+  }
+
+  .rescue-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-lg);
+    margin-top: clamp(var(--space-2xl), 4vw, var(--space-3xl));
+  }
+
+  .rescue-note {
+    max-width: 62ch;
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+  }
+
+  .rescue-cta {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: var(--space-xl);
+    min-height: 3.25rem;
+    padding: var(--space-sm) var(--space-lg);
+    border: 3px solid var(--border);
+    background: var(--text);
+    color: var(--bg);
+    box-shadow: 6px 6px 0 var(--accent);
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .rescue-cta:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 10px 10px 0 var(--accent);
+  }
+
+  .rescue-cta:hover span:last-child { transform: translateX(4px); }
+  .rescue-cta span:last-child { transition: transform var(--transition-fast); }
+
+  .rescue-cta:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 4px;
+  }
+
+  @media (max-width: 900px) {
+    .rescue-body {
+      grid-template-columns: 1fr;
+      gap: var(--space-xl);
+    }
+  }
+
+  @media (max-width: 760px) {
+    .rescue-header { display: block; }
+    .rescue-lead {
+      max-width: 46ch;
+      margin-bottom: var(--space-lg);
+    }
+    .rescue-header h2 {
+      font-size: clamp(2.35rem, 9vw, 4.25rem);
+      line-height: 0.9;
+      text-align: left;
+    }
+    .rescue-steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      row-gap: var(--space-xl);
+    }
+  }
+
+  @media (max-width: 540px) {
+    .rescue-steps { grid-template-columns: 1fr; gap: var(--space-md); }
+    .rescue-footer { align-items: flex-start; flex-direction: column; }
+    .rescue-cta { width: 100%; justify-content: space-between; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rescue-price, .rescue-cta, .rescue-cta span:last-child { transition: none; }
+  }
+</style>

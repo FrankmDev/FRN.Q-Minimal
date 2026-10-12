@@ -20,6 +20,7 @@ export const CONTACT_TYPES = [
   { value: "portal", label: "Portal / B2B" },
   { value: "sistema", label: "Sistema / integración" },
   { value: "web", label: "Web" },
+  { value: "reparacion", label: "Reparación / mejora web" },
   { value: "seo", label: "SEO / posicionamiento" },
   { value: "otro", label: "Otro" },
 ] as const;
@@ -32,6 +33,7 @@ export const CONTACT_TYPE_VALUES: readonly string[] = CONTACT_TYPES.map(
 
 export const CONTACT_BUDGETS = [
   { value: "", label: "Prefiero comentarlo antes" },
+  { value: "hasta-500", label: "Hasta 500 €" },
   { value: "hasta-2k", label: "Hasta 2.000 €" },
   { value: "2k-5k", label: "2.000 € – 5.000 €" },
   { value: "5k-10k", label: "5.000 € – 10.000 €" },

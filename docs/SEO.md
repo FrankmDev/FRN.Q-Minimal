@@ -67,7 +67,7 @@ No `<meta name="keywords">`. No geo meta. No fabricated ratings or reviews.
 | Page | Type | File |
 |------|------|------|
 | Every page | `Person` + `WebSite` (`Francisco Muñoz` / `FRN.Q`) | `components/SEOHead.astro` |
-| Home | Featured published-work `ItemList` + visible-content `FAQPage` | `pages/index.astro` |
+| Home | Featured published-work `ItemList` + visible-content `FAQPage` + Web Rescue `Service` (offers with public prices) | `pages/index.astro` |
 | Each `/soluciones/<slug>/` | One matching `Service`, visible-content `FAQPage` + `BreadcrumbList` (Inicio → solution) | `pages/soluciones/[slug].astro` |
 | `/casos/` | Published-work `ItemList` + `BreadcrumbList` | `pages/casos/index.astro` |
 | `/casos/<slug>/` | `CreativeWork` + `BreadcrumbList` | `pages/casos/[slug].astro` |
@@ -86,9 +86,10 @@ Google Business Profile is an external eligibility decision, not a site schema t
 | `/soluciones/b2b/` | B2B order portals, customer accounts, private catalogues/prices | Manufacturers, distributors and wholesalers with professional buyers; platform-agnostic |
 | `/soluciones/sistemas/` | ERP/CRM/system integrations and operational workflows | Data flows and internal operations; automation is a supporting capability |
 | `/casos/` | Published client/project work | Archive and navigation, not a service landing page |
-| `/soluciones/desarrollo-web/` | Corporate and custom web design/development, technical SEO, performance, accessibility and measurement | One canonical page covers national and Granada-local relevance; no city or doorway page. B2B portals stay on the B2B page, integrations on systems |
+| `/soluciones/desarrollo-web/` | Corporate and custom web design/development, repair/recovery of existing websites, technical SEO, performance, accessibility and measurement | One canonical page covers national and Granada-local relevance; no city or doorway page. B2B portals stay on the B2B page, integrations on systems |
 | `/casos/<slug>/` | Project/client/sector-specific long-tail | Each page targets its own documented project and does not claim ecommerce/B2B outcomes without a published case |
 | Home section `#sol-growth` | Web corporativa & SEO overview, linking to the canonical page | Remains the fourth commercial area; the dedicated route carries the search intent |
+| Home section `#revision-web` | Web review and repair (WordPress, Elementor, WooCommerce), local Granada business use cases | A single productized entry block on the Home, not a separate route; repair intent folds into the corporate-web route |
 
 Each published case has a unique, factual `seo.title` and `seo.description`. Public case routes and archive entries include `status: live` plus authorised `in-development` entries (`publicPreview: true`). `kingbelt` sets `serviceArea: ecommerce` and `emilio-faraoni` sets `serviceArea: b2b`, so the matching solution routes list them as evidence with a contextual solution link. `/soluciones/desarrollo-web/` adds corporate/web/website cases (including `asercord-energia`, `cien-mares`, `lucia-millan-psicologia`, `wanda-animalart` and `ilifielt`) as evidence by `category` without asserting an unverified `serviceArea`; those cases link back to it from their own detail page.
 
@@ -116,6 +117,18 @@ Each published case has a unique, factual `seo.title` and `seo.description`. Pub
 **READY FOR INDEXING / FROZEN.** Verified 2026-09-28 (base surface), re-verified 2026-10-08 (corporate-web route) and 2026-10-10 (case media refresh). The 2026-10-11 content/SEO pass broadened the web offer without changing the Home H1 or composition, realigned solution metadata and added corporate-web typologies and contact events. The closure audit made measurement/editing conditional on scope, labelled in-development solution evidence, identified GRN Urban as FRN.Q's own product/SEO laboratory and corrected route-context, consent, 429 and conversion-accounting issues. Analytics still has no external provider; see `DEVELOPMENT.md` for activation and consent requirements.
 
 Verification: `bun test` (38 passing, including offline enhanced-submit flows), `bun run check` (0 diagnostics) and `bun run build` (19 static pages). The commercial sitemap contains 16 URLs; output checks cover unique metadata, apex canonicals, robots, one H1 per page, 55 valid JSON-LD blocks, 23 matching FAQ question/answer pairs, internal routes/fragments, an exact 19-path analytics allowlist and distinct solution CTA placements. CSS, scoped styles, assets, API/contract, legal pages, domain configuration and the Home/Hero source remain unchanged in the closure audit; no pixel-identical geometry is asserted after copy changes. The existing OG image dimensions were verified in the preceding output audit and the assets were not changed. No new routes, blog or doorway pages were added. Production email delivery, authenticated portal data, Search Console indexing, field Core Web Vitals and backlinks remain external verification; the portal's canonical HTTPS failure is documented in `PRODUCT.md`.
+
+### Web Rescue and Granada pass — 2026-10-12
+
+Business Plan & Pricing V3.1 update. The Home keeps its composition, Hero H1 ("Ecommerce y B2B") and visual system, and gains one block: **Revisión y reparación web** (`#revision-web`) with the public Web Rescue offers (Diagnóstico Web 360 99 €, landing repair from 299 €, larger repairs quoted after the review), the process Diagnóstico → Presupuesto → Reparación → Verificación and a discreet Granada use-case block. The Hero subtext now states the three outcomes (presencia digital, canales de venta, sistemas conectados) without income guarantees.
+
+- Home metadata: title unchanged; description now names the repair offer.
+- New `Service` (`#revision-web`) on Home with `Offer`s for the two public prices; visible content matches the schema. No rating, review or outcome claims.
+- `/soluciones/desarrollo-web/` title/description/intro, typologies, capabilities and FAQ add repair/recovery of existing sites (WordPress, Elementor, WooCommerce) and reference the diagnosis by name.
+- Contact contract adds the type `reparacion` ("Reparación / mejora web") and the budget "Hasta 500 €". The Home CTA "Revisar mi web" opens the form with that type preselected; a `?tipo=<known value>` deep link does the same and strips the parameter. The corporate-web typologies section links to the same offer with `/?tipo=reparacion#contacto`. The API still validates the value; no money or PII is added to analytics.
+- No new routes, city pages or sector pages were added. The sitemap still contains 16 URLs.
+
+Verification: `bun test` (40 passing, including two type-preselection cases), `bun run check` (0 diagnostics across 38 files) and `bun run build` (19 static pages). Output checks: one H1 per page, unique titles/descriptions within limits, absolute apex canonicals, no broken internal links or fragments, `#revision-web` present, 56 valid JSON-LD blocks and 25 matching FAQ question/answer pairs. Responsive, accessibility and form-flow checks are code-level; there is no browser automation by policy.
 
 ### Host and redirect audit — 2026-10-11
 

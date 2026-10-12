@@ -10,6 +10,7 @@ import {
   type SolutionPage,
 } from "../../data/solutions";
 import { siteConfig } from "../../data/site";
+import { webRescueCopy } from "../../data/web-rescue";
 
 export function getStaticPaths() {
   return solutionPages.map((solution) => ({
@@ -256,6 +257,15 @@ const faqSchema = {
                 </li>
               ))}
             </ul>
+            <a
+              class="solution-contact"
+              href={`/?tipo=${webRescueCopy.cta.type}#contacto`}
+              data-track="cta_click"
+              data-track-location="solution_web_types"
+              data-track-slug={solution.slug}
+            >
+              {webRescueCopy.cta.label} <span aria-hidden="true">→</span>
+            </a>
           </div>
         </section>
       )}

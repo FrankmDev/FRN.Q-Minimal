@@ -99,19 +99,23 @@ export const serviceAreas: ServiceArea[] = [
     id: "growth",
     title: "Web corporativa & SEO",
     short:
-      "Web profesional o corporativa, con posicionamiento y medición.",
+      "Web nueva, reparada o mejorada: presencia, posicionamiento y medición.",
     audience: "Empresas y profesionales que necesitan presencia web",
     linkLabel: "Cuéntame tu web",
     problems: [
       "Web que no comunica lo que haces ni genera consultas",
+      "Una web antigua, lenta o rota que conviene recuperar antes de rehacerla",
       "No aparecer en búsquedas locales o sectoriales",
       "Tomar decisiones sin datos fiables de tráfico y conversión",
     ],
     includes: [
       "Diseño y desarrollo web, frontend y accesibilidad",
-      "SEO técnico y local, arquitectura y contenidos",
+      "Reparación, recuperación y ampliación de webs existentes",
+      "WordPress, Elementor y WooCommerce: diagnóstico, ajustes y mejoras",
+      "SEO técnico y local, Search Console y Perfil de Empresa en Google",
       "Analítica, eventos y medición de conversión",
       "CRO, rendimiento y mejora continua",
+      "Apoyo de IA en contenido y mantenimiento, con revisión manual",
     ],
   },
 ];
@@ -122,5 +126,5 @@ export const servicesCopy = {
   titleLine: "Tiendas, portales",
   titleHighlight: "y sistemas.",
   lead:
-    "Tiendas online, portales de pedidos, sistemas a medida y webs profesionales para empresas. Trabajo la venta y la operación, y también la web que presenta tu negocio y genera consultas.",
+    "Tiendas online, portales de pedidos, sistemas a medida y webs profesionales para empresas. Trabajo la venta y la operación; también la web que presenta tu negocio y, si ya existe, su reparación y mejora.",
 } as const;

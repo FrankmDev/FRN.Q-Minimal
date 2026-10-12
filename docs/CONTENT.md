@@ -24,6 +24,7 @@ All editable commercial copy lives in `src/data/*`:
 | `navigation.ts` | Primary navigation and header CTA |
 | `services.ts` | The four commercial areas in priority order and their section copy |
 | `solutions.ts` | The four focused solution pages: unique metadata, audience, process, integration scope, page-specific blocks (`webDetails`, `b2bDetails`), evidence selection, FAQs and cross-links |
+| `web-rescue.ts` | The productized Web Rescue block: process steps, public entry offers, Granada use cases and the "Revisar mi web" CTA (form type `reparacion`) |
 | `engagement.ts` | Pricing/engagement FAQ, also used in FAQ schema |
 | `contact.ts` | Contact methods |
 
@@ -93,14 +94,15 @@ Both **KingBelt** and **Emilio Faraoni** are published with status `in-developme
 
 - **Philosophy:** scope-based pricing. Ranges are orientation, never a quote. No guaranteed ROI.
 - **Engagement:** scope agreed after discovery; the on-page FAQ describes pricing and collaboration.
-- **Budget options:** `CONTACT_BUDGETS` in `src/data/contact-contract.ts` (e.g. "Prefiero comentarlo antes", "Hasta 2.000 €" … "Más de 10.000 €").
-- **Project types:** `CONTACT_TYPES` (ecommerce, portal, sistema → "Sistema / integración", web, seo, otro).
+- **Web Rescue:** the only productized public prices — Diagnóstico Web 360 (99 €, discounted from an eligible repair hired within 30 days) and landing repair (from 299 €); larger repairs are quoted after the review. They are published on the Home `#revision-web` block and in the corporate-web FAQ.
+- **Budget options:** `CONTACT_BUDGETS` in `src/data/contact-contract.ts` (e.g. "Prefiero comentarlo antes", "Hasta 500 €", "Hasta 2.000 €" … "Más de 10.000 €").
+- **Project types:** `CONTACT_TYPES` (ecommerce, portal, sistema → "Sistema / integración", web, reparacion → "Reparación / mejora web", seo, otro).
 
 The contact form asks for context, not commitment. It must never pressure or imply scarcity.
 
 ## Vocabulary
 
-**Use:** ecommerce, Shopify, catálogo, producto, pedidos, clientes profesionales, precios privados, portal, workflow, integración, datos, medición, conversión, diseño y desarrollo web a medida, web corporativa, SEO técnico/local, analítica, accesibilidad, rendimiento.
+**Use:** ecommerce, Shopify, catálogo, producto, pedidos, clientes profesionales, precios privados, portal, workflow, integración, datos, medición, conversión, diseño y desarrollo web a medida, web corporativa, SEO técnico/local, analítica, accesibilidad, rendimiento, reparación de webs, recuperación y ampliación, WordPress, Elementor, WooCommerce, Search Console, Perfil de Empresa en Google.
 
 **Avoid:** "webs premium", "cero plantillas" as the main pitch, "infraestructura premium", "legados digitales", "tecnología que no caduca", "seguridad bancaria", "ROI garantizado", invented metrics, guarantees without evidence, artificial exclusivity, simplistic attacks on WordPress/plugins, and "nosotros" implying a team.
 
@@ -123,9 +125,9 @@ Edit shared copy in `src/data/*.ts`; edit unique section copy in its component.
 
 | Area | Current | Future |
 |------|---------|--------|
-| Commercial surfaces | Single Spanish site; `/`, four `/soluciones/` routes and `/casos/` present | Further routes only with distinct intent and useful evidence |
+| Commercial surfaces | Single Spanish site; `/`, four `/soluciones/` routes and `/casos/` present; Home includes the Web Rescue block | Further routes only with distinct intent and useful evidence |
 | Cases | 10 cases: 7 live plus 3 explicitly labelled in-development references | Add verified UI captures and measurable outcomes as evidence becomes available |
-| Pricing | Orientation ranges in the form | No fixed public price list is planned |
+| Pricing | Orientation ranges in the form; Web Rescue entry offers are the only public productized prices | No full public price list is planned |
 | i18n | Spanish only | Not planned; `.studio` is the English surface |
 
 Do not document future content as shipped.

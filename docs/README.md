@@ -2,7 +2,7 @@
 
 Source of truth for strategy, content, architecture and visual system of the Spanish commercial surface of FRN.Q. Code is the first truth; these documents are the second.
 
-**Status: CURRENT.** The homepage composition and visual identity remain frozen. The organic-search scope includes four static solution pages: ecommerce, B2B, systems/integrations and corporate web (`desarrollo-web`). Any further route needs distinct search intent and useful evidence-led content; no city or doorway pages.
+**Status: CURRENT.** The homepage keeps its visual identity and gains a productized **Revisión y reparación web** block (`#revision-web`); the organic-search scope includes four static solution pages: ecommerce, B2B, systems/integrations and corporate web (`desarrollo-web`), the last also covering repair/recovery of existing sites. Any further route needs distinct search intent and useful evidence-led content; no city or doorway pages.
 
 **Constraint:** no browser automation. Do not use Playwright, Puppeteer or any similar tool for screenshots or browser inspection. Work is code-only (`bun run build`).
 

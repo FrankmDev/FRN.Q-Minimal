@@ -2,7 +2,7 @@
 
 ## What this is
 
-frnq.es is the Spanish **commercial surface** of FRN.Q, the independent digital practice of **Francisco Muñoz** (Granada, Spain). It is a static Astro site whose job is to explain what FRN.Q solves, show published work, and convert interest into a conversation. The homepage summarizes the offer; four focused solution routes cover distinct commercial search intents.
+frnq.es is the Spanish **commercial surface** of FRN.Q, the independent digital practice of **Francisco Muñoz** (Granada, Spain). It is a static Astro site whose job is to explain what FRN.Q solves, show published work, and convert interest into a conversation. The homepage summarizes the offer, adds a productized **Revisión y reparación web** block for businesses that already have a website, and links four focused solution routes that cover distinct commercial search intents.
 
 The professional/technical portfolio lives separately at **frnq.studio** (English) and is linked externally as `STUDIO ↗` everywhere (header, hero, mobile menu, contact and footer). HABLEMOS is the only highlighted CTA.
 
@@ -27,7 +27,7 @@ See `POSITIONING.md` for the authoritative business definition and language rule
 6. **Capabilities as means.** Design, frontend, SEO, analytics, CRO, accessibility, performance and integrations support the commercial areas; they are never sold as the headline.
 7. **Simplicity over cleverness.** Static Astro, minimal JS, CSS-driven motion, no unnecessary runtime.
 8. **Performance and accessibility are requirements**, not aspirations.
-9. **Keep the home identity stable.** The existing home composition, visual identity and shared tokens remain frozen. Focused SEO routes reuse the existing design language; do not redesign the commercial surface.
+9. **Keep the home identity stable.** The existing home visual identity and shared tokens remain frozen; new commercial blocks reuse the existing design language and do not redesign the surface.
 10. **Progressive enhancement.** The site works without JS; JS adds polish.
 
 ## Commercial model
@@ -39,7 +39,7 @@ The hierarchy (see `POSITIONING.md`):
 3. SISTEMAS & INTEGRACIONES
 4. WEB, SEO & GROWTH
 
-Engagement is either a closed project, a continuous (non-retainer) collaboration, or a discovery session. Pricing is scope-specific and agreed after discovery; public numbers are orientation only.
+Engagement is either a closed project, a continuous (non-retainer) collaboration, or a discovery session. Pricing is scope-specific and agreed after discovery; public numbers are orientation only. The **Web Rescue** entry offers (Diagnóstico Web 360 at 99 €, discounted from an eligible repair within 30 days, and landing repair from 299 €) are the only productized public prices; larger repairs and every other project are quoted after discovery.
 
 ## What frnq.es is not
 
@@ -52,22 +52,23 @@ Engagement is either a closed project, a continuous (non-retainer) collaboration
 
 ## Roadmap
 
-**Status: CURRENT.** The homepage composition is frozen. The current organic-search scope includes four static solution pages supported by distinct intent and enough factual scope to explain the services. No redesign, city doorway pages or additional routes without separate evidence.
+**Status: CURRENT.** The homepage keeps its visual identity and adds one commercial block (Web Rescue). The organic-search scope includes four static solution pages supported by distinct intent and enough factual scope to explain the services. No redesign, city doorway pages or additional routes without separate evidence.
 
 ### COMPLETE — Spanish commercial surface
 
-- Single-page composition: Hero → Solutions → Operation → Cases → Studio → Contact, plus Footer.
-- Content driven by `src/data/*`: `site`, `navigation`, `services`, `solutions`, `contact`, `contact-contract`, `projects`, `engagement`.
+- Single-page composition: Hero → Solutions → Web Rescue (Revisión web) → Operation → Cases → Studio → Contact, plus Footer.
+- Content driven by `src/data/*`: `site`, `navigation`, `services`, `solutions`, `web-rescue`, `contact`, `contact-contract`, `projects`, `engagement`.
 - Contact form with validation contract and Aviso legal / Privacidad pages under `/legal/`.
 - Documentation set in `docs/`.
 - frnq.studio linked externally as `STUDIO ↗`.
 
-### CURRENT — Search-intent solution pages
+### CURRENT — Web Rescue and search-intent solution pages
 
+- **Revisión y reparación web** (`src/data/web-rescue.ts` + `src/components/WebRescue.astro`, Home `#revision-web`): Diagnóstico Web 360 (99 €, descontable), Reparación de landing (desde 299 €) and larger repairs quoted after the review; process Diagnóstico → Presupuesto → Reparación → Verificación; a discreet Granada use-case block. The CTA "Revisar mi web" goes to the contact form with the type `reparacion` preselected.
 - `/soluciones/ecommerce/` — ecommerce and Shopify development for D2C businesses.
 - `/soluciones/b2b/` — customer portals, private catalogues/pricing and B2B orders.
 - `/soluciones/sistemas/` — business-system integrations and operational workflows.
-- `/soluciones/desarrollo-web/` — corporate and custom web design/development, technical SEO, performance, accessibility and measurement, with national scope and natural Granada relevance on one canonical page.
+- `/soluciones/desarrollo-web/` — corporate and custom web design/development plus repair/recovery of existing websites (WordPress, Elementor, WooCommerce), technical SEO, performance, accessibility and measurement, with national scope and natural Granada relevance on one canonical page. Its typologies section links back to the Home Web Rescue offer with the type `reparacion` preselected.
 - Pages explain scope, audiences, typologies, capabilities, process, deliverables/maintenance, integrations and FAQs. They state clearly when no directly related case has been published.
 - No separate `/soluciones/web-seo/` or city page is created: those intents fold into the corporate-web route to avoid duplication.
 

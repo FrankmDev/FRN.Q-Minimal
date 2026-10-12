@@ -38,6 +38,7 @@ src/
 │   ├── Header.astro               # sticky nav; anchors + STUDIO ↗ (desktop, mobile menu)
 │   ├── Hero.astro                 # intro, solution index, STUDIO ↗ link
 │   ├── Services.astro             # four commercial areas from data/services
+│   ├── WebRescue.astro            # Web Rescue block (Home): review/repair offers, Granada use cases
 │   ├── HiddenCost.astro           # frequent-operations problems (symptoms)
 │   ├── Projects.astro             # home cases teaser from the collection
 │   ├── About.astro                # studio intro, capabilities, process
@@ -53,6 +54,7 @@ src/
 │   ├── navigation.ts              # navItems, headerCta
 │   ├── services.ts                # serviceAreas (4, priority order) + servicesCopy
 │   ├── solutions.ts               # copy, metadata, FAQs, process and page-specific blocks for 4 solution routes
+│   ├── web-rescue.ts              # Web Rescue copy: process, public entry offers, Granada use cases, CTA type
 │   ├── engagement.ts              # pricing/engagement FAQ (also used for FAQ schema)
 │   ├── contact.ts                 # contact methods
 │   ├── contact-contract.ts        # shared form contract (limits, types, budgets)
@@ -95,7 +97,7 @@ src/
 
 | Path | File | Notes |
 |------|------|-------|
-| `/` | `pages/index.astro` | Hero → Services → HiddenCost (Operación) → Projects → About → Contact |
+| `/` | `pages/index.astro` | Hero → Services → WebRescue (Revisión web) → HiddenCost (Operación) → Projects → About → Contact |
 | `/soluciones/<slug>/` | `pages/soluciones/[slug].astro` | Static route from `data/solutions.ts`; page-specific `Service`, Inicio → solution `BreadcrumbList`, visible FAQ + `FAQPage` |
 | `/casos/` | `pages/casos/index.astro` | Published-case archive (`getPublishedProjects()`), `ItemList` + `BreadcrumbList` |
 | `/casos/<slug>/` | `pages/casos/[slug].astro` | `getStaticPaths` from published entries, `CreativeWork` schema, next-case link |
@@ -122,6 +124,7 @@ data/site.ts (portfolioLink)     -->  Hero.astro, Header/Footer, Contact.astro
 data/site.ts (email = info@frnq.studio)     --> footer, contact methods, legal pages
            (internalEmail = info@frnq.studio) --> api/contact.ts delivery mailbox
 data/contact-contract.ts         -->  Contact.astro, scripts/contact-form.ts, api/contact.ts
+data/web-rescue.ts               -->  WebRescue.astro + index.astro (Home Service schema) + solutions.ts (corporate-web FAQ)
 scripts/analytics.ts             -->  MainLayout.astro (all pages) + scripts/contact-form.ts
 ```
 
@@ -139,7 +142,7 @@ scripts/analytics.ts             -->  MainLayout.astro (all pages) + scripts/con
 
 ## CURRENT vs FUTURE
 
-**Status: CURRENT.** The home composition and visual identity are frozen; four intent-led solution routes extend the existing static surface.
+**Status: CURRENT.** The home composition keeps its visual identity and gains one commercial block (Web Rescue); four intent-led solution routes extend the existing static surface.
 
 | Area | Current | Future |
 |------|---------|--------|

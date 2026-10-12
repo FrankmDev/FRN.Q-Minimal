@@ -8,7 +8,7 @@ frnq.es is the **Spanish commercial surface** of FRN.Q, the independent digital 
 
 It is **not** a translation of frnq.studio, **not** an agency, and has **no** language switch or Business Mode.
 
-**Status: CURRENT.** The existing home composition and visual identity remain frozen. The organic-search scope now includes four static solution pages for ecommerce, B2B, systems/integrations and corporate web (`desarrollo-web`); add further routes only when distinct search intent and useful evidence-led content justify them. No city or doorway pages.
+**Status: CURRENT.** The home visual identity remains frozen and now includes one added commercial block: **Revisión y reparación web** (Web Rescue, `#revision-web`) with public entry offers (Diagnóstico Web 360 99 €, landing repair from 299 €) and a discreet Granada use-case block. The organic-search scope includes four static solution pages for ecommerce, B2B, systems/integrations and corporate web (`desarrollo-web`, which also covers repair/recovery of existing sites); add further routes only when distinct search intent and useful evidence-led content justify them. No city or doorway pages.
 
 - Read `docs/POSITIONING.md` for the business definition and language rules.
 - Read `docs/PRODUCT.md` for principles and roadmap.
@@ -32,10 +32,10 @@ bun test         # contact API tests
 
 ```
 src/
-├── components/   Header, Hero, Services, HiddenCost, Projects, About, Contact, Footer, SEOHead, CustomCursor, RevealObserver
+├── components/   Header, Hero, Services, WebRescue, HiddenCost, Projects, About, Contact, Footer, SEOHead, CustomCursor, RevealObserver
 ├── content/projects/*.md   case studies (slug = filename)
 ├── content.config.ts
-├── data/         site, navigation, services, solutions, engagement, contact, contact-contract, projects
+├── data/         site, navigation, services, solutions, web-rescue, engagement, contact, contact-contract, projects
 ├── layouts/MainLayout.astro
 ├── pages/        index, soluciones/[slug], casos/index, casos/[slug], legal/index, legal/privacidad, 404
 ├── scripts/      contact-form

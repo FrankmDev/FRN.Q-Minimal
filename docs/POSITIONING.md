@@ -1,6 +1,6 @@
 # POSITIONING — frnq.es
 
-> **Status:** CURRENT / FROZEN. This is the authoritative business definition for the Spanish commercial surface.
+> **Status:** CURRENT. Authoritative business definition for the Spanish commercial surface. The visual identity and shared system are frozen; the current surface includes one productized Home block, **Revisión y reparación web** (Web Rescue).
 
 ## Definition
 
@@ -19,6 +19,8 @@ Decision-makers in small and medium businesses who need to sell, order or operat
 - Businesses with professional customers (distribution, wholesale, B2B) who manage orders, private prices and accounts by hand.
 - Teams whose data and processes live in disconnected tools.
 - Small businesses, local businesses and independent professionals who need a trustworthy website, clear services and accessible contact, whether or not they sell online.
+- Businesses with a website already in place that needs repair, recovery or extension rather than a full rebuild (WordPress, Elementor, WooCommerce).
+- Granada businesses in tourism, accommodation, restaurants, bars, venues and retail that need a working digital presence, a direct sales channel and connected systems.
 
 They buy **outcomes and reduced friction**, not technology. They care about their process, their customers and what they can measure.
 
@@ -27,7 +29,7 @@ They buy **outcomes and reduced friction**, not technology. They care about thei
 1. **ECOMMERCE & SHOPIFY** — D2C selling: catalogue, product, checkout, measurement, connected operations.
 2. **PORTALES & SISTEMAS B2B** — professional customers: private prices, orders, accounts, roles, portals.
 3. **SISTEMAS & INTEGRACIONES** — integrations, workflows, connected data, internal tools. Automation is one capability inside this area, never a separate specialisation.
-4. **WEB, SEO & GROWTH** (shown publicly as "Web corporativa & SEO") — corporate web, technical/local SEO, analytics and conversion.
+4. **WEB, SEO & GROWTH** (shown publicly as "Web corporativa & SEO") — corporate web, repair/recovery and extension of existing websites, technical/local SEO, analytics and conversion.
 
 Design (UI/UX), frontend development, web, technical/local SEO, analytics, CRO, accessibility, performance and integrations are **capabilities** used across those areas. They are supporting means, never the headline or a separate top-level service. Do not promise every capability on every engagement.
 
@@ -47,7 +49,18 @@ Three durable promises, all defensible:
 - B2B portals and private commerce: customer access, roles, private catalogues, pricing and ordering.
 - Business systems: internal tools, dashboards, configurators, integrations and automation.
 - High-performance websites with technical/local SEO, analytics and conversion work.
+- Repair, recovery and extension of existing websites (WordPress, Elementor, WooCommerce), with technical/local SEO, Search Console and Google Business Profile.
 - Connected data and measurement across the tools a business already uses.
+
+## Web Rescue (revisión y reparación web)
+
+A productized, low-friction entry point for businesses that already have a website:
+
+- **Diagnóstico Web 360 — 99 €.** An initial, scoped review: what fails, what can be improved and where to start. Discounted from an eligible repair hired within the next 30 days. It is **not** an unlimited audit.
+- **Reparación de landing — desde 299 €.** Corrections and improvements on a single page.
+- **Webs mayores — presupuesto.** Quoted after the review, according to incidents and complexity.
+
+Process: **Diagnóstico → Presupuesto → Reparación → Verificación**. The scope and price are agreed in writing before any repair. This block is published on the Home page and is the only public, productized part of the web offer; the rest is quoted after discovery. It is not a new specialisation and does not replace the four commercial areas.
 
 ## What FRN.Q does NOT promise
 
@@ -89,14 +102,15 @@ frnq.studio  English, technical  →  shows craft and evidence (external link)
 
 - Capability areas are **not** price tiers.
 - Prices are scope-specific. No fixed public price list for systems or B2B portals.
+- The only public, productized numbers are the Web Rescue entry offers (Diagnóstico Web 360 at 99 € and landing repair from 299 €). Larger repairs and every other project are quoted after discovery.
 - Orientation ranges may be shown only as an invitation to a conversation, never as a quote.
 - Models: closed project, continuous collaboration (no mandatory retainer), discovery session.
 - The contact flow asks for context, not commitment.
 
 ## Current status
 
-- **CURRENT.** The business definition, hierarchy and existing home composition remain frozen.
-- The organic-search scope includes static solution routes for Ecommerce & Shopify, Portales & Sistemas B2B, Sistemas & Integraciones and Web corporativa & SEO (`/soluciones/desarrollo-web/`, covering diseño y desarrollo web a medida, including natural Granada relevance on one canonical page); these deepen the existing offer without creating new specialisations or city doorway pages.
+- **CURRENT.** The business definition, hierarchy and existing home composition remain frozen, with one addition: a Home **Revisión y reparación web** block (`#revision-web`) with the Web Rescue entry offers and a discreet Granada use-case block (hotels, accommodation, restaurants, bars, venues and retail).
+- The organic-search scope includes static solution routes for Ecommerce & Shopify, Portales & Sistemas B2B, Sistemas & Integraciones and Web corporativa & SEO (`/soluciones/desarrollo-web/`, covering diseño y desarrollo web a medida plus repair/recovery of existing websites, including natural Granada relevance on one canonical page); these deepen the existing offer without creating new specialisations or city doorway pages.
 - Further routes require distinct search intent and useful evidence-led content; no city doorway pages.
 - Public in-development previews require explicit editorial approval and visible status. Only label KingBelt, Emilio Faraoni or Ilifielt as completed after operational acceptance and verifiable evidence.
 - No language switch, no "Business Mode", no fabricated metrics, guarantees, testimonials or exclusivity language.

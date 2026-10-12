@@ -23,6 +23,7 @@ An optional dark theme inverts the paper and ink roles while retaining the same 
 - Give the Home negative space and visible pacing. Avoid repeating the same capability in the hero, service cards, studio introduction and contact area.
 - Let numerals, contrast, image crops and large type carry the visual weight; prose is supporting information.
 - Services remain four compact areas. Operational friction is a visual comparison, not a long problem catalogue.
+- The **Revisión y reparación web** (Web Rescue) block keeps the same ruled headings, mono labels, hard frames and yellow accent as the rest of the Home; it introduces no second visual identity and stays a single compact section.
 - Cases remain factual and sourced from Content Collections. The Home shows a small selection; `/casos/` holds the full case studies.
 - The studio section introduces the person and a four-step process at most. Contact is the close: keep the real form, reduce surrounding promotion.
 - Use a marquee only when it acts as a deliberate graphic gesture. It is not a required section device.
@@ -52,5 +53,5 @@ No false metrics, guarantees, testimonials, availability claims or invented outc
 
 - Structure remains semantic, keyboard-operable and understandable without colour, hover or layout position.
 - Preserve clear focus states, accessible names, form labels and reduced-motion support.
-- The existing Home composition remains frozen. The four SEO solution routes reuse the same typography, palette, hard-edge language and tokens; they do not introduce a second visual identity or redesign the commercial surface.
+- The Home keeps its visual identity and adds one commercial block (Web Rescue). The four SEO solution routes reuse the same typography, palette, hard-edge language and tokens; they do not introduce a second visual identity or redesign the commercial surface.
 - frnq.es and frnq.studio are separate surfaces. frnq.studio is linked everywhere as `STUDIO ↗` (secondary textual link); HABLEMOS is the only highlighted CTA. Do not merge or translate its visual system.

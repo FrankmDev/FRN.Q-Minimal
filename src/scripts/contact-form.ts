@@ -65,6 +65,12 @@ export function responseErrorReason(status: number, hasFieldErrors: boolean): st
   return hasFieldErrors ? "validation" : "request_failed";
 }
 
+/** Accepts only a known contact type, so a crafted `?tipo=` value cannot
+ * preselect an option the server would reject. */
+export function resolvePreselectType(value: string | null | undefined): string | undefined {
+  return typeof value === "string" && CONTACT_TYPE_VALUES.includes(value) ? value : undefined;
+}
+
 export function isConfirmedSubmission(result: ContactResponse, submissionId: string): boolean {
   return result.success === true && result.ref === submissionId && CONTACT_SUBMISSION_ID_PATTERN.test(submissionId);
 }
@@ -323,7 +329,7 @@ function initContactForm(): void {
         window.clearTimeout(timeoutId);
         submitBtn.disabled = false;
         form.removeAttribute("aria-busy");
-        if (submitText) submitText.textContent = "Enviar proyecto";
+        if (submitText) submitText.textContent = "Enviar solicitud";
         formLoading?.classList.add("hidden");
         formLoading?.classList.remove("flex");
       }
@@ -380,9 +386,57 @@ export function handleReturnState(): void {
   window.history.replaceState(null, "", window.location.pathname + (query ? `?${query}` : "") + window.location.hash);
 }
 
+function applyContactType(type: string): void {
+  const select = document.getElementById("type") as HTMLSelectElement | null;
+  if (!select) return;
+  select.value = type;
+
+  select.closest("[data-field-id]")?.classList.remove("is-invalid");
+  const errorEl = document.getElementById("type-error");
+  if (errorEl) {
+    errorEl.textContent = "";
+    errorEl.classList.add("hidden");
+  }
+  select.removeAttribute("aria-invalid");
+}
+
+let preselectBound = false;
+
+/**
+ * Preselects the query type carried by a `?tipo=` link and by any CTA with
+ * `data-contact-type` (the Home "Revisar mi web" action). It only accepts
+ * known contract values, never blocks navigation and never weakens the form
+ * validations: the API still validates the submitted type.
+ */
+export function handleContactTypePreselect(): void {
+  if (typeof window === "undefined" || typeof document === "undefined") return;
+
+  const params = new URLSearchParams(window.location.search);
+  const fromQuery = resolvePreselectType(params.get("tipo"));
+  if (fromQuery) {
+    applyContactType(fromQuery);
+    params.delete("tipo");
+    const query = params.toString();
+    window.history.replaceState(null, "", window.location.pathname + (query ? `?${query}` : "") + window.location.hash);
+  }
+
+  if (preselectBound) return;
+  preselectBound = true;
+
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const trigger = target.closest("[data-contact-type]");
+    if (!trigger) return;
+    const type = resolvePreselectType(trigger.getAttribute("data-contact-type"));
+    if (type) applyContactType(type);
+  });
+}
+
 function boot(): void {
   initContactForm();
   handleReturnState();
+  handleContactTypePreselect();
 }
 
 if (typeof document !== "undefined" && document.readyState === "loading") {
