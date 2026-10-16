@@ -51,7 +51,7 @@ Before designing anything, inspect the real implementation. Read in this order:
 3. `src/components/Header.astro` — logo badge, bracket nav, theme toggle, yellow
    progress bar and mobile menu.
 4. `src/components/Services.astro` — web-first accent feature plate followed by
-   the three other service areas as a ruled index.
+   the three other service areas as offset-shadow plates on a three-column grid.
 5. `src/components/WebRescue.astro` — ruled process, offset-shadow price plates,
    inverted market panel.
 6. `src/components/HiddenCost.astro` — two-sided comparison, accent plus markers.

@@ -2,8 +2,9 @@
 import { serviceAreas, servicesCopy, type ServiceArea } from "../data/services";
 import { getSolutionForService, solutionPath } from "../data/solutions";
 
-// The first area leads the section as the priority feature plate; the rest
-// follow as a ruled commercial index. Same data, deliberate scale shift.
+// The first area leads the section as the priority accent feature plate; the
+// rest follow as offset-shadow paper plates on a three-column grid. Same data,
+// same devices, deliberate scale shift.
 const [feature, ...rest] = serviceAreas;
 
 const hrefFor = (id: string) => {
@@ -60,22 +61,22 @@ const hrefFor = (id: string) => {
             <div class="row-head">
               <span class="row-audience mono">{service.audience}</span>
               <h3 class="row-title" id={`sol-${service.id}-title`}>{service.title}</h3>
-              <a
-                class="row-link"
-                href={hrefFor(service.id)}
-                aria-label={`${service.linkLabel}: ${service.title}`}
-                data-track="cta_click"
-                data-track-location="home_services"
-                data-track-slug={service.id}
-              >
-                {service.linkLabel}
-                <span aria-hidden="true">→</span>
-              </a>
             </div>
             <div class="row-copy">
               <p class="row-problem">{service.problem}</p>
               <p class="row-desc">{service.short}</p>
             </div>
+            <a
+              class="row-link"
+              href={hrefFor(service.id)}
+              aria-label={`${service.linkLabel}: ${service.title}`}
+              data-track="cta_click"
+              data-track-location="home_services"
+              data-track-slug={service.id}
+            >
+              {service.linkLabel}
+              <span aria-hidden="true">→</span>
+            </a>
           </li>
         ))
       }
@@ -111,18 +112,21 @@ const hrefFor = (id: string) => {
 
   .mono { font-family: var(--font-mono); }
 
+  /* Header metrics are shared with the other Home section headers: title
+     capped at 4.5rem and lead at 26rem so the longest marked line still
+     leaves the description enough room on wide viewports. */
   .services-header {
     display: flex;
     align-items: end;
     justify-content: space-between;
-    gap: clamp(var(--space-xl), 5vw, var(--space-4xl));
+    gap: clamp(var(--space-xl), 4vw, var(--space-3xl));
     margin-bottom: clamp(var(--space-2xl), 5vw, var(--space-4xl));
   }
 
   .services-header h2 {
     order: 2;
     margin: 0;
-    font-size: clamp(2rem, 5.7vw, 5rem);
+    font-size: clamp(2rem, 5vw, 4.5rem);
     font-weight: 800;
     line-height: 0.95;
     letter-spacing: -0.065em;
@@ -131,7 +135,7 @@ const hrefFor = (id: string) => {
 
   .services-lead {
     order: 1;
-    max-width: 29rem;
+    max-width: 26rem;
     margin: 0;
     color: var(--text-secondary);
     font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
@@ -210,22 +214,30 @@ const hrefFor = (id: string) => {
     opacity: 0.82;
   }
 
+  /* Card CTA: outlined control plate at rest, accent plate on hover. The
+     highlighted site CTA (HABLEMOS) keeps the ink fill and accent shadow, so
+     these stay clearly secondary. */
   .feature-link {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: var(--space-sm);
-    margin-top: var(--space-sm);
-    padding-bottom: 0.15rem;
-    border-bottom: 2px solid currentColor;
+    justify-content: space-between;
+    gap: var(--space-md);
+    align-self: stretch;
+    max-width: 22rem;
+    margin-top: var(--space-md);
+    padding: 0.7rem var(--space-md);
+    border: 2px solid currentColor;
+    color: inherit;
+    font-family: var(--font-mono);
     font-size: 0.8125rem;
     font-weight: 800;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    transition: gap var(--transition-fast);
+    transition: background-color var(--transition-fast), color var(--transition-fast);
   }
 
   .feature-link span { transition: transform var(--transition-fast); }
-  .service-feature:hover .feature-link { gap: var(--space-md); }
+  .feature-link:hover { background: var(--text-on-accent); color: var(--accent); }
   .feature-link:hover span { transform: translateX(4px); }
   .feature-link:focus-visible { outline: 3px solid currentColor; outline-offset: 4px; }
 
@@ -244,115 +256,158 @@ const hrefFor = (id: string) => {
 
   .service-feature:hover .feature-corner { transform: translate(3px, -3px); }
 
-  /* ---- Ruled commercial index ---- */
+  /* ---- Commercial index plates ---- */
   .solutions-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(var(--space-lg), 3vw, var(--space-2xl));
     margin: 0;
     padding: 0;
-    border-top: 3px solid var(--border);
     list-style: none;
   }
 
   .service-row {
-    position: relative;
-    isolation: isolate;
-    display: grid;
-    grid-template-columns: 2.5rem minmax(0, 1fr) minmax(0, 1.15fr);
-    align-items: start;
-    gap: clamp(var(--space-md), 3vw, var(--space-2xl));
-    padding: clamp(var(--space-lg), 3vw, var(--space-2xl)) 0;
-    border-bottom: 3px solid var(--border);
-    transition: color var(--transition-base);
-  }
-
-  .service-row::before {
-    position: absolute;
-    z-index: -1;
-    inset: 0 calc(var(--layout-gutter) * -1);
-    content: "";
-    background: var(--text);
-    opacity: 0;
-    transition: opacity var(--transition-base);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding: clamp(var(--space-lg), 2.6vw, var(--space-xl));
+    border: 3px solid var(--border);
+    background: var(--bg);
+    box-shadow: 8px 8px 0 var(--border);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
   }
 
   .service-row:hover,
-  .service-row:focus-within { color: var(--bg); }
+  .service-row:focus-within {
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0 var(--border);
+  }
 
-  .service-row:hover::before,
-  .service-row:focus-within::before { opacity: 1; }
-
+  /* Numeral slot: signage mark, numeral and dashed rail, echoing the feature
+     plate's numeral at a smaller scale. */
   .row-num {
-    padding-top: 0.35rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    opacity: 0.5;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .row-num::before {
+    flex: 0 0 auto;
+    width: 0.5rem;
+    height: 0.5rem;
+    border: 1px solid var(--border);
+    background: var(--accent);
+    content: "";
+  }
+
+  .row-num::after {
+    flex: 1 1 auto;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--border) 0 8px, transparent 8px 16px);
+    opacity: 0.45;
+    content: "";
   }
 
   .row-head {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     gap: var(--space-sm);
   }
 
   .row-audience {
     display: block;
-    font-size: 0.6875rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    opacity: 0.6;
-  }
-
-  .row-title {
-    max-width: 16ch;
-    margin: 0;
-    font-size: clamp(1.5rem, 3.2vw, 2.75rem);
-    font-weight: 800;
-    line-height: 0.96;
-    letter-spacing: -0.055em;
-    transition: transform var(--transition-base);
-  }
-
-  .service-row:hover .row-title { transform: translateX(0.5rem); }
-
-  .row-link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-sm);
     font-family: var(--font-mono);
     font-size: 0.6875rem;
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    text-decoration: underline;
-    text-underline-offset: 0.3em;
+    color: var(--text-muted);
   }
 
-  .row-link span { transition: transform var(--transition-fast); }
-  .service-row:hover .row-link span { transform: translateX(4px); }
-  .row-link:focus-visible { outline: 3px solid currentColor; outline-offset: 4px; }
+  .row-title {
+    margin: 0;
+    font-size: clamp(1.5rem, 2.6vw, 2.125rem);
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
 
   .row-copy {
     display: flex;
     flex-direction: column;
     gap: var(--space-sm);
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border-light);
   }
 
   .row-problem {
-    max-width: 40ch;
     margin: 0;
-    font-size: clamp(1rem, 1.7vw, 1.1875rem);
+    font-size: clamp(1rem, 1.5vw, 1.125rem);
     font-weight: 700;
     line-height: 1.35;
   }
 
   .row-desc {
-    max-width: 44ch;
     margin: 0;
-    font-size: clamp(0.875rem, 1.3vw, 1rem);
-    line-height: 1.5;
-    opacity: 0.78;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  .row-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    width: 100%;
+    margin-top: auto;
+    padding: 0.7rem var(--space-md);
+    border: 2px solid var(--border);
+    background: var(--bg-alt);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition:
+      background-color var(--transition-fast),
+      border-color var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .row-link span { transition: transform var(--transition-fast); }
+
+  .service-row:hover .row-link,
+  .row-link:hover,
+  .row-link:focus-visible {
+    border-color: var(--text-on-accent);
+    background: var(--accent);
+    color: var(--text-on-accent);
+  }
+
+  .service-row:hover .row-link span,
+  .row-link:hover span,
+  .row-link:focus-visible span { transform: translateX(4px); }
+
+  .row-link:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+
+  /* The three plates share one internal metric: numeral slot, kicker, a
+     two-line title, a two-line problem, a two-line outcome and the CTA, so the
+     rows align from card to card. */
+  @media (min-width: 1025px) {
+    .row-title { min-height: 1.96em; }
+    .row-problem { min-height: 2.7em; }
+    .row-desc { min-height: 3.1em; }
   }
 
   .services-footer {
@@ -419,17 +474,20 @@ const hrefFor = (id: string) => {
       line-height: 0.9;
       text-align: left;
     }
-    .service-row {
-      grid-template-columns: 2rem minmax(0, 1fr);
-      gap: var(--space-md);
-    }
-    .row-copy { grid-column: 2; }
+  }
+
+  @media (max-width: 1024px) {
+    .solutions-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 640px) {
+    .solutions-list { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 560px) {
     .service-feature { padding: var(--space-lg); box-shadow: 8px 8px 0 var(--border); }
     .feature-num { font-size: clamp(3.5rem, 20vw, 5rem); }
-    .row-title { max-width: 100%; }
+    .service-row { box-shadow: 6px 6px 0 var(--border); }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -438,8 +496,7 @@ const hrefFor = (id: string) => {
     .feature-link,
     .feature-link span,
     .service-row,
-    .service-row::before,
-    .row-title,
+    .row-link,
     .row-link span,
     .services-support-link span {
       transition: none;

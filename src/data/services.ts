@@ -44,7 +44,7 @@ export const serviceAreas: ServiceArea[] = [
       "Tu web no explica lo que haces, no genera consultas o se ha quedado atrás.",
     short:
       "Web nueva, reparada o mejorada: presencia, posicionamiento y medición.",
-    audience: "Empresas y profesionales que necesitan presencia web",
+    audience: "Empresas que necesitan web",
     linkLabel: "Cuéntame tu web",
     problems: [
       "Web que no comunica lo que haces ni genera consultas",
@@ -69,8 +69,8 @@ export const serviceAreas: ServiceArea[] = [
     problem:
       "Vendes online, pero catálogo, stock y pedidos no cuadran.",
     short:
-      "Construyo la tienda y conecto catálogo, pago y pedidos con tu operación.",
-    audience: "Marcas y empresas que venden producto online",
+      "Construyo la tienda y conecto catálogo, pago y pedidos.",
+    audience: "Marcas que venden online",
     linkLabel: "Ver tienda online",
     problems: [
       "Vender online sin que el catálogo, el stock y los pedidos se descuadren",
@@ -89,10 +89,10 @@ export const serviceAreas: ServiceArea[] = [
     id: "b2b",
     title: "Portales & Sistemas B2B",
     problem:
-      "Los pedidos profesionales llegan por teléfono, email y hojas de cálculo sin orden.",
+      "Los pedidos B2B llegan por teléfono, email y hojas de cálculo.",
     short:
-      "Monto el portal donde cada cuenta ve sus precios y hace sus pedidos.",
-    audience: "Fabricantes, distribuidores y mayoristas",
+      "Monto el portal: cada cuenta ve sus precios y hace pedidos.",
+    audience: "Fabricantes y distribuidores",
     linkLabel: "Ver portal B2B",
     problems: [
       "Dar de alta y validar empresas antes de mostrarles catálogo y precios",
@@ -112,10 +112,10 @@ export const serviceAreas: ServiceArea[] = [
     id: "sistemas",
     title: "Sistemas & Integraciones",
     problem:
-      "Tus datos viven en herramientas que no se hablan y todo se copia a mano.",
+      "Tus datos viven en herramientas que no se hablan.",
     short:
-      "Conecto esas herramientas y automatizo las tareas repetitivas.",
-    audience: "Equipos con datos repartidos y tareas manuales",
+      "Conecto esas herramientas y automatizo tareas repetitivas.",
+    audience: "Equipos con datos dispersos",
     linkLabel: "Ver integraciones",
     problems: [
       "Datos de venta, stock, facturación o CRM repartidos en sistemas que no se hablan",
@@ -133,11 +133,17 @@ export const serviceAreas: ServiceArea[] = [
   },
 ];
 
-/** Section header copy for the Services block. */
+/**
+ * Section header copy for the Services block.
+ *
+ * Both title lines are kept to a similar length so the `title-mark` slab sits
+ * on a line comparable to the first one; an oversized second line squeezes the
+ * lead paragraph beside it.
+ */
 export const servicesCopy = {
   label: "Servicios",
   titleLine: "La web, primero.",
-  titleHighlight: "Y lo que la conecta.",
+  titleHighlight: "Y lo conectado.",
   lead:
     "Web y mejora de la que ya existe, tienda online, portal B2B y sistemas conectados. Cuatro áreas para captar clientes y ordenar la operación.",
 } as const;

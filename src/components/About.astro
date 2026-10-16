@@ -1,51 +1,6 @@
 ---
 import { serviceAreas } from "../data/services";
-
-const process = [
-  {
-    num: "01",
-    title: "Descubrir y acotar",
-    desc: "Analizo el negocio, sus procesos y objetivos para fijar un alcance claro.",
-  },
-  {
-    num: "02",
-    title: "Diseñar",
-    desc: "Defino estructura y experiencia desde las necesidades del negocio.",
-  },
-  {
-    num: "03",
-    title: "Desarrollar",
-    desc: "Construyo el producto e integro los sistemas necesarios.",
-  },
-  {
-    num: "04",
-    title: "Probar y lanzar",
-    desc: "Pruebas, publicación y entrega documentada.",
-  },
-];
-
-/**
- * Advantages of hiring FRN.Q directly, without an agency layer. They repeat the
- * three durable promises of the practice: direct contact, understanding the
- * business first and maintainable systems.
- */
-const directAdvantages = [
-  {
-    num: "01",
-    title: "Trato directo",
-    desc: "Decisiones, avances y dudas conmigo, sin intermediarios ni cambios de interlocutor.",
-  },
-  {
-    num: "02",
-    title: "El negocio primero",
-    desc: "Cada proyecto empieza por cómo funciona tu negocio, no por una tecnología ni por una plantilla.",
-  },
-  {
-    num: "03",
-    title: "Sistemas que puedes mantener",
-    desc: "Entrego código, accesos y documentación para que la solución evolucione sin depender del estudio.",
-  },
-];
+import { aboutProcess, directAdvantages } from "../data/about";
 ---
 
 <section class="about" id="sobre-mi" aria-labelledby="about-title">
@@ -57,24 +12,26 @@ const directAdvantages = [
         <h2 id="about-title">Del negocio.<br /><span class="title-mark">Al producto.</span></h2>
       </div>
       <div class="about-intro-bottom">
-        <p>
+        <p class="about-bio">
           Soy Francisco Muñoz y dirijo FRN.Q, un estudio independiente en Granada. Me encargo del diseño y del desarrollo, y hablas conmigo durante todo el proyecto. Trabajo en remoto con empresas de España y otros países.
         </p>
         <p class="about-specialities">
           <span class="specialities-label">Especialidades</span>
           <span>{serviceAreas.map((service) => service.title).join(" · ")}</span>
         </p>
-        <a
-          href="#contacto"
-          class="about-cta"
-          data-track="cta_click"
-          data-track-location="about"
-          data-track-label="Hablemos del proyecto"
-        >
-          <span>Hablemos del proyecto</span>
-          <span aria-hidden="true">→</span>
-        </a>
-        <a class="agency-reference" href="/colaboraciones/agencias/">¿Trabajas en una agencia? Colaboraciones técnicas <span aria-hidden="true">↗</span></a>
+        <div class="about-actions">
+          <a
+            href="#contacto"
+            class="about-cta"
+            data-track="cta_click"
+            data-track-location="about"
+            data-track-label="Hablemos del proyecto"
+          >
+            <span>Hablemos del proyecto</span>
+            <span aria-hidden="true">→</span>
+          </a>
+          <a class="agency-reference" href="/colaboraciones/agencias/">¿Trabajas en una agencia? Colaboraciones técnicas <span aria-hidden="true">↗</span></a>
+        </div>
       </div>
     </div>
 
@@ -101,17 +58,17 @@ const directAdvantages = [
     <section class="process-section reveal" aria-labelledby="process-title">
       <header class="process-heading">
         <div>
-          <span class="process-label mono"><span aria-hidden="true"></span>Proceso</span>
+          <span class="process-label">Proceso</span>
           <h3 id="process-title">De la primera pregunta al lanzamiento.</h3>
         </div>
-        <span class="process-count mono"><span class="process-total">04</span><span>FASES</span></span>
+        <span class="process-count"><span class="process-total">04</span><span>FASES</span></span>
       </header>
 
       <ol class="process-list">
         {
-          process.map((step) => (
+          aboutProcess.map((step) => (
             <li class="process-item">
-              <span class="process-num mono" aria-hidden="true">{step.num}</span>
+              <span class="process-num" aria-hidden="true">{step.num}</span>
               <div class="process-copy">
                 <h4>{step.title}</h4>
                 <p>{step.desc}</p>
@@ -140,47 +97,31 @@ const directAdvantages = [
 
   .mono { font-family: var(--font-mono); }
 
+  /* ---- Intro: asymmetric editorial split. The eyebrow anchors the top-left,
+     the display title closes the column bottom-left; the support column stacks
+     prose, ruled specialities and the action row anchored at its bottom. ---- */
   .about-intro {
     display: grid;
     grid-template-columns: minmax(0, 1.15fr) minmax(17rem, 0.85fr);
-    align-items: end;
+    align-items: stretch;
     gap: clamp(var(--space-xl), 5vw, var(--space-4xl));
     padding: clamp(var(--space-lg), 4vw, var(--space-3xl)) 0;
     border-top: 3px solid var(--border);
     border-bottom: 1px solid var(--border-light);
   }
 
-  .process-label {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-sm);
-    font-size: 0.6875rem;
-    font-weight: 700;
-    letter-spacing: 0.11em;
-    text-transform: uppercase;
-  }
-
-  .process-label span {
-    width: 1.5rem;
-    height: 0.45rem;
-    border: 1px solid currentColor;
-    background: var(--bg);
-  }
-
-  .about-intro h2 {
-    max-width: 16ch;
-    margin: 0;
-    font-size: clamp(2.8rem, 6.5vw, 6.5rem);
-    font-weight: 800;
-    line-height: 0.92;
-    letter-spacing: -0.08em;
+  .about-lead {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-xl);
   }
 
   .about-role {
     display: inline-flex;
     align-items: center;
     gap: var(--space-sm);
-    margin: 0 0 var(--space-md);
+    margin: 0;
     font-family: var(--font-mono);
     font-size: 0.6875rem;
     font-weight: 700;
@@ -196,37 +137,69 @@ const directAdvantages = [
     background: var(--accent);
   }
 
-  .about-intro-bottom p.about-specialities {
-    display: grid;
-    gap: var(--space-xs);
-    max-width: 38ch;
-    padding-top: var(--space-sm);
-    border-top: 1px solid var(--border-light);
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    font-weight: 500;
-    line-height: 1.6;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    color: var(--text-secondary);
+  .about-intro h2 {
+    max-width: 16ch;
+    margin: 0;
+    font-size: clamp(2.8rem, 6.5vw, 6.5rem);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.08em;
   }
-
-  .about-specialities .specialities-label { opacity: 0.6; }
 
   .about-intro-bottom {
     display: flex;
     align-items: flex-start;
     flex-direction: column;
     gap: var(--space-lg);
-    padding-bottom: 0.25rem;
   }
 
-  .about-intro-bottom p {
+  .about-bio {
     max-width: 36ch;
     margin: 0;
     font-size: clamp(0.9375rem, 1.5vw, 1.125rem);
     font-weight: 600;
     line-height: 1.55;
+  }
+
+  /* Specialities: ruled metadata block, mono for scanability without the
+     uppercase glue of a single joined line. */
+  .about-specialities {
+    display: grid;
+    gap: var(--space-xs);
+    width: 100%;
+    max-width: 38ch;
+    margin: 0;
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border-light);
+  }
+
+  .about-specialities .specialities-label {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .about-specialities span:last-child {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+    color: var(--text-secondary);
+  }
+
+  /* Action row: the hard CTA leads, the agency link is a secondary textual
+     exit. Anchored to the bottom of the column so it sits opposite the title. */
+  .about-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-md) var(--space-lg);
+    margin-top: auto;
+    padding-top: var(--space-md);
   }
 
   .about-cta {
@@ -260,8 +233,21 @@ const directAdvantages = [
     outline-offset: 4px;
   }
 
-  /* Direct collaboration advantages: ruled list before the inverted process
-     panel, so the two blocks keep different compositions. */
+  .agency-reference {
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1.5;
+    text-decoration: underline;
+    text-decoration-color: var(--border-light);
+    text-underline-offset: 3px;
+  }
+
+  .agency-reference:hover { color: var(--text); text-decoration-color: var(--accent); }
+  .agency-reference:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+
+  /* ---- Direct collaboration advantages: quiet ruled band between the loud
+     intro and the inverted process panel. Density contrast is deliberate. ---- */
   .about-direct {
     display: grid;
     grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
@@ -312,45 +298,34 @@ const directAdvantages = [
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
     gap: var(--space-md);
-    padding-top: var(--space-md);
+    padding-top: var(--space-lg);
     border-top: 2px solid var(--border);
   }
 
   .direct-num {
+    padding-top: 0.2em;
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 700;
-    opacity: 0.45;
+    opacity: 0.55;
   }
 
   .direct-list h4 {
     margin: 0 0 var(--space-xs);
-    font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+    font-size: clamp(1.125rem, 1.8vw, 1.375rem);
     font-weight: 800;
     letter-spacing: -0.03em;
   }
 
   .direct-list p {
-    max-width: 54ch;
+    max-width: 52ch;
     margin: 0;
     color: var(--text-secondary);
     font-size: 0.9375rem;
     line-height: 1.55;
   }
 
-  .agency-reference {
-    color: var(--text-muted);
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    line-height: 1.5;
-    text-decoration: underline;
-    text-decoration-color: var(--border-light);
-    text-underline-offset: 3px;
-  }
-
-  .agency-reference:hover { color: var(--text); text-decoration-color: var(--accent); }
-  .agency-reference:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
-
+  /* ---- Process: inverted panel, the section's signature device. ---- */
   .process-section {
     position: relative;
     margin-top: clamp(var(--space-3xl), 7vw, 7rem);
@@ -371,8 +346,25 @@ const directAdvantages = [
     border-bottom: 1px solid var(--border-light);
   }
 
-  .process-label { color: var(--text-accent-inverse); }
-  .process-label span { background: var(--accent); }
+  .process-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--text-accent-inverse);
+  }
+
+  .process-label::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 1.5rem;
+    height: 0.45rem;
+    background: var(--accent);
+  }
 
   .process-heading h3 {
     max-width: 18ch;
@@ -394,7 +386,7 @@ const directAdvantages = [
     letter-spacing: -0.06em;
   }
 
-  .process-count span {
+  .process-count span:last-child {
     color: var(--bg);
     font-size: 0.625rem;
     letter-spacing: 0.1em;
@@ -448,6 +440,7 @@ const directAdvantages = [
     border: 2px solid var(--accent);
     background: var(--text);
     color: var(--text-accent-inverse);
+    font-family: var(--font-mono);
     font-size: 0.6875rem;
     font-weight: 700;
   }
@@ -471,8 +464,9 @@ const directAdvantages = [
   }
 
   @media (max-width: 760px) {
-    .about-intro { grid-template-columns: minmax(0, 1fr) minmax(15rem, 0.8fr); }
-    .about-intro h2 { font-size: clamp(2.65rem, 7.5vw, 4.75rem); }
+    .about-intro { grid-template-columns: 1fr; gap: var(--space-xl); }
+    .about-lead { gap: var(--space-lg); }
+    .about-intro h2 { font-size: clamp(2.65rem, 9vw, 4.5rem); }
     .about-direct { grid-template-columns: 1fr; gap: var(--space-xl); }
     .direct-head h3 { max-width: 26ch; }
     .process-heading h3 { font-size: clamp(1.75rem, 4.5vw, 2.5rem); }
@@ -486,10 +480,9 @@ const directAdvantages = [
   }
 
   @media (max-width: 560px) {
-    .about-intro { grid-template-columns: 1fr; gap: var(--space-xl); padding-block: var(--space-xl); }
-    .about-intro h2 { font-size: clamp(2.75rem, 11vw, 4.25rem); }
-    .about-intro-bottom { align-items: flex-start; }
-    .about-cta { width: fit-content; }
+    .about-intro { padding-block: var(--space-xl); }
+    .about-intro h2 { font-size: clamp(2.5rem, 11vw, 3.75rem); }
+    .about-cta { width: 100%; justify-content: space-between; }
     .process-section { margin-top: var(--space-3xl); box-shadow: 6px 6px 0 var(--border); }
     .process-heading { align-items: flex-start; }
     .process-count { font-size: 1.125rem; }

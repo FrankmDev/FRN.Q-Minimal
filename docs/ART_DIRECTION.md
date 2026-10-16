@@ -22,7 +22,7 @@ An optional dark theme inverts the paper and ink roles while retaining the same 
 - One main idea per section; use one strong heading and at most one short supporting paragraph.
 - Give the Home negative space and visible pacing. Avoid repeating the same capability in the hero, service cards, studio introduction and contact area.
 - Let numerals, contrast, image crops and large type carry the visual weight; prose is supporting information.
-- Services remain four compact areas. The Home leads with **Web corporativa & SEO** as a full-width feature plate and follows with the other three as a ruled commercial index; each area states one problem, one outcome and a link to its page. Operational friction is a visual comparison, not a long problem catalogue.
+- Services remain four compact areas. The Home leads with **Web corporativa & SEO** as a full-width feature plate and follows with the other three as offset-shadow plates on a three-column grid; each area states one problem, one outcome and a link to its page. Operational friction is a visual comparison, not a long problem catalogue.
 - The **Revisión y reparación web** (Web Rescue) block keeps the same ruled headings, mono labels, hard frames and yellow accent as the rest of the Home; it introduces no second visual identity and stays a single compact section.
 - Cases remain factual and sourced from Content Collections. The Home shows a small selection; `/casos/` holds the full case studies.
 - The studio section introduces the person and a four-step process at most. Contact is the close: keep the real form, reduce surrounding promotion.

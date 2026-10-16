@@ -29,6 +29,12 @@ import { webRescueCopy, webRescuePage } from "../data/web-rescue";
         {
           webRescueCopy.prices.map((price, index) => (
             <li class:list={["rescue-price", { "rescue-price-primary": index === 0 }]}>
+              <div class="price-head">
+                <span class="price-index mono" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span class="price-arrow" aria-hidden="true">→</span>
+              </div>
               <h3 class="price-title">{price.title}</h3>
               <p class="price-value mono">{price.price}</p>
               <p class="price-detail">{price.detail}</p>
@@ -38,7 +44,10 @@ import { webRescueCopy, webRescuePage } from "../data/web-rescue";
       </ul>
 
       <aside class="rescue-market reveal" aria-labelledby="rescue-market-title">
-        <h3 class="market-title" id="rescue-market-title">{webRescueCopy.market.title}</h3>
+        <div class="market-head">
+          <h3 class="market-title" id="rescue-market-title">{webRescueCopy.market.title}</h3>
+          <span class="market-arrow" aria-hidden="true">↗</span>
+        </div>
         <p class="market-lead">{webRescueCopy.market.lead}</p>
         <ul class="market-list">
           {webRescueCopy.market.cases.map((item) => (
@@ -97,14 +106,14 @@ import { webRescueCopy, webRescuePage } from "../data/web-rescue";
     display: flex;
     align-items: end;
     justify-content: space-between;
-    gap: clamp(var(--space-xl), 5vw, var(--space-4xl));
+    gap: clamp(var(--space-xl), 4vw, var(--space-3xl));
     margin-bottom: clamp(var(--space-2xl), 5vw, var(--space-4xl));
   }
 
   .rescue-header h2 {
     order: 2;
     margin: 0;
-    font-size: clamp(2rem, 5.7vw, 5rem);
+    font-size: clamp(2rem, 5vw, 4.5rem);
     font-weight: 800;
     line-height: 0.95;
     letter-spacing: -0.065em;
@@ -113,7 +122,7 @@ import { webRescueCopy, webRescuePage } from "../data/web-rescue";
 
   .rescue-lead {
     order: 1;
-    max-width: 34rem;
+    max-width: 26rem;
     margin: 0;
     color: var(--text-secondary);
     font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
@@ -163,11 +172,11 @@ import { webRescueCopy, webRescuePage } from "../data/web-rescue";
     display: grid;
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
     gap: clamp(var(--space-xl), 4vw, var(--space-3xl));
-    align-items: start;
   }
 
   .rescue-prices {
     display: grid;
+    grid-auto-rows: 1fr;
     gap: var(--space-md);
     margin: 0;
     padding: 0;
@@ -195,6 +204,33 @@ import { webRescueCopy, webRescuePage } from "../data/web-rescue";
     color: var(--text-on-accent);
   }
 
+  .price-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+  }
+
+  .price-index {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+  }
+
+  .price-arrow {
+    font-size: 1rem;
+    line-height: 1;
+    transition: transform var(--transition-fast);
+  }
+
+  .rescue-price:hover .price-arrow { transform: translateX(4px); }
+
+  .rescue-price-primary .price-index {
+    color: var(--text-on-accent);
+    opacity: 0.7;
+  }
+
   .price-title {
     margin: 0;
     font-size: clamp(1.125rem, 2vw, 1.375rem);
@@ -211,7 +247,9 @@ import { webRescueCopy, webRescuePage } from "../data/web-rescue";
   }
 
   .price-detail {
-    margin: 0;
+    margin: auto 0 0;
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border-light);
     max-width: 46ch;
     font-size: 0.9375rem;
     line-height: 1.55;
@@ -219,18 +257,39 @@ import { webRescueCopy, webRescuePage } from "../data/web-rescue";
   }
 
   .rescue-market {
+    display: flex;
+    flex-direction: column;
     padding: clamp(var(--space-lg), 3vw, var(--space-xl));
     border: 3px solid var(--border);
+    border-top: 4px solid var(--accent);
     background: var(--text);
     color: var(--bg);
+    box-shadow: 8px 8px 0 var(--border);
+  }
+
+  .market-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-md);
+    margin: 0 0 var(--space-md);
   }
 
   .market-title {
-    margin: 0 0 var(--space-sm);
+    margin: 0;
     font-size: clamp(1.25rem, 2.4vw, 1.75rem);
     font-weight: 800;
     line-height: 1.1;
     letter-spacing: -0.04em;
+  }
+
+  .market-arrow {
+    flex: 0 0 auto;
+    color: var(--text-accent-inverse);
+    font-size: clamp(1.375rem, 2.6vw, 1.875rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.05em;
   }
 
   .market-lead {
@@ -241,9 +300,11 @@ import { webRescueCopy, webRescuePage } from "../data/web-rescue";
   }
 
   .market-list {
+    flex: 1;
     display: grid;
-    gap: var(--space-sm);
-    margin: 0;
+    align-content: space-between;
+    gap: 0;
+    margin: 0 0 var(--space-md);
     padding: 0;
     list-style: none;
   }
@@ -252,9 +313,16 @@ import { webRescueCopy, webRescuePage } from "../data/web-rescue";
     display: flex;
     align-items: baseline;
     gap: var(--space-sm);
+    padding-top: var(--space-sm);
+    border-top: 1px solid color-mix(in srgb, var(--bg) 22%, transparent);
     font-size: 0.9375rem;
     font-weight: 600;
     line-height: 1.4;
+  }
+
+  .market-list li:first-child {
+    padding-top: 0;
+    border-top: 0;
   }
 
   .market-plus {
@@ -267,7 +335,7 @@ import { webRescueCopy, webRescuePage } from "../data/web-rescue";
   }
 
   .market-note {
-    margin: var(--space-lg) 0 0;
+    margin: auto 0 0;
     padding-top: var(--space-md);
     border-top: 1px solid color-mix(in srgb, var(--bg) 24%, transparent);
     font-size: 0.8125rem;
@@ -393,6 +461,6 @@ import { webRescueCopy, webRescuePage } from "../data/web-rescue";
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .rescue-price, .rescue-cta, .rescue-cta span:last-child, .rescue-page-link span { transition: none; }
+    .rescue-price, .rescue-cta, .rescue-cta span:last-child, .rescue-page-link span, .price-arrow { transition: none; }
   }
 </style>

@@ -37,7 +37,7 @@ src/
 ├── components/
 │   ├── Header.astro               # sticky nav; anchors + STUDIO ↗ (desktop, mobile menu)
 │   ├── Hero.astro                 # intro, solution index, STUDIO ↗ link
-│   ├── Services.astro             # priority feature plate + ruled index for the four commercial areas
+│   ├── Services.astro             # accent feature plate + offset-shadow plates for the four commercial areas
 │   ├── WebRescue.astro            # Web Rescue block (Home): review/repair offers, Granada use cases
 │   ├── HiddenCost.astro           # frequent-operations problems (symptoms)
 │   ├── Projects.astro             # home cases teaser from the collection

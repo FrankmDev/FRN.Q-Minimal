@@ -64,7 +64,7 @@ export const webRescueDiagnosis = {
 export const webRescueCopy: WebRescueCopy = {
   label: "Revisión y reparación web",
   titleLine: "Tu web ya existe.",
-  titleHighlight: "Hagamos que trabaje.",
+  titleHighlight: "Que trabaje mejor.",
   lead:
     "Reviso webs en marcha —WordPress, Elementor o WooCommerce— para recuperar lo que dejó de funcionar, mejorar lo que no convierte y ampliar lo que falta, sin rehacerlo todo.",
   steps: [

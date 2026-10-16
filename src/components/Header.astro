@@ -169,6 +169,13 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     mobileNav?.toggleAttribute("inert", !open);
     mobileNav?.classList.toggle("is-open", open);
     document.body.style.overflow = open ? "hidden" : "";
+
+    // Keyboard focus follows the panel: the menu is operable without tabbing
+    // back through the header chrome. preventScroll keeps the page still on
+    // touch devices, where the fixed panel is already on screen.
+    if (open) {
+      mobileNav?.querySelector<HTMLElement>(".mobile-link")?.focus({ preventScroll: true });
+    }
   }
 
   menuButton?.addEventListener("click", () => {
@@ -191,7 +198,20 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     if (event.matches) setMenuOpen(false);
   });
 
-  // Scroll: progress bar + shrink state (throttled via rAF)
+  // Scroll: progress bar + bar/plate state (throttled via rAF).
+  const syncHeaderOnScroll = () => {
+    const scrollY = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrolled = docHeight > 0 ? scrollY / docHeight : 0;
+
+    if (progressBar) {
+      progressBar.style.width = `${Math.min(scrolled * 100, 100)}%`;
+    }
+    // The plate follows the smallest scroll, so the hero's own content never
+    // shows through a bare header.
+    header?.classList.toggle("is-scrolled", scrollY > 12);
+  };
+
   let ticking = false;
   window.addEventListener(
     "scroll",
@@ -199,20 +219,17 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
-        const scrollY = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrolled = docHeight > 0 ? scrollY / docHeight : 0;
-
-        if (progressBar) {
-          progressBar.style.width = `${Math.min(scrolled * 100, 100)}%`;
-        }
-        header?.classList.toggle("is-scrolled", scrollY > 60);
-
+        syncHeaderOnScroll();
         ticking = false;
       });
     },
     { passive: true },
   );
+
+  // Initial state: a restored scroll position or a #fragment landing would
+  // otherwise leave the header without its plate over already scrolled content.
+  syncHeaderOnScroll();
+  window.addEventListener("load", syncHeaderOnScroll, { passive: true });
 </script>
 
 <style>
@@ -222,18 +239,24 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     left: 0;
     right: 0;
     z-index: var(--z-fixed, 300);
-    background: color-mix(in srgb, var(--bg) 92%, transparent);
-    backdrop-filter: blur(12px) saturate(1.4);
-    -webkit-backdrop-filter: blur(12px) saturate(1.4);
-    border-bottom: 3px solid var(--border);
+    /* At the top of the page the header carries no plate: it sits directly on
+       the hero's surface, flush with it, and only the accent strip and its own
+       plates show. The bar (background, backdrop blur and rule) appears as
+       soon as the page scrolls, so nothing ever slides under a bare header. */
+    background: transparent;
+    border-bottom: 3px solid transparent;
     transition:
       background var(--transition-base),
+      border-color var(--transition-base),
       box-shadow var(--transition-base);
     will-change: transform;
   }
 
   .header.is-scrolled {
     background: color-mix(in srgb, var(--bg) 97%, transparent);
+    backdrop-filter: blur(12px) saturate(1.4);
+    -webkit-backdrop-filter: blur(12px) saturate(1.4);
+    border-bottom-color: var(--border);
     box-shadow: 0 4px 24px var(--shadow);
   }
 
@@ -629,10 +652,13 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
   }
 
   .mobile-nav.is-open {
-    max-height: min(640px, calc(100svh - var(--layout-header-height)));
+    /* Fills the screen below the header: the page behind is scroll-locked, so
+       a short panel would leave locked content visible under it. */
+    max-height: calc(100dvh - var(--layout-header-height));
     border-bottom-width: 3px;
     visibility: visible;
     overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .mobile-nav .container {
@@ -640,15 +666,18 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     flex-direction: column;
     gap: 0;
     padding-top: var(--space-md);
-    padding-bottom: var(--space-lg);
+    padding-bottom: calc(var(--space-lg) + env(safe-area-inset-bottom));
+    /* Fills the panel (minus its 3px bottom rule) so the links stay at the top
+       and the primary action lands on the bottom line, inside thumb reach. */
+    min-height: calc(100dvh - var(--layout-header-height) - 3px);
   }
 
   .mobile-link {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: var(--space-md) 0;
-    font-size: 1rem;
+    padding: var(--space-lg) 0;
+    font-size: 1.0625rem;
     font-weight: 700;
     font-family: var(--font-mono);
     border-bottom: 1px solid var(--border-light);
@@ -679,13 +708,13 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
   }
 
   .mobile-link:hover,
-  .mobile-link:focus {
+  .mobile-link:focus-visible {
     opacity: 1;
     padding-left: var(--space-sm);
   }
 
   .mobile-link:hover .ml-bracket,
-  .mobile-link:focus .ml-bracket {
+  .mobile-link:focus-visible .ml-bracket {
     opacity: 1;
   }
 
@@ -694,7 +723,7 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     align-items: center;
     justify-content: center;
     gap: var(--space-sm);
-    margin-top: var(--space-lg);
+    margin-top: auto;
     padding: var(--space-md) var(--space-xl);
     font-weight: 700;
     font-size: 0.875rem;
