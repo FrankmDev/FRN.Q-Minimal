@@ -8,11 +8,41 @@ import {
   getPublishedProjects,
   categoryLabels,
   statusLabels,
+  caseGroups,
   casePath,
   type Project,
 } from "../../data/projects";
 
 const projects = await getPublishedProjects();
+
+/**
+ * Cases grouped by commercial type, in service-hierarchy order. Empty groups
+ * are dropped, so the archive never shows an empty shelf.
+ */
+const groups = caseGroups
+  .map((group) => ({
+    ...group,
+    items: projects.filter((project) =>
+      group.categories.includes(project.category),
+    ),
+  }))
+  .filter((group) => group.items.length > 0);
+
+/** KingBelt evidences ecommerce and Emilio Faraoni B2B: mark both as references. */
+function referenceLabel(project: Project): string | undefined {
+  if (project.serviceArea === "ecommerce") return "Referencia ecommerce";
+  if (project.serviceArea === "b2b") return "Referencia B2B";
+  return undefined;
+}
+
+function plural(count: number): string {
+  return `${count} ${count === 1 ? "caso" : "casos"}`;
+}
+
+/** Continuous archive numbering, so card badges never clash with group numbers. */
+const indexBySlug = new Map(
+  projects.map((project, index) => [project.slug, index + 1]),
+);
 
 const itemListSchema = {
   "@context": "https://schema.org",
@@ -72,70 +102,127 @@ const breadcrumbSchema = {
           <span class="title-strong title-mark">reales.</span>
         </h1>
         <p class="intro">
-          Contexto, problema, solución y decisiones detrás de cada proyecto.
+          Contexto, problema, solución y decisiones detrás de cada proyecto,
+          agrupados por el tipo de solución que demuestran.
         </p>
       </div>
     </section>
 
-    <section class="cases-list" aria-label="Lista de casos">
+    <nav class="type-index" aria-label="Índice por tipo de proyecto">
       <div class="cases-shell">
-        <ul class="grid">
+        <p class="type-index-label">Tipos</p>
+        <ul>
           {
-            projects.map((project: Project, i) => (
+            groups.map((group, index) => (
               <li>
                 <a
-                  class="card"
-                  href={casePath(project.slug)}
-                  data-track="case_click"
-                  data-track-location="casos"
-                  data-track-slug={project.slug}
+                  href={`#tipo-${group.id}`}
+                  class:list={[
+                    "type-entry",
+                    group.emphasis && `type-entry--${group.emphasis}`,
+                  ]}
                 >
-                  <div class="card-media">
-                    <Image
-                      src={project.cover.src}
-                      alt={project.cover.alt}
-                      widths={[480, 800, 1200, 1600]}
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      format="avif"
-                      quality={88}
-                      loading={i < 2 ? "eager" : "lazy"}
-                    />
-                    <span class="card-index" aria-hidden="true">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                  </div>
-                  <div class="card-body">
-                    <p class="card-meta">
-                      <span>{categoryLabels[project.category]}</span>
-                      <span class="dot" aria-hidden="true">·</span>
-                      <span>{project.sector}</span>
-                      <span class="dot" aria-hidden="true">·</span>
-                      <span>{project.year}</span>
-                    </p>
-                    <h2 class="card-title">{project.title}</h2>
-                    <p class="card-value">{project.tagline}</p>
-                    <span class="card-status">
-                      <span class="status-dot" aria-hidden="true" />
-                      {statusLabels[project.status]}
-                      <span class="card-arrow" aria-hidden="true">→</span>
-                    </span>
-                  </div>
+                  <span class="type-num" aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span class="type-label">{group.label}</span>
+                  <span class="type-count">{plural(group.items.length)}</span>
                 </a>
               </li>
             ))
           }
         </ul>
+      </div>
+    </nav>
+
+    <section class="cases-list" aria-label="Lista de casos">
+      <div class="cases-shell">
+        {
+          groups.map((group, groupIndex) => (
+            <section
+              class="case-group"
+              id={`tipo-${group.id}`}
+              aria-labelledby={`tipo-${group.id}-title`}
+            >
+              <header
+                class:list={[
+                  "group-head",
+                  group.emphasis && `group-head--${group.emphasis}`,
+                ]}
+              >
+                <span class="group-num" aria-hidden="true">
+                  {String(groupIndex + 1).padStart(2, "0")}
+                </span>
+                <h2 id={`tipo-${group.id}-title`}>{group.label}</h2>
+                <p class="group-short">{group.short}</p>
+                <span class="group-count">{plural(group.items.length)}</span>
+              </header>
+
+              <ul class="grid">
+                {group.items.map((project: Project, i) => (
+                  <li>
+                    <a
+                      class:list={[
+                        "card",
+                        project.serviceArea === "ecommerce" && "card--primary",
+                        project.serviceArea === "b2b" && "card--secondary",
+                      ]}
+                      href={casePath(project.slug)}
+                      data-track="case_click"
+                      data-track-location="casos"
+                      data-track-slug={project.slug}
+                    >
+                      <div class="card-media">
+                        <Image
+                          src={project.cover.src}
+                          alt={project.cover.alt}
+                          widths={[480, 800, 1200, 1600]}
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          format="avif"
+                          quality={88}
+                          loading={i < 2 ? "eager" : "lazy"}
+                        />
+                        <span class="card-index" aria-hidden="true">
+                          {String(indexBySlug.get(project.slug) ?? i + 1).padStart(2, "0")}
+                        </span>
+                        {referenceLabel(project) && (
+                          <span class="card-badge">{referenceLabel(project)}</span>
+                        )}
+                      </div>
+                      <div class="card-body">
+                        <p class="card-meta">
+                          <span>{categoryLabels[project.category]}</span>
+                          <span class="dot" aria-hidden="true">·</span>
+                          <span>{project.sector}</span>
+                          <span class="dot" aria-hidden="true">·</span>
+                          <span>{project.year}</span>
+                        </p>
+                        <h3 class="card-title">{project.title}</h3>
+                        <p class="card-value">{project.tagline}</p>
+                        <span class="card-status">
+                          <span class="status-dot" aria-hidden="true" />
+                          {statusLabels[project.status]}
+                          <span class="card-arrow" aria-hidden="true">→</span>
+                        </span>
+                      </div>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))
+        }
 
         <div class="cases-cta">
           <p>¿Quieres un caso aplicado a tu negocio?</p>
-        <a
-          class="cta"
-          href="/#contacto"
-          data-track="cta_click"
-          data-track-location="casos"
-          data-track-label="Hablemos"
-        >
-          <span>Hablemos</span>
+          <a
+            class="cta"
+            href="/#contacto"
+            data-track="cta_click"
+            data-track-location="casos"
+            data-track-label="Hablemos"
+          >
+            <span>Hablemos</span>
             <span aria-hidden="true">→</span>
           </a>
         </div>
@@ -235,6 +322,167 @@ const breadcrumbSchema = {
     }
   }
 
+  /* Type index: a static, industrial list so the archive can be scanned by
+     kind of project without client-side filtering. */
+  .type-index {
+    padding: var(--space-2xl) 0;
+    border-bottom: 2px dashed var(--border-light);
+    scroll-margin-top: calc(var(--layout-header-height) + var(--space-lg));
+  }
+
+  .type-index-label {
+    margin-bottom: var(--space-md);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  .type-index ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: var(--space-md);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .type-entry {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-sm);
+    min-height: 3.25rem;
+    padding: var(--space-md);
+    border: 2px solid var(--border);
+    transition:
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+
+  .type-entry--primary {
+    background: var(--accent);
+    color: var(--text-on-accent);
+  }
+
+  .type-entry--secondary {
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  .type-entry:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 6px 6px 0 var(--border);
+  }
+
+  .type-entry:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  .type-num {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 700;
+    opacity: 0.6;
+  }
+
+  .type-label {
+    font-size: 0.875rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+
+  .type-count {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    white-space: nowrap;
+  }
+
+  /* Grouped archive by commercial type. */
+  .case-group + .case-group {
+    margin-top: clamp(var(--space-2xl), 5vw, var(--space-4xl));
+  }
+
+  .case-group {
+    scroll-margin-top: calc(var(--layout-header-height) + var(--space-lg));
+  }
+
+  .group-head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: var(--space-xs) var(--space-lg);
+    margin-bottom: clamp(var(--space-lg), 3vw, var(--space-2xl));
+    padding-top: var(--space-md);
+    border-top: 3px solid var(--border);
+  }
+
+  /* Priority 1 keeps the accent plate, priority 2 the inverted ink plate,
+     mirroring the service hierarchy. */
+  .group-head--primary,
+  .group-head--secondary {
+    padding: var(--space-lg);
+    border: 3px solid var(--border);
+  }
+
+  .group-head--primary {
+    background: var(--accent);
+    color: var(--text-on-accent);
+  }
+
+  .group-head--secondary {
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  .group-num {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    opacity: 0.55;
+  }
+
+  .group-head h2 {
+    margin: 0;
+    font-size: clamp(1.5rem, 3.6vw, 2.75rem);
+    font-weight: 800;
+    line-height: 0.96;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+  }
+
+  .group-short {
+    grid-column: 2 / -1;
+    max-width: 54ch;
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+  }
+
+  .group-head--primary .group-short,
+  .group-head--secondary .group-short {
+    color: inherit;
+    opacity: 0.82;
+  }
+
+  .group-count {
+    justify-self: end;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.65;
+    white-space: nowrap;
+  }
+
   .card {
     display: flex;
     flex-direction: column;
@@ -280,6 +528,32 @@ const breadcrumbSchema = {
     font-family: var(--font-mono);
     font-size: 0.75rem;
     font-weight: 700;
+  }
+
+  /* Reference marker on the two flagship cases: KingBelt (ecommerce, accent)
+     and Emilio Faraoni (B2B, inverted ink). */
+  .card-badge {
+    position: absolute;
+    top: var(--space-sm);
+    right: var(--space-sm);
+    max-width: calc(100% - var(--space-2xl));
+    padding: 0.25rem 0.5rem;
+    border: 2px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .card--primary .card-badge {
+    background: var(--accent);
+    color: var(--text-on-accent);
+  }
+
+  .card--secondary .card-badge {
+    background: var(--text);
+    color: var(--bg);
   }
 
   .card-body {
@@ -393,8 +667,20 @@ const breadcrumbSchema = {
     .card,
     .card-media :global(img),
     .card-arrow,
+    .type-entry,
     .cta {
       transition: none !important;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .group-head {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .group-count {
+      grid-column: 1 / -1;
+      justify-self: start;
     }
   }
 </style>

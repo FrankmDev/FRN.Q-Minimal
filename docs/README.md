@@ -2,7 +2,7 @@
 
 Source of truth for strategy, content, architecture and visual system of the Spanish commercial surface of FRN.Q. Code is the first truth; these documents are the second.
 
-**Status: CURRENT.** The homepage keeps its visual identity and gains a productized **Revisión y reparación web** block (`#revision-web`); the organic-search scope includes four static solution pages: ecommerce, B2B, systems/integrations and corporate web (`desarrollo-web`), the last also covering repair/recovery of existing sites. Any further route needs distinct search intent and useful evidence-led content; no city or doorway pages.
+**Status: CURRENT.** The Home leads with **Web, comercio y sistemas**, keeps the commercial brutalist identity and uses **Revisión y reparación web** (`#revision-web`) as an entry offer. The surface includes four solution pages, the distinct repair landing, agency collaboration, prices, support, ten cases and two decision-support guides. All amounts come from `src/data/pricing.ts`. The contact API has enhanced JSON and native HTML responses; optional GA4 has built-in consent controls and stays off without a valid environment ID. Further routes require distinct intent and useful evidence-led content; no city or doorway pages.
 
 **Constraint:** no browser automation. Do not use Playwright, Puppeteer or any similar tool for screenshots or browser inspection. Work is code-only (`bun run build`).
 
@@ -24,7 +24,7 @@ Task-specific:
 | Strategy / positioning | `POSITIONING.md` → `PRODUCT.md` |
 | Copy or content | `CONTENT.md` |
 | SEO / meta / schema | `SEO.md` |
-| Visual / CSS | `ART_DIRECTION.md` → `DESIGN.md` |
+| Visual / CSS | `ART_DIRECTION.md` → `DESIGN.md` → skill `frnq-business-visual-system` |
 | Tooling, commands, conventions | `DEVELOPMENT.md` |
 
 ## What each document contains

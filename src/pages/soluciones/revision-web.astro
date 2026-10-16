@@ -1,0 +1,1220 @@
+---
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import MainLayout from "../../layouts/MainLayout.astro";
+import { solutionPath } from "../../data/solutions";
+import { siteConfig } from "../../data/site";
+import {
+  webRescueDiagnosis,
+  webRescueOffers,
+  webRescuePage,
+} from "../../data/web-rescue";
+
+const canonical = new URL(Astro.url.pathname, Astro.site || siteConfig.url);
+const personId = `${canonical.origin}/#person`;
+const brandId = `${canonical.origin}/#brand`;
+
+// The repair CTA opens the shared Home form with the type preselected. The
+// `?tipo=` deep link and the `data-contact-type` attribute both use the same
+// contract value, so the preselect works with and without an extra click.
+const ctaHref = `/?tipo=${webRescuePage.cta.type}#contacto`;
+
+const [diagnosisOffer, ...repairOffers] = webRescuePage.prices;
+
+const relatedLinks = [
+  { href: solutionPath("desarrollo-web"), label: "Diseño y desarrollo web a medida" },
+  { href: solutionPath("ecommerce"), label: "Tiendas online y Shopify" },
+  { href: solutionPath("sistemas"), label: "Sistemas e integraciones" },
+];
+
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": `${canonical.toString()}#service`,
+  name: "Reparación y mejora de webs existentes",
+  serviceType: "Reparación, actualización y mejora de webs existentes",
+  description: webRescuePage.description,
+  url: canonical.toString(),
+  provider: { "@id": personId },
+  areaServed: { "@type": "Country", name: "España" },
+  brand: { "@id": brandId },
+  offers: webRescueOffers(),
+};
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Inicio",
+      item: new URL("/", Astro.site).toString(),
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Reparación y mejora web",
+      item: canonical.toString(),
+    },
+  ],
+};
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: webRescuePage.faqs.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+---
+
+<MainLayout title={webRescuePage.title} description={webRescuePage.description}>
+  <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+
+  <Header />
+  <main id="main-content" class="rv-page">
+    <article>
+      <header class="rv-hero">
+        <div class="container">
+          <nav class="rv-breadcrumb" aria-label="Ruta de navegación">
+            <a href="/">Inicio</a>
+            <span aria-hidden="true">/</span>
+            <a href="/#servicios">Soluciones</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">Reparación y mejora web</span>
+          </nav>
+
+          <div class="rv-hero-grid">
+            <div class="rv-hero-lead">
+              <p class="rv-eyebrow mono">{webRescuePage.eyebrow}</p>
+              <h1 id="rv-title">
+                <span class="rv-h1-line">{webRescuePage.h1Line}</span>
+                <span class="rv-h1-line rv-h1-line--mark">
+                  <span class="rv-h1-mark">{webRescuePage.h1Highlight}</span>
+                </span>
+              </h1>
+            </div>
+
+            <div class="rv-hero-aside">
+              <p class="rv-intro">{webRescuePage.intro}</p>
+              <p class="rv-audience">
+                <strong>Para quién:</strong> {webRescuePage.audience}
+              </p>
+            </div>
+          </div>
+
+          <div class="rv-hero-foot">
+            <ul class="rv-platforms" aria-label="Plataformas habituales">
+              {webRescuePage.platforms.map((platform) => <li>{platform}</li>)}
+            </ul>
+            <div class="rv-hero-actions">
+              <a
+                class="rv-cta"
+                href={ctaHref}
+                data-contact-type={webRescuePage.cta.type}
+                data-track="cta_click"
+                data-track-location="revision_web_hero"
+                data-track-label={webRescuePage.cta.label}
+              >
+                <span>{webRescuePage.cta.label}</span>
+                <span aria-hidden="true">→</span>
+              </a>
+              <a
+                class="rv-text-link"
+                href={solutionPath("desarrollo-web")}
+                data-track="cta_click"
+                data-track-location="revision_web_hero"
+                data-track-label="Web nueva o rediseño"
+              >
+                Web nueva o rediseño <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="rv-section rv-problems" id="problemas" aria-labelledby="rv-problems-title">
+        <span class="section-tag">Problemas atendidos</span>
+        <div class="container">
+          <header class="rv-head">
+            <h2 id="rv-problems-title" class="rv-title">
+              Lo que suele estar <span class="title-mark">fallando.</span>
+            </h2>
+            <p class="rv-head-lead">
+              Reviso la web tal y como está y localizo los fallos que más afectan a
+              su funcionamiento y a quien la visita.
+            </p>
+          </header>
+
+          <ol class="rv-problem-grid reveal">
+            {
+              webRescuePage.problems.map((problem) => (
+                <li class="rv-problem">
+                  <span class="rv-problem-num mono" aria-hidden="true">{problem.num}</span>
+                  <h3 class="rv-problem-title">{problem.title}</h3>
+                  <p class="rv-problem-desc">{problem.description}</p>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </section>
+
+      <section class="rv-section rv-offers" id="ofertas" aria-labelledby="rv-offers-title">
+        <span class="section-tag">Ofertas</span>
+        <div class="container">
+          <header class="rv-head rv-head--split">
+            <div>
+              <h2 id="rv-offers-title" class="rv-title">
+                Revisar, reparar <span class="title-mark">o ampliar.</span>
+              </h2>
+            </div>
+            <p class="rv-head-lead">
+              Empiezo por lo acotado y sigo por lo que la web necesite. El
+              presupuesto se cierra por escrito antes de tocar nada.
+            </p>
+          </header>
+
+          <div class="rv-offer-layout reveal">
+            <article class="rv-offer rv-offer--primary">
+              <span class="rv-offer-tag mono">Punto de partida</span>
+              <h3 class="rv-offer-title">{diagnosisOffer.title}</h3>
+              <p class="rv-offer-price mono">{diagnosisOffer.price}</p>
+              <p class="rv-offer-detail">{diagnosisOffer.detail}</p>
+              <a
+                class="rv-offer-cta"
+                href={ctaHref}
+                data-contact-type={webRescuePage.cta.type}
+                data-track="cta_click"
+                data-track-location="revision_web_offers"
+                data-track-label={diagnosisOffer.title}
+              >
+                Empezar por el diagnóstico <span aria-hidden="true">→</span>
+              </a>
+            </article>
+
+            <div class="rv-offer-stack">
+              {
+                repairOffers.map((offer) => (
+                  <article class="rv-offer">
+                    <h3 class="rv-offer-title">{offer.title}</h3>
+                    <p class="rv-offer-price mono">{offer.price}</p>
+                    <p class="rv-offer-detail">{offer.detail}</p>
+                  </article>
+                ))
+              }
+            </div>
+          </div>
+
+          <p class="rv-note">{webRescuePage.note} Importes sin impuestos; licencias y otros costes externos aparte.</p>
+        </div>
+      </section>
+
+      <section class="rv-section rv-scope" id="diagnostico" aria-labelledby="rv-scope-title">
+        <div class="container">
+          <div class="rv-scope-panel reveal">
+            <div class="rv-scope-head">
+              <p class="rv-scope-label mono">El diagnóstico</p>
+              <h2 id="rv-scope-title">
+                {webRescueDiagnosis.title}, <span class="rv-scope-price">{webRescueDiagnosis.price}</span>
+              </h2>
+              <p class="rv-scope-lead">{webRescuePage.diagnosis.lead}</p>
+              <ul class="rv-conditions">
+                {webRescuePage.diagnosis.conditions.map((condition) => <li>{condition}</li>)}
+              </ul>
+            </div>
+
+            <div class="rv-scope-columns">
+              <div class="rv-scope-col rv-scope-col--in">
+                <h3>Qué incluye</h3>
+                <ul>
+                  {
+                    webRescuePage.diagnosis.includes.map((item) => (
+                      <li><span aria-hidden="true">+</span>{item}</li>
+                    ))
+                  }
+                </ul>
+              </div>
+              <div class="rv-scope-col rv-scope-col--out">
+                <h3>Qué se acota</h3>
+                <ul>
+                  {
+                    webRescuePage.diagnosis.excludes.map((item) => (
+                      <li><span aria-hidden="true">−</span>{item}</li>
+                    ))
+                  }
+                </ul>
+              </div>
+            </div>
+
+            <p class="rv-scope-note">{webRescueDiagnosis.detail}</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="rv-section rv-process" id="proceso" aria-labelledby="rv-process-title">
+        <span class="section-tag">Proceso</span>
+        <div class="container">
+          <header class="rv-head rv-head--count">
+            <h2 id="rv-process-title" class="rv-title">
+              Del aviso a la <span class="title-mark">verificación.</span>
+            </h2>
+            <span class="rv-count mono" aria-hidden="true">
+              {String(webRescuePage.steps.length).padStart(2, "0")} / FASES
+            </span>
+          </header>
+
+          <ol class="rv-steps reveal">
+            {
+              webRescuePage.steps.map((step) => (
+                <li class="rv-step">
+                  <span class="rv-step-num mono" aria-hidden="true">{step.num}</span>
+                  <div class="rv-step-copy">
+                    <h3>{step.title}</h3>
+                    <p>{step.description}</p>
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </section>
+
+      <section class="rv-section rv-faqs" id="faq" aria-labelledby="rv-faq-title">
+        <span class="section-tag">Preguntas frecuentes</span>
+        <div class="container rv-faq-grid">
+          <header class="rv-faq-head">
+            <h2 id="rv-faq-title" class="rv-title">
+              Antes de <span class="title-mark">reparar.</span>
+            </h2>
+          </header>
+          <div class="rv-faq-list reveal">
+            {
+              webRescuePage.faqs.map((item) => (
+                <details>
+                  <summary>{item.q}</summary>
+                  <p>{item.a}</p>
+                </details>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+      <section class="rv-close" aria-labelledby="rv-close-title">
+        <div class="container rv-close-inner">
+          <div>
+            <p class="rv-close-label mono">Siguiente paso</p>
+            <h2 id="rv-close-title">{webRescuePage.cta.label}</h2>
+            <p class="rv-close-lead">
+              Cuéntame qué falla o qué quieres mejorar. Empiezo por el diagnóstico
+              y te digo qué reparar, qué mejorar y qué dejar como está.
+            </p>
+          </div>
+          <div class="rv-close-actions">
+            <a
+              class="rv-cta"
+              href={ctaHref}
+              data-contact-type={webRescuePage.cta.type}
+              data-track="cta_click"
+              data-track-location="revision_web_close"
+              data-track-label={webRescuePage.cta.label}
+            >
+              <span>{webRescuePage.cta.label}</span>
+              <span aria-hidden="true">→</span>
+            </a>
+            <a class="rv-mail mono" href={`mailto:${siteConfig.email}`}>
+              {siteConfig.email} <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <nav class="rv-related" aria-label="Otras soluciones">
+        <div class="container rv-related-inner">
+          <p>También puede encajar</p>
+          <ul>
+            {
+              relatedLinks.map((link) => (
+                <li>
+                  <a href={link.href}>{link.label} <span aria-hidden="true">→</span></a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <Footer />
+</MainLayout>
+
+<style>
+  .rv-page {
+    padding-top: 120px;
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+  }
+
+  /* ---- Hero ---- */
+  .rv-hero {
+    position: relative;
+    padding: var(--space-2xl) 0 var(--space-3xl);
+    border-bottom: 4px solid var(--border);
+  }
+
+  .rv-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-2xl);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .rv-breadcrumb a {
+    opacity: 0.65;
+    text-underline-offset: 0.25em;
+  }
+
+  .rv-breadcrumb a:hover {
+    opacity: 1;
+  }
+
+  .rv-breadcrumb span {
+    opacity: 0.55;
+  }
+
+  .rv-breadcrumb [aria-current="page"] {
+    opacity: 1;
+  }
+
+  .rv-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.22fr) minmax(0, 0.78fr);
+    gap: clamp(var(--space-xl), 5vw, var(--space-4xl));
+    align-items: end;
+  }
+
+  .rv-eyebrow {
+    margin: 0 0 var(--space-md);
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .rv-hero h1 {
+    margin: 0;
+    max-width: 15ch;
+    font-size: clamp(2.9rem, 8.6vw, 7rem);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.07em;
+  }
+
+  .rv-h1-line {
+    display: block;
+  }
+
+  .rv-h1-line--mark {
+    margin-top: 0.06em;
+    padding-left: 0.32em;
+  }
+
+  .rv-h1-mark {
+    display: inline-block;
+    padding: 0.02em 0.1em 0.08em;
+    background: var(--accent);
+    color: var(--text-on-accent);
+    box-shadow: 0.07em 0.07em 0 var(--border);
+  }
+
+  .rv-hero-aside {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding-bottom: 0.35em;
+  }
+
+  .rv-intro {
+    max-width: 40ch;
+    margin: 0;
+    font-size: clamp(1rem, 1.7vw, 1.1875rem);
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  .rv-audience {
+    max-width: 44ch;
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .rv-audience strong {
+    color: var(--text);
+  }
+
+  .rv-hero-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-lg);
+    margin-top: clamp(var(--space-2xl), 5vw, var(--space-3xl));
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--border-light);
+  }
+
+  .rv-platforms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm) var(--space-lg);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .rv-hero-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-lg);
+  }
+
+  .rv-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-lg);
+    min-height: 3.25rem;
+    padding: var(--space-sm) var(--space-lg);
+    border: 3px solid var(--border);
+    background: var(--text);
+    color: var(--bg);
+    box-shadow: 6px 6px 0 var(--accent);
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .rv-cta:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 10px 10px 0 var(--accent);
+  }
+
+  .rv-cta span:last-child {
+    transition: transform var(--transition-fast);
+  }
+
+  .rv-cta:hover span:last-child {
+    transform: translateX(4px);
+  }
+
+  .rv-cta:focus-visible,
+  .rv-text-link:focus-visible,
+  .rv-offer-cta:focus-visible,
+  .rv-related a:focus-visible,
+  .rv-mail:focus-visible,
+  .rv-breadcrumb a:focus-visible,
+  .rv-faq-list summary:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 4px;
+  }
+
+  .rv-text-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-decoration-color: var(--border-light);
+    text-underline-offset: 0.35em;
+  }
+
+  .rv-text-link:hover {
+    text-decoration-color: var(--accent);
+  }
+
+  /* ---- Shared section shell ---- */
+  .rv-section {
+    position: relative;
+    padding: clamp(var(--space-3xl), 8vw, 8rem) 0;
+  }
+
+  .rv-section::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--border) 0 18px, transparent 18px 36px);
+  }
+
+  .rv-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: clamp(var(--space-xl), 5vw, var(--space-4xl));
+    margin-bottom: clamp(var(--space-2xl), 5vw, var(--space-4xl));
+  }
+
+  .rv-title {
+    max-width: 18ch;
+    margin: 0;
+    font-size: clamp(2rem, 5.7vw, 5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.065em;
+  }
+
+  .rv-head-lead {
+    max-width: 32rem;
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+    line-height: 1.55;
+  }
+
+  /* Problems: right-aligned title, lead on the left. */
+  .rv-problems .rv-title {
+    order: 2;
+    text-align: right;
+  }
+
+  .rv-problems .rv-head-lead {
+    order: 1;
+  }
+
+  /* Offers: title left, lead right in a split header. */
+  .rv-head--split .rv-head-lead {
+    text-align: right;
+  }
+
+  /* Process: title left, mono count on the right. */
+  .rv-head--count {
+    align-items: end;
+  }
+
+  .rv-count {
+    flex: 0 0 auto;
+    color: var(--text-muted);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  /* ---- Problems ---- */
+  .rv-problem-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-xl);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rv-problem {
+    padding-top: var(--space-md);
+    border-top: 3px solid var(--border);
+    transition: transform var(--transition-fast);
+  }
+
+  .rv-problem:hover {
+    transform: translateY(-4px);
+  }
+
+  .rv-problem-num {
+    display: block;
+    margin-bottom: var(--space-lg);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    line-height: 0.8;
+    letter-spacing: -0.08em;
+    color: var(--text-muted);
+    transition: color var(--transition-fast);
+  }
+
+  .rv-problem:hover .rv-problem-num {
+    color: var(--accent);
+  }
+
+  .rv-problem-title {
+    margin: 0 0 var(--space-sm);
+    font-size: clamp(1.125rem, 2vw, 1.4rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+  }
+
+  .rv-problem-desc {
+    max-width: 34ch;
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  /* ---- Offers ---- */
+  .rv-offer-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(var(--space-lg), 3vw, var(--space-xl));
+    align-items: stretch;
+  }
+
+  .rv-offer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding: clamp(var(--space-lg), 3vw, var(--space-2xl));
+    border: 3px solid var(--border);
+    background: var(--bg);
+    box-shadow: 8px 8px 0 var(--border);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .rv-offer:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0 var(--border);
+  }
+
+  .rv-offer--primary {
+    justify-content: space-between;
+    background: var(--accent);
+    color: var(--text-on-accent);
+    box-shadow: 8px 8px 0 var(--border);
+  }
+
+  .rv-offer--primary:hover {
+    box-shadow: 12px 12px 0 var(--border);
+  }
+
+  .rv-offer-tag {
+    width: fit-content;
+    padding: 0.3rem 0.55rem;
+    border: 2px solid currentColor;
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .rv-offer-title {
+    margin: 0;
+    font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+  }
+
+  .rv-offer-price {
+    margin: 0;
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+  }
+
+  .rv-offer-detail {
+    max-width: 42ch;
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    opacity: 0.85;
+  }
+
+  .rv-offer-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    width: fit-content;
+    margin-top: var(--space-md);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 0.35em;
+  }
+
+  .rv-offer-cta span {
+    transition: transform var(--transition-fast);
+  }
+
+  .rv-offer-cta:hover span {
+    transform: translateX(4px);
+  }
+
+  .rv-offer-stack {
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  .rv-note {
+    max-width: 72ch;
+    margin: clamp(var(--space-xl), 4vw, var(--space-2xl)) 0 0;
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border-light);
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+  }
+
+  /* ---- Diagnosis scope (inverted panel) ---- */
+  .rv-scope-panel {
+    display: grid;
+    gap: clamp(var(--space-xl), 4vw, var(--space-3xl));
+    padding: clamp(var(--space-lg), 4vw, var(--space-3xl));
+    border: 3px solid var(--border);
+    background: var(--text);
+    color: var(--bg);
+    box-shadow: 12px 12px 0 var(--accent);
+  }
+
+  .rv-scope-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0 0 var(--space-lg);
+    color: var(--text-accent-inverse);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .rv-scope-label::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--accent);
+  }
+
+  .rv-scope-head h2 {
+    max-width: 20ch;
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3.75rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.06em;
+  }
+
+  .rv-scope-price {
+    color: var(--text-accent-inverse);
+  }
+
+  .rv-conditions { display: grid; gap: var(--space-md); max-width: 68ch; margin: var(--space-lg) 0 0; padding-left: var(--space-lg); font-size: 0.9375rem; line-height: 1.55; }
+
+  .rv-scope-lead {
+    max-width: 62ch;
+    margin: var(--space-lg) 0 0;
+    color: var(--bg);
+    opacity: 0.8;
+    font-size: clamp(1rem, 1.7vw, 1.125rem);
+    line-height: 1.55;
+  }
+
+  .rv-scope-columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(var(--space-xl), 4vw, var(--space-3xl));
+    padding-top: var(--space-xl);
+    border-top: 1px solid color-mix(in srgb, var(--bg) 22%, transparent);
+  }
+
+  .rv-scope-col h3 {
+    margin: 0 0 var(--space-lg);
+    font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  .rv-scope-col ul {
+    display: grid;
+    gap: var(--space-sm);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rv-scope-col li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-sm);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .rv-scope-col li span {
+    flex: 0 0 0.9rem;
+    font-family: var(--font-mono);
+    font-weight: 700;
+  }
+
+  .rv-scope-col--in li {
+    color: var(--bg);
+  }
+
+  .rv-scope-col--in li span {
+    color: var(--text-accent-inverse);
+  }
+
+  .rv-scope-col--out li {
+    color: var(--bg);
+    opacity: 0.62;
+  }
+
+  .rv-scope-note {
+    margin: 0;
+    padding-top: var(--space-md);
+    border-top: 1px solid color-mix(in srgb, var(--bg) 22%, transparent);
+    color: var(--bg);
+    opacity: 0.72;
+    font-size: 0.8125rem;
+    line-height: 1.55;
+  }
+
+  /* ---- Process (vertical numbered log) ---- */
+  .rv-steps {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 3px solid var(--border);
+  }
+
+  .rv-step {
+    display: grid;
+    grid-template-columns: clamp(4rem, 9vw, 7rem) minmax(0, 1fr);
+    gap: clamp(var(--space-lg), 4vw, var(--space-3xl));
+    align-items: baseline;
+    padding: clamp(var(--space-lg), 3vw, var(--space-2xl)) 0;
+    border-bottom: 1px solid var(--border-light);
+    transition: background-color var(--transition-fast), padding-left var(--transition-fast);
+  }
+
+  .rv-step:hover {
+    padding-left: var(--space-md);
+    background: var(--bg-alt);
+  }
+
+  .rv-step-num {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 0.8;
+    letter-spacing: -0.08em;
+    color: var(--text-muted);
+    transition: color var(--transition-fast);
+  }
+
+  .rv-step:hover .rv-step-num {
+    color: var(--text);
+  }
+
+  .rv-step-copy h3 {
+    margin: 0;
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  .rv-step-copy p {
+    max-width: 62ch;
+    margin: var(--space-sm) 0 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  /* ---- FAQ ---- */
+  .rv-faq-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+    gap: clamp(var(--space-xl), 6vw, var(--space-4xl));
+  }
+
+  .rv-faq-list details {
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .rv-faq-list details:first-child {
+    border-top: 3px solid var(--border);
+  }
+
+  .rv-faq-list summary {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-md);
+    cursor: pointer;
+    font-weight: 700;
+    line-height: 1.5;
+    list-style: none;
+  }
+
+  .rv-faq-list summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .rv-faq-list summary::after {
+    content: "+";
+    flex: 0 0 auto;
+    font-family: var(--font-mono);
+    font-weight: 700;
+  }
+
+  .rv-faq-list details[open] summary::after {
+    content: "−";
+  }
+
+  .rv-faq-list summary:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 3px;
+  }
+
+  .rv-faq-list p {
+    max-width: 68ch;
+    margin: var(--space-sm) 0 0;
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--text-secondary);
+  }
+
+  /* ---- Close ---- */
+  .rv-close {
+    padding: clamp(var(--space-3xl), 7vw, 6rem) 0;
+    border-top: 4px solid var(--border);
+    background: var(--bg-alt);
+  }
+
+  .rv-close-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: clamp(var(--space-xl), 5vw, var(--space-4xl));
+    align-items: end;
+  }
+
+  .rv-close-label {
+    margin: 0 0 var(--space-md);
+    color: var(--text-muted);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .rv-close h2 {
+    margin: 0;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.07em;
+    text-transform: uppercase;
+  }
+
+  .rv-close-lead {
+    max-width: 40ch;
+    margin: var(--space-lg) 0 0;
+    font-size: clamp(1rem, 1.7vw, 1.125rem);
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  .rv-close-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-lg);
+  }
+
+  .rv-mail {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-decoration: underline;
+    text-decoration-color: var(--border-light);
+    text-underline-offset: 0.35em;
+  }
+
+  .rv-mail:hover {
+    text-decoration-color: var(--accent);
+  }
+
+  /* ---- Related ---- */
+  .rv-related {
+    padding: var(--space-2xl) 0 var(--space-4xl);
+  }
+
+  .rv-related-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-lg);
+  }
+
+  .rv-related-inner > p {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .rv-related ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md) var(--space-xl);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rv-related a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+  }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 900px) {
+    .rv-hero-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-xl);
+    }
+
+    .rv-hero-aside {
+      padding-bottom: 0;
+    }
+
+    .rv-offer-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .rv-faq-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-xl);
+    }
+  }
+
+  @media (max-width: 760px) {
+    .rv-head {
+      display: block;
+    }
+
+    .rv-problems .rv-title,
+    .rv-head--split .rv-head-lead {
+      text-align: left;
+    }
+
+    .rv-head-lead {
+      max-width: 46ch;
+      margin-top: var(--space-lg);
+    }
+
+    .rv-title {
+      font-size: clamp(2.35rem, 9vw, 4.25rem);
+      line-height: 0.9;
+    }
+
+    .rv-problem-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      row-gap: var(--space-xl);
+    }
+
+    .rv-scope-columns {
+      grid-template-columns: 1fr;
+      gap: var(--space-xl);
+    }
+
+    .rv-close-inner {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .rv-page {
+      padding-top: 104px;
+    }
+
+    .rv-breadcrumb {
+      margin-bottom: var(--space-xl);
+    }
+
+    .rv-h1-line--mark {
+      padding-left: 0.18em;
+    }
+
+    .rv-hero-foot {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .rv-hero-actions {
+      width: 100%;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .rv-cta {
+      justify-content: space-between;
+    }
+
+    .rv-problem-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+
+    .rv-step {
+      grid-template-columns: 1fr;
+      gap: var(--space-sm);
+    }
+
+    .rv-related-inner {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rv-cta,
+    .rv-cta span:last-child,
+    .rv-offer,
+    .rv-offer-cta span,
+    .rv-problem,
+    .rv-problem-num,
+    .rv-step,
+    .rv-step-num {
+      transition: none;
+    }
+  }
+</style>

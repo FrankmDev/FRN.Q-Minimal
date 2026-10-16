@@ -1,9 +1,22 @@
 ---
-import { getImage } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import { siteConfig } from "../data/site";
 import { getFeaturedProjects, casePath, type Project } from "../data/projects";
+import { serviceAreas } from "../data/services";
 
 const projects = await getFeaturedProjects();
+
+/**
+ * KingBelt (ecommerce) and Emilio Faraoni (B2B) are the flagship references of
+ * the two priority services, so they carry their commercial area as a label on
+ * the Home list. Other cases keep the neutral metadata line.
+ */
+function flagshipArea(project: Project) {
+  if (project.serviceArea !== "ecommerce" && project.serviceArea !== "b2b") {
+    return undefined;
+  }
+  return serviceAreas.find((service) => service.id === project.serviceArea);
+}
 
 const cases = await Promise.all(
   projects.map(async (project: Project) => ({
@@ -14,6 +27,9 @@ const cases = await Promise.all(
     sector: project.sector,
     status: project.status,
     alt: project.cover.alt,
+    cover: project.cover.src,
+    area: flagshipArea(project)?.title,
+    areaPrimary: project.serviceArea === "ecommerce",
     host: project.url
       ? new URL(project.url).hostname.replace(/^www\./, "")
       : null,
@@ -52,10 +68,20 @@ const cases = await Promise.all(
             >
               <span class="project-number mono" aria-hidden="true">0{index + 1}</span>
               <figure class="project-image">
-                <img src={item.preview} alt={item.alt} loading="lazy" decoding="async" />
+                <Image src={item.cover} alt={item.alt} widths={[320, 640, 960, 1200]} sizes="(max-width: 560px) 100vw, (max-width: 900px) 60vw, 40vw" format="avif" quality={88} loading="lazy" decoding="async" />
               </figure>
               <div class="project-copy">
                 <p class="project-meta mono">
+                  {item.area && (
+                    <span
+                      class:list={[
+                        "project-area",
+                        item.areaPrimary && "project-area--primary",
+                      ]}
+                    >
+                      {item.area}
+                    </span>
+                  )}
                   <span>{item.year}</span><span aria-hidden="true">/</span><span>{item.sector}</span>
                   {item.status === "in-development" && <><span aria-hidden="true">/</span><span>En desarrollo</span></>}
                 </p>
@@ -299,7 +325,7 @@ const cases = await Promise.all(
     background: var(--bg-alt);
   }
 
-  .project-image img {
+  .project-image :global(img) {
     display: block;
     width: 100%;
     height: 100%;
@@ -307,8 +333,8 @@ const cases = await Promise.all(
     transition: transform 600ms var(--motion-ease-out);
   }
 
-  .project-link:hover .project-image img,
-  .project-link:focus-visible .project-image img { transform: scale(1.045); }
+  .project-link:hover .project-image :global(img),
+  .project-link:focus-visible .project-image :global(img) { transform: scale(1.045); }
   .project-copy { min-width: 0; }
 
   .project-meta {
@@ -322,6 +348,22 @@ const cases = await Promise.all(
     letter-spacing: 0.08em;
     text-transform: uppercase;
     opacity: 0.6;
+  }
+
+  /* Commercial area label for the two flagship cases (ecommerce, B2B). It
+     keeps its own contrast so it survives the row's ink hover inversion. */
+  .project-area {
+    padding: 0.2rem 0.45rem;
+    border: 2px solid currentColor;
+    font-size: 0.625rem;
+    font-weight: 700;
+    opacity: 1;
+  }
+
+  .project-area--primary {
+    background: var(--accent);
+    border-color: var(--text-on-accent);
+    color: var(--text-on-accent);
   }
 
   .project-title {
@@ -491,6 +533,6 @@ const cases = await Promise.all(
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .project-link, .project-image, .project-image img, .project-title, .project-arrow, .all-cases-link span:last-child { transition: none; }
+    .project-link, .project-image, .project-image :global(img), .project-title, .project-arrow, .all-cases-link span:last-child { transition: none; }
   }
 </style>

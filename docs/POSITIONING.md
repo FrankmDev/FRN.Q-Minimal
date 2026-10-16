@@ -1,6 +1,6 @@
 # POSITIONING — frnq.es
 
-> **Status:** CURRENT. Authoritative business definition for the Spanish commercial surface. The visual identity and shared system are frozen; the current surface includes one productized Home block, **Revisión y reparación web** (Web Rescue).
+> **Status:** CURRENT. Authoritative business definition for the Spanish commercial surface. Preserve the commercial brutalist identity. The Home leads with **Web, comercio y sistemas**, with **Revisión y reparación web** (Web Rescue) as its productized entry offer.
 
 ## Definition
 
@@ -31,6 +31,8 @@ They buy **outcomes and reduced friction**, not technology. They care about thei
 3. **SISTEMAS & INTEGRACIONES** — integrations, workflows, connected data, internal tools. Automation is one capability inside this area, never a separate specialisation.
 4. **WEB, SEO & GROWTH** (shown publicly as "Web corporativa & SEO") — corporate web, repair/recovery and extension of existing websites, technical/local SEO, analytics and conversion.
 
+On the Home the four areas are ordered with **Web corporativa & SEO** first, because a professional website and the repair or improvement of an existing one are the fastest entry point for new work. This is a Home presentation order, not a change of depth: Ecommerce and B2B keep their full commercial weight, their dedicated routes and their evidence.
+
 Design (UI/UX), frontend development, web, technical/local SEO, analytics, CRO, accessibility, performance and integrations are **capabilities** used across those areas. They are supporting means, never the headline or a separate top-level service. Do not promise every capability on every engagement.
 
 ## Value proposition
@@ -60,13 +62,34 @@ A productized, low-friction entry point for businesses that already have a websi
 - **Reparación de landing — desde 299 €.** Corrections and improvements on a single page.
 - **Webs mayores — presupuesto.** Quoted after the review, according to incidents and complexity.
 
-Process: **Diagnóstico → Presupuesto → Reparación → Verificación**. The scope and price are agreed in writing before any repair. This block is published on the Home page and is the only public, productized part of the web offer; the rest is quoted after discovery. It is not a new specialisation and does not replace the four commercial areas.
+Process: **Diagnóstico → Presupuesto → Reparación → Verificación**. The scope and price are agreed in writing before any repair. This block is published on the Home page and its entry offers are the productized part of the repair service; the web starting points, Shopify, Care and the rescue offers are published together on `/precios/`, while B2B, systems, integrations and custom work are quoted after discovery. It is not a new specialisation and does not replace the four commercial areas.
+
+## Soporte y mantenimiento (FRN.Q Support)
+
+A continuity service for sites and systems FRN.Q has delivered, or can take on
+after a review. It keeps what works running and handles planned changes. It is
+**not** unlimited support and does not promise generic response times or 24/7
+availability.
+
+- **Mantenimiento técnico:** reviews, necessary updates and incidents inside the
+  agreed scope.
+- **Cambios menores y mejoras planificadas:** small changes, grouped and planned.
+- **Revisión técnica y seguimiento:** performance, errors, backups and basic
+  security at the agreed cadence.
+- **Evolución, SEO, datos e integraciones:** new work, defined through a specific
+  agreement, never folded into maintenance.
+
+Scope, response times, availability, hosting, licences and extraordinary work are
+agreed in writing. It is not a new commercial area. The public starting point is
+the CARE price (from 49 €/mes, see `src/data/pricing.ts`), which `/soporte/`
+reads rather than restating. Published at `/soporte/` with the CTA "Consultar
+soporte" (contact type `soporte`).
 
 ## What FRN.Q does NOT promise
 
 - No guaranteed ROI, no invented metrics, no "guaranteed conversion lift".
 - No bank-grade security claims, no "immortal technology", no "digital legacy".
-- No fixed public price that fits every project.
+- No fixed public price that fits every project; the published figures on `/precios/` are scope-specific starting points, not universal quotes.
 - No enterprise scale or team that does not exist.
 - No superiority of custom code over any named platform as a blanket claim.
 - No results for projects that have not shipped.
@@ -101,16 +124,23 @@ frnq.studio  English, technical  →  shows craft and evidence (external link)
 ## Engagement and pricing philosophy
 
 - Capability areas are **not** price tiers.
-- Prices are scope-specific. No fixed public price list for systems or B2B portals.
-- The only public, productized numbers are the Web Rescue entry offers (Diagnóstico Web 360 at 99 € and landing repair from 299 €). Larger repairs and every other project are quoted after discovery.
+- Prices are scope-specific. Published starting points orient a defined scope; they are never a universal quote or a fixed total.
+- The public price reference lives in `src/data/pricing.ts` and is published on `/precios/`: START from 690 €, STUDIO from 990 €, PRESENCE from 1.390 €, BUSINESS from 1.990 €, SHOPIFY from 3.190 € and CARE from 49 €/mes, alongside the Web Rescue entry offers. Every visible amount on the site reads from that module.
+- B2B portals, product systems, integrations and custom ecommerce stay discovery-led: quoted after discovery, with no public figure.
+- The Web Rescue entry offers are productized and scoped — Diagnóstico Web 360 at 99 € (discounted from an eligible repair hired within 30 days) and landing repair from 299 €. Larger repairs are quoted after the review.
+- FRN.Q Support (mantenimiento y evolución) starts from the published CARE price; each agreement fixes its scope, availability and terms in writing.
+- Prices are shown without taxes; applicable taxes are added under current regulations. Domain, hosting, platform licences, apps and other external providers are excluded unless the proposal states otherwise.
 - Orientation ranges may be shown only as an invitation to a conversation, never as a quote.
-- Models: closed project, continuous collaboration (no mandatory retainer), discovery session.
+- Models: closed project, continuous collaboration (no mandatory retainer), discovery session. Projects are invoiced by milestones fixed in the proposal.
 - The contact flow asks for context, not commitment.
 
 ## Current status
 
-- **CURRENT.** The business definition, hierarchy and existing home composition remain frozen, with one addition: a Home **Revisión y reparación web** block (`#revision-web`) with the Web Rescue entry offers and a discreet Granada use-case block (hotels, accommodation, restaurants, bars, venues and retail).
-- The organic-search scope includes static solution routes for Ecommerce & Shopify, Portales & Sistemas B2B, Sistemas & Integraciones and Web corporativa & SEO (`/soluciones/desarrollo-web/`, covering diseño y desarrollo web a medida plus repair/recovery of existing websites, including natural Granada relevance on one canonical page); these deepen the existing offer without creating new specialisations or city doorway pages.
+- **CURRENT.** The Home acquisition order is Web corporativa & SEO → Ecommerce & Shopify → Portales & Sistemas B2B → Sistemas & Integraciones. Its commercial brutalist identity is preserved; the **Revisión y reparación web** block (`#revision-web`) remains the entry offer, with a discreet Granada use-case block (hotels, accommodation, restaurants, bars, venues and retail). This does not remove Ecommerce/B2B depth or evidence.
+- The organic-search scope includes static solution routes for Ecommerce & Shopify, Portales & Sistemas B2B, Sistemas & Integraciones and Web corporativa & SEO (`/soluciones/desarrollo-web/`, covering diseño y desarrollo web a medida, including natural Granada relevance on one canonical page), plus the repair-intent route below; these deepen the existing offer without creating new specialisations or city doorway pages.
+- **Repair landing** (`/soluciones/revision-web/`) is the repair-intent page: fixing, updating and improving an existing website (WordPress, Elementor, WooCommerce), starting from the Diagnóstico Web 360 (99 €, descontable de una reparación elegible) and landing repair (desde 299 €) reused from the Home Web Rescue block. Creating or redesigning a site stays on `/soluciones/desarrollo-web/`.
 - Further routes require distinct search intent and useful evidence-led content; no city doorway pages.
+- **FRN.Q Support** (`/soporte/`) is published as a commercial continuity page (mantenimiento, cambios menores, seguimiento y evolución por acuerdo), linked from the services block, published cases and the footer. It creates no portal, ticket system or SLA.
+- **Precios** (`/precios/`) is the public price reference: the scope-specific starting points, the Web Rescue entry offers and the three pricing modes (precio de partida, alcance definido, presupuesto personalizado), with the written terms on scope changes, external costs, taxes and maintenance, and a pricing/payment FAQ. All amounts read from `src/data/pricing.ts`; B2B portals, systems, integrations and custom ecommerce publish no figure.
 - Public in-development previews require explicit editorial approval and visible status. Only label KingBelt, Emilio Faraoni or Ilifielt as completed after operational acceptance and verifiable evidence.
 - No language switch, no "Business Mode", no fabricated metrics, guarantees, testimonials or exclusivity language.

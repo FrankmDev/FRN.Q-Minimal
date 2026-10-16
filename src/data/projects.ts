@@ -21,7 +21,7 @@ export async function getPublishedProjects(): Promise<Project[]> {
   );
 }
 
-export async function getFeaturedProjects(limit = 3): Promise<Project[]> {
+export async function getFeaturedProjects(limit = 4): Promise<Project[]> {
   return (await getPublishedProjects()).slice(0, limit);
 }
 
@@ -41,6 +41,52 @@ export const statusLabels: Record<Project["status"], string> = {
   "in-development": "En desarrollo",
   archived: "Archivado",
 };
+
+/**
+ * Case archive grouping. Projects are listed by commercial type following the
+ * service hierarchy (ecommerce, B2B, web and own product, interactive work), so
+ * a visitor identifies the kind of project before reading anything. `web` and
+ * `website` share one group.
+ */
+export interface CaseGroup {
+  id: string;
+  label: string;
+  /** Short description of what this type of project delivers. */
+  short: string;
+  /** Case categories collected under this group. */
+  categories: Project["category"][];
+  /** Priority treatment mirroring the commercial hierarchy. */
+  emphasis?: "primary" | "secondary";
+}
+
+export const caseGroups: CaseGroup[] = [
+  {
+    id: "ecommerce",
+    label: "E-commerce D2C",
+    short: "Tienda online con catálogo, variantes y compra directa.",
+    categories: ["ecommerce"],
+    emphasis: "primary",
+  },
+  {
+    id: "b2b",
+    label: "Portal / Commerce B2B",
+    short: "Clientes profesionales, precios privados y pedidos.",
+    categories: ["b2b"],
+    emphasis: "secondary",
+  },
+  {
+    id: "web",
+    label: "Web y proyectos a medida",
+    short: "Webs corporativas, portfolios y productos digitales propios.",
+    categories: ["corporate", "web", "website", "product"],
+  },
+  {
+    id: "interactive",
+    label: "Experiencia interactiva",
+    short: "Navegación visual donde la obra o el material son el contenido.",
+    categories: ["interactive"],
+  },
+];
 
 export function casePath(slug: string): string {
   return `/casos/${slug}/`;

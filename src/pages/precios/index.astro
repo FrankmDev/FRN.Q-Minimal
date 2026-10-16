@@ -1,0 +1,920 @@
+---
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import MainLayout from "../../layouts/MainLayout.astro";
+import {
+  formatPrice,
+  lineAmount,
+  lineBilling,
+  pricingCopy,
+  pricingFaqs,
+  pricingGroups,
+  pricingModeLabel,
+  pricingModes,
+  pricingTerms,
+} from "../../data/pricing";
+import { siteConfig } from "../../data/site";
+
+const canonical = new URL(Astro.url.pathname, Astro.site || siteConfig.url);
+
+// Only offers with a real, published amount become structured data.
+const publishedPrices = pricingGroups.flatMap((group) =>
+  group.offers.flatMap((offer) => {
+    const amount = lineAmount(offer);
+    return amount == null ? [] : [{ offer, amount, href: group.href }];
+  }),
+);
+
+const offerCatalog = {
+  "@context": "https://schema.org",
+  "@type": "OfferCatalog",
+  "@id": `${canonical.toString()}#precios`,
+  name: `Precios públicos de ${siteConfig.name}`,
+  url: canonical.toString(),
+  itemListElement: publishedPrices.map((entry) => ({
+    "@type": "Offer",
+    name: entry.offer.name,
+    priceCurrency: "EUR",
+    priceSpecification: {
+      "@type": lineBilling(entry.offer) === "monthly" ? "UnitPriceSpecification" : "PriceSpecification",
+      ...(entry.offer.mode === "fixed" ? { price: entry.amount } : { minPrice: entry.amount }),
+      priceCurrency: "EUR",
+      valueAddedTaxIncluded: false,
+      ...(lineBilling(entry.offer) === "monthly" ? { billingDuration: "P1M" } : {}),
+    },
+    ...(entry.href
+      ? { url: new URL(entry.href, canonical.origin).toString() }
+      : {}),
+  })),
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Inicio",
+      item: new URL("/", canonical.origin).toString(),
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Precios",
+      item: canonical.toString(),
+    },
+  ],
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: pricingFaqs.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+
+const groupedSolutions = pricingGroups.flatMap((group) =>
+  group.href ? [{ href: group.href, label: group.label }] : [],
+);
+---
+
+<MainLayout
+  title={`Precios y presupuestos | ${siteConfig.name}`}
+  description="Precios públicos y puntos de partida de FRN.Q: web, Shopify, mantenimiento y reparación web. B2B y sistemas se presupuestan tras el discovery."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(offerCatalog)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+
+  <Header />
+  <main id="main-content" class="pricing-page">
+    <article>
+      <header class="pricing-hero">
+        <div class="container">
+          <nav class="pricing-breadcrumb" aria-label="Ruta de navegación">
+            <a href="/">Inicio</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">Precios</span>
+          </nav>
+
+          <div class="pricing-hero-inner">
+            <p class="pricing-eyebrow">{pricingCopy.label}</p>
+            <h1>{pricingCopy.title}</h1>
+            <div class="pricing-hero-aside">
+              <p class="pricing-intro">{pricingCopy.lead}</p>
+              <div class="pricing-hero-actions">
+                <a
+                  class="pricing-cta"
+                  href={pricingCopy.cta.href}
+                  data-track="cta_click"
+                  data-track-location="precios_hero"
+                  data-track-label={pricingCopy.cta.label}
+                >
+                  <span>{pricingCopy.cta.label}</span>
+                  <span aria-hidden="true">→</span>
+                </a>
+                <a class="pricing-text-link" href={pricingCopy.secondaryCta.href}>
+                  {pricingCopy.secondaryCta.label} <span aria-hidden="true">↘</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="pricing-section" aria-labelledby="modes-title">
+        <div class="container">
+          <p class="section-tag section-tag--inline">{pricingCopy.modesTag}</p>
+          <h2 id="modes-title">{pricingCopy.modesTitle}</h2>
+          <ol class="mode-list">
+            {
+              pricingModes.map((mode) => (
+                <li class="mode-item">
+                  <span class="mode-num" aria-hidden="true">{mode.num}</span>
+                  <h3 class="mode-label">{mode.label}</h3>
+                  <p class="mode-desc">{mode.description}</p>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </section>
+
+      <section class="pricing-section pricing-section--rules" aria-labelledby="table-title">
+        <div class="container">
+          <p class="section-tag section-tag--inline">{pricingCopy.tableTag}</p>
+          <h2 id="table-title">{pricingCopy.tableTitle}</h2>
+          <p class="pricing-lead">{pricingCopy.tableLead}</p>
+
+          <div class="price-groups">
+            {
+              pricingGroups.map((group, groupIndex) => (
+                <section class="price-group" aria-labelledby={`group-${group.id}`}>
+                  <header class="group-head">
+                    <span class="group-num mono" aria-hidden="true">
+                      {String(groupIndex + 1).padStart(2, "0")}
+                    </span>
+                    <div class="group-heading">
+                      <h3 class="group-title" id={`group-${group.id}`}>{group.label}</h3>
+                      <p class="group-summary">{group.summary}</p>
+                    </div>
+                    {group.href && (
+                      <a class="group-link" href={group.href}>
+                        {group.hrefLabel ?? "Ver solución"} <span aria-hidden="true">→</span>
+                      </a>
+                    )}
+                  </header>
+
+                  <div class="price-cols" aria-hidden="true">
+                    <span>Oferta</span>
+                    <span>Para qué situación</span>
+                    <span>Alcance</span>
+                    <span>Precio</span>
+                  </div>
+
+                  <ul class="price-lines">
+                    {group.offers.map((offer) => {
+                      const amount = lineAmount(offer);
+                      const billing = lineBilling(offer);
+                      return (
+                        <li class="price-line">
+                          <div class="line-name">
+                            <h4 class="line-title">{offer.name}</h4>
+                            <span class="line-mode">{pricingModeLabel(offer.mode)}</span>
+                          </div>
+                          <p class="line-fit">{offer.fit}</p>
+                          <p class="line-scope">{offer.scope}</p>
+                          <p class="line-price">
+                            {amount != null && offer.mode === "from" && (
+                              <span class="price-prefix">desde</span>
+                            )}
+                            <span
+                              class:list={[
+                                "price-amount",
+                                { "price-amount-scoped": amount == null },
+                              ]}
+                            >
+                              {amount == null ? "Presupuesto" : formatPrice(amount)}
+                            </span>
+                            {amount != null && (
+                              <span class="price-billing">
+                                {billing === "monthly" ? "cada mes" : "por proyecto"}
+                              </span>
+                            )}
+                          </p>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </section>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+      <section class="pricing-section pricing-section--rules" aria-labelledby="terms-title">
+        <div class="container">
+          <p class="section-tag section-tag--inline">{pricingCopy.termsTag}</p>
+          <h2 id="terms-title">{pricingCopy.termsTitle}</h2>
+          <p class="pricing-lead">{pricingCopy.termsLead}</p>
+          <div class="terms-panel">
+            <ul class="terms-list">
+              {
+                pricingTerms.map((term) => (
+                  <li class="term">
+                    <h3 class="term-title">{term.title}</h3>
+                    <p class="term-body">{term.body}</p>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="pricing-section" aria-labelledby="pricing-faq-title">
+        <div class="container pricing-faq-grid">
+          <div>
+            <p class="section-tag section-tag--inline">{pricingCopy.faqTag}</p>
+            <h2 id="pricing-faq-title">{pricingCopy.faqTitle}</h2>
+          </div>
+          <div class="price-faqs">
+            {
+              pricingFaqs.map((item) => (
+                <details>
+                  <summary>{item.q}</summary>
+                  <p>{item.a}</p>
+                </details>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+      <nav class="pricing-close" aria-label="Seguir explorando">
+        <div class="container pricing-close-inner">
+          <p class="close-label">Explorar por solución</p>
+          <ul class="close-links">
+            {
+              groupedSolutions.map((solution) => (
+                <li>
+                  <a href={solution.href}>
+                    {solution.label} <span aria-hidden="true">→</span>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+          <a
+            class="pricing-cta"
+            href={pricingCopy.cta.href}
+            data-track="cta_click"
+            data-track-location="precios_close"
+            data-track-label={pricingCopy.cta.label}
+          >
+            <span>{pricingCopy.cta.label}</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <Footer />
+</MainLayout>
+
+<style>
+  .pricing-page {
+    padding-top: 120px;
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+  }
+
+  /* ---- Hero ---- */
+  .pricing-hero {
+    padding: var(--space-2xl) 0 var(--space-3xl);
+    border-bottom: 4px solid var(--border);
+  }
+
+  .pricing-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-2xl);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .pricing-breadcrumb a {
+    opacity: 0.65;
+    text-underline-offset: 0.25em;
+  }
+
+  .pricing-breadcrumb span {
+    opacity: 0.55;
+  }
+
+  .pricing-breadcrumb [aria-current="page"] {
+    opacity: 1;
+  }
+
+  .pricing-hero-inner {
+    display: grid;
+    gap: clamp(var(--space-xl), 5vw, var(--space-4xl));
+  }
+
+  .pricing-eyebrow {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .pricing-hero h1 {
+    max-width: 18ch;
+    margin: 0;
+    font-size: clamp(2.6rem, 8vw, 6.5rem);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.065em;
+    text-transform: uppercase;
+  }
+
+  .pricing-intro {
+    max-width: 54ch;
+    margin: 0;
+    font-size: clamp(1.0625rem, 1.7vw, 1.25rem);
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .pricing-hero-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-lg);
+    margin-top: var(--space-xl);
+  }
+
+  /* ---- Sections ---- */
+  .pricing-section {
+    padding: clamp(var(--space-2xl), 6vw, var(--space-4xl)) 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .pricing-section--rules {
+    border-top: 3px solid var(--border);
+  }
+
+  .pricing-section .section-tag {
+    margin-bottom: var(--space-md);
+  }
+
+  .pricing-section h2 {
+    max-width: 20ch;
+    margin: 0;
+    font-size: clamp(1.8rem, 4vw, 3.5rem);
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+    text-transform: uppercase;
+  }
+
+  .pricing-lead {
+    max-width: 62ch;
+    margin: var(--space-lg) 0 0;
+    line-height: 1.65;
+    color: var(--text-secondary);
+  }
+
+  /* ---- Mode key ---- */
+  .mode-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-xl);
+    margin: var(--space-2xl) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .mode-item {
+    padding-top: var(--space-md);
+    border-top: 3px solid var(--border);
+  }
+
+  .mode-num {
+    display: block;
+    margin-bottom: var(--space-md);
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 800;
+    line-height: 0.85;
+    letter-spacing: -0.07em;
+    color: var(--text-muted);
+  }
+
+  .mode-label {
+    margin: 0 0 var(--space-sm);
+    font-size: clamp(1.125rem, 2vw, 1.4rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+  }
+
+  .mode-desc {
+    max-width: 40ch;
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  /* ---- Price comparison ---- */
+  .price-groups {
+    display: grid;
+    gap: clamp(var(--space-2xl), 5vw, var(--space-3xl));
+    margin-top: var(--space-2xl);
+  }
+
+  .price-group {
+    border-top: 3px solid var(--border);
+    padding-top: var(--space-lg);
+  }
+
+  .group-head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-xs) var(--space-lg);
+    margin-bottom: var(--space-lg);
+  }
+
+  .group-num {
+    display: grid;
+    width: 2.25rem;
+    aspect-ratio: 1;
+    place-items: center;
+    border: 2px solid var(--border);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  /* Priority area 01 (Ecommerce) carries the accent mark. */
+  .price-group:first-child .group-num {
+    background: var(--accent);
+    color: var(--text-on-accent);
+  }
+
+  .group-title {
+    margin: 0;
+    font-size: clamp(1.35rem, 2.6vw, 2rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.045em;
+  }
+
+  .group-summary {
+    max-width: 52ch;
+    margin: var(--space-xs) 0 0;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .group-link {
+    grid-column: 2;
+    width: fit-content;
+    margin-top: var(--space-md);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+  }
+
+  .price-cols {
+    display: none;
+  }
+
+  .price-lines {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .price-line {
+    display: grid;
+    gap: var(--space-sm) var(--space-lg);
+    padding: var(--space-lg) 0;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .line-title {
+    margin: 0;
+    font-size: clamp(1.0625rem, 1.7vw, 1.3rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  .line-mode {
+    display: inline-block;
+    margin-top: var(--space-xs);
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .line-fit {
+    max-width: 46ch;
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  .line-scope {
+    max-width: 42ch;
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .line-price {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.15rem 0.45rem;
+    margin: 0;
+  }
+
+  .price-prefix {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .price-amount {
+    font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+  }
+
+  .price-amount-scoped {
+    font-size: clamp(1.0625rem, 1.7vw, 1.3rem);
+    color: var(--text-muted);
+    white-space: normal;
+  }
+
+  .price-billing {
+    flex-basis: 100%;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* ---- Terms (inverted panel) ---- */
+  .terms-panel {
+    margin-top: var(--space-2xl);
+    padding: clamp(var(--space-lg), 3vw, var(--space-2xl));
+    border: 3px solid var(--border);
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  .terms-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-xl) clamp(var(--space-xl), 4vw, var(--space-3xl));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .term {
+    padding-top: var(--space-md);
+    border-top: 1px solid color-mix(in srgb, var(--bg) 26%, transparent);
+  }
+
+  .term-title {
+    margin: 0 0 var(--space-sm);
+    font-size: clamp(1.0625rem, 1.8vw, 1.25rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .term-body {
+    max-width: 52ch;
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--bg);
+    opacity: 0.78;
+  }
+
+  /* ---- FAQ ---- */
+  .pricing-faq-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(var(--space-xl), 6vw, var(--space-4xl));
+    align-items: start;
+  }
+
+  .price-faqs details {
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .price-faqs details:first-child {
+    border-top: 2px solid var(--border);
+  }
+
+  .price-faqs summary {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-md);
+    cursor: pointer;
+    font-weight: 700;
+    line-height: 1.5;
+    list-style: none;
+  }
+
+  .price-faqs summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .price-faqs summary::after {
+    content: "+";
+    flex: 0 0 auto;
+    font-family: var(--font-mono);
+    font-weight: 700;
+  }
+
+  .price-faqs details[open] summary::after {
+    content: "−";
+  }
+
+  .price-faqs p {
+    margin: var(--space-sm) 0 0;
+    max-width: 68ch;
+    line-height: 1.65;
+    color: var(--text-secondary);
+  }
+
+  /* ---- Close ---- */
+  .pricing-close {
+    padding: var(--space-2xl) 0 var(--space-4xl);
+  }
+
+  .pricing-close-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    padding-top: var(--space-lg);
+    border-top: 3px solid var(--border);
+  }
+
+  .close-label {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .close-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md) var(--space-xl);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .close-links a {
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+  }
+
+  /* ---- Shared actions ---- */
+  .pricing-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xl);
+    min-height: 3.25rem;
+    padding: var(--space-sm) var(--space-lg);
+    border: 3px solid var(--border);
+    background: var(--text);
+    color: var(--bg);
+    box-shadow: 6px 6px 0 var(--accent);
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .pricing-cta:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 10px 10px 0 var(--accent);
+  }
+
+  .pricing-cta span:last-child {
+    transition: transform var(--transition-fast);
+  }
+
+  .pricing-cta:hover span:last-child {
+    transform: translateX(4px);
+  }
+
+  .pricing-text-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .pricing-text-link span {
+    transition: transform var(--transition-fast);
+  }
+
+  .pricing-text-link:hover span {
+    transform: translate(3px, 3px);
+  }
+
+  .pricing-breadcrumb a:focus-visible,
+  .group-link:focus-visible,
+  .close-links a:focus-visible,
+  .price-faqs summary:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 4px;
+  }
+
+  .pricing-cta:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 4px;
+  }
+
+  .pricing-text-link:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 4px;
+  }
+
+  /* ---- Responsive ---- */
+  @media (min-width: 900px) {
+    .pricing-hero-inner {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      align-items: end;
+    }
+
+    .pricing-eyebrow {
+      grid-column: 1 / -1;
+      margin-bottom: var(--space-lg);
+    }
+
+    .pricing-hero h1 {
+      align-self: end;
+    }
+
+    .pricing-hero-aside {
+      align-self: end;
+      padding-bottom: 0.35rem;
+    }
+
+    .group-head {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: var(--space-lg);
+    }
+
+    .group-link {
+      grid-column: 3;
+      margin-top: 0;
+    }
+
+    .price-cols {
+      display: grid;
+      grid-template-columns:
+        minmax(0, 1.05fr) minmax(0, 1.5fr) minmax(0, 1.1fr)
+        minmax(7rem, 0.55fr);
+      gap: var(--space-lg);
+      padding-bottom: var(--space-sm);
+      border-bottom: 1px solid var(--border-light);
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .price-line {
+      grid-template-columns:
+        minmax(0, 1.05fr) minmax(0, 1.5fr) minmax(0, 1.1fr)
+        minmax(7rem, 0.55fr);
+      align-items: start;
+    }
+  }
+
+  @media (max-width: 899px) {
+    .line-name {
+      order: 1;
+    }
+
+    .line-price {
+      order: 2;
+    }
+
+    .line-fit {
+      order: 3;
+    }
+
+    .line-scope {
+      order: 4;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .pricing-hero {
+      padding-top: var(--space-lg);
+    }
+
+    .pricing-hero h1 {
+      font-size: clamp(2.4rem, 10.5vw, 4rem);
+    }
+
+    .mode-list {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+
+    .terms-list,
+    .pricing-faq-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .pricing-page {
+      padding-top: 104px;
+    }
+
+    .pricing-breadcrumb {
+      margin-bottom: var(--space-xl);
+    }
+
+    .pricing-hero-actions,
+    .pricing-close-inner {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .pricing-cta {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pricing-cta,
+    .pricing-cta span:last-child,
+    .pricing-text-link span {
+      transition: none;
+    }
+  }
+</style>

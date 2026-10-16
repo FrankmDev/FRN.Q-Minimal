@@ -48,7 +48,7 @@ Do not add identity colours outside `tokens.css`. Semantic error or status colou
 ## Home composition
 
 - `Hero.astro` owns the single oversized commercial headline, one brief statement, two local actions and a quiet external portfolio link.
-- `Services.astro` maps the four commercial areas in `src/data/services.ts` to large-number blocks with one short description each.
+- `Services.astro` presents the four commercial areas in `src/data/services.ts`: the first as a full-width priority feature plate and the rest as a ruled commercial index. Each entry states one recognisable problem, one outcome and a link to its page.
 - `HiddenCost.astro` is a two-part, factual comparison with three concise points per side.
 - `Projects.astro` reads published cases from Content Collections, selects a small ordered subset for the Home and renders their covers visibly. `/casos/` and case-detail pages retain the complete case content.
 - `About.astro` presents Francisco's independent practice and a four-phase, connected process timeline.

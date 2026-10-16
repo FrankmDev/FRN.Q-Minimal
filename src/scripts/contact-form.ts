@@ -10,6 +10,7 @@ import {
   CONTACT_OPTIONAL_MAX,
   CONTACT_SUBMISSION_ID_PATTERN,
   CONTACT_TYPE_VALUES,
+  isContactType,
 } from "../data/contact-contract";
 import { track, trackOnce, type TrackProps } from "./analytics";
 
@@ -136,6 +137,11 @@ function validateField(field: FormField): boolean {
     return false;
   }
 
+  if (field.name === "type" && !isContactType(value)) {
+    setFieldState(field, "invalid", "Selecciona un tipo de proyecto válido.");
+    return false;
+  }
+
   if (
     field.name === "message" &&
     value.length > 0 &&
@@ -145,7 +151,7 @@ function validateField(field: FormField): boolean {
     return false;
   }
 
-  if (field.name === "budget" && value.length > CONTACT_OPTIONAL_MAX) {
+  if (field.name === "budget" && (value.length > CONTACT_OPTIONAL_MAX || !CONTACT_BUDGET_VALUES.includes(value))) {
     setFieldState(field, "invalid", "Valor no válido.");
     return false;
   }
@@ -211,10 +217,21 @@ function initContactForm(): void {
     el.addEventListener(type, fn, { signal: controller.signal });
   };
 
+  // One form-interaction signal per document, on the first real engagement.
+  let started = false;
+  const markStarted = () => {
+    if (started) return;
+    started = true;
+    track("contact_form_start", { location: "contact" });
+  };
+
   fields.forEach((field) => {
     const fieldUnit = field.closest("[data-field-id]");
 
-    add(field, "focus", () => fieldUnit?.classList.add("is-focus"));
+    add(field, "focus", () => {
+      fieldUnit?.classList.add("is-focus");
+      markStarted();
+    });
     add(field, "blur", () => {
       fieldUnit?.classList.remove("is-focus");
       validateField(field);
@@ -225,8 +242,12 @@ function initContactForm(): void {
       const fieldUnitEl = field.closest("[data-field-id]");
       if (fieldUnitEl?.classList.contains("is-invalid")) validateField(field);
       if (field.name === "message") updateMessageCounter(field as HTMLTextAreaElement);
+      markStarted();
     });
-    add(field, "change", () => validateField(field));
+    add(field, "change", () => {
+      markStarted();
+      validateField(field);
+    });
   });
 
   add(form, "submit", (event) => {

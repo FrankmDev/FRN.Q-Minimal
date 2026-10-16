@@ -18,9 +18,37 @@ export interface SolutionCard {
   description: string;
 }
 
+/** A way of arriving at the engagement: new build, migration or improvement. */
+export interface SolutionScenario {
+  /** Mono index shown beside the title, e.g. "01". */
+  label: string;
+  title: string;
+  description: string;
+  /** Concrete pieces included in this scenario. */
+  includes: string[];
+}
+
+/** Grouped heading plus scenarios, used to differentiate a route's offer. */
+export interface SolutionScenarioGroup {
+  tag: string;
+  title: string;
+  lead?: string;
+  items: SolutionScenario[];
+}
+
+/** Grouped commercial block: heading plus item cards. */
+export interface SolutionBlock {
+  tag: string;
+  title: string;
+  lead: string;
+  items: SolutionCard[];
+}
+
 /** Composition specific to the corporate-web page. */
 export interface WebDetails {
-  /** Project shapes the offer can cover, from a full corporate site to a redesign. */
+  /** Creación, rediseño y desarrollo a medida: how the engagement starts. */
+  modes: SolutionScenarioGroup;
+  /** Shapes the built site can take. */
   projectTypes: SolutionCard[];
   /** Craft and technical capabilities integrated into the build. */
   capabilities: SolutionCard[];
@@ -28,6 +56,13 @@ export interface WebDetails {
   deliverables: string[];
   /** How the site is handed over and maintained after launch. */
   maintenance: string;
+  /** Routes an existing-site problem to the Web Rescue offer. */
+  repair: {
+    tag: string;
+    title: string;
+    description: string;
+    label: string;
+  };
 }
 
 export interface B2BPortalLevel {
@@ -43,9 +78,21 @@ export interface B2BBuyerStep {
 
 export interface B2BDetails {
   levels: B2BPortalLevel[];
+  /** Building blocks of the portal, from registration to order. */
+  pieces: SolutionCard[];
   buyerJourney: B2BBuyerStep[];
   phases: B2BBuyerStep[];
   systemsCta: string;
+}
+
+export interface SystemsDetails {
+  tag: string;
+  title: string;
+  lead: string;
+  /** How an integration or automation gets decided. */
+  decisions: SolutionCard[];
+  /** Honest boundary of an integration engagement. */
+  note: string;
 }
 
 export interface SolutionPage {
@@ -59,7 +106,7 @@ export interface SolutionPage {
   systemDescription: string;
   integrationDescription: string;
   integrationExamples: string[];
-  platformOptions?: { title: string; description: string }[];
+  platformOptions?: SolutionCard[];
   clientInputs?: string[];
   deliverables?: string[];
   projectLimits?: string[];
@@ -67,12 +114,24 @@ export interface SolutionPage {
   relatedSolutions: SolutionId[];
   b2bDetails?: B2BDetails;
   webDetails?: WebDetails;
+  /** Ways of arriving at the work; differentiates the offer per route. */
+  scenarios?: SolutionScenarioGroup;
+  /** How the delivered store runs day to day. */
+  operations?: SolutionBlock;
+  /** Systems page: symptoms and the decisions behind an integration. */
+  systemsDetails?: SystemsDetails;
+  /** Contextual sentence rendered above the related evidence. */
+  evidenceNote?: string;
+  /** Contextual CTA labels, kept specific to each route. */
+  ctas?: { hero: string; mid?: string; closing: string };
+  /** In-page navigation, listing the anchors each route actually renders. */
+  jump?: { href: string; label: string }[];
   /**
    * Published case categories rendered as evidence when the solution has no
    * `serviceArea` match. The projects collection stays the single source.
    */
   evidenceCategories?: string[];
-  /** Optional heading overrides; defaults match the platform-led pages. */
+  /** Optional heading overrides; defaults live in the page component. */
   headings?: Partial<Record<"integrations" | "process" | "evidence", SolutionHeading>>;
   faqs: SolutionFaq[];
 }
@@ -83,10 +142,10 @@ export const solutionPages: SolutionPage[] = [
     slug: "ecommerce",
     title: "Tiendas online Shopify y desarrollo ecommerce | FRN.Q",
     description:
-      "Construyo, migro o mejoro tiendas online con Shopify o desarrollo a medida: catálogo, checkout, pagos, envíos, SEO e integraciones.",
+      "Creo, migro y mejoro tiendas online con Shopify o desarrollo a medida: catálogo, variantes, pagos, pedidos, SEO e integraciones.",
     h1: "Desarrollo de tiendas online y Shopify",
     intro:
-      "Construyo tiendas nuevas, rediseño las existentes y migro proyectos que ya no encajan en su plataforma, para empresas que necesitan ordenar el catálogo, facilitar la compra y conectar la tienda con su operativa. Shopify es una buena base para muchos proyectos; cuando el flujo o las integraciones lo requieren, definimos una solución más personalizada.",
+      "Construyo tiendas nuevas, migro proyectos que ya no encajan en su plataforma y mejoro tiendas que venden pero arrastran fricciones: catálogo desordenado, compra confusa o una operación que no cuadra. Shopify es una buena base para muchos proyectos; cuando el flujo o las integraciones lo requieren, defino una solución más personalizada.",
     audience:
       "Marcas y empresas que venden producto online y necesitan lanzar una tienda, cambiar de plataforma o resolver fricciones concretas sin perder de vista cómo se gestionará después.",
     systemDescription:
@@ -100,6 +159,61 @@ export const solutionPages: SolutionPage[] = [
       "SEO técnico ecommerce, analítica y eventos de compra",
       "Mantenimiento y evolución acordados para la tienda",
     ],
+    scenarios: {
+      tag: "Cómo llegas a la tienda",
+      title: "Tres puntos de partida, tres alcances",
+      lead: "No es lo mismo lanzar una tienda que migrarla o reparar la que ya vende. El alcance, los riesgos y el calendario cambian según el caso.",
+      items: [
+        {
+          label: "01",
+          title: "Tienda nueva",
+          description:
+            "Empiezas a vender online y necesitas una base ordenada: catálogo, compra y gestión bien resueltos desde el primer día.",
+          includes: ["Estructura de tienda y catálogo", "Checkout, pagos y envíos", "SEO técnico y medición"],
+        },
+        {
+          label: "02",
+          title: "Migración de plataforma",
+          description:
+            "La tienda actual se ha quedado corta y hay que trasladar catálogo, pedidos y URLs sin perder lo construido ni el posicionamiento.",
+          includes: ["Plan de datos y URLs", "Redirecciones y continuidad", "Revisión antes de publicar"],
+        },
+        {
+          label: "03",
+          title: "Optimización o mejora",
+          description:
+            "La tienda vende, pero hay fricciones concretas de catálogo, compra, rendimiento o gestión que conviene resolver por fases.",
+          includes: ["Fricciones priorizadas", "Cambios por fases", "Conversión y operación"],
+        },
+      ],
+    },
+    operations: {
+      tag: "La tienda por dentro",
+      title: "Catálogo, pago, pedidos y medición",
+      lead: "Una tienda funciona cuando producto, compra y gestión encajan. Estas son las piezas que se definen, implementan y prueban según el alcance.",
+      items: [
+        {
+          title: "Catálogo y variantes",
+          description:
+            "Categorías, atributos, colores, tallas, precios e imágenes con criterios claros para gestionarlos después.",
+        },
+        {
+          title: "Pagos, envíos e impuestos",
+          description:
+            "Medios de pago, reglas de envío, mercados e impuestos alineados con cómo vendes y a quién.",
+        },
+        {
+          title: "Pedidos y stock",
+          description:
+            "Qué sistema manda sobre inventario y pedidos, qué se sincroniza y cómo se tratan los errores.",
+        },
+        {
+          title: "SEO ecommerce y medición",
+          description:
+            "Estructura, datos de producto y eventos de compra para entender qué ocurre realmente en la tienda.",
+        },
+      ],
+    },
     platformOptions: [
       {
         title: "Shopify estándar",
@@ -156,6 +270,24 @@ export const solutionPages: SolutionPage[] = [
       },
     ],
     relatedSolutions: ["b2b", "sistemas"],
+    evidenceNote:
+      "KingBelt reúne catálogo, fichas con variantes y contenido de marca sobre una arquitectura Shopify. Es una referencia pública en desarrollo: no se le atribuyen ventas ni resultados comerciales.",
+    ctas: {
+      hero: "Hablemos de tu tienda",
+      mid: "Cuéntame cómo vendes hoy",
+      closing: "Hablemos de tu tienda online",
+    },
+    jump: [
+      { href: "#escenarios", label: "Puntos de partida" },
+      { href: "#plataforma", label: "Plataforma" },
+      { href: "#operacion", label: "Operación" },
+      { href: "#faq-title", label: "Preguntas frecuentes" },
+    ],
+    headings: {
+      integrations: { tag: "Compra y operación", title: "La tienda conectada con tu operación" },
+      process: { tag: "Cómo trabajo", title: "De la tienda actual a la que necesitas" },
+      evidence: { tag: "Evidencia publicada", title: "Casos de ecommerce" },
+    },
     faqs: [
       {
         q: "¿Shopify o desarrollo a medida?",
@@ -164,6 +296,10 @@ export const solutionPages: SolutionPage[] = [
       {
         q: "¿Puedes crear, migrar o mejorar una tienda que ya existe?",
         a: "Sí. Revisamos la plataforma actual, catálogo, ventas y dependencias. Antes de migrar se define qué se traslada, cómo se tratan URLs y datos, y qué queda fuera del alcance.",
+      },
+      {
+        q: "¿Qué se prueba antes de publicar la tienda?",
+        a: "Los escenarios acordados: alta y edición de producto, variantes, carrito, medios de pago, reglas de envío, impuestos y los eventos de medición incluidos. Lo que no forma parte del alcance no se prueba ni se entrega.",
       },
       {
         q: "¿Se puede conectar la tienda con el stock o el ERP?",
@@ -184,10 +320,10 @@ export const solutionPages: SolutionPage[] = [
     slug: "b2b",
     title: "Portal B2B y catálogo mayorista para distribuidores | FRN.Q",
     description:
-      "Portal B2B y catálogo mayorista para fabricantes y distribuidores. Ecommerce B2B, precios privados, referencias y pedidos online para mayoristas.",
+      "Portal B2B y catálogo mayorista para fabricantes y distribuidores: registro de empresas, precios privados, referencias y pedidos online.",
     h1: "Portal B2B para vender a clientes profesionales",
     intro:
-      "Digitalizo el proceso comercial de fabricantes, distribuidores y mayoristas: desde el alta y validación de empresas hasta la consulta de referencias, las solicitudes de presupuesto y los pedidos.",
+      "Digitalizo el proceso comercial de fabricantes, distribuidores y mayoristas: desde el alta y validación de empresas hasta la consulta de referencias, las solicitudes de presupuesto y los pedidos. Un catálogo privado sencillo y un portal comercial completo comparten piezas, no el mismo alcance.",
     audience:
       "Empresas que venden a otras empresas y necesitan ordenar catálogo, condiciones comerciales y pedidos sin obligar a todos sus clientes a comprar de la misma manera.",
     systemDescription:
@@ -247,6 +383,28 @@ export const solutionPages: SolutionPage[] = [
           ],
         },
       ],
+      pieces: [
+        {
+          title: "Registro y validación",
+          description:
+            "La empresa solicita acceso, aporta sus datos y el negocio aprueba la cuenta —manual o con reglas— antes de ver condiciones.",
+        },
+        {
+          title: "Catálogo privado",
+          description:
+            "Referencias, variantes y documentación visibles solo para las cuentas autorizadas, con la organización que usa la empresa.",
+        },
+        {
+          title: "Precios restringidos",
+          description:
+            "Tarifas y catálogos por cuenta, usuario o rol: cada cliente ve sus condiciones y no las del resto.",
+        },
+        {
+          title: "Pedidos y presupuestos",
+          description:
+            "El comprador prepara una cesta, envía un pedido o solicita presupuesto, y el equipo comercial lo tramita según sus reglas.",
+        },
+      ],
       buyerJourney: [
         { title: "Registro", description: "La empresa solicita acceso y aporta los datos necesarios para identificarla." },
         { title: "Validación", description: "El negocio revisa la solicitud y habilita la cuenta cuando corresponde; puede ser manual." },
@@ -261,6 +419,24 @@ export const solutionPages: SolutionPage[] = [
       ],
       systemsCta: "Si el reto principal está en conectar herramientas o coordinar procesos internos, consulta Sistemas e Integraciones.",
     },
+    evidenceNote:
+      "Emilio Faraoni reúne catálogo mayorista, alta y validación de empresas, precios privados protegidos y solicitudes de pedido. Es una referencia pública en desarrollo, sin resultados comerciales atribuidos.",
+    ctas: {
+      hero: "Revisemos tu proceso comercial",
+      mid: "Cuéntame cómo compran tus clientes",
+      closing: "Hablemos de tu catálogo o portal B2B",
+    },
+    jump: [
+      { href: "#niveles", label: "Nivel de portal" },
+      { href: "#piezas", label: "Piezas del portal" },
+      { href: "#recorrido", label: "Recorrido del comprador" },
+      { href: "#faq-title", label: "Preguntas frecuentes" },
+    ],
+    headings: {
+      integrations: { tag: "Conexiones opcionales", title: "CRM y ERP solo si aportan" },
+      process: { tag: "Cómo trabajo", title: "Del proceso comercial al portal" },
+      evidence: { tag: "Evidencia publicada", title: "Caso de portal B2B" },
+    },
     faqs: [
       {
         q: "¿Todos los clientes tienen que comprar online?",
@@ -269,6 +445,10 @@ export const solutionPages: SolutionPage[] = [
       {
         q: "¿Necesito un ERP para tener un catálogo B2B?",
         a: "No. Un catálogo privado con alta revisada y gestión sencilla de solicitudes puede funcionar sin integración ERP. Se evalúa una conexión solo si es necesaria y viable.",
+      },
+      {
+        q: "¿Cómo se da de alta un cliente profesional?",
+        a: "La empresa envía una solicitud con sus datos de actividad y el negocio la revisa antes de habilitar el acceso. Esa validación puede ser manual o seguir reglas acordadas; decide quién ve el catálogo y las tarifas.",
       },
       {
         q: "¿Se pueden restringir precios y referencias?",
@@ -288,7 +468,7 @@ export const solutionPages: SolutionPage[] = [
       "Integro herramientas y datos para ordenar pedidos, stock y procesos internos. El alcance depende de los sistemas y sus interfaces.",
     h1: "Conecta los sistemas y datos de tu empresa",
     intro:
-      "Diseño integraciones, workflows y herramientas internas cuando la información no circula bien entre sistemas o una tarea depende de pasos manuales repetitivos.",
+      "Diseño integraciones, automatizaciones y herramientas internas cuando la información no circula bien entre sistemas o una tarea depende de pasos manuales repetitivos. El trabajo empieza por entender qué se hace a mano hoy, no por decidir una herramienta.",
     audience:
       "Equipos que gestionan pedidos, stock, facturación, clientes o reporting en varias herramientas y necesitan entender cómo hacerlas trabajar juntas.",
     systemDescription:
@@ -301,6 +481,29 @@ export const solutionPages: SolutionPage[] = [
       "Workflows con validación y tratamiento de errores",
       "Paneles e interfaces para tareas de operación",
     ],
+    systemsDetails: {
+      tag: "Cómo se decide",
+      title: "Qué conectar y qué automatizar",
+      lead: "Antes de proponer una conexión se aclara dónde está el trabajo manual y qué dato debería circular solo. La decisión sale del proceso, no del catálogo de herramientas.",
+      decisions: [
+        {
+          title: "Fuente de verdad",
+          description:
+            "Se decide qué herramienta manda sobre cada dato —cliente, artículo, pedido— para dejar de mantener versiones distintas en paralelo.",
+        },
+        {
+          title: "Viabilidad real",
+          description:
+            "Antes de prometer una conexión se revisan APIs, permisos, formatos y límites de los sistemas implicados: qué permite cada uno y qué no.",
+        },
+        {
+          title: "Automatización medida",
+          description:
+            "Se automatiza lo repetitivo y propenso a error; donde el criterio humano importa, se mantiene la intervención sobre el flujo.",
+        },
+      ],
+      note: "Cada sistema tiene sus interfaces y restricciones. No se conecta todo con todo: se define qué es posible, qué aporta una mejora y qué se deja fuera del alcance.",
+    },
     process: [
       {
         title: "Localizar el cuello de botella",
@@ -324,6 +527,22 @@ export const solutionPages: SolutionPage[] = [
       },
     ],
     relatedSolutions: ["ecommerce", "b2b"],
+    ctas: {
+      hero: "Revisemos tus procesos",
+      mid: "Revisemos qué se hace a mano",
+      closing: "Cuéntame qué te frena hoy",
+    },
+    jump: [
+      { href: "#decision", label: "Qué conectar" },
+      { href: "#alcance", label: "Alcance" },
+      { href: "#proceso", label: "Proceso" },
+      { href: "#faq-title", label: "Preguntas frecuentes" },
+    ],
+    headings: {
+      integrations: { tag: "Qué se conecta", title: "Conexiones posibles, no universales" },
+      process: { tag: "Cómo trabajo", title: "Del cuello de botella al flujo" },
+      evidence: { tag: "Evidencia publicada", title: "Proyectos relacionados" },
+    },
     faqs: [
       {
         q: "¿Qué sistemas se pueden integrar?",
@@ -338,6 +557,10 @@ export const solutionPages: SolutionPage[] = [
         a: "Sí. El alcance puede incluir interfaces de operación, paneles o herramientas internas cuando resuelven una necesidad concreta del proceso.",
       },
       {
+        q: "¿Se puede conectar cualquier herramienta con cualquier otra?",
+        a: "No necesariamente. Cada sistema expone interfaces, permisos y límites distintos. Se comprueba qué permite cada uno antes de prometer una conexión y se documenta lo que queda fuera.",
+      },
+      {
         q: "¿Hasta dónde se puede automatizar sin rehacer toda la operación?",
         a: "Se empieza por los pasos que más tiempo o errores generan. Una automatización avanzada o una integración completa se plantean solo después de revisar los sistemas y comprobar que son viables; no se promete un ERP nuevo ni conectar todo sin ese análisis.",
       },
@@ -346,12 +569,12 @@ export const solutionPages: SolutionPage[] = [
   {
     id: "growth",
     slug: "desarrollo-web",
-    title: "Diseño, desarrollo y reparación web en Granada | FRN.Q",
+    title: "Diseño y desarrollo web profesional en Granada | FRN.Q",
     description:
-      "Diseño y desarrollo web a medida en Granada y reparación de webs existentes: WordPress, Elementor, WooCommerce, SEO técnico, rendimiento y medición.",
+      "Webs profesionales y corporativas en Granada: creación, rediseño y funciones a medida. Estructura clara, SEO técnico y captación según alcance.",
     h1: "Diseño y desarrollo web a medida",
     intro:
-      "Diseño y desarrollo webs profesionales y corporativas a medida: desde una landing de campaña hasta un sitio completo que explica los servicios y facilita el contacto. También recupero, reparo y amplío webs existentes —WordPress, Elementor o WooCommerce— cuando rehacerlas no es la mejor opción. Trabajo la velocidad y la accesibilidad; la medición se define cuando forma parte del alcance. Trabajo desde Granada con empresas de toda España.",
+      "Creo y rediseño webs para que una empresa explique su actividad, presente sus servicios y facilite el contacto. Defino contigo la estructura, los contenidos y las funciones necesarias. Trabajo desde Granada con empresas de toda España; si solo necesitas corregir una web existente, tienes una revisión específica sin plantear de entrada una reconstrucción.",
     audience:
       "Empresas que necesitan una web propia para presentar su actividad, transmitir confianza y generar consultas, y que quieren una base sólida sobre la que construir su presencia online.",
     systemDescription:
@@ -365,6 +588,34 @@ export const solutionPages: SolutionPage[] = [
       "Reservas, agenda o pagos puntuales",
     ],
     webDetails: {
+      modes: {
+        tag: "Según de dónde partes",
+        title: "Crear, rediseñar o desarrollar a medida",
+        lead: "El punto de partida decide el trabajo: una web nueva, una existente que conviene reordenar o una función que no encaja en una web convencional.",
+        items: [
+          {
+            label: "01",
+            title: "Creación",
+            description:
+              "Partes de cero y necesitas una web completa: arquitectura, diseño y desarrollo definidos desde el contenido y los objetivos.",
+            includes: ["Estructura y contenidos", "Diseño y desarrollo", "Publicación en tu dominio"],
+          },
+          {
+            label: "02",
+            title: "Rediseño",
+            description:
+              "La web existe, pero su estructura, diseño o rendimiento ya no acompañan. Se reordena y mejora sin empezar de nuevo.",
+            includes: ["Revisión de lo actual", "Nueva jerarquía y diseño", "Rendimiento y SEO técnico"],
+          },
+          {
+            label: "03",
+            title: "Desarrollo a medida",
+            description:
+              "Hay una función que una web convencional no cubre: catálogo, área privada, calculadora o herramienta propia.",
+            includes: ["Definición funcional", "Desarrollo específico", "Conexión con tus herramientas"],
+          },
+        ],
+      },
       projectTypes: [
         {
           title: "Landing o página de campaña",
@@ -377,19 +628,9 @@ export const solutionPages: SolutionPage[] = [
             "Sitio completo para presentar la empresa o el servicio, ordenar la oferta y dejar claro cómo contactar. Sirve para empresas, despachos y consultas.",
         },
         {
-          title: "Proyecto web a medida",
+          title: "Web con funciones propias",
           description:
             "Estructura o funcionalidad específica que no encaja en una web convencional: catálogos, áreas privadas, calculadoras o herramientas propias.",
-        },
-        {
-          title: "Reparación de web existente",
-          description:
-            "Recupero webs en marcha —WordPress, Elementor o WooCommerce— que han dejado de funcionar o se han quedado atrás, corrigiendo lo acordado sin rehacer el sitio completo.",
-        },
-        {
-          title: "Rediseño y mejora",
-          description:
-            "Revisión de una web existente para corregir estructura, diseño y rendimiento, o para ampliar el sitio por fases sin rehacerlo todo.",
         },
       ],
       capabilities: [
@@ -401,12 +642,12 @@ export const solutionPages: SolutionPage[] = [
         {
           title: "SEO técnico",
           description:
-            "Estructura, enlazado, metadatos, datos estructurados y rendimiento para que el sitio sea rastreable y comprensible.",
+            "Estructura, enlazado, metadatos, datos estructurados y rendimiento para que el sitio sea rastreable y comprensible. Un plan de posicionamiento continuado se acota aparte.",
         },
         {
-          title: "WordPress, Elementor y WooCommerce",
-          description:
-            "Trabajo sobre la web que ya tienes: tema, plugins, páginas y tienda, evaluando qué conviene ajustar y qué no tocar.",
+            title: "Gestión de contenidos",
+            description:
+              "Si necesitas editar la web sin tocar código, definimos qué contenidos puedes gestionar y con qué herramienta, según el alcance.",
         },
         {
           title: "Rendimiento",
@@ -416,7 +657,7 @@ export const solutionPages: SolutionPage[] = [
         {
           title: "Accesibilidad",
           description:
-            "Jerarquía semántica, contraste, foco visible y navegación por teclado como parte del desarrollo.",
+            "Jerarquía semántica, contraste, foco visible y navegación por teclado como parte del desarrollo, no como añadido final.",
         },
         {
           title: "Analítica y medición",
@@ -429,11 +670,18 @@ export const solutionPages: SolutionPage[] = [
         "Diseño de todas las páginas incluidas en el alcance",
         "Código y repositorio del proyecto",
         "SEO técnico base y datos estructurados",
+        "Accesibilidad y rendimiento revisados en el alcance acordado",
         "Medición y objetivos cuando forman parte del alcance",
         "Documentación de la solución y accesos acordados",
       ],
       maintenance:
         "Entrego la web documentada y con accesos propios, para que puedas mantenerla sin depender del estudio. Si lo necesitas, continúo con mejoras de contenido, nuevas secciones o ajustes de rendimiento y medición, sin obligar a una cuota permanente.",
+      repair: {
+        tag: "¿La web ya existe?",
+        title: "Antes de rehacer, revisar",
+        description: `Si el problema es una web en marcha —WordPress, Elementor o WooCommerce— con fallos, lentitud o mejoras pendientes, el punto de partida es el ${webRescueDiagnosis.title} (${webRescueDiagnosis.price}), que se descuenta de una reparación elegible contratada en los 30 días siguientes.`,
+        label: "Ver revisión y reparación web",
+      },
     },
     process: [
       {
@@ -459,6 +707,20 @@ export const solutionPages: SolutionPage[] = [
     ],
     relatedSolutions: ["ecommerce", "sistemas"],
     evidenceCategories: ["corporate", "web", "website"],
+    evidenceNote:
+      "Webs corporativas y proyectos publicados en el sitio. Son referencias de trabajo real; no se les atribuyen métricas ni resultados comerciales.",
+    ctas: {
+      hero: "Hablemos de tu web",
+      mid: "Cuéntame qué web necesitas",
+      closing: "Cuéntame cómo quieres tu web",
+    },
+    jump: [
+      { href: "#modos", label: "Punto de partida" },
+      { href: "#tipologias", label: "Tipologías" },
+      { href: "#reparacion", label: "¿Ya tienes web?" },
+      { href: "#entregables", label: "Entregables" },
+      { href: "#faq-title", label: "Preguntas frecuentes" },
+    ],
     headings: {
       integrations: { tag: "Datos y herramientas", title: "La web conectada con tus herramientas" },
       process: { tag: "Cómo trabajo", title: "De la idea a la publicación" },
@@ -494,8 +756,8 @@ export const solutionPages: SolutionPage[] = [
         a: "La base técnica cubre estructura, metadatos y rendimiento. La medición se configura cuando está incluida, con un proveedor y los objetivos acordados, y el consentimiento necesario. Un plan de posicionamiento continuado se acota aparte; no se garantizan posiciones ni consultas.",
       },
       {
-        q: "¿Qué diferencia hay entre una landing, una web corporativa y una web a medida?",
-        a: "Una landing concentra una sola acción, normalmente una campaña o un lanzamiento. Una web corporativa reúne la actividad completa, los servicios y el contacto. Un proyecto a medida añade estructura o funciones específicas —catálogo, área privada, calculadora— que una web convencional no cubre.",
+        q: "¿Qué diferencia hay entre crear, rediseñar y desarrollar a medida?",
+        a: "Crear es partir de cero: arquitectura, diseño y desarrollo desde el contenido. Rediseñar es reordenar y mejorar una web que ya existe sin rehacerla. Desarrollar a medida es cubrir una función que una web convencional no resuelve, como un catálogo o un área privada. Si el problema es una web en marcha, la reparación se aborda antes de plantear un rediseño completo.",
       },
     ],
   },
@@ -516,3 +778,38 @@ export function solutionPath(slug: string): string {
 export function getServiceForSolution(solution: SolutionPage) {
   return serviceAreas.find((service) => service.id === solution.id);
 }
+
+/**
+ * Commercial solution a published case points back to. `serviceArea` wins when
+ * the case explicitly evidences ecommerce, B2B or systems; otherwise the case
+ * category selects the solution it demonstrates. Every published case resolves
+ * to one solution, so no case page is a dead end.
+ */
+const solutionIdByCategory: Record<string, SolutionId> = {
+  ecommerce: "ecommerce",
+  b2b: "b2b",
+  corporate: "growth",
+  web: "growth",
+  website: "growth",
+  product: "growth",
+  interactive: "growth",
+};
+
+export function getSolutionForCase(caseItem: {
+  category: string;
+  serviceArea?: SolutionId;
+}): SolutionPage | undefined {
+  const id = caseItem.serviceArea ?? solutionIdByCategory[caseItem.category];
+  return id ? getSolutionForService(id) : undefined;
+}
+
+/**
+ * Contact form type (`?tipo=`, see `src/data/contact-contract.ts`) that matches
+ * each solution, so a case CTA opens the form with the right project type.
+ */
+export const solutionContactTypes: Record<SolutionId, string> = {
+  ecommerce: "ecommerce",
+  b2b: "portal",
+  sistemas: "sistema",
+  growth: "web",
+};

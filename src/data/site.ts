@@ -9,7 +9,7 @@
 export const siteConfig = {
   name: "FRN.Q",
   fullName: "Francisco Muñoz",
-  tagline: "Ecommerce, portales y sistemas",
+  tagline: "Web, ecommerce y sistemas",
   url: "https://frnq.es",
   /** Public contact address shown across the site. */
   email: "info@frnq.studio",
@@ -26,7 +26,7 @@ export const siteConfig = {
     country: "ES",
   },
   description:
-    "FRN.Q es el estudio independiente de Francisco Muñoz, en Granada. Ecommerce, portales B2B, sistemas y web para empresas de España y otros países.",
+    "FRN.Q es el estudio independiente de Francisco Muñoz, en Granada. Web, ecommerce, portales B2B y sistemas para empresas de España y otros países.",
 } as const;
 
 /**

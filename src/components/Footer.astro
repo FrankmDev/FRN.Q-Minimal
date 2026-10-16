@@ -1,6 +1,9 @@
 ---
 const currentYear = new Date().getFullYear();
 import { portfolioLink, siteConfig, socialLinks } from "../data/site";
+import { isGa4MeasurementId } from "../scripts/analytics";
+import { analyticsConsentCopy } from "../data/analytics-consent";
+const hasAnalytics = isGa4MeasurementId(import.meta.env.PUBLIC_GA4_MEASUREMENT_ID);
 ---
 
 <footer class="footer" role="contentinfo">
@@ -32,12 +35,18 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
       <nav class="footer-nav" aria-label="Navegación del pie">
         <a href="/#inicio">Inicio</a>
         <a href="/#servicios">Soluciones</a>
+        <a href="/precios/">Precios</a>
+        <a href="/soluciones/revision-web/">Reparación web</a>
         <a href="/casos/">Casos</a>
+        <a href="/guias/">Guías</a>
+        <a href="/colaboraciones/agencias/">Colaboraciones</a>
+        <a href="/soporte/">Soporte</a>
         <a href="/#sobre-mi">Estudio</a>
         <a href="/#contacto">Contacto</a>
         <a href="/legal/">Aviso legal</a>
         <a href="/legal/privacidad/">Privacidad</a>
-        <a href={portfolioLink.href} target="_blank" rel="noopener noreferrer" class="portfolio-link mono" aria-label={portfolioLink.title}>
+        {hasAnalytics && <button type="button" class="analytics-settings" data-analytics-settings hidden>{analyticsConsentCopy.settings}</button>}
+        <a href={portfolioLink.href} target="_blank" rel="noopener noreferrer" class="portfolio-link mono" aria-label={portfolioLink.title} data-track="studio_link_click" data-track-location="footer">
           {portfolioLink.label} <span aria-hidden="true">↗</span>
         </a>
       </nav>
@@ -140,6 +149,8 @@ import { portfolioLink, siteConfig, socialLinks } from "../data/site";
   .footer-nav { flex-wrap: wrap; gap: var(--space-lg); }
 
   .footer-nav a { font-size: 0.8125rem; font-weight: 700; transition: color var(--transition-fast); }
+  .analytics-settings { padding: 0; border: 0; background: none; color: inherit; font: 700 0.8125rem var(--font-sans); text-decoration: underline; text-underline-offset: 0.2em; }
+  .analytics-settings[hidden] { display: none; }
   .footer-nav a:hover {
     color: var(--text);
     text-decoration: underline;

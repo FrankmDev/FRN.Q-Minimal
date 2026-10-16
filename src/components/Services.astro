@@ -1,6 +1,15 @@
 ---
 import { serviceAreas, servicesCopy, type ServiceArea } from "../data/services";
 import { getSolutionForService, solutionPath } from "../data/solutions";
+
+// The first area leads the section as the priority feature plate; the rest
+// follow as a ruled commercial index. Same data, deliberate scale shift.
+const [feature, ...rest] = serviceAreas;
+
+const hrefFor = (id: string) => {
+  const solution = getSolutionForService(id);
+  return solution ? solutionPath(solution.slug) : "/#contacto";
+};
 ---
 
 <section class="services" id="servicios" aria-labelledby="services-title">
@@ -13,39 +22,76 @@ import { getSolutionForService, solutionPath } from "../data/solutions";
       <p class="services-lead">{servicesCopy.lead}</p>
     </header>
 
-    <ul class="solutions-grid reveal" role="list" id="services-grid">
+    <article
+      class="service-feature reveal"
+      id={`sol-${feature.id}`}
+      aria-labelledby={`sol-${feature.id}-title`}
+    >
+      <span class="feature-num mono" aria-hidden="true">{feature.num}</span>
+      <div class="feature-body">
+        <span class="feature-audience mono">{feature.audience}</span>
+        <h3 class="feature-title" id={`sol-${feature.id}-title`}>{feature.title}</h3>
+        <p class="feature-problem">{feature.problem}</p>
+        <p class="feature-desc">{feature.short}</p>
+        <a
+          class="feature-link"
+          href={hrefFor(feature.id)}
+          aria-label={`${feature.linkLabel}: ${feature.title}`}
+          data-track="cta_click"
+          data-track-location="home_services"
+          data-track-slug={feature.id}
+        >
+          {feature.linkLabel}
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+      <span class="feature-corner" aria-hidden="true">↗</span>
+    </article>
+
+    <ul class="solutions-list reveal" role="list" aria-label="Otras áreas de servicio">
       {
-        serviceAreas.map((service: ServiceArea, index) => {
-          const solution = getSolutionForService(service.id);
-          const href = solution ? solutionPath(solution.slug) : "/#contacto";
-          return (
-            <li
-              class:list={["service-card", `sol-${index}`]}
-              id={`sol-${service.id}`}
-              aria-labelledby={`sol-${service.id}-title`}
-            >
-              <span class="card-number mono" aria-hidden="true">{service.num}</span>
-              <div class="card-content">
-                <span class="card-audience mono">{service.audience}</span>
-                <h3 class="card-title" id={`sol-${service.id}-title`}>
-                  {service.title}
-                </h3>
-                <p class="card-desc">{service.short}</p>
-              </div>
+        rest.map((service: ServiceArea) => (
+          <li
+            class="service-row"
+            id={`sol-${service.id}`}
+            aria-labelledby={`sol-${service.id}-title`}
+          >
+            <span class="row-num mono" aria-hidden="true">{service.num}</span>
+            <div class="row-head">
+              <span class="row-audience mono">{service.audience}</span>
+              <h3 class="row-title" id={`sol-${service.id}-title`}>{service.title}</h3>
               <a
-                class="service-link"
-                href={href}
+                class="row-link"
+                href={hrefFor(service.id)}
                 aria-label={`${service.linkLabel}: ${service.title}`}
+                data-track="cta_click"
+                data-track-location="home_services"
+                data-track-slug={service.id}
               >
                 {service.linkLabel}
                 <span aria-hidden="true">→</span>
               </a>
-              <span class="card-corner" aria-hidden="true">↗</span>
-            </li>
-          );
-        })
+            </div>
+            <div class="row-copy">
+              <p class="row-problem">{service.problem}</p>
+              <p class="row-desc">{service.short}</p>
+            </div>
+          </li>
+        ))
       }
     </ul>
+
+    <div class="services-footer">
+      <p class="services-footer-note mono">¿Tu web o tu sistema ya está en marcha?</p>
+      <div class="services-footer-links">
+        <a class="services-support-link" href="/soporte/">
+          Soporte y mantenimiento <span aria-hidden="true">→</span>
+        </a>
+        <a class="services-support-link" href="/precios/">
+          Precios públicos <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -92,145 +138,274 @@ import { getSolutionForService, solutionPath } from "../data/solutions";
     line-height: 1.55;
   }
 
-  .solutions-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(var(--space-md), 2.5vw, var(--space-xl));
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .service-card {
-    --card-ink: var(--text);
-    --card-paper: var(--bg);
+  /* ---- Priority feature plate ---- */
+  .service-feature {
     position: relative;
     isolation: isolate;
-    display: flex;
-    min-height: clamp(17rem, 28vw, 23rem);
-    flex-direction: column;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(0, 0.42fr) minmax(0, 1.58fr);
+    align-items: start;
+    gap: clamp(var(--space-lg), 4vw, var(--space-3xl));
     overflow: hidden;
-    padding: clamp(var(--space-lg), 3.2vw, var(--space-2xl));
+    margin-bottom: clamp(var(--space-2xl), 5vw, var(--space-3xl));
+    padding: clamp(var(--space-xl), 4vw, var(--space-3xl));
     border: 3px solid var(--border);
-    background: var(--card-paper);
-    color: var(--card-ink);
-    transition: transform 280ms var(--motion-ease-out), box-shadow 280ms var(--motion-ease-out), background-color 280ms var(--motion-ease-out), color 280ms var(--motion-ease-out);
+    background: var(--accent);
+    color: var(--text-on-accent);
+    box-shadow: 12px 12px 0 var(--border);
+    transition: transform 280ms var(--motion-ease-out), box-shadow 280ms var(--motion-ease-out);
   }
 
-  /* Priority 1 gets the accent plate; priority 2 the inverted ink card. */
-  .sol-0 { --card-ink: var(--text-on-accent); --card-paper: var(--accent); }
-  .sol-1 { --card-ink: var(--bg); --card-paper: var(--text); }
+  .service-feature:hover {
+    transform: translate(-6px, -6px);
+    box-shadow: 16px 16px 0 var(--border);
+  }
 
-  .card-number {
-    width: fit-content;
-    font-size: clamp(4.5rem, 8vw, 7.5rem);
+  .feature-num {
+    font-size: clamp(4.5rem, 11vw, 9.5rem);
     font-weight: 800;
-    line-height: 0.8;
-    letter-spacing: -0.1em;
-    color: var(--card-ink);
-    opacity: 0.8;
-    transition: transform 350ms var(--motion-ease-out), color 350ms ease;
+    line-height: 0.72;
+    letter-spacing: -0.12em;
+    opacity: 0.9;
   }
 
-  .card-content {
-    position: relative;
-    z-index: 1;
-    max-width: 33rem;
-    padding-right: var(--space-2xl);
+  .feature-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
   }
 
-  .card-audience {
+  .feature-audience {
     display: block;
-    margin-bottom: var(--space-sm);
     font-size: 0.6875rem;
     font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.66;
+  }
+
+  .feature-title {
+    max-width: 20ch;
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3.75rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.06em;
+  }
+
+  .feature-problem {
+    max-width: 40ch;
+    margin: 0;
+    font-size: clamp(1rem, 1.7vw, 1.25rem);
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .feature-desc {
+    max-width: 46ch;
+    margin: 0;
+    font-size: clamp(0.9375rem, 1.4vw, 1.0625rem);
+    line-height: 1.5;
+    opacity: 0.82;
+  }
+
+  .feature-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
+    padding-bottom: 0.15rem;
+    border-bottom: 2px solid currentColor;
+    font-size: 0.8125rem;
+    font-weight: 800;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    opacity: 0.62;
+    transition: gap var(--transition-fast);
   }
 
-  .card-title {
-    max-width: 17ch;
-    margin: 0 0 var(--space-sm);
-    font-size: clamp(1.4rem, 2.9vw, 2.5rem);
-    font-weight: 800;
-    line-height: 0.98;
-    letter-spacing: -0.05em;
-    transition: transform 350ms var(--motion-ease-out);
-  }
+  .feature-link span { transition: transform var(--transition-fast); }
+  .service-feature:hover .feature-link { gap: var(--space-md); }
+  .feature-link:hover span { transform: translateX(4px); }
+  .feature-link:focus-visible { outline: 3px solid currentColor; outline-offset: 4px; }
 
-  .card-desc {
-    max-width: 42ch;
-    display: -webkit-box;
-    overflow: hidden;
-    margin: 0;
-    font-size: clamp(0.875rem, 1.25vw, 1rem);
-    line-height: 1.5;
-    opacity: 0.76;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-  }
-
-  .card-corner {
+  .feature-corner {
     position: absolute;
     top: var(--space-lg);
     right: var(--space-lg);
     display: grid;
-    width: 2.4rem;
+    width: 2.6rem;
     aspect-ratio: 1;
     place-items: center;
     border: 2px solid currentColor;
     font-size: 1.125rem;
-    transition: transform 280ms var(--motion-ease-out), background-color 280ms ease;
+    transition: transform 280ms var(--motion-ease-out);
   }
 
-  .service-link {
+  .service-feature:hover .feature-corner { transform: translate(3px, -3px); }
+
+  /* ---- Ruled commercial index ---- */
+  .solutions-list {
+    margin: 0;
+    padding: 0;
+    border-top: 3px solid var(--border);
+    list-style: none;
+  }
+
+  .service-row {
     position: relative;
-    z-index: 2;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr) minmax(0, 1.15fr);
+    align-items: start;
+    gap: clamp(var(--space-md), 3vw, var(--space-2xl));
+    padding: clamp(var(--space-lg), 3vw, var(--space-2xl)) 0;
+    border-bottom: 3px solid var(--border);
+    transition: color var(--transition-base);
+  }
+
+  .service-row::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0 calc(var(--layout-gutter) * -1);
+    content: "";
+    background: var(--text);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+  }
+
+  .service-row:hover,
+  .service-row:focus-within { color: var(--bg); }
+
+  .service-row:hover::before,
+  .service-row:focus-within::before { opacity: 1; }
+
+  .row-num {
+    padding-top: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    opacity: 0.5;
+  }
+
+  .row-head {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .row-audience {
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  .row-title {
+    max-width: 16ch;
+    margin: 0;
+    font-size: clamp(1.5rem, 3.2vw, 2.75rem);
+    font-weight: 800;
+    line-height: 0.96;
+    letter-spacing: -0.055em;
+    transition: transform var(--transition-base);
+  }
+
+  .service-row:hover .row-title { transform: translateX(0.5rem); }
+
+  .row-link {
     display: inline-flex;
     align-items: center;
     gap: var(--space-sm);
-    width: fit-content;
-    margin-top: var(--space-md);
     font-family: var(--font-mono);
     font-size: 0.6875rem;
     font-weight: 700;
     letter-spacing: 0.06em;
+    text-transform: uppercase;
     text-decoration: underline;
     text-underline-offset: 0.3em;
+  }
+
+  .row-link span { transition: transform var(--transition-fast); }
+  .service-row:hover .row-link span { transform: translateX(4px); }
+  .row-link:focus-visible { outline: 3px solid currentColor; outline-offset: 4px; }
+
+  .row-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .row-problem {
+    max-width: 40ch;
+    margin: 0;
+    font-size: clamp(1rem, 1.7vw, 1.1875rem);
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .row-desc {
+    max-width: 44ch;
+    margin: 0;
+    font-size: clamp(0.875rem, 1.3vw, 1rem);
+    line-height: 1.5;
+    opacity: 0.78;
+  }
+
+  .services-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-md) var(--space-xl);
+    margin-top: clamp(var(--space-xl), 4vw, var(--space-2xl));
+    padding-top: var(--space-lg);
+    border-top: 3px solid var(--border);
+  }
+
+  .services-footer-note {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
+    color: var(--text-muted);
   }
 
-  .service-link:focus-visible {
-    outline: 3px solid currentColor;
-    outline-offset: 4px;
+  .services-support-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
   }
 
-  .service-card:hover {
-    transform: translate(-6px, -6px);
-    box-shadow: 10px 10px 0 var(--border);
+  .services-support-link span { transition: transform var(--transition-fast); }
+  .services-support-link:hover span { transform: translateX(4px); }
+  .services-support-link:focus-visible { outline: 3px solid var(--text); outline-offset: 4px; }
+
+  .services-footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-md) var(--space-xl);
   }
 
-  .service-card:hover .card-number {
-    transform: translate(6px, -3px) rotate(-4deg);
-    color: var(--accent);
-    opacity: 1;
-  }
-
-  .sol-0:hover .card-number { color: var(--text-on-accent); }
-
-  /* Dark theme: the inverted card is near-white, so its numeral stays on ink. */
-  :global([data-theme="dark"]) .sol-1:hover .card-number {
-    color: var(--text-on-accent);
-  }
-
-  .service-card:hover .card-title { transform: translateX(4px); }
-
-  .service-card:hover .card-corner {
-    transform: translate(3px, -3px);
-    background: var(--accent);
-    color: var(--text-on-accent);
+  @media (max-width: 900px) {
+    .service-feature {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+    .feature-num {
+      font-size: clamp(4rem, 14vw, 6.5rem);
+    }
   }
 
   @media (max-width: 760px) {
@@ -244,17 +419,30 @@ import { getSolutionForService, solutionPath } from "../data/solutions";
       line-height: 0.9;
       text-align: left;
     }
-    .service-card { min-height: 16rem; }
-    .card-content { padding-right: 0; }
-    .card-number { font-size: clamp(4rem, 14vw, 5.5rem); }
+    .service-row {
+      grid-template-columns: 2rem minmax(0, 1fr);
+      gap: var(--space-md);
+    }
+    .row-copy { grid-column: 2; }
   }
 
   @media (max-width: 560px) {
-    .solutions-grid { grid-template-columns: 1fr; gap: var(--space-md); }
-    .service-card { min-height: 13.5rem; padding: var(--space-lg); }
+    .service-feature { padding: var(--space-lg); box-shadow: 8px 8px 0 var(--border); }
+    .feature-num { font-size: clamp(3.5rem, 20vw, 5rem); }
+    .row-title { max-width: 100%; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .service-card, .card-number, .card-title, .card-corner { transition: none; }
+    .service-feature,
+    .feature-corner,
+    .feature-link,
+    .feature-link span,
+    .service-row,
+    .service-row::before,
+    .row-title,
+    .row-link span,
+    .services-support-link span {
+      transition: none;
+    }
   }
 </style>

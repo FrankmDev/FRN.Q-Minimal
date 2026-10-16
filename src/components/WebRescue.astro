@@ -1,5 +1,5 @@
 ---
-import { webRescueCopy } from "../data/web-rescue";
+import { webRescueCopy, webRescuePage } from "../data/web-rescue";
 ---
 
 <section class="rescue" id="revision-web" aria-labelledby="rescue-title">
@@ -50,7 +50,18 @@ import { webRescueCopy } from "../data/web-rescue";
     </div>
 
     <div class="rescue-footer reveal">
-      <p class="rescue-note">{webRescueCopy.note}</p>
+      <div class="rescue-footer-copy">
+        <p class="rescue-note">{webRescueCopy.note} Importes sin impuestos; licencias y otros costes externos aparte.</p>
+        <a
+          class="rescue-page-link"
+          href={webRescuePage.path}
+          data-track="cta_click"
+          data-track-location="revision_web"
+          data-track-label={webRescuePage.label}
+        >
+          {webRescuePage.label}: reparar y mejorar una web existente <span aria-hidden="true">→</span>
+        </a>
+      </div>
       <a
         href="#contacto"
         class="rescue-cta"
@@ -281,6 +292,45 @@ import { webRescueCopy } from "../data/web-rescue";
     color: var(--text-muted);
   }
 
+  .rescue-footer-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    max-width: 62ch;
+  }
+
+  .rescue-page-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    width: fit-content;
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-decoration: underline;
+    text-decoration-color: var(--border-light);
+    text-underline-offset: 0.35em;
+    transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
+  }
+
+  .rescue-page-link:hover {
+    color: var(--text);
+    text-decoration-color: var(--accent);
+  }
+
+  .rescue-page-link:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 4px;
+  }
+
+  .rescue-page-link span {
+    transition: transform var(--transition-fast);
+  }
+
+  .rescue-page-link:hover span {
+    transform: translateX(4px);
+  }
+
   .rescue-cta {
     display: inline-flex;
     align-items: center;
@@ -343,6 +393,6 @@ import { webRescueCopy } from "../data/web-rescue";
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .rescue-price, .rescue-cta, .rescue-cta span:last-child { transition: none; }
+    .rescue-price, .rescue-cta, .rescue-cta span:last-child, .rescue-page-link span { transition: none; }
   }
 </style>

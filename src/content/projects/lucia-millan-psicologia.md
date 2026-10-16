@@ -9,6 +9,12 @@ order: 9
 url: "https://luciamillanpsicologia.es/"
 urlLabel: "Ver web"
 tagline: "Web profesional para una psicóloga sanitaria que combina identidad visual, claridad terapéutica y contacto accesible."
+summary:
+  business: "Lucía Millán Jiménez es psicóloga general sanitaria en Ciudad Real. Ofrece terapia individual presencial y online, con atención a ansiedad, trauma, duelo y otras dificultades emocionales."
+  challenge: "La web debía comunicar enfoques terapéuticos especializados sin resultar excesivamente técnica y ayudar a comprender cómo se desarrolla una primera consulta."
+  delivered: "Web con portada visual propia, servicios, presentación profesional, enfoques (TCC, ACT, TFE, IFS, EMDR), proceso terapéutico, contenidos divulgativos y contacto."
+  decision: "Lenguaje claro sin perder rigor y una identidad propia que mantiene la lectura cómoda y accesible."
+  outcome: "La web publicada organiza la información de la consulta y conecta servicios, enfoques, proceso y contacto para visitantes presenciales y online."
 context: "Lucía Millán Jiménez es psicóloga general sanitaria en Ciudad Real. Ofrece terapia individual presencial y online, con atención a ansiedad, trauma, duelo y otras dificultades emocionales."
 problem: "La web debía comunicar enfoques terapéuticos especializados sin resultar excesivamente técnica, y ayudar a los visitantes a comprender cómo se desarrolla una primera consulta."
 objective: "Crear una presencia profesional diferenciada que transmita confianza y permita explorar servicios, conocer a la psicóloga e iniciar el contacto."

@@ -11,7 +11,7 @@ frnq.es is the Spanish commercial surface of FRN.Q: an independent digital pract
 - **Brutalist:** oversized type and numerals, hard borders, sharp corners and occasional offset shadows.
 - **Industrial:** direct labels, ruled divisions, compact mono details and purposeful alignment.
 - **Compositional:** scale shifts, asymmetry, image-led case rows and deliberate changes in density between sections.
-- **Commercial:** communicate Ecommerce, B2B commerce and systems first; design, development, SEO, analytics and integrations support those outcomes.
+- **Commercial:** the Home leads with web and the improvement of existing sites, then ecommerce, B2B commerce and systems; design, development, SEO, analytics and integrations support those outcomes.
 
 The warm off-white `#f4f3ef`, near-black `#111110` and yellow `#ffe600` remain the shared palette. Manrope carries display and body text; JetBrains Mono is reserved for concise functional details. Do not add identity colours per section.
 
@@ -22,7 +22,7 @@ An optional dark theme inverts the paper and ink roles while retaining the same 
 - One main idea per section; use one strong heading and at most one short supporting paragraph.
 - Give the Home negative space and visible pacing. Avoid repeating the same capability in the hero, service cards, studio introduction and contact area.
 - Let numerals, contrast, image crops and large type carry the visual weight; prose is supporting information.
-- Services remain four compact areas. Operational friction is a visual comparison, not a long problem catalogue.
+- Services remain four compact areas. The Home leads with **Web corporativa & SEO** as a full-width feature plate and follows with the other three as a ruled commercial index; each area states one problem, one outcome and a link to its page. Operational friction is a visual comparison, not a long problem catalogue.
 - The **Revisión y reparación web** (Web Rescue) block keeps the same ruled headings, mono labels, hard frames and yellow accent as the rest of the Home; it introduces no second visual identity and stays a single compact section.
 - Cases remain factual and sourced from Content Collections. The Home shows a small selection; `/casos/` holds the full case studies.
 - The studio section introduces the person and a four-step process at most. Contact is the close: keep the real form, reduce surrounding promotion.
@@ -55,3 +55,9 @@ No false metrics, guarantees, testimonials, availability claims or invented outc
 - Preserve clear focus states, accessible names, form labels and reduced-motion support.
 - The Home keeps its visual identity and adds one commercial block (Web Rescue). The four SEO solution routes reuse the same typography, palette, hard-edge language and tokens; they do not introduce a second visual identity or redesign the commercial surface.
 - frnq.es and frnq.studio are separate surfaces. frnq.studio is linked everywhere as `STUDIO ↗` (secondary textual link); HABLEMOS is the only highlighted CTA. Do not merge or translate its visual system.
+
+## Agent tooling
+
+This direction is operationalized for agents in the mandatory skill
+`.opencode/skills/frnq-business-visual-system/SKILL.md`. Load it before designing
+or modifying any frnq.es interface.

@@ -1,0 +1,364 @@
+---
+import { siteConfig } from "../../data/site";
+import MainLayout from "../../layouts/MainLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { getGuides, guidePath, formatEditorialDate } from "../../data/guias";
+
+const guides = await getGuides();
+
+const itemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: `Guías de ${siteConfig.name}`,
+  numberOfItems: guides.length,
+  itemListElement: guides.map((guide, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: guide.title,
+    url: new URL(guidePath(guide.slug), Astro.site).toString(),
+  })),
+};
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: new URL("/", Astro.site).toString() },
+    { "@type": "ListItem", position: 2, name: "Guías", item: new URL("/guias/", Astro.site).toString() },
+  ],
+};
+---
+
+<MainLayout
+  title="Guías para decidir sobre tu web | FRN.Q"
+  description="Guías prácticas de FRN.Q para decidir antes de contratar: reparar o rehacer una web y qué influye en el presupuesto de una web profesional."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
+
+  <Header />
+
+  <main id="main-content" class="guides-index">
+    <header class="guides-hero">
+      <div class="container">
+        <nav class="crumbs" aria-label="Ruta de navegación">
+          <a href="/">Inicio</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Guías</span>
+        </nav>
+
+        <div class="guides-hero-grid">
+          <p class="section-tag section-tag--inline">Guías</p>
+          <h1 class="title">Decisiones<br /><span class="title-mark">de negocio.</span></h1>
+          <p class="intro">
+            Guías breves para las dudas que aparecen antes de contratar: si conviene reparar
+            o rehacer una web, y qué hay detrás del precio de una web profesional. Sin relleno
+            y con los límites explicados.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <section class="guides-list" aria-labelledby="guides-list-title">
+      <div class="container">
+        <h2 id="guides-list-title" class="visually-hidden">Guías publicadas</h2>
+        <ol class="guides">
+          {
+            guides.map((guide, index) => (
+              <li class="guide-row">
+                <a
+                  class="guide-link"
+                  href={guidePath(guide.slug)}
+                  data-track="cta_click"
+                  data-track-location="guias_index"
+                  data-track-slug={guide.slug}
+                >
+                  <span class="guide-number mono" aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div class="guide-copy">
+                    <p class="guide-meta mono">
+                      <span>{guide.category}</span>
+                      <span aria-hidden="true">·</span>
+                      <span>{guide.readingTime}</span>
+                    </p>
+                    <h3 class="guide-title">{guide.h1}</h3>
+                    <p class="guide-deco">{guide.lead}</p>
+                    <p class="guide-date mono">
+                      <time datetime={guide.published}>{formatEditorialDate(guide.published)}</time>
+                    </p>
+                  </div>
+                  <span class="guide-arrow" aria-hidden="true">→</span>
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+
+        <div class="guides-cta">
+          <p>¿Prefieres que revise tu caso concreto?</p>
+          <a
+            class="cta"
+            href="/#contacto"
+            data-track="cta_click"
+            data-track-location="guias_index_cta"
+            data-track-label="Hablemos"
+          >
+            <span>Hablemos</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</MainLayout>
+
+<style>
+  .guides-index {
+    padding-top: 120px;
+  }
+
+  .guides-hero {
+    padding: var(--space-3xl) 0 clamp(var(--space-2xl), 5vw, var(--space-3xl));
+    border-bottom: 4px solid var(--border);
+  }
+
+  .crumbs {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-2xl);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .crumbs a { opacity: 0.6; transition: opacity var(--transition-fast); }
+  .crumbs a:hover { opacity: 1; }
+  .crumbs a:focus-visible { outline: 3px solid var(--text); outline-offset: 4px; }
+  .crumbs span { opacity: 0.4; }
+  .crumbs [aria-current="page"] { opacity: 1; }
+
+  .guides-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+    align-items: end;
+    gap: clamp(var(--space-xl), 5vw, var(--space-4xl));
+  }
+
+  .guides-hero-grid .section-tag {
+    grid-column: 1 / -1;
+    margin-bottom: var(--space-lg);
+  }
+
+  .title {
+    margin: 0;
+    font-size: clamp(2.75rem, 8vw, 7rem);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.06em;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+  }
+
+  .intro {
+    margin: 0;
+    font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .guides-list {
+    padding: clamp(var(--space-3xl), 6vw, var(--space-4xl)) 0;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .guides {
+    margin: 0;
+    padding: 0;
+    border-top: 3px solid var(--border);
+    list-style: none;
+  }
+
+  .guide-row { border-bottom: 3px solid var(--border); }
+
+  .guide-link {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr) 3rem;
+    align-items: start;
+    gap: clamp(var(--space-md), 3vw, var(--space-2xl));
+    padding: clamp(var(--space-lg), 4vw, var(--space-2xl)) 0;
+    transition:
+      color var(--transition-base),
+      background-color var(--transition-base),
+      padding var(--transition-base);
+  }
+
+  .guide-link::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0 calc(var(--layout-gutter) * -1);
+    content: "";
+    background: var(--text);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+  }
+
+  .guide-link:hover,
+  .guide-link:focus-visible { color: var(--bg); }
+  .guide-link:hover::before,
+  .guide-link:focus-visible::before { opacity: 1; }
+
+  .guide-link:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: -3px;
+  }
+
+  .guide-number {
+    padding-top: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    opacity: 0.48;
+  }
+
+  .guide-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm);
+    margin: 0 0 var(--space-md);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  .guide-title {
+    margin: 0;
+    font-size: clamp(1.75rem, 4vw, 3.5rem);
+    font-weight: 800;
+    line-height: 0.96;
+    letter-spacing: -0.055em;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+  }
+
+  .guide-deco {
+    max-width: 62ch;
+    margin: var(--space-md) 0 0;
+    font-size: clamp(1rem, 1.4vw, 1.125rem);
+    line-height: 1.55;
+    color: var(--text-secondary);
+    transition: color var(--transition-base);
+  }
+
+  .guide-link:hover .guide-deco,
+  .guide-link:focus-visible .guide-deco { color: var(--bg); opacity: 0.82; }
+
+  .guide-date {
+    margin: var(--space-lg) 0 0;
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.55;
+  }
+
+  .guide-arrow {
+    justify-self: end;
+    display: grid;
+    width: 3rem;
+    aspect-ratio: 1;
+    place-items: center;
+    border: 2px solid currentColor;
+    font-size: 1.25rem;
+    transition:
+      transform var(--transition-base),
+      background-color var(--transition-base),
+      color var(--transition-base);
+  }
+
+  .guide-link:hover .guide-arrow,
+  .guide-link:focus-visible .guide-arrow {
+    transform: translate(4px, -4px);
+    background: var(--accent);
+    color: var(--text-on-accent);
+  }
+
+  .guides-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    margin-top: clamp(var(--space-2xl), 5vw, var(--space-4xl));
+    padding-top: var(--space-2xl);
+    border-top: 4px solid var(--border);
+  }
+
+  .guides-cta p {
+    font-size: clamp(1.125rem, 2vw, 1.5rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-2xl);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--text);
+    color: var(--bg);
+    border: 3px solid var(--text);
+    box-shadow: 8px 8px 0 var(--accent);
+    transition:
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+
+  .cta:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0 var(--accent);
+  }
+
+  .cta:focus-visible { outline: 3px solid var(--text); outline-offset: 4px; }
+
+  @media (max-width: 760px) {
+    .guides-hero-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+    .guides-hero-grid .section-tag { margin-bottom: 0; }
+    .title { font-size: clamp(2.4rem, 12vw, 4.25rem); }
+  }
+
+  @media (max-width: 540px) {
+    .guides-index { padding-top: 104px; }
+    .guide-link { grid-template-columns: 2rem minmax(0, 1fr); gap: var(--space-md); }
+    .guide-arrow { grid-column: 2; justify-self: start; grid-row: 2; width: 2.5rem; }
+    .guide-copy { grid-column: 2; grid-row: 1; }
+    .guide-number { grid-column: 1; grid-row: 1; }
+    .guides-cta { align-items: flex-start; flex-direction: column; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .guide-link,
+    .guide-link::before,
+    .guide-deco,
+    .guide-arrow,
+    .cta { transition: none !important; }
+  }
+</style>

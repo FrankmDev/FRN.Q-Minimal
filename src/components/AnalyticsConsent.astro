@@ -1,0 +1,41 @@
+---
+import { analyticsConsentCopy as copy } from "../data/analytics-consent";
+---
+
+<aside class="analytics-consent" id="analytics-consent" aria-labelledby="analytics-consent-title" hidden>
+  <h2 id="analytics-consent-title">{copy.title}</h2>
+  <p>{copy.description} <a href="/legal/privacidad/#analitica">{copy.privacy}</a>.</p>
+  <div class="consent-actions">
+    <button type="button" data-consent-choice="false">{copy.reject}</button>
+    <button type="button" data-consent-choice="true">{copy.accept}</button>
+  </div>
+</aside>
+
+<script>
+  import { initAnalyticsConsent } from "../scripts/analytics-consent";
+  initAnalyticsConsent();
+</script>
+
+<style>
+  .analytics-consent[hidden] { display: none; }
+  .analytics-consent {
+    position: fixed;
+    z-index: var(--z-modal);
+    inset: auto var(--space-md) var(--space-md);
+    width: min(40rem, calc(100% - 2 * var(--space-md)));
+    max-height: calc(100svh - 2 * var(--space-md));
+    overflow-y: auto;
+    padding: var(--space-lg);
+    border: 3px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    box-shadow: var(--shadow-brutal);
+  }
+  h2 { margin: 0 0 var(--space-sm); font-size: 1.25rem; font-weight: 800; letter-spacing: -0.03em; }
+  p { margin: 0; max-width: 60ch; font-size: 0.9375rem; line-height: 1.55; color: var(--text-secondary); }
+  a { text-decoration: underline; text-underline-offset: 0.2em; }
+  .consent-actions { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-md); }
+  button { flex: 1 1 12rem; min-height: 2.75rem; padding: var(--space-sm) var(--space-md); border: 2px solid var(--border); background: var(--bg-alt); color: var(--text); font: 700 0.8125rem var(--font-sans); }
+  button:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+  button:focus-visible, a:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+</style>

@@ -1,4 +1,6 @@
 ---
+import { serviceAreas } from "../data/services";
+
 const process = [
   {
     num: "01",
@@ -21,16 +23,46 @@ const process = [
     desc: "Pruebas, publicación y entrega documentada.",
   },
 ];
+
+/**
+ * Advantages of hiring FRN.Q directly, without an agency layer. They repeat the
+ * three durable promises of the practice: direct contact, understanding the
+ * business first and maintainable systems.
+ */
+const directAdvantages = [
+  {
+    num: "01",
+    title: "Trato directo",
+    desc: "Decisiones, avances y dudas conmigo, sin intermediarios ni cambios de interlocutor.",
+  },
+  {
+    num: "02",
+    title: "El negocio primero",
+    desc: "Cada proyecto empieza por cómo funciona tu negocio, no por una tecnología ni por una plantilla.",
+  },
+  {
+    num: "03",
+    title: "Sistemas que puedes mantener",
+    desc: "Entrego código, accesos y documentación para que la solución evolucione sin depender del estudio.",
+  },
+];
 ---
 
 <section class="about" id="sobre-mi" aria-labelledby="about-title">
   <span class="section-tag">Estudio</span>
   <div class="container">
     <div class="about-intro reveal">
-      <h2 id="about-title">Del negocio.<br /><span class="title-mark">Al producto.</span></h2>
+      <div class="about-lead">
+        <p class="about-role">Francisco Muñoz · Fundador y responsable directo</p>
+        <h2 id="about-title">Del negocio.<br /><span class="title-mark">Al producto.</span></h2>
+      </div>
       <div class="about-intro-bottom">
         <p>
-          Soy Francisco Muñoz y dirijo FRN.Q, un estudio independiente en Granada. Trabajo directamente contigo en ecommerce, portales B2B y sistemas, y también en webs profesionales y corporativas con SEO técnico y medición. Entiendo el problema, defino el alcance y llevo el proyecto del diseño al lanzamiento. Trabajo en remoto con empresas de España y otros países.
+          Soy Francisco Muñoz y dirijo FRN.Q, un estudio independiente en Granada. Me encargo del diseño y del desarrollo, y hablas conmigo durante todo el proyecto. Trabajo en remoto con empresas de España y otros países.
+        </p>
+        <p class="about-specialities">
+          <span class="specialities-label">Especialidades</span>
+          <span>{serviceAreas.map((service) => service.title).join(" · ")}</span>
         </p>
         <a
           href="#contacto"
@@ -42,8 +74,29 @@ const process = [
           <span>Hablemos del proyecto</span>
           <span aria-hidden="true">→</span>
         </a>
+        <a class="agency-reference" href="/colaboraciones/agencias/">¿Trabajas en una agencia? Colaboraciones técnicas <span aria-hidden="true">↗</span></a>
       </div>
     </div>
+
+    <section class="about-direct reveal" aria-labelledby="about-direct-title">
+      <header class="direct-head">
+        <span class="direct-label">Trabajar directo</span>
+        <h3 id="about-direct-title">Decisiones y ejecución en la misma persona.</h3>
+      </header>
+      <ul class="direct-list">
+        {
+          directAdvantages.map((item) => (
+            <li>
+              <span class="direct-num" aria-hidden="true">{item.num}</span>
+              <div>
+                <h4>{item.title}</h4>
+                <p>{item.desc}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
 
     <section class="process-section reveal" aria-labelledby="process-title">
       <header class="process-heading">
@@ -123,6 +176,43 @@ const process = [
     letter-spacing: -0.08em;
   }
 
+  .about-role {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin: 0 0 var(--space-md);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .about-role::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--accent);
+  }
+
+  .about-intro-bottom p.about-specialities {
+    display: grid;
+    gap: var(--space-xs);
+    max-width: 38ch;
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--border-light);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  .about-specialities .specialities-label { opacity: 0.6; }
+
   .about-intro-bottom {
     display: flex;
     align-items: flex-start;
@@ -170,6 +260,97 @@ const process = [
     outline-offset: 4px;
   }
 
+  /* Direct collaboration advantages: ruled list before the inverted process
+     panel, so the two blocks keep different compositions. */
+  .about-direct {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(var(--space-xl), 5vw, var(--space-4xl));
+    margin-top: clamp(var(--space-3xl), 6vw, 6rem);
+    padding-top: clamp(var(--space-lg), 3vw, var(--space-2xl));
+    border-top: 3px solid var(--border);
+  }
+
+  .direct-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .direct-label::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 1.5rem;
+    height: 0.45rem;
+    border: 1px solid var(--border);
+    background: var(--accent);
+  }
+
+  .direct-head h3 {
+    max-width: 22ch;
+    margin: var(--space-md) 0 0;
+    font-size: clamp(1.4rem, 3vw, 2.5rem);
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+  }
+
+  .direct-list {
+    display: grid;
+    gap: var(--space-lg);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .direct-list li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 2px solid var(--border);
+  }
+
+  .direct-num {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    opacity: 0.45;
+  }
+
+  .direct-list h4 {
+    margin: 0 0 var(--space-xs);
+    font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  .direct-list p {
+    max-width: 54ch;
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .agency-reference {
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1.5;
+    text-decoration: underline;
+    text-decoration-color: var(--border-light);
+    text-underline-offset: 3px;
+  }
+
+  .agency-reference:hover { color: var(--text); text-decoration-color: var(--accent); }
+  .agency-reference:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+
   .process-section {
     position: relative;
     margin-top: clamp(var(--space-3xl), 7vw, 7rem);
@@ -190,7 +371,7 @@ const process = [
     border-bottom: 1px solid var(--border-light);
   }
 
-  .process-label { color: var(--accent); }
+  .process-label { color: var(--text-accent-inverse); }
   .process-label span { background: var(--accent); }
 
   .process-heading h3 {
@@ -220,7 +401,7 @@ const process = [
   }
 
   .process-count .process-total {
-    color: var(--accent);
+    color: var(--text-accent-inverse);
     font-size: inherit;
     letter-spacing: inherit;
   }
@@ -266,7 +447,7 @@ const process = [
     place-items: center;
     border: 2px solid var(--accent);
     background: var(--text);
-    color: var(--accent);
+    color: var(--text-accent-inverse);
     font-size: 0.6875rem;
     font-weight: 700;
   }
@@ -292,6 +473,8 @@ const process = [
   @media (max-width: 760px) {
     .about-intro { grid-template-columns: minmax(0, 1fr) minmax(15rem, 0.8fr); }
     .about-intro h2 { font-size: clamp(2.65rem, 7.5vw, 4.75rem); }
+    .about-direct { grid-template-columns: 1fr; gap: var(--space-xl); }
+    .direct-head h3 { max-width: 26ch; }
     .process-heading h3 { font-size: clamp(1.75rem, 4.5vw, 2.5rem); }
     .process-list { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--space-xl); }
     .process-list::before { display: none; }

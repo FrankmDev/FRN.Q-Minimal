@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
-    "lint": "astro check"
+    "lint": "astro check",
+    "qa:build": "bun scripts/verify-build.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

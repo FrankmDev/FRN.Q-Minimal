@@ -11,6 +11,12 @@ publicPreview: true
 order: 1
 serviceArea: "b2b"
 tagline: "Catálogo mayorista y sistema de gestión comercial con acceso profesional, precios privados y solicitudes de pedido."
+summary:
+  business: "Emilio Faraoni es un fabricante familiar de Elche que distribuye cinturones, bolsos y complementos a clientes profesionales."
+  challenge: "Validar empresas y proteger tarifas sin renunciar a un catálogo público de consulta ni forzar una compra minorista."
+  delivered: "Plataforma B2B con Astro y Supabase: catálogo por variantes, alta y aprobación profesional, precios privados, cesta y solicitudes de pedido."
+  decision: "Aplicar la autorización en servidor con permisos y RLS en lugar de confiar en ocultar elementos del frontend."
+  outcome: "Catálogo, verificación profesional, precios restringidos y preparación de pedidos conviven en un mismo flujo; la validación operativa continúa en desarrollo."
 context: "Emilio Faraoni es una empresa familiar de Elche dedicada a fabricar y distribuir cinturones, bolsos y complementos. Su relación comercial con profesionales exige gestionar referencias, variantes y condiciones de venta diferentes de las de una tienda dirigida al consumidor."
 problem: "La venta mayorista requiere validar empresas, proteger tarifas, organizar un catálogo con múltiples referencias y facilitar pedidos sin convertir el proceso en un ecommerce minorista convencional."
 objective: "Digitalizar la consulta del catálogo y la preparación de solicitudes comerciales, manteniendo el control sobre quién accede a los precios y cómo se tramitan los pedidos."

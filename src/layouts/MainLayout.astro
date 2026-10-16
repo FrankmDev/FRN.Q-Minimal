@@ -2,9 +2,14 @@
 import CustomCursor from "../components/CustomCursor.astro";
 import RevealObserver from "../components/RevealObserver.astro";
 import SEOHead from "../components/SEOHead.astro";
+import AnalyticsConsent from "../components/AnalyticsConsent.astro";
 import { siteConfig } from "../data/site";
 import { getPublishedProjects, casePath } from "../data/projects";
 import { solutionPages, solutionPath } from "../data/solutions";
+import { supportPath } from "../data/support";
+import { getGuides, guidePath } from "../data/guias";
+import { webRescuePage } from "../data/web-rescue";
+import { isGa4MeasurementId } from "../scripts/analytics";
 import "../styles/app.css";
 
 interface Props {
@@ -31,10 +36,19 @@ const canonicalURL = new URL(
 );
 // Build-only route allowlist: the browser never imports case or solution copy.
 const trackingPages = [
-  "/", "/casos/", "/legal/", "/legal/privacidad/", "/404/",
+  "/", "/casos/", "/precios/", "/guias/", "/colaboraciones/agencias/", "/legal/", "/legal/privacidad/", "/404/",
   ...solutionPages.map((solution) => solutionPath(solution.slug)),
+  webRescuePage.path,
+  supportPath,
   ...(await getPublishedProjects()).map((project) => casePath(project.slug)),
+  ...(await getGuides()).map((guide) => guidePath(guide.slug)),
 ];
+
+// GA4 stays completely off unless a valid Measurement ID arrives from the
+// environment. No identifier is hard-coded and nothing is loaded before the
+// visitor consents (see `scripts/analytics.ts` → `loadAnalyticsProvider`).
+const ga4MeasurementId = (import.meta.env.PUBLIC_GA4_MEASUREMENT_ID ?? "").trim();
+const ga4Ready = isGa4MeasurementId(ga4MeasurementId);
 ---
 
 <!doctype html>
@@ -70,6 +84,16 @@ const trackingPages = [
         themeColor?.setAttribute("content", theme === "dark" ? "#171715" : "#f4f3ef");
       })();
     </script>
+    {ga4Ready && (
+      <script is:inline define:vars={{ ga4MeasurementId }}>
+        window.__FRNQ_ANALYTICS__ = {
+          enabled: true,
+          provider: "gtag",
+          measurementId: ga4MeasurementId,
+          requireConsent: true,
+        };
+      </script>
+    )}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -81,6 +105,7 @@ const trackingPages = [
   <body>
     <a href="#main-content" class="skip-link">Saltar al contenido</a>
     <slot />
+    {ga4Ready && <AnalyticsConsent />}
     <CustomCursor />
     <RevealObserver />
     <script>

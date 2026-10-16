@@ -11,7 +11,7 @@ import Contact from "../components/Contact.astro";
 import Footer from "../components/Footer.astro";
 import { getFeaturedProjects, casePath } from "../data/projects";
 import { faqItems } from "../data/engagement";
-import { webRescueCopy } from "../data/web-rescue";
+import { webRescueCopy, webRescueOffers } from "../data/web-rescue";
 import { siteConfig } from "../data/site";
 
 const featuredProjects = await getFeaturedProjects();
@@ -59,33 +59,13 @@ const rescueSchema = {
     { "@type": "City", name: siteConfig.location.city },
     { "@type": "Country", name: "España" },
   ],
-  offers: webRescueCopy.prices
-    .filter((price) => typeof price.amount === "number")
-    .map((price) =>
-      price.from
-        ? {
-            "@type": "Offer",
-            name: price.title,
-            priceCurrency: "EUR",
-            priceSpecification: {
-              "@type": "PriceSpecification",
-              minPrice: price.amount,
-              priceCurrency: "EUR",
-            },
-          }
-        : {
-            "@type": "Offer",
-            name: price.title,
-            priceCurrency: "EUR",
-            price: price.amount,
-          },
-    ),
+  offers: webRescueOffers(),
 };
 ---
 
 <MainLayout
-  title="Desarrollo web en Granada, ecommerce y B2B | FRN.Q"
-  description="Estudio independiente en Granada. Tiendas online, portales B2B, sistemas y webs profesionales; también reparo y mejoro webs existentes."
+  title="Diseño y desarrollo web en Granada, ecommerce y B2B | FRN.Q"
+  description="Estudio independiente en Granada. Diseño, desarrollo y mejoro webs, tiendas online y portales B2B; también sistemas conectados y reparación de webs."
 >
   <script
     type="application/ld+json"

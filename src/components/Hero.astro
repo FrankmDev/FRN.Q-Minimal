@@ -12,21 +12,24 @@ import { portfolioLink } from "../data/site";
         target="_blank"
         rel="noopener noreferrer"
         aria-label={portfolioLink.title}
+        data-track="studio_link_click"
+        data-track-location="hero"
       >
         {portfolioLink.label} <span aria-hidden="true">↗</span>
       </a>
     </div>
 
     <h1 class="hero-title" id="hero-title">
-      <span class="hero-line">Ecommerce</span>
-      <span class="hero-line hero-line-bottom"><span class="hero-accent">y B2B</span></span>
+      <span class="hero-line">Web,</span>
+      <span class="hero-line">comercio</span>
+      <span class="hero-line hero-line-bottom"><span class="hero-accent">y sistemas.</span></span>
     </h1>
 
     <div class="hero-bottom">
       <p class="hero-desc">
-        Mejoro la presencia digital de tu empresa, abro canales de venta y
-        conecto tus sistemas comerciales. Tiendas online, portales de pedidos,
-        integraciones y webs profesionales, con Shopify o desarrollo propio.
+        Diseño, desarrollo y mejoro webs, tiendas online y herramientas
+        digitales para empresas. Desde una presencia profesional hasta un
+        sistema que conecta clientes, pedidos y procesos.
       </p>
       <div class="hero-actions">
         <a
@@ -34,19 +37,19 @@ import { portfolioLink } from "../data/site";
           class="hero-cta"
           data-track="cta_click"
           data-track-location="hero"
-          data-track-label="Plantear un proyecto"
+          data-track-label="Cuéntame qué necesitas"
         >
-          <span>Plantear un proyecto</span>
+          <span>Cuéntame qué necesitas</span>
           <span aria-hidden="true">→</span>
         </a>
         <a
-          href="#proyectos"
+          href="/casos/"
           class="hero-work-link"
           data-track="cta_click"
           data-track-location="hero"
-          data-track-label="Ver casos publicados"
+          data-track-label="Ver proyectos"
         >
-          <span>Ver casos publicados</span>
+          <span>Ver proyectos</span>
           <span aria-hidden="true">↘</span>
         </a>
       </div>
@@ -134,7 +137,7 @@ import { portfolioLink } from "../data/site";
     position: relative;
     width: fit-content;
     max-width: 100%;
-    font-size: clamp(3.35rem, 11.2vw, 10rem);
+    font-size: clamp(2.9rem, 9.4vw, 8.4rem);
     line-height: 0.84;
     letter-spacing: -0.085em;
     font-weight: 800;
@@ -160,14 +163,6 @@ import { portfolioLink } from "../data/site";
     background: var(--accent);
     color: var(--text-on-accent);
     box-shadow: 0.08em 0.08em 0 var(--border);
-  }
-
-  .hero-slash {
-    font-family: var(--font-mono);
-    font-size: 0.58em;
-    font-weight: 400;
-    letter-spacing: -0.12em;
-    transform: rotate(9deg);
   }
 
   .hero-bottom {
@@ -264,7 +259,7 @@ import { portfolioLink } from "../data/site";
     }
 
     .hero-title {
-      font-size: clamp(2.55rem, 12.6vw, 5.2rem);
+      font-size: clamp(2.4rem, 12.4vw, 5.4rem);
       line-height: 0.88;
       letter-spacing: -0.08em;
     }
@@ -289,6 +284,10 @@ import { portfolioLink } from "../data/site";
 
     .hero-actions {
       justify-content: flex-start;
+      gap: var(--space-lg);
+    }
+
+    .hero-cta {
       gap: var(--space-lg);
     }
   }

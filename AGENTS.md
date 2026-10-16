@@ -8,7 +8,7 @@ frnq.es is the **Spanish commercial surface** of FRN.Q, the independent digital 
 
 It is **not** a translation of frnq.studio, **not** an agency, and has **no** language switch or Business Mode.
 
-**Status: CURRENT.** The home visual identity remains frozen and now includes one added commercial block: **Revisión y reparación web** (Web Rescue, `#revision-web`) with public entry offers (Diagnóstico Web 360 99 €, landing repair from 299 €) and a discreet Granada use-case block. The organic-search scope includes four static solution pages for ecommerce, B2B, systems/integrations and corporate web (`desarrollo-web`, which also covers repair/recovery of existing sites); add further routes only when distinct search intent and useful evidence-led content justify them. No city or doorway pages.
+**Status: CURRENT.** Preserve the existing commercial brutalist identity. The Home leads with **Web, comercio y sistemas**, shows web first and retains Ecommerce/B2B depth. The surface includes four solution pages, a distinct repair landing, agency collaboration, prices, support, ten cases and two decision-support guides. Web Rescue (`#revision-web`) remains the Home entry offer. Add further routes only for distinct intent and useful evidence-led content; no city or doorway pages. Prices live only in `src/data/pricing.ts`.
 
 - Read `docs/POSITIONING.md` for the business definition and language rules.
 - Read `docs/PRODUCT.md` for principles and roadmap.
@@ -26,6 +26,7 @@ bun run build
 bun run check    # astro check
 bun run lint     # alias of check
 bun test         # contact API tests
+bun run qa:build # static output audit, after build
 ```
 
 ## Structure
@@ -35,10 +36,10 @@ src/
 ├── components/   Header, Hero, Services, WebRescue, HiddenCost, Projects, About, Contact, Footer, SEOHead, CustomCursor, RevealObserver
 ├── content/projects/*.md   case studies (slug = filename)
 ├── content.config.ts
-├── data/         site, navigation, services, solutions, web-rescue, engagement, contact, contact-contract, projects
+├── data/         site, navigation, services, solutions, pricing, web-rescue, support, engagement, contact, contact-contract, projects
 ├── layouts/MainLayout.astro
-├── pages/        index, soluciones/[slug], casos/index, casos/[slug], legal/index, legal/privacidad, 404
-├── scripts/      contact-form
+├── pages/        index, soluciones/[slug], soluciones/revision-web, precios/index, soporte/index, casos/index, casos/[slug], guias/index, guias/[slug], legal/index, legal/privacidad, 404
+├── scripts/      contact-form, analytics, analytics-consent
 └── styles/       app → tokens, typography, base, motion, composition, utilities
 api/contact.ts
 docs/
@@ -51,8 +52,9 @@ See `docs/ARCHITECTURE.md` for the full tree and responsibilities.
 - **Read before significant changes:** `docs/POSITIONING.md` → `docs/PRODUCT.md` → `docs/ARCHITECTURE.md` → `docs/CONTENT.md`.
 - **Single source of truth.** Commercial copy and solution pages live in `src/data/*`; case content lives in `src/content/projects/*`. Do not duplicate.
 - **Evidence only.** No invented metrics, guarantees, testimonials, ratings or outcomes. KingBelt and Emilio Faraoni are public in-development reference cases. Never present them as completed launches or invent sales metrics.
-- **Commercial hierarchy** (priority order): 1 Ecommerce & Shopify · 2 Portales & Sistemas B2B · 3 Sistemas & Integraciones · 4 Web, SEO & Growth. Design, frontend, SEO, analytics, CRO, accessibility, performance and integrations are supporting capabilities, never the headline. Automation is a capability inside Sistemas & Integraciones, not a separate specialisation.
+- **Commercial hierarchy:** Home acquisition order is Web corporativa & SEO → Ecommerce & Shopify → Portales & Sistemas B2B → Sistemas & Integraciones. Ecommerce and B2B retain their specialisation depth and case emphasis. Design, frontend, SEO, analytics, CRO, accessibility, performance and integrations are supporting capabilities; automation belongs inside Sistemas & Integraciones.
 - **Voice.** Yo / el estudio / FRN.Q. Never "nosotros" implying a team that does not exist.
+- **Load the visual system skill before touching interfaces.** Any change to a page, component, typography, composition, color, spacing, motion or responsive behavior requires loading `.opencode/skills/frnq-business-visual-system/SKILL.md` first (`skill({ name: "frnq-business-visual-system" })`). It is the official design language of frnq.es and the mandatory gate for visual work. Do not modify interfaces without it.
 - **No visual work in content tasks.** Content and documentation changes do not touch CSS, tokens or composition. See `docs/ART_DIRECTION.md` and `docs/DESIGN.md`.
 - **`.studio` is external.** Link `STUDIO ↗` as the only portfolio label — header desktop and mobile menu, hero, contact and footer; HABLEMOS stays the only highlighted CTA. Never merge or translate the two surfaces.
 - **No browser automation.** Do not use Playwright, Puppeteer or any similar tool for screenshots or browser inspection. Verify in code only (`bun run check`, `bun run build`).
@@ -68,6 +70,12 @@ See `docs/ARCHITECTURE.md` for the full tree and responsibilities.
 - `docs/ART_DIRECTION.md` — current visual direction and scope boundary
 - `docs/DESIGN.md` — CSS system, tokens, typography, motion, accessibility
 - `docs/DEVELOPMENT.md` — commands, conventions, environment
+
+## Skills (agent tooling)
+
+- `.opencode/skills/frnq-business-visual-system/SKILL.md` — official frnq.es design
+  language. Mandatory before any visual change (pages, components, typography,
+  composition, motion, responsive). Load with `skill({ name: "frnq-business-visual-system" })`.
 
 ## Hierarchy
 

@@ -9,6 +9,12 @@ order: 8
 url: "https://asercordenergia.com/"
 urlLabel: "Ver web"
 tagline: "Web corporativa orientada a captar solicitudes de análisis energético y explicar servicios de ahorro y optimización."
+summary:
+  business: "Asercord Energía es una consultora energética con servicios de análisis de facturas, optimización de potencias y soluciones de autoconsumo para particulares y empresas."
+  challenge: "El mercado energético usa conceptos técnicos y comerciales que dificultan comparar alternativas; el sitio debía explicar los servicios con sencillez y ofrecer un siguiente paso claro."
+  delivered: "Web corporativa con propuesta de valor, áreas de servicio, explicación del método de trabajo, contenidos divulgativos y llamadas a la acción para solicitar un estudio."
+  decision: "Claridad comercial antes que detalle técnico: la oferta se cuenta en lenguaje comprensible y el proceso paso a paso aporta confianza."
+  outcome: "La web permite comprender los servicios y el proceso de consultoría y ofrece un recorrido directo para solicitar información y un estudio personalizado."
 context: "Asercord Energía es una consultora energética con servicios de análisis de facturas, optimización de potencias y soluciones de autoconsumo para particulares y empresas."
 problem: "El mercado energético utiliza conceptos técnicos y comerciales que dificultan comparar alternativas. El sitio debía explicar los servicios de forma sencilla y ofrecer un siguiente paso claro."
 objective: "Convertir una oferta especializada en una propuesta fácil de comprender, reforzando la confianza y facilitando solicitudes de estudio."

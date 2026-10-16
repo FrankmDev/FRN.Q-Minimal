@@ -1,0 +1,41 @@
+---
+import AgencyCollaboration from "../../../components/AgencyCollaboration.astro";
+import Footer from "../../../components/Footer.astro";
+import Header from "../../../components/Header.astro";
+import { siteConfig } from "../../../data/site";
+import { agencyCollaboration } from "../../../data/agency-collaboration";
+import MainLayout from "../../../layouts/MainLayout.astro";
+
+const canonicalURL = new URL(agencyCollaboration.path, siteConfig.url);
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": `${canonicalURL}#service`,
+  name: agencyCollaboration.title,
+  serviceType: "Desarrollo técnico y colaboración white-label para agencias",
+  description: agencyCollaboration.meta.description,
+  url: canonicalURL.toString(),
+  provider: { "@id": `${siteConfig.url}/#person` },
+  brand: { "@id": `${siteConfig.url}/#brand` },
+  areaServed: { "@type": "Country", name: "España" },
+};
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: new URL("/", siteConfig.url).toString() },
+    { "@type": "ListItem", position: 2, name: "Colaboraciones", item: canonicalURL.toString() },
+  ],
+};
+---
+
+<MainLayout
+  title={agencyCollaboration.meta.title}
+  description={agencyCollaboration.meta.description}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
+  <Header />
+  <AgencyCollaboration />
+  <Footer />
+</MainLayout>

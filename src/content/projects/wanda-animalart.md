@@ -9,6 +9,12 @@ order: 7
 url: "https://www.wanda-animalart.com/"
 urlLabel: "Ver portfolio"
 tagline: "Portfolio digital para retratos personalizados de animales, con galería artística y proceso de encargo."
+summary:
+  business: "Wanda Animalart es el proyecto de Virginia, especializado en retratos de animales hechos a mano con distintas técnicas."
+  challenge: "Las redes mostraban el trabajo, pero no ordenaban el catálogo artístico, la trayectoria ni los pasos para encargar un retrato."
+  delivered: "Web con galería filtrable por tipo de animal, presentación de la artista, materiales, proceso de encargo y contacto directo."
+  decision: "Dar todo el protagonismo a las obras y mantener la interfaz en segundo plano."
+  outcome: "El sitio reúne retratos, información de la artista y proceso de encargo en un único espacio desde el que iniciar una consulta."
 context: "Wanda Animalart es el proyecto artístico de Virginia, especializada en retratos de animales realizados a mano con distintas técnicas."
 problem: "Las redes sociales muestran el trabajo, pero no siempre explican de forma ordenada el catálogo artístico, la trayectoria ni los pasos necesarios para solicitar un retrato."
 objective: "Reunir las obras y la información sobre encargos en una presencia propia que facilite entender la propuesta y contactar."

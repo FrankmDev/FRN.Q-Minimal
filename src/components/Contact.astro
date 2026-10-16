@@ -1,6 +1,10 @@
 ---
 import {
   CONTACT_BUDGETS,
+  CONTACT_NAME_MIN,
+  CONTACT_NAME_MAX,
+  CONTACT_EMAIL_MAX,
+  CONTACT_COMPANY_MAX,
   CONTACT_MESSAGE_MAX,
   CONTACT_MESSAGE_MIN,
   CONTACT_TYPES,
@@ -21,7 +25,7 @@ import { portfolioLink, siteConfig } from "../data/site";
             <span class="title-mark">proyecto.</span>
           </h2>
           <p class="info-desc">
-            Cuéntame qué quieres resolver: un proyecto nuevo, una mejora o la reparación de una web que ya tienes. Leo cada mensaje y te respondo directamente.
+            Un proyecto nuevo, una mejora o la reparación de una web que ya tienes. Leo cada mensaje y te respondo directamente.
           </p>
         </div>
 
@@ -31,7 +35,7 @@ import { portfolioLink, siteConfig } from "../data/site";
               href={method.href}
               class="method-card"
               data-track="contact_method_click"
-              data-track-method={method.label}
+              data-track-method="email"
               data-track-location="contact"
             >
               <span class="method-icon" aria-hidden="true">{method.icon}</span>
@@ -63,7 +67,7 @@ import { portfolioLink, siteConfig } from "../data/site";
       >
         <div class="form-card">
           <div class="form-header">
-            <h3 class="form-title">Cuéntame qué necesitas</h3>
+            <h3 class="form-title">Envíame tu consulta</h3>
           </div>
 
           <noscript>
@@ -105,8 +109,8 @@ import { portfolioLink, siteConfig } from "../data/site";
                   placeholder="Tu nombre"
                   required
                   autocomplete="name"
-                  minlength="2"
-                  maxlength="100"
+                  minlength={CONTACT_NAME_MIN}
+                  maxlength={CONTACT_NAME_MAX}
                   aria-describedby="name-error"
                 />
                 <span id="name-error" class="field-error hidden" role="alert"></span>
@@ -120,7 +124,7 @@ import { portfolioLink, siteConfig } from "../data/site";
                   placeholder="tu@email.com"
                   required
                   autocomplete="email"
-                  maxlength="254"
+                  maxlength={CONTACT_EMAIL_MAX}
                   spellcheck="false"
                   aria-describedby="email-error"
                 />
@@ -137,7 +141,7 @@ import { portfolioLink, siteConfig } from "../data/site";
                   name="company"
                   placeholder="Tu empresa o proyecto"
                   autocomplete="organization"
-                  maxlength="120"
+                  maxlength={CONTACT_COMPANY_MAX}
                   aria-describedby="company-error"
                 />
                 <span id="company-error" class="field-error hidden" role="alert"></span>
@@ -158,6 +162,7 @@ import { portfolioLink, siteConfig } from "../data/site";
 
             <div class="form-field" data-field-id="message">
               <label for="message">Contexto / problema</label>
+              <p id="message-help" class="message-help">Qué negocio tienes, la URL si existe, qué necesitas resolver y si hay una fecha importante. No envíes contraseñas ni datos sensibles.</p>
               <textarea
                 id="message"
                 name="message"
@@ -166,7 +171,7 @@ import { portfolioLink, siteConfig } from "../data/site";
                 required
                 minlength={CONTACT_MESSAGE_MIN}
                 maxlength={CONTACT_MESSAGE_MAX}
-                aria-describedby="message-error message-counter"
+                aria-describedby="message-help message-error message-counter"
               ></textarea>
               <div class="field-foot">
                 <span id="message-error" class="field-error hidden" role="alert"></span>
@@ -261,13 +266,8 @@ import { portfolioLink, siteConfig } from "../data/site";
       <div class="faq-list">
         {
           faqItems.map((item, i) => (
-            <div class="faq-item" data-faq-item>
-              <button
-                class="faq-question"
-                aria-expanded="false"
-                aria-controls={`faq-panel-${i}`}
-                type="button"
-              >
+            <details class="faq-item" name="contact-faq">
+              <summary class="faq-question">
                 <span class="faq-number mono" aria-hidden="true">
                   {String(i + 1).padStart(2, "0")}
                 </span>
@@ -290,13 +290,9 @@ import { portfolioLink, siteConfig } from "../data/site";
                     />
                   </svg>
                 </span>
-              </button>
-               <div class="faq-answer-wrapper" id={`faq-panel-${i}`} inert>
-                <div class="faq-answer-inner">
-                  <p class="faq-answer">{item.a}</p>
-                </div>
-              </div>
-            </div>
+              </summary>
+              <p class="faq-answer">{item.a}</p>
+            </details>
           ))
         }
       </div>
@@ -307,29 +303,6 @@ import { portfolioLink, siteConfig } from "../data/site";
 <script>
   import "../scripts/contact-form";
   import { trackOnce } from "../scripts/analytics";
-
-  const faqItems = document.querySelectorAll("[data-faq-item]");
-
-  faqItems.forEach((item) => {
-    const question = item.querySelector(".faq-question");
-
-    question?.addEventListener("click", () => {
-      const isOpen = item.classList.contains("is-open");
-
-       faqItems.forEach((otherItem) => {
-         if (otherItem !== item) {
-           otherItem.classList.remove("is-open");
-           const otherQuestion = otherItem.querySelector(".faq-question");
-           otherQuestion?.setAttribute("aria-expanded", "false");
-           otherItem.querySelector(".faq-answer-wrapper")?.setAttribute("inert", "");
-         }
-       });
-
-       item.classList.toggle("is-open");
-       question?.setAttribute("aria-expanded", String(!isOpen));
-       item.querySelector(".faq-answer-wrapper")?.toggleAttribute("inert", isOpen);
-    });
-  });
 
   // Fires once per session when the contact section becomes visible, so the
   // funnel can distinguish reaching contact from clicking a CTA.
@@ -401,6 +374,8 @@ import { portfolioLink, siteConfig } from "../data/site";
     opacity: 0.7;
     max-width: 420px;
   }
+
+  .message-help { margin: 0 0 var(--space-sm); color: var(--text-secondary); font-size: 0.8125rem; line-height: 1.5; }
 
   .contact-methods {
     display: flex;
@@ -878,24 +853,10 @@ import { portfolioLink, siteConfig } from "../data/site";
     box-shadow: -6px 8px 0 var(--border);
   }
 
-  .faq-item.is-open {
+  .faq-item[open] {
     background: var(--bg-alt);
     transform: none;
     box-shadow: none;
-  }
-
-  .faq-answer-wrapper {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .faq-item.is-open .faq-answer-wrapper {
-    grid-template-rows: 1fr;
-  }
-
-  .faq-answer-inner {
-    overflow: hidden;
   }
 
   .faq-question {
@@ -913,13 +874,17 @@ import { portfolioLink, siteConfig } from "../data/site";
     font-family: inherit;
     font-size: inherit;
     transition: background var(--transition-fast);
+    list-style: none;
+    cursor: pointer;
   }
+
+  .faq-question::-webkit-details-marker { display: none; }
 
   .faq-question:hover {
     background: var(--bg-alt);
   }
 
-  .faq-item.is-open .faq-question {
+  .faq-item[open] .faq-question {
     background: var(--bg-alt);
   }
 
@@ -943,7 +908,7 @@ import { portfolioLink, siteConfig } from "../data/site";
     height: 100%;
   }
 
-  .faq-item.is-open .faq-arrow {
+  .faq-item[open] .faq-arrow {
     transform: rotate(180deg);
   }
 
@@ -1147,7 +1112,7 @@ import { portfolioLink, siteConfig } from "../data/site";
   }
 
   .faq-item:hover,
-  .faq-item.is-open {
+  .faq-item[open] {
     transform: none;
     box-shadow: none;
   }
@@ -1162,7 +1127,7 @@ import { portfolioLink, siteConfig } from "../data/site";
   }
 
   .faq-question:hover,
-  .faq-item.is-open .faq-question {
+  .faq-item[open] .faq-question {
     background: var(--bg-alt);
     color: var(--text);
   }
@@ -1199,12 +1164,12 @@ import { portfolioLink, siteConfig } from "../data/site";
     color: var(--text);
   }
 
-  .faq-item.is-open .faq-icon {
+  .faq-item[open] .faq-icon {
     border-color: var(--accent);
     background: var(--accent);
   }
 
-  .faq-item.is-open .faq-arrow {
+  .faq-item[open] .faq-arrow {
     color: var(--text-on-accent);
   }
 
@@ -1242,7 +1207,7 @@ import { portfolioLink, siteConfig } from "../data/site";
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .faq-answer-wrapper {
+    .faq-arrow {
       transition: none;
     }
   }

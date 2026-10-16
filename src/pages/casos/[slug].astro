@@ -11,7 +11,12 @@ import {
   casePath,
   type Project,
 } from "../../data/projects";
-import { getServiceForSolution, getSolutionForService, solutionPath } from "../../data/solutions";
+import {
+  getServiceForSolution,
+  getSolutionForCase,
+  solutionContactTypes,
+  solutionPath,
+} from "../../data/solutions";
 
 export async function getStaticPaths() {
   const projects = await getPublishedProjects();
@@ -33,25 +38,16 @@ const { project, next }: Props = Astro.props;
 const categoryLabel = categoryLabels[project.category];
 const statusLabel = statusLabels[project.status];
 const canonical = new URL(casePath(project.slug), Astro.site).toString();
-const caseSolution = project.serviceArea
-  ? getSolutionForService(project.serviceArea)
-  : undefined;
+/**
+ * Every published case links back to the commercial solution it evidences:
+ * `serviceArea` when the case proves ecommerce, B2B or systems, otherwise the
+ * case category selects the web/product solution it demonstrates.
+ */
+const caseSolution = getSolutionForCase(project);
 const caseService = caseSolution ? getServiceForSolution(caseSolution) : undefined;
-// Published corporate/web cases point back to the corporate-web solution even
-// though they carry no `serviceArea`, mirroring the evidence list on that page.
-const webEvidenceCategories = ["corporate", "web", "website"];
-const webSolution = getSolutionForService("growth");
-const webSolutionService = webSolution ? getServiceForSolution(webSolution) : undefined;
-const webBackLink =
-  !caseSolution &&
-  webSolution &&
-  webSolutionService &&
-  webEvidenceCategories.includes(project.category)
-    ? {
-        href: solutionPath(webSolution.slug),
-        label: `Ver la solución de ${webSolutionService.title}`,
-      }
-    : undefined;
+const caseContactType = caseSolution
+  ? solutionContactTypes[caseSolution.id]
+  : undefined;
 const personId = `${siteConfig.url}/#person`;
 
 const og = await getImage({
@@ -211,6 +207,40 @@ const facts = [
         </div>
       </section>
 
+      <!-- Business reading: the whole case in one compact block, before the
+           long technical narrative. -->
+      <section class="case-brief reveal" aria-labelledby="case-brief-title">
+        <div class="container">
+          <div class="brief-panel">
+            <header class="section-head brief-head">
+              <h2 id="case-brief-title">Lectura de negocio</h2>
+            </header>
+            <dl class="brief-grid">
+              <div class="brief-item">
+                <dt>Negocio</dt>
+                <dd>{project.summary.business}</dd>
+              </div>
+              <div class="brief-item">
+                <dt>Reto</dt>
+                <dd>{project.summary.challenge}</dd>
+              </div>
+              <div class="brief-item">
+                <dt>Alcance ejecutado</dt>
+                <dd>{project.summary.delivered}</dd>
+              </div>
+              <div class="brief-item">
+                <dt>Resultado verificable</dt>
+                <dd>{project.summary.outcome}</dd>
+              </div>
+            </dl>
+            <p class="brief-decision">
+              <span class="brief-decision-label">Decisión clave</span>
+              <span class="brief-decision-text">{project.summary.decision}</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
       <!-- Business value first -->
       <section class="case-section reveal">
         <div class="container">
@@ -358,6 +388,51 @@ const facts = [
         </div>
       </section>
 
+      <!-- The commercial solution this case evidences, with the matching CTA. -->
+      {
+        caseSolution && caseService && (
+          <section class="case-solution" aria-labelledby="case-solution-title">
+            <div class="container">
+              <div
+                class:list={[
+                  "solution-panel",
+                  caseSolution.id === "ecommerce" && "solution-panel--primary",
+                  caseSolution.id === "b2b" && "solution-panel--secondary",
+                ]}
+              >
+                <p class="solution-kicker">Solución aplicada</p>
+                <h2 id="case-solution-title">{caseService.title}</h2>
+                <p class="solution-result">{caseService.short}</p>
+                <div class="solution-actions">
+                  <a
+                    class="solution-cta"
+                    href={caseContactType ? `/?tipo=${caseContactType}#contacto` : "/#contacto"}
+                    data-contact-type={caseContactType}
+                    data-track="cta_click"
+                    data-track-location="case_solution"
+                    data-track-slug={project.slug}
+                  >
+                    <span>Quiero algo así</span>
+                    <span aria-hidden="true">→</span>
+                  </a>
+                  <a
+                    class="solution-link"
+                    href={solutionPath(caseSolution.slug)}
+                    data-track="cta_click"
+                    data-track-location="case_solution"
+                    data-track-label={caseService.title}
+                    data-track-slug={project.slug}
+                  >
+                    <span>Ver la solución de {caseService.title}</span>
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+        )
+      }
+
       <!-- Next + back -->
       <section class="case-next">
         <div class="container">
@@ -374,20 +449,7 @@ const facts = [
             <span class="next-arrow" aria-hidden="true">→</span>
           </a>
           <a class="back-link" href="/casos/">← Volver a todos los casos</a>
-          {
-            caseSolution && caseService && (
-              <a class="back-link" href={solutionPath(caseSolution.slug)}>
-                Ver la solución de {caseService.title}
-              </a>
-            )
-          }
-          {
-            webBackLink && (
-              <a class="back-link" href={webBackLink.href}>
-                {webBackLink.label}
-              </a>
-            )
-          }
+          <a class="back-link" href="/soporte/">Soporte y mantenimiento</a>
           <a class="back-link" href="/#servicios">Ver todas las soluciones</a>
         </div>
       </section>
@@ -584,6 +646,197 @@ const facts = [
   .scope-list li span {
     font-weight: 700;
     opacity: 0.5;
+  }
+
+  /* Compact business reading — the case at a glance, before the long
+     narrative. Shares the ruled/dashed language and adds one hard frame. */
+  .case-brief {
+    padding: var(--space-2xl) 0;
+    border-bottom: 2px dashed var(--border-light);
+  }
+
+  .brief-panel {
+    padding: clamp(var(--space-lg), 3.5vw, var(--space-2xl));
+    border: 3px solid var(--border);
+    border-top: 4px solid var(--accent);
+    background: var(--bg-alt);
+    box-shadow: 8px 8px 0 var(--border);
+  }
+
+  .brief-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: var(--space-lg) clamp(var(--space-lg), 3vw, var(--space-2xl));
+    margin: 0;
+  }
+
+  .brief-item {
+    padding-top: var(--space-md);
+    border-top: 2px solid var(--border);
+  }
+
+  .brief-item dt {
+    margin-bottom: var(--space-xs);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  .brief-item dd {
+    max-width: 36ch;
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .brief-decision {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-sm) var(--space-md);
+    margin: var(--space-xl) 0 0;
+    padding-top: var(--space-md);
+    border-top: 3px solid var(--border);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .brief-decision-label {
+    flex: 0 0 auto;
+    padding: 0.25rem 0.5rem;
+    background: var(--accent);
+    color: var(--text-on-accent);
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .brief-decision-text {
+    max-width: 62ch;
+    font-weight: 600;
+  }
+
+  /* Commercial solution this case evidences. Priority 1 (ecommerce) gets the
+     accent plate, priority 2 (B2B) the inverted ink plate; the rest stay on
+     paper. */
+  .case-solution {
+    padding: var(--space-2xl) 0 0;
+  }
+
+  .solution-panel {
+    --panel-focus: var(--text);
+    padding: clamp(var(--space-lg), 3.5vw, var(--space-2xl));
+    border: 3px solid var(--border);
+    background: var(--bg);
+    box-shadow: 8px 8px 0 var(--border);
+  }
+
+  .solution-panel--primary {
+    --panel-focus: var(--text-on-accent);
+    background: var(--accent);
+    color: var(--text-on-accent);
+  }
+
+  .solution-panel--secondary {
+    --panel-focus: var(--bg);
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  .solution-kicker {
+    margin-bottom: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  .solution-panel h2 {
+    max-width: 22ch;
+    font-size: clamp(1.75rem, 4vw, 3rem);
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+  }
+
+  .solution-result {
+    max-width: 58ch;
+    margin-top: var(--space-md);
+    font-size: clamp(1rem, 1.7vw, 1.125rem);
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  .solution-panel--primary .solution-result,
+  .solution-panel--secondary .solution-result {
+    color: inherit;
+    opacity: 0.82;
+  }
+
+  .solution-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-md) var(--space-lg);
+    margin-top: var(--space-xl);
+  }
+
+  .solution-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-xl);
+    border: 3px solid var(--border);
+    background: var(--text);
+    color: var(--bg);
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    box-shadow: 8px 8px 0 var(--accent);
+    transition:
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+
+  .solution-panel--secondary .solution-cta {
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  .solution-cta:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0 var(--accent);
+  }
+
+  .solution-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+  }
+
+  .solution-cta:focus-visible,
+  .solution-link:focus-visible {
+    outline: 3px solid var(--panel-focus);
+    outline-offset: 4px;
+  }
+
+  .solution-link:focus-visible {
+    outline-color: currentColor;
   }
 
   /* Sections */
@@ -858,7 +1111,8 @@ const facts = [
     .case-link,
     .feature,
     .next-case,
-    .next-arrow {
+    .next-arrow,
+    .solution-cta {
       transition: none !important;
     }
   }

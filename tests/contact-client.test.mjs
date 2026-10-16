@@ -1,5 +1,5 @@
 import { afterEach, expect, test } from "bun:test";
-import { handleReturnState, isConfirmedSubmission, leadProps, responseErrorReason } from "../src/scripts/contact-form.ts";
+import { handleReturnState, isConfirmedSubmission, leadProps, resolvePreselectType, responseErrorReason } from "../src/scripts/contact-form.ts";
 
 const originalWindow = globalThis.window;
 const originalDocument = globalThis.document;
@@ -25,6 +25,11 @@ test("rate limiting, field validation and other rejections stay distinct", () =>
 test("lead props reject unrecognized options and never include personal contents", () => {
   expect(leadProps({ name: "Alice", email: "alice@example.test", message: "Private", company: "Company", type: "portal", budget: "2k-5k" })).toEqual({ type: "portal", budget: "2k-5k", hasCompany: true });
   expect(leadProps({ type: "alice@example.test", budget: "Alice", company: "" })).toEqual({ type: undefined, budget: undefined, hasCompany: false });
+});
+
+test("the agency collaboration type is accepted by the frontend contract and preselector", () => {
+  expect(resolvePreselectType("agencia")).toBe("agencia");
+  expect(resolvePreselectType("unknown")).toBeUndefined();
 });
 
 test("confirmed conversion needs the current request ID echoed by a successful response", () => {
@@ -122,7 +127,7 @@ async function submitFixture(status, responseBody) {
   boot();
   listeners.get("submit")({ preventDefault() {} });
   await completed;
-  return { events, posted, form, ids };
+  return { events, posted, form, ids, listeners };
 }
 
 test("enhanced submission counts only live echoed success and restores loading state", async () => {
@@ -145,6 +150,16 @@ for (const [label, body] of [["honeypot acknowledgement", { success: true }], ["
     expect(events.filter((event) => event.name === "contact_form_success")).toHaveLength(0);
   });
 }
+
+test("the first form interaction is reported once per document", async () => {
+  const { events, listeners } = await submitFixture(200, (ref) => ({ success: true, ref }));
+  listeners.get("focus")?.();
+  listeners.get("input")?.();
+  listeners.get("change")?.();
+  const starts = events.filter((event) => event.name === "contact_form_start");
+  expect(starts).toHaveLength(1);
+  expect(starts[0].props).toEqual({ page: "/", location: "contact" });
+});
 
 for (const [status, reason, response] of [
   [429, "rate_limited", () => ({ success: false, error: "Inténtalo más tarde." })],
@@ -190,6 +205,14 @@ test("a ?tipo= deep link preselects a known contact type and strips the paramete
   expect(error.textContent).toBe("");
   expect(changed).toEqual(["/?utm_source=x#contacto"]);
   expect(listeners.map(([name]) => name)).toContain("click");
+});
+
+test("the agency landing deep link preselects Agencia / white-label", async () => {
+  const { select, changed } = preselectFixture("?tipo=agencia");
+  await import(`../src/scripts/contact-form.ts?agency-preselect=${++moduleId}`);
+
+  expect(select.value).toBe("agencia");
+  expect(changed).toEqual(["/#contacto"]);
 });
 
 test("an unknown ?tipo= value is ignored and leaves the URL untouched", async () => {

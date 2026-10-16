@@ -39,7 +39,9 @@ The hierarchy (see `POSITIONING.md`):
 3. SISTEMAS & INTEGRACIONES
 4. WEB, SEO & GROWTH
 
-Engagement is either a closed project, a continuous (non-retainer) collaboration, or a discovery session. Pricing is scope-specific and agreed after discovery; public numbers are orientation only. The **Web Rescue** entry offers (Diagnóstico Web 360 at 99 €, discounted from an eligible repair within 30 days, and landing repair from 299 €) are the only productized public prices; larger repairs and every other project are quoted after discovery.
+On the Home the four areas are presented with **WEB, SEO & GROWTH** (Web corporativa & SEO, including the repair of existing sites) first, as the fastest entry point for new work; this is a presentation order, not a change of depth. The other areas keep their dedicated routes and evidence.
+
+Engagement is either a closed project, a continuous (non-retainer) collaboration, or a discovery session. Pricing is scope-specific and agreed after discovery; published figures are scope-specific starting points, never a universal quote. `/precios/` publishes the reference from `src/data/pricing.ts`: the starting points (START from 690 €, STUDIO from 990 €, PRESENCE from 1.390 €, BUSINESS from 1.990 €, SHOPIFY from 3.190 €, CARE from 49 €/mes) and the **Web Rescue** entry offers (Diagnóstico Web 360 at 99 €, discounted from an eligible repair within 30 days, and landing repair from 299 €); B2B portals, systems, integrations and custom ecommerce are quoted after discovery. Projects are invoiced by milestones fixed in the proposal.
 
 ## What frnq.es is not
 
@@ -52,12 +54,12 @@ Engagement is either a closed project, a continuous (non-retainer) collaboration
 
 ## Roadmap
 
-**Status: CURRENT.** The homepage keeps its visual identity and adds one commercial block (Web Rescue). The organic-search scope includes four static solution pages supported by distinct intent and enough factual scope to explain the services. No redesign, city doorway pages or additional routes without separate evidence.
+**Status: CURRENT.** The homepage keeps its visual identity and adds one commercial block (Web Rescue). The organic-search scope includes four static solution pages supported by distinct intent and enough factual scope to explain the services, plus a repair landing, a support page, a guides section and a public price reference. No redesign, city doorway pages or additional routes without separate evidence.
 
 ### COMPLETE — Spanish commercial surface
 
 - Single-page composition: Hero → Solutions → Web Rescue (Revisión web) → Operation → Cases → Studio → Contact, plus Footer.
-- Content driven by `src/data/*`: `site`, `navigation`, `services`, `solutions`, `web-rescue`, `contact`, `contact-contract`, `projects`, `engagement`.
+- Content driven by `src/data/*`: `site`, `navigation`, `services`, `solutions`, `pricing`, `web-rescue`, `support`, `guias`, `agency-collaboration`, `contact`, `contact-contract`, `projects`, `engagement`.
 - Contact form with validation contract and Aviso legal / Privacidad pages under `/legal/`.
 - Documentation set in `docs/`.
 - frnq.studio linked externally as `STUDIO ↗`.
@@ -68,8 +70,11 @@ Engagement is either a closed project, a continuous (non-retainer) collaboration
 - `/soluciones/ecommerce/` — ecommerce and Shopify development for D2C businesses.
 - `/soluciones/b2b/` — customer portals, private catalogues/pricing and B2B orders.
 - `/soluciones/sistemas/` — business-system integrations and operational workflows.
-- `/soluciones/desarrollo-web/` — corporate and custom web design/development plus repair/recovery of existing websites (WordPress, Elementor, WooCommerce), technical SEO, performance, accessibility and measurement, with national scope and natural Granada relevance on one canonical page. Its typologies section links back to the Home Web Rescue offer with the type `reparacion` preselected.
+- `/soluciones/desarrollo-web/` — corporate and custom web design/development (new or redesigned sites), technical SEO, performance, accessibility and measurement, with national scope and natural Granada relevance on one canonical page. A contextual link directs existing-site repairs to `/soluciones/revision-web/`; repair is not a competing primary intent here.
+- `/colaboraciones/agencias/` — a dedicated collaboration landing for agencies, studios, consultancies and teams. It explains technical scope, collaboration models, delivery expectations, written relationship conditions, published case evidence and briefing flow; its CTA preselects `agencia` in the shared contact form.
+- `/soluciones/revision-web/` — repair-intent landing for businesses that need to fix, update, recover or improve a website that already exists without rebuilding it (WordPress, Elementor, WooCommerce). It reuses the shared Web Rescue data (`src/data/web-rescue.ts`) for the process, offers and note, explains what the Diagnóstico Web 360 includes and excludes on a dedicated panel, and its CTA "Solicitar revisión" opens the contact form with the type `reparacion` preselected. Creating or redesigning a site stays on `/soluciones/desarrollo-web/`.
 - Pages explain scope, audiences, typologies, capabilities, process, deliverables/maintenance, integrations and FAQs. They state clearly when no directly related case has been published.
+- `/precios/` — the public price reference (`src/data/pricing.ts`). It groups the offers by solution and scope, distinguishes precio de partida, alcance definido and presupuesto personalizado, explains scope changes, external costs, taxes and maintenance, answers pricing/payment FAQs and closes with the "Pedir propuesta" CTA. Only offers with a real published amount become `OfferCatalog` structured data; the visible figure and the schema read the same source.
 - No separate `/soluciones/web-seo/` or city page is created: those intents fold into the corporate-web route to avoid duplication.
 
 ### COMPLETE — Published work
@@ -77,6 +82,13 @@ Engagement is either a closed project, a continuous (non-retainer) collaboration
 - Ten published cases rendered from the `projects` content collection (via `src/data/projects.ts`).
 - Neutral, factual descriptions with no outcome claims.
 - Seven are `status: live`; KingBelt, Emilio Faraoni and Ilifielt are published as `status: in-development` with `publicPreview: true` and a visible status label.
+- The Home includes four selected cases, including the live Cien Mares web case; commercial evidence does not rely only on in-progress Ecommerce/B2B references.
+
+### CURRENT — Contact and optional measurement
+
+- One progressively enhanced form, one shared validation contract and one Vercel API. The native POST returns a standalone success/error page rather than a misleading static return; enhanced success requires the provider's accepted response and an echoed opaque request ID.
+- Optional GA4 uses a valid build-time ID and the built-in accept/reject notice with reopenable Footer preferences. No ID means no tag or banner; consent is required before loading GA4. The choice is valid for 180 days and can be withdrawn.
+- Tests and static output QA are local evidence, not proof of inbox delivery, production analytics reception, rankings, field performance or legal compliance. Deployment/environment, GA4 settings and legal checks remain external; see `DEVELOPMENT.md` and `SEO.md`.
 
 ### FUTURE — prepared, not shipped
 

@@ -7,10 +7,10 @@ import {
   getServiceForSolution,
   solutionPages,
   solutionPath,
+  solutionContactTypes,
   type SolutionPage,
 } from "../../data/solutions";
 import { siteConfig } from "../../data/site";
-import { webRescueCopy } from "../../data/web-rescue";
 
 export function getStaticPaths() {
   return solutionPages.map((solution) => ({
@@ -38,6 +38,23 @@ const relatedSolutions = solution.relatedSolutions
   .filter((item): item is SolutionPage => Boolean(item));
 const personId = `${canonical.origin}/#person`;
 const brandId = `${canonical.origin}/#brand`;
+const contactHref = `/?tipo=${solutionContactTypes[solution.id]}#contacto`;
+
+/** Contextual CTA labels with a safe default when a route does not override them. */
+const ctas = {
+  hero: solution.ctas?.hero ?? "Hablemos de tu proyecto",
+  mid: solution.ctas?.mid,
+  closing: solution.ctas?.closing ?? "Cuéntame qué necesitas resolver",
+};
+/** Section headings, overridable per route so no two routes read the same. */
+const headings = {
+  integrations: solution.headings?.integrations ?? {
+    tag: "Datos y herramientas",
+    title: "Conexiones según tu operación",
+  },
+  process: solution.headings?.process ?? { tag: "Cómo trabajo", title: "Del proceso al sistema" },
+  evidence: solution.headings?.evidence ?? { tag: "Evidencia publicada", title: "Casos relacionados" },
+};
 
 const serviceSchema = {
   "@context": "https://schema.org",
@@ -105,32 +122,22 @@ const faqSchema = {
           </p>
           <a
             class="solution-contact"
-            href="/#contacto"
+            href={contactHref}
             data-track="cta_click"
             data-track-location="solution_hero"
             data-track-slug={solution.slug}
           >
-            {solution.id === "b2b" ? "Revisemos tu proceso comercial" : "Hablemos de tu proyecto"} <span aria-hidden="true">→</span>
+            {ctas.hero} <span aria-hidden="true">→</span>
           </a>
-          {solution.id === "ecommerce" && (
+          {solution.jump && (
             <nav class="solution-jump" aria-label="En esta página">
-              <a href="#plataforma">Plataforma</a>
-              <a href="#proceso">Proceso y alcance</a>
-              <a href="#faq-title">Preguntas frecuentes</a>
-            </nav>
-          )}
-          {solution.id === "growth" && (
-            <nav class="solution-jump" aria-label="En esta página">
-              <a href="#alcance">Alcance</a>
-              <a href="#tipologias">Tipologías</a>
-              <a href="#proceso">Proceso</a>
-              <a href="#faq-title">Preguntas frecuentes</a>
+              {solution.jump.map((item) => <a href={item.href}>{item.label}</a>)}
             </nav>
           )}
         </div>
       </header>
 
-      <section class="solution-section" aria-labelledby="problems-title">
+      <section class="solution-section" id="problema" aria-labelledby="problems-title">
         <div class="container solution-grid">
           <div>
             <p class="section-tag">Punto de partida</p>
@@ -141,6 +148,50 @@ const faqSchema = {
           </ul>
         </div>
       </section>
+
+      {solution.scenarios && (
+        <section class="solution-section solution-section--ruled" id="escenarios" aria-labelledby="scenarios-title">
+          <div class="container">
+            <p class="section-tag">{solution.scenarios.tag}</p>
+            <h2 id="scenarios-title">{solution.scenarios.title}</h2>
+            {solution.scenarios.lead && <p>{solution.scenarios.lead}</p>}
+            <ol class="scenario-rows">
+              {solution.scenarios.items.map((scenario) => (
+                <li class="scenario-row">
+                  <span class="scenario-index mono" aria-hidden="true">{scenario.label}</span>
+                  <div class="scenario-body">
+                    <h3>{scenario.title}</h3>
+                    <p>{scenario.description}</p>
+                  </div>
+                  <ul class="scenario-includes">
+                    {scenario.includes.map((item) => <li>{item}</li>)}
+                  </ul>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
+
+      {solution.webDetails && (
+        <section class="solution-section solution-section--ruled" id="modos" aria-labelledby="modes-title">
+          <div class="container">
+            <p class="section-tag">{solution.webDetails.modes.tag}</p>
+            <h2 id="modes-title">{solution.webDetails.modes.title}</h2>
+            {solution.webDetails.modes.lead && <p>{solution.webDetails.modes.lead}</p>}
+            <ul class="mode-cards">
+              {solution.webDetails.modes.items.map((mode) => (
+                <li class="mode-card">
+                  <span class="mode-index mono" aria-hidden="true">{mode.label}</span>
+                  <h3>{mode.title}</h3>
+                  <p>{mode.description}</p>
+                  <ul>{mode.includes.map((item) => <li>{item}</li>)}</ul>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       <section class="solution-section solution-section--dark" id="alcance" aria-labelledby="scope-title">
         <div class="container solution-grid">
@@ -155,64 +206,7 @@ const faqSchema = {
         </div>
       </section>
 
-      {solution.b2bDetails && (
-        <>
-          <section class="solution-section solution-section--ruled" aria-labelledby="portal-levels-title">
-            <div class="container">
-              <p class="section-tag">El alcance adecuado</p>
-              <h2 id="portal-levels-title">De catálogo privado a portal comercial</h2>
-              <p class="b2b-lead">No todos los negocios necesitan el mismo nivel de ecommerce B2B. La solución puede empezar sencilla y crecer cuando el proceso lo justifique.</p>
-              <div class="b2b-levels">
-                {solution.b2bDetails.levels.map((level) => (
-                  <article class="b2b-card">
-                    <h3>{level.title}</h3>
-                    <p>{level.description}</p>
-                    <ul>{level.includes.map((item) => <li>{item}</li>)}</ul>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          <section class="solution-section" aria-labelledby="buyer-title">
-            <div class="container">
-              <p class="section-tag">Recorrido del comprador</p>
-              <h2 id="buyer-title">De empresa interesada a pedido</h2>
-              <ol class="b2b-journey">
-                {solution.b2bDetails.buyerJourney.map((step, index) => (
-                  <li>
-                    <span class="b2b-step-number">0{index + 1}</span>
-                    <h3>{step.title}</h3>
-                    <p>{step.description}</p>
-                  </li>
-                ))}
-              </ol>
-              <a
-                class="solution-contact"
-                href="/#contacto"
-                data-track="cta_click"
-                data-track-location="solution_buyer_journey"
-                data-track-slug={solution.slug}
-              >Cuéntame cómo compran tus clientes <span aria-hidden="true">→</span></a>
-            </div>
-          </section>
-
-          <section class="solution-section solution-section--dark" aria-labelledby="phases-title">
-            <div class="container">
-              <p class="section-tag">Implantación progresiva</p>
-              <h2 id="phases-title">Empieza por lo necesario</h2>
-              <p class="b2b-lead">Las fases se priorizan según el negocio; no es necesario implantarlas todas ni conectar un ERP para lanzar un catálogo.</p>
-              <ol class="b2b-phases">
-                {solution.b2bDetails.phases.map((phase) => (
-                  <li><h3>{phase.title}</h3><p>{phase.description}</p></li>
-                ))}
-              </ol>
-            </div>
-          </section>
-        </>
-      )}
-
-      {solution.id === "ecommerce" && solution.platformOptions && (
+      {solution.platformOptions && (
         <section class="solution-section solution-platform" id="plataforma" aria-labelledby="platform-title">
           <div class="container">
             <p class="section-tag">La tecnología depende del proceso</p>
@@ -230,25 +224,112 @@ const faqSchema = {
         </section>
       )}
 
-      <section class="solution-section" aria-labelledby="integrations-title">
-        <div class="container solution-grid">
-          <div>
-          <p class="section-tag">{solution.headings?.integrations?.tag ?? "Datos y herramientas"}</p>
-          <h2 id="integrations-title">{solution.headings?.integrations?.title ?? (solution.id === "ecommerce" ? "Compra y operación conectadas" : solution.id === "b2b" ? "Conexiones opcionales, según tu operación" : "Conexiones según tu operación")}</h2>
-            <p>{solution.integrationDescription}</p>
-            {solution.b2bDetails && <a class="solution-text-link" href={solutionPath("sistemas")}>{solution.b2bDetails.systemsCta} <span aria-hidden="true">→</span></a>}
+      {solution.operations && (
+        <section class="solution-section solution-section--ruled" id="operacion" aria-labelledby="operations-title">
+          <div class="container">
+            <p class="section-tag">{solution.operations.tag}</p>
+            <h2 id="operations-title">{solution.operations.title}</h2>
+            <p>{solution.operations.lead}</p>
+            <ul class="operation-grid">
+              {solution.operations.items.map((item) => (
+                <li>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </li>
+              ))}
+            </ul>
+            {ctas.mid && (
+              <a
+                class="solution-contact"
+                href={contactHref}
+                data-track="cta_click"
+                data-track-location="solution_operations"
+                data-track-slug={solution.slug}
+              >{ctas.mid} <span aria-hidden="true">→</span></a>
+            )}
           </div>
-          <ul class="solution-list">
-            {solution.integrationExamples.map((item) => <li>{item}</li>)}
-          </ul>
-        </div>
-      </section>
+        </section>
+      )}
+
+      {solution.b2bDetails && (
+        <>
+          <section class="solution-section solution-section--ruled" id="niveles" aria-labelledby="portal-levels-title">
+            <div class="container">
+              <p class="section-tag">El alcance adecuado</p>
+              <h2 id="portal-levels-title">De catálogo privado a portal comercial</h2>
+              <p class="b2b-lead">No todos los negocios necesitan el mismo nivel de ecommerce B2B. La solución puede empezar sencilla y crecer cuando el proceso lo justifique.</p>
+              <div class="b2b-levels">
+                {solution.b2bDetails.levels.map((level) => (
+                  <article class="b2b-card">
+                    <h3>{level.title}</h3>
+                    <p>{level.description}</p>
+                    <ul>{level.includes.map((item) => <li>{item}</li>)}</ul>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section class="solution-section solution-section--ruled" id="piezas" aria-labelledby="pieces-title">
+            <div class="container">
+              <p class="section-tag">Piezas del portal</p>
+              <h2 id="pieces-title">Del registro a la solicitud de pedido</h2>
+              <ul class="piece-grid">
+                {solution.b2bDetails.pieces.map((piece) => (
+                  <li>
+                    <h3>{piece.title}</h3>
+                    <p>{piece.description}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          <section class="solution-section" id="recorrido" aria-labelledby="buyer-title">
+            <div class="container">
+              <p class="section-tag">Recorrido del comprador</p>
+              <h2 id="buyer-title">De empresa interesada a pedido</h2>
+              <ol class="b2b-journey">
+                {solution.b2bDetails.buyerJourney.map((step, index) => (
+                  <li>
+                    <span class="b2b-step-number">0{index + 1}</span>
+                    <h3>{step.title}</h3>
+                    <p>{step.description}</p>
+                  </li>
+                ))}
+              </ol>
+              {ctas.mid && (
+                <a
+                  class="solution-contact"
+                  href={contactHref}
+                  data-track="cta_click"
+                  data-track-location="solution_buyer_journey"
+                  data-track-slug={solution.slug}
+                >{ctas.mid} <span aria-hidden="true">→</span></a>
+              )}
+            </div>
+          </section>
+
+          <section class="solution-section solution-section--dark" id="fases" aria-labelledby="phases-title">
+            <div class="container">
+              <p class="section-tag">Implantación progresiva</p>
+              <h2 id="phases-title">Empieza por lo necesario</h2>
+              <p class="b2b-lead">Las fases se priorizan según el negocio; no es necesario implantarlas todas ni conectar un ERP para lanzar un catálogo.</p>
+              <ol class="b2b-phases">
+                {solution.b2bDetails.phases.map((phase) => (
+                  <li><h3>{phase.title}</h3><p>{phase.description}</p></li>
+                ))}
+              </ol>
+            </div>
+          </section>
+        </>
+      )}
 
       {solution.webDetails && (
         <section class="solution-section" id="tipologias" aria-labelledby="web-types-title">
           <div class="container">
             <p class="section-tag">Tipologías de proyecto</p>
-            <h2 id="web-types-title">Qué tipo de web necesitas</h2>
+            <h2 id="web-types-title">Qué forma puede tener tu web</h2>
             <ul class="web-cards">
               {solution.webDetails.projectTypes.map((type) => (
                 <li>
@@ -257,21 +338,31 @@ const faqSchema = {
                 </li>
               ))}
             </ul>
-            <a
-              class="solution-contact"
-              href={`/?tipo=${webRescueCopy.cta.type}#contacto`}
-              data-track="cta_click"
-              data-track-location="solution_web_types"
-              data-track-slug={solution.slug}
-            >
-              {webRescueCopy.cta.label} <span aria-hidden="true">→</span>
-            </a>
           </div>
         </section>
       )}
 
       {solution.webDetails && (
-        <section class="solution-section solution-section--dark" aria-labelledby="web-capabilities-title">
+        <section class="solution-section solution-repair" id="reparacion" aria-labelledby="repair-title">
+          <div class="container">
+            <aside class="repair-plate">
+              <p class="repair-tag mono">{solution.webDetails.repair.tag}</p>
+              <h2 id="repair-title">{solution.webDetails.repair.title}</h2>
+              <p class="repair-text">{solution.webDetails.repair.description}</p>
+              <a
+                class="solution-contact"
+                href={solutionPath("revision-web")}
+                data-track="cta_click"
+                data-track-location="solution_repair"
+                data-track-slug={solution.slug}
+              >{solution.webDetails.repair.label} <span aria-hidden="true">→</span></a>
+            </aside>
+          </div>
+        </section>
+      )}
+
+      {solution.webDetails && (
+        <section class="solution-section solution-section--dark" id="capacidades" aria-labelledby="web-capabilities-title">
           <div class="container">
             <p class="section-tag">Capacidades integradas</p>
             <h2 id="web-capabilities-title">Diseño, SEO y medición según alcance</h2>
@@ -287,10 +378,53 @@ const faqSchema = {
         </section>
       )}
 
+      {solution.systemsDetails && (
+        <section class="solution-section" id="decision" aria-labelledby="decision-title">
+          <div class="container">
+            <p class="section-tag">{solution.systemsDetails.tag}</p>
+            <h2 id="decision-title">{solution.systemsDetails.title}</h2>
+            <p>{solution.systemsDetails.lead}</p>
+            <ul class="decision-grid">
+              {solution.systemsDetails.decisions.map((decision, index) => (
+                <li>
+                  <span class="decision-num mono" aria-hidden="true">0{index + 1}</span>
+                  <h3>{decision.title}</h3>
+                  <p>{decision.description}</p>
+                </li>
+              ))}
+            </ul>
+            <p class="decision-note">{solution.systemsDetails.note}</p>
+            {ctas.mid && (
+              <a
+                class="solution-contact"
+                href={contactHref}
+                data-track="cta_click"
+                data-track-location="solution_systems_decisions"
+                data-track-slug={solution.slug}
+              >{ctas.mid} <span aria-hidden="true">→</span></a>
+            )}
+          </div>
+        </section>
+      )}
+
+      <section class="solution-section" aria-labelledby="integrations-title">
+        <div class="container solution-grid">
+          <div>
+            <p class="section-tag">{headings.integrations.tag}</p>
+            <h2 id="integrations-title">{headings.integrations.title}</h2>
+            <p>{solution.integrationDescription}</p>
+            {solution.b2bDetails && <a class="solution-text-link" href={solutionPath("sistemas")}>{solution.b2bDetails.systemsCta} <span aria-hidden="true">→</span></a>}
+          </div>
+          <ul class="solution-list">
+            {solution.integrationExamples.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      </section>
+
       <section class="solution-section solution-section--ruled" id="proceso" aria-labelledby="process-title">
         <div class="container">
-          <p class="section-tag">{solution.headings?.process?.tag ?? "Cómo trabajo"}</p>
-          <h2 id="process-title">{solution.headings?.process?.title ?? "Del proceso al sistema"}</h2>
+          <p class="section-tag">{headings.process.tag}</p>
+          <h2 id="process-title">{headings.process.title}</h2>
           <ol class="solution-process">
             {solution.process.map((step) => (
               <li>
@@ -302,7 +436,7 @@ const faqSchema = {
         </div>
       </section>
 
-      {solution.id === "ecommerce" && solution.clientInputs && solution.deliverables && solution.projectLimits && (
+      {solution.clientInputs && solution.deliverables && solution.projectLimits && (
         <section class="solution-section solution-section--dark" aria-labelledby="scope-details-title">
           <div class="container">
             <p class="section-tag">Alcance claro desde el inicio</p>
@@ -332,19 +466,21 @@ const faqSchema = {
       )}
 
       {solution.webDetails && (
-        <section class="solution-section solution-section--ruled" aria-labelledby="web-deliverables-title">
+        <section class="solution-section solution-section--ruled" id="entregables" aria-labelledby="web-deliverables-title">
           <div class="container solution-grid">
             <div>
               <p class="section-tag">Entregables y mantenimiento</p>
               <h2 id="web-deliverables-title">Lo que recibes al terminar</h2>
               <p>{solution.webDetails.maintenance}</p>
-              <a
-                class="solution-contact"
-                href="/#contacto"
-                data-track="cta_click"
-                data-track-location="solution_deliverables"
-                data-track-slug={solution.slug}
-              >Hablemos de tu web <span aria-hidden="true">→</span></a>
+              {ctas.mid && (
+                <a
+                  class="solution-contact"
+                  href={contactHref}
+                  data-track="cta_click"
+                  data-track-location="solution_deliverables"
+                  data-track-slug={solution.slug}
+                >{ctas.mid} <span aria-hidden="true">→</span></a>
+              )}
             </div>
             <ul class="solution-list">
               {solution.webDetails.deliverables.map((item) => <li>{item}</li>)}
@@ -356,8 +492,9 @@ const faqSchema = {
       <section class="solution-section" aria-labelledby="cases-title">
         <div class="container solution-grid">
           <div>
-            <p class="section-tag">{solution.headings?.evidence?.tag ?? "Evidencia publicada"}</p>
-            <h2 id="cases-title">{solution.headings?.evidence?.title ?? "Casos relacionados"}</h2>
+            <p class="section-tag">{headings.evidence.tag}</p>
+            <h2 id="cases-title">{headings.evidence.title}</h2>
+            {solution.evidenceNote && <p class="evidence-note">{solution.evidenceNote}</p>}
           </div>
           <div>
             {
@@ -419,15 +556,21 @@ const faqSchema = {
                 </li>
               ) : null;
             })}
+            <li>
+              <a href="/soporte/">Soporte y mantenimiento <span aria-hidden="true">→</span></a>
+            </li>
+            <li>
+              <a href="/precios/">Precios públicos <span aria-hidden="true">→</span></a>
+            </li>
           </ul>
           <a
             class="solution-contact"
-            href="/#contacto"
+            href={contactHref}
             data-track="cta_click"
             data-track-location="solution_related"
             data-track-slug={solution.slug}
           >
-            {solution.id === "b2b" ? "Hablemos de tu catálogo o portal B2B" : "Cuéntame qué necesitas resolver"} <span aria-hidden="true">→</span>
+            {ctas.closing} <span aria-hidden="true">→</span>
           </a>
         </div>
       </nav>
@@ -444,7 +587,7 @@ const faqSchema = {
   .solution-breadcrumb span { opacity: 0.55; }
   .solution-breadcrumb [aria-current="page"] { opacity: 1; }
   .solution-eyebrow { margin-bottom: var(--space-md); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
-  .solution-hero h1 { max-width: 16ch; font-size: clamp(2.7rem, 8vw, 7rem); font-weight: 800; line-height: 0.92; letter-spacing: -0.065em; text-transform: uppercase; }
+  .solution-hero h1 { max-width: 16ch; overflow-wrap: anywhere; font-size: clamp(2.7rem, 8vw, 7rem); font-weight: 800; line-height: 0.92; letter-spacing: -0.065em; text-transform: uppercase; }
   .solution-intro { max-width: 66ch; margin-top: var(--space-xl); font-size: clamp(1.0625rem, 1.8vw, 1.25rem); line-height: 1.6; color: var(--text-secondary); }
   .solution-audience { max-width: 68ch; margin-top: var(--space-lg); line-height: 1.6; }
   .solution-contact, .solution-text-link { display: inline-flex; align-items: center; gap: var(--space-sm); margin-top: var(--space-xl); font-weight: 800; text-decoration: underline; text-underline-offset: 0.3em; }
@@ -452,6 +595,7 @@ const faqSchema = {
   .solution-jump a { text-underline-offset: 0.3em; }
   .solution-contact:focus-visible, .solution-text-link:focus-visible, .solution-cases a:focus-visible, .solution-related a:focus-visible, .solution-breadcrumb a:focus-visible { outline: 3px solid var(--text); outline-offset: 4px; }
   .solution-jump a:focus-visible { outline: 3px solid var(--text); outline-offset: 4px; }
+  .mono { font-family: var(--font-mono); }
   .solution-section { padding: clamp(var(--space-2xl), 6vw, var(--space-4xl)) 0; border-bottom: 1px solid var(--border-light); }
   /* Solution sections use the shared plate as an in-flow label above the heading. */
   .solution-section .section-tag { position: static; transform: none; margin-bottom: var(--space-md); }
@@ -460,6 +604,36 @@ const faqSchema = {
   .solution-section p:not(.section-tag) { max-width: 68ch; margin-top: var(--space-lg); line-height: 1.65; color: var(--text-secondary); }
   .solution-list { display: grid; align-content: start; gap: var(--space-md); margin: 0; padding: 0; list-style: none; }
   .solution-list li { padding: var(--space-md) 0; border-bottom: 2px solid var(--border); font-size: clamp(1rem, 1.7vw, 1.25rem); font-weight: 700; line-height: 1.4; }
+  /* Differentiation ledgers: one ruled row per way of arriving at the work. */
+  .scenario-rows { display: grid; margin: var(--space-2xl) 0 0; padding: 0; list-style: none; }
+  .scenario-row { display: grid; grid-template-columns: 4.5rem minmax(0, 1.2fr) minmax(0, 0.9fr); gap: clamp(var(--space-lg), 4vw, var(--space-3xl)); align-items: start; padding: var(--space-xl) 0; border-top: 3px solid var(--border); }
+  .scenario-index { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 800; line-height: 1; letter-spacing: -0.06em; color: var(--text-muted); }
+  .scenario-body h3, .mode-card h3, .operation-grid h3, .piece-grid h3, .decision-grid h3 { font-size: clamp(1.125rem, 2.2vw, 1.6rem); font-weight: 800; line-height: 1.12; letter-spacing: -0.035em; }
+  .scenario-body p { margin-top: var(--space-sm) !important; font-size: 0.9375rem; line-height: 1.6; }
+  .scenario-includes { display: grid; gap: var(--space-sm); margin: 0; padding-left: 1.2em; font-size: 0.875rem; line-height: 1.5; }
+  .scenario-includes li::marker { color: var(--accent); }
+  /* Corporate-web modes: left-ruled cards, one per way of starting the work. */
+  .mode-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(var(--space-lg), 3vw, var(--space-2xl)); margin: var(--space-2xl) 0 0; padding: 0; list-style: none; }
+  .mode-card { padding-left: var(--space-lg); border-left: 3px solid var(--border); }
+  .mode-index, .decision-num { display: block; margin-bottom: var(--space-md); font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.12em; color: var(--text-muted); }
+  .mode-card p { margin-top: var(--space-sm) !important; font-size: 0.9375rem; line-height: 1.6; }
+  .mode-card ul { display: grid; gap: var(--space-sm); margin: var(--space-md) 0 0; padding-left: 1.2em; font-size: 0.875rem; line-height: 1.5; }
+  /* Store operations and systems decisions: same top-rule device, own content. */
+  .operation-grid, .piece-grid, .decision-grid { display: grid; gap: clamp(var(--space-lg), 3vw, var(--space-2xl)); margin: var(--space-2xl) 0 0; padding: 0; list-style: none; }
+  .operation-grid, .piece-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .decision-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .operation-grid li, .decision-grid li { padding-top: var(--space-md); border-top: 3px solid var(--border); }
+  .operation-grid p, .piece-grid p, .decision-grid p { margin-top: var(--space-sm) !important; font-size: 0.9375rem; line-height: 1.6; }
+  .piece-grid li { padding-top: var(--space-md); border-top: 3px solid var(--border); }
+  .piece-grid h3::before { content: ""; display: block; width: 0.6rem; height: 0.6rem; margin-bottom: var(--space-sm); background: var(--accent); border: 1px solid var(--border); }
+  .decision-note { margin-top: var(--space-2xl) !important; padding-top: var(--space-lg) !important; border-top: 1px solid var(--border-light); font-size: 0.875rem; }
+  .operation-grid + .solution-contact, .decision-note + .solution-contact { margin-top: var(--space-2xl); }
+  /* Repair routing: the one accent plate on the corporate-web route. */
+  .repair-plate { padding: clamp(var(--space-xl), 4vw, var(--space-3xl)); border: 3px solid var(--border); background: var(--accent); color: var(--text-on-accent); box-shadow: var(--shadow-brutal-lg); }
+  .repair-plate h2 { max-width: 20ch; color: var(--text-on-accent); }
+  .solution-repair .repair-plate .repair-tag { margin: 0 0 var(--space-md); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-on-accent); }
+  .solution-repair .repair-plate .repair-text { max-width: 60ch; margin-top: var(--space-lg); line-height: 1.65; color: var(--text-on-accent); }
+  .solution-repair .repair-plate .solution-contact { margin-top: var(--space-xl); color: var(--text-on-accent); }
   .web-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-xl); margin: var(--space-2xl) 0 0; padding: 0; list-style: none; }
   .web-cards li { padding-top: var(--space-md); border-top: 3px solid var(--border); }
   .web-cards h3 { font-size: clamp(1.125rem, 2vw, 1.4rem); font-weight: 800; line-height: 1.2; letter-spacing: -0.03em; }
@@ -489,6 +663,7 @@ const faqSchema = {
   .solution-cases { margin: 0; padding: 0; list-style: none; border-top: 2px solid var(--border); }
   .solution-cases li { border-bottom: 2px solid var(--border); }
   .solution-cases a { display: flex; justify-content: space-between; gap: var(--space-lg); padding: var(--space-md) 0; font-weight: 700; }
+  .evidence-note { font-size: 0.9375rem !important; }
   .solution-faqs details { padding: var(--space-md) 0; border-bottom: 1px solid var(--border-light); }
   .solution-faqs details:first-child { border-top: 2px solid var(--border); }
   .solution-faqs summary { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-md); cursor: pointer; font-weight: 700; line-height: 1.5; list-style: none; }
@@ -517,6 +692,12 @@ const faqSchema = {
   .solution-section--dark .b2b-lead, .solution-section--dark .b2b-phases p { color: var(--bg); opacity: 0.78; }
   .solution-section--dark .b2b-phases li { border-color: var(--bg); }
   .solution-section--dark .b2b-step-number { color: var(--accent); }
+  @media (max-width: 900px) {
+    .scenario-row { grid-template-columns: 3.5rem minmax(0, 1fr); }
+    .scenario-includes { grid-column: 2; }
+    .mode-cards { grid-template-columns: 1fr; gap: var(--space-xl); }
+    .decision-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
   @media (max-width: 760px) {
     .solution-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
     .solution-process { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -527,6 +708,10 @@ const faqSchema = {
   @media (max-width: 540px) {
     .solution-page { padding-top: 104px; }
     .solution-breadcrumb { margin-bottom: var(--space-xl); }
+    .scenario-row { grid-template-columns: 1fr; gap: var(--space-md); padding: var(--space-lg) 0; }
+    .scenario-includes { grid-column: auto; }
+    .scenario-index { font-size: 1.25rem; }
+    .operation-grid, .piece-grid, .decision-grid { grid-template-columns: 1fr; }
     .solution-process { grid-template-columns: 1fr; gap: var(--space-md); }
     .b2b-levels, .b2b-journey, .b2b-phases { grid-template-columns: 1fr; }
     .web-cards { grid-template-columns: 1fr; gap: var(--space-lg); }

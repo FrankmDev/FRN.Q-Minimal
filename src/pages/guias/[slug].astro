@@ -1,0 +1,691 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import { siteConfig } from "../../data/site";
+import MainLayout from "../../layouts/MainLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { guidePath, formatEditorialDate, type Guide } from "../../data/guias";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("guias");
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<"guias">;
+}
+
+const { entry }: Props = Astro.props;
+const { Content, headings } = await render(entry);
+const guide: Guide = { ...entry.data, slug: entry.id };
+
+const sections = headings.filter((heading) => heading.depth === 2);
+const canonical = new URL(guidePath(guide.slug), Astro.site).toString();
+const personId = `${siteConfig.url}/#person`;
+const websiteId = `${siteConfig.url}/#website`;
+const updated = guide.updated ?? guide.published;
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": `${canonical}#article`,
+  headline: guide.title,
+  description: guide.seo.description,
+  url: canonical,
+  mainEntityOfPage: canonical,
+  isPartOf: { "@id": websiteId },
+  inLanguage: "es-ES",
+  datePublished: guide.published,
+  dateModified: updated,
+  author: { "@id": personId },
+  publisher: { "@id": personId },
+  articleSection: guide.category,
+};
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: new URL("/", Astro.site).toString() },
+    { "@type": "ListItem", position: 2, name: "Guías", item: new URL("/guias/", Astro.site).toString() },
+    { "@type": "ListItem", position: 3, name: guide.title, item: canonical },
+  ],
+};
+---
+
+<MainLayout
+  title={guide.seo.title}
+  description={guide.seo.description}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
+
+  <Header />
+
+  <main id="main-content" class="guide">
+    <article>
+      <header class="guide-hero">
+        <div class="container">
+          <nav class="crumbs" aria-label="Ruta de navegación">
+            <a href="/">Inicio</a>
+            <span aria-hidden="true">/</span>
+            <a href="/guias/">Guías</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">{guide.category}</span>
+          </nav>
+
+          <div class="guide-hero-grid">
+            <div class="guide-hero-lead">
+              <p class="guide-category mono">{guide.category}</p>
+              <h1>{guide.h1}</h1>
+              <p class="guide-lead">{guide.lead}</p>
+            </div>
+            <dl class="guide-facts">
+              <div>
+                <dt>Publicado</dt>
+                <dd><time datetime={guide.published}>{formatEditorialDate(guide.published)}</time></dd>
+              </div>
+              {guide.updated && guide.updated !== guide.published && (
+                <div>
+                  <dt>Actualizado</dt>
+                  <dd><time datetime={guide.updated}>{formatEditorialDate(guide.updated)}</time></dd>
+                </div>
+              )}
+              <div>
+                <dt>Lectura</dt>
+                <dd>{guide.readingTime}</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </header>
+
+      <section class="guide-summary" aria-labelledby="summary-title">
+        <div class="container">
+          <p class="section-tag section-tag--inline">En resumen</p>
+          <h2 id="summary-title" class="visually-hidden">Ideas principales</h2>
+          <ol class="summary-list">
+            {
+              guide.keyPoints.map((point) => (
+                <li>
+                  <span class="summary-mark" aria-hidden="true" />
+                  {point}
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </section>
+
+      <div class="guide-body">
+        <div class="container guide-body-grid">
+          <nav class="guide-toc" aria-label="En esta guía">
+            <p class="toc-label mono">En esta guía</p>
+            <ol>
+              {
+                sections.map((section, index) => (
+                  <li>
+                    <a href={`#${section.slug}`}>
+                      <span class="toc-num mono" aria-hidden="true">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span>{section.text}</span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ol>
+          </nav>
+
+          <div class="guide-prose">
+            <Content />
+          </div>
+        </div>
+      </div>
+
+      <section class="guide-limits" aria-labelledby="limits-title">
+        <div class="container">
+          <p class="limits-label mono">Límites de esta guía</p>
+          <h2 id="limits-title" class="visually-hidden">Límites</h2>
+          <ul>
+            {guide.limits.map((limit) => <li>{limit}</li>)}
+          </ul>
+        </div>
+      </section>
+
+      {guide.references.length > 0 && (
+        <section class="guide-refs" aria-labelledby="refs-title">
+          <div class="container">
+            <p class="section-tag section-tag--inline">Referencias contrastables</p>
+            <h2 id="refs-title" class="visually-hidden">Referencias</h2>
+            <ol>
+              {
+                guide.references.map((reference) => (
+                  <li>
+                    <a href={reference.url} target="_blank" rel="noopener noreferrer">
+                      {reference.label} <span aria-hidden="true">↗</span>
+                    </a>
+                    {reference.note && <p>{reference.note}</p>}
+                  </li>
+                ))
+              }
+            </ol>
+          </div>
+        </section>
+      )}
+
+      <section class="guide-cta" aria-labelledby="cta-title">
+        <div class="container guide-cta-inner">
+          <div>
+            <p class="cta-eyebrow mono" id="cta-title">Siguiente paso</p>
+            <p class="cta-note">{guide.cta.note}</p>
+          </div>
+          <div class="cta-actions">
+            <a
+              class="cta-primary"
+              href={guide.cta.href}
+              data-track="cta_click"
+              data-track-location="guide"
+              data-track-slug={guide.slug}
+              data-track-label={guide.cta.label}
+            >
+              <span>{guide.cta.label}</span>
+              <span aria-hidden="true">→</span>
+            </a>
+            {guide.related.length > 0 && (
+              <ul class="cta-related">
+                {guide.related.map((item) => (
+                  <li>
+                    <a href={item.href}>
+                      {item.label} <span aria-hidden="true">→</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <nav class="guide-back" aria-label="Navegación de la guía">
+        <div class="container">
+          <a href="/guias/">← Todas las guías</a>
+          <a href="/soluciones/desarrollo-web/">Ver la solución de web corporativa y reparación</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+
+  <Footer />
+</MainLayout>
+
+<style>
+  .guide {
+    padding-top: 120px;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-2xl);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .crumbs a { opacity: 0.65; transition: opacity var(--transition-fast); }
+  .crumbs a:hover { opacity: 1; }
+  .crumbs a:focus-visible { outline: 3px solid var(--text); outline-offset: 4px; }
+  .crumbs span { opacity: 0.55; }
+  .crumbs [aria-current="page"] { opacity: 1; }
+
+  /* ---- Hero: asymmetric copy rail + facts ---- */
+  .guide-hero {
+    padding: var(--space-2xl) 0 clamp(var(--space-2xl), 5vw, var(--space-3xl));
+    border-bottom: 4px solid var(--border);
+  }
+
+  .guide-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+    align-items: end;
+    gap: clamp(var(--space-xl), 6vw, var(--space-4xl));
+  }
+
+  .guide-category {
+    margin: 0 0 var(--space-md);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .guide-hero h1 {
+    max-width: 18ch;
+    margin: 0;
+    font-size: clamp(2.6rem, 7.5vw, 6.5rem);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.065em;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+  }
+
+  .guide-lead {
+    max-width: 62ch;
+    margin: var(--space-xl) 0 0;
+    font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .guide-facts {
+    display: grid;
+    gap: var(--space-lg);
+    margin: 0;
+    padding-top: var(--space-lg);
+    border-top: 3px solid var(--border);
+  }
+
+  .guide-facts dt {
+    margin-bottom: var(--space-xs);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+  }
+
+  .guide-facts dd {
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  /* ---- Summary: ruled list ---- */
+  .guide-summary {
+    padding: clamp(var(--space-2xl), 5vw, var(--space-3xl)) 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .summary-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-xl);
+    margin: var(--space-xl) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .summary-list li {
+    padding-top: var(--space-md);
+    border-top: 3px solid var(--border);
+    font-size: clamp(1rem, 1.6vw, 1.1875rem);
+    font-weight: 600;
+    line-height: 1.45;
+  }
+
+  .summary-mark {
+    display: block;
+    width: 0.75rem;
+    height: 0.75rem;
+    margin-bottom: var(--space-md);
+    background: var(--accent);
+    border: 1px solid var(--border);
+  }
+
+  /* ---- Body: index rail + prose ---- */
+  .guide-body {
+    padding: clamp(var(--space-3xl), 7vw, var(--space-4xl)) 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .guide-body-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.3fr) minmax(0, 1fr);
+    gap: clamp(var(--space-xl), 6vw, var(--space-4xl));
+    align-items: start;
+  }
+
+  .guide-toc {
+    position: sticky;
+    top: calc(var(--layout-header-height) + var(--space-xl));
+    padding-top: var(--space-md);
+    border-top: 3px solid var(--border);
+  }
+
+  .toc-label {
+    margin: 0 0 var(--space-md);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .guide-toc ol {
+    display: grid;
+    gap: var(--space-sm);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .guide-toc a {
+    display: flex;
+    gap: var(--space-sm);
+    font-size: 0.875rem;
+    line-height: 1.4;
+    opacity: 0.7;
+    transition: opacity var(--transition-fast);
+  }
+
+  .guide-toc a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 0.25em; }
+  .guide-toc a:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+  .toc-num { flex: 0 0 auto; font-size: 0.6875rem; padding-top: 0.15em; opacity: 0.6; }
+
+  /* Prose: markdown output, styled through :global() under a scoped wrapper. */
+  .guide-prose {
+    counter-reset: guide-section;
+    max-width: 68ch;
+  }
+
+  .guide-prose :global(h2) {
+    position: relative;
+    margin: clamp(var(--space-2xl), 5vw, var(--space-3xl)) 0 var(--space-md);
+    padding-top: var(--space-lg);
+    border-top: 2px dashed var(--border);
+    font-size: clamp(1.6rem, 3.5vw, 2.75rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.045em;
+    text-transform: uppercase;
+    scroll-margin-top: calc(var(--layout-header-height) + var(--space-lg));
+  }
+
+  .guide-prose :global(h2:first-child) { margin-top: 0; }
+
+  .guide-prose :global(h2)::before {
+    counter-increment: guide-section;
+    content: "0" counter(guide-section);
+    display: block;
+    margin-bottom: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+  }
+
+  .guide-prose :global(h3) {
+    margin: var(--space-xl) 0 var(--space-sm);
+    font-size: clamp(1.125rem, 2vw, 1.375rem);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .guide-prose :global(p) {
+    margin: 0 0 var(--space-md);
+    font-size: clamp(1rem, 1.5vw, 1.125rem);
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  .guide-prose :global(ul),
+  .guide-prose :global(ol) {
+    display: grid;
+    gap: var(--space-sm);
+    margin: 0 0 var(--space-lg);
+    padding-left: 1.25em;
+  }
+
+  .guide-prose :global(li) {
+    font-size: clamp(1rem, 1.5vw, 1.0625rem);
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .guide-prose :global(li)::marker { color: var(--text); font-weight: 700; }
+
+  .guide-prose :global(strong) { color: var(--text); font-weight: 800; }
+
+  .guide-prose :global(a) {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 0.28em;
+  }
+
+  .guide-prose :global(a:hover) { text-decoration-color: var(--text); }
+  .guide-prose :global(a:focus-visible) { outline: 3px solid var(--text); outline-offset: 3px; }
+
+  .guide-prose :global(blockquote) {
+    margin: 0 0 var(--space-lg);
+    padding: var(--space-md) 0 var(--space-md) var(--space-lg);
+    border-left: 6px solid var(--accent);
+    font-size: clamp(1.0625rem, 1.7vw, 1.25rem);
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  /* ---- Limits: inverted ink panel ---- */
+  .guide-limits {
+    padding: clamp(var(--space-2xl), 6vw, var(--space-4xl)) 0;
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  .limits-label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0 0 var(--space-lg);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--bg);
+    opacity: 0.78;
+  }
+
+  .limits-label::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--accent);
+    border: 1px solid currentColor;
+  }
+
+  .guide-limits ul {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-xl);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .guide-limits li {
+    padding-top: var(--space-md);
+    border-top: 2px solid color-mix(in srgb, var(--bg) 38%, transparent);
+    font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+    line-height: 1.55;
+    color: var(--bg);
+    opacity: 0.85;
+  }
+
+  /* ---- References ---- */
+  .guide-refs {
+    padding: clamp(var(--space-2xl), 5vw, var(--space-3xl)) 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .guide-refs ol {
+    display: grid;
+    gap: var(--space-lg);
+    margin: var(--space-xl) 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: ref;
+  }
+
+  .guide-refs li {
+    display: grid;
+    gap: var(--space-xs);
+    padding-top: var(--space-md);
+    border-top: 2px solid var(--border);
+    counter-increment: ref;
+  }
+
+  .guide-refs li::before {
+    content: "Ref. 0" counter(ref);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .guide-refs a {
+    font-size: clamp(1rem, 1.6vw, 1.125rem);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.28em;
+  }
+
+  .guide-refs a:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+  .guide-refs p { margin: 0; max-width: 66ch; font-size: 0.9375rem; line-height: 1.55; color: var(--text-secondary); }
+
+  /* ---- CTA close ---- */
+  .guide-cta {
+    padding: clamp(var(--space-2xl), 6vw, var(--space-4xl)) 0;
+  }
+
+  .guide-cta-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(var(--space-xl), 5vw, var(--space-4xl));
+    align-items: center;
+    padding: clamp(var(--space-xl), 4vw, var(--space-3xl));
+    border: 3px solid var(--border);
+    box-shadow: 12px 12px 0 var(--accent);
+  }
+
+  .cta-eyebrow {
+    margin: 0 0 var(--space-md);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .cta-note {
+    margin: 0;
+    max-width: 44ch;
+    font-size: clamp(1.0625rem, 1.8vw, 1.375rem);
+    font-weight: 600;
+    line-height: 1.45;
+    letter-spacing: -0.01em;
+  }
+
+  .cta-actions { display: grid; justify-items: start; gap: var(--space-lg); }
+
+  .cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xl);
+    padding: var(--space-md) var(--space-xl);
+    border: 3px solid var(--border);
+    background: var(--text);
+    color: var(--bg);
+    box-shadow: 6px 6px 0 var(--accent);
+    font-size: 0.875rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .cta-primary:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0 var(--accent); }
+  .cta-primary:focus-visible { outline: 3px solid var(--text); outline-offset: 4px; }
+  .cta-primary span:last-child { transition: transform var(--transition-fast); }
+  .cta-primary:hover span:last-child { transform: translateX(4px); }
+
+  .cta-related {
+    display: grid;
+    gap: var(--space-sm);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cta-related a { font-size: 0.9375rem; font-weight: 700; text-underline-offset: 0.28em; text-decoration: underline; text-decoration-color: var(--accent); }
+  .cta-related a:hover { text-decoration-color: var(--text); }
+  .cta-related a:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+
+  /* ---- Back nav ---- */
+  .guide-back { padding: 0 0 var(--space-4xl); }
+
+  .guide-back .container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md) var(--space-2xl);
+    padding-top: var(--space-lg);
+    border-top: 4px solid var(--border);
+  }
+
+  .guide-back a {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    opacity: 0.7;
+    transition: opacity var(--transition-fast);
+  }
+
+  .guide-back a:hover { opacity: 1; }
+  .guide-back a:focus-visible { outline: 3px solid var(--text); outline-offset: 4px; }
+
+  @media (max-width: 900px) {
+    .guide-hero-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
+    .guide-facts { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-lg); }
+    .guide-body-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
+    .guide-toc { position: static; }
+    .guide-limits ul { grid-template-columns: 1fr; gap: var(--space-md); }
+    .summary-list { grid-template-columns: 1fr; gap: var(--space-md); }
+    .guide-cta-inner { grid-template-columns: 1fr; box-shadow: 8px 8px 0 var(--accent); }
+  }
+
+  @media (max-width: 540px) {
+    .guide { padding-top: 104px; }
+    .guide-hero h1 { font-size: clamp(2.35rem, 12vw, 4.25rem); }
+    .guide-facts { grid-template-columns: 1fr; gap: var(--space-md); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .crumbs a,
+    .guide-toc a,
+    .cta-primary,
+    .cta-primary span:last-child,
+    .guide-back a { transition: none !important; }
+  }
+</style>

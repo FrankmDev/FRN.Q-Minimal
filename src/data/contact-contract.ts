@@ -21,7 +21,9 @@ export const CONTACT_TYPES = [
   { value: "sistema", label: "Sistema / integración" },
   { value: "web", label: "Web" },
   { value: "reparacion", label: "Reparación / mejora web" },
+  { value: "soporte", label: "Soporte y mantenimiento" },
   { value: "seo", label: "SEO / posicionamiento" },
+  { value: "agencia", label: "Agencia / white-label" },
   { value: "otro", label: "Otro" },
 ] as const;
 
@@ -30,6 +32,10 @@ export type ContactType = (typeof CONTACT_TYPES)[number]["value"];
 export const CONTACT_TYPE_VALUES: readonly string[] = CONTACT_TYPES.map(
   (type) => type.value,
 );
+
+export function isContactType(value: unknown): value is ContactType {
+  return typeof value === "string" && CONTACT_TYPE_VALUES.includes(value);
+}
 
 export const CONTACT_BUDGETS = [
   { value: "", label: "Prefiero comentarlo antes" },

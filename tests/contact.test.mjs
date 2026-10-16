@@ -4,6 +4,7 @@ import {
   CONTACT_BUDGETS,
   CONTACT_MESSAGE_MIN,
   CONTACT_TYPES,
+  isContactType,
 } from "../src/data/contact-contract.ts";
 
 const valid = {
@@ -50,6 +51,9 @@ async function send(req) {
       return this;
     },
     json(body) {
+      payload = body;
+    },
+    send(body) {
       payload = body;
     },
   };
@@ -116,8 +120,10 @@ test("form options are accepted as JSON and URL-encoded without JavaScript", asy
           accept: "text/html",
         }),
       );
-      expect(nojs.status).toBe(303);
-      expect(nojs.headers.Location).toBe("/?contacto=enviado#contacto");
+      expect(nojs.status).toBe(200);
+      expect(nojs.headers["Content-Type"]).toBe("text/html; charset=utf-8");
+      expect(nojs.payload).toContain("Mensaje recibido.");
+      expect(nojs.headers.Location).toBeUndefined();
     }
   }
   expect(deliver).toHaveBeenCalledTimes(CONTACT_TYPES.length * CONTACT_BUDGETS.length * 2);
@@ -144,6 +150,24 @@ test("invalid project types and budgets are rejected before delivery", async () 
   const budget = await send(request({ ...valid, budget: "unknown" }));
   expect(budget.status).toBe(400);
   expect(budget.payload?.errors?.budget).toBeDefined();
+});
+
+test("agency / white-label is a contracted type and is delivered with its label", async () => {
+  setDeliveryConfig();
+  const agencyType = CONTACT_TYPES.find((type) => type.value === "agencia");
+  expect(agencyType?.label).toBe("Agencia / white-label");
+  expect(isContactType("agencia")).toBe(true);
+  expect(isContactType("unknown")).toBe(false);
+
+  const deliver = mock((_url, options) => {
+    expect(JSON.parse(options.body).subject).toContain("Agencia / white-label");
+    return Promise.resolve({ ok: true });
+  });
+  globalThis.fetch = deliver;
+  const response = await send(request({ ...valid, type: "agencia", message: "Colaboración para un proyecto de desarrollo." }));
+
+  expect(response.status).toBe(200);
+  expect(deliver).toHaveBeenCalledTimes(1);
 });
 
 test("the message floor is low enough for a short brief but still rejects noise", async () => {
@@ -289,7 +313,8 @@ test("the submission id is echoed for analytics de-duplication", async () => {
       accept: "text/html",
     }),
   );
-  expect(nojs.headers.Location).toBe("/?contacto=enviado&ref=abc12345#contacto");
+  expect(nojs.payload).toContain("Mensaje recibido.");
+  expect(nojs.payload).not.toContain("abc12345");
 });
 
 test("an invalid submission id is ignored", async () => {
@@ -305,7 +330,7 @@ test("an invalid submission id is ignored", async () => {
       accept: "text/html",
     }),
   );
-  expect(nojs.headers.Location).toBe("/?contacto=enviado#contacto");
+  expect(nojs.payload).toContain("Mensaje recibido.");
 });
 
 test("non-POST methods and unsupported content types are refused", async () => {
@@ -330,4 +355,33 @@ test("the Resend subject never contains header-breaking characters", async () =>
   await send(request({ ...valid, name: "Ana\nBcc: evil@example.test" }));
 
   expect(deliver).toHaveBeenCalledTimes(1);
+});
+
+test("native validation errors are readable without JS and never reflect submitted personal data", async () => {
+  const response = await send(request(new URLSearchParams({ ...valid, name: "<script>private</script>", type: "invalid" }).toString(), {
+    contentType: "application/x-www-form-urlencoded", accept: "text/html",
+  }));
+  expect(response.status).toBe(400);
+  expect(response.headers["X-Robots-Tag"]).toBe("noindex, nofollow");
+  expect(response.headers["Cache-Control"]).toBe("no-store");
+  expect(response.payload).toContain("No se ha enviado el mensaje.");
+  expect(response.payload).toContain("Selecciona un tipo de proyecto válido.");
+  expect(response.payload).toContain('href="/#contacto"');
+  expect(response.payload).not.toContain("private");
+  expect(response.payload).not.toContain(valid.email);
+  expect(response.payload).not.toContain("<script");
+});
+
+test("native delivery failure and throttling keep their status and a direct email alternative", async () => {
+  const native = { contentType: "application/x-www-form-urlencoded", accept: "text/html", ip: "native-throttling-test" };
+  for (let i = 0; i < 5; i++) {
+    const unavailable = await send(request(new URLSearchParams(valid).toString(), native));
+    expect(unavailable.status).toBe(503);
+    expect(unavailable.payload).toContain("No se ha enviado el mensaje.");
+    expect(unavailable.payload).toContain('href="mailto:info@frnq.studio"');
+  }
+  const limited = await send(request(new URLSearchParams(valid).toString(), native));
+  expect(limited.status).toBe(429);
+  expect(Number(limited.headers["Retry-After"])).toBeGreaterThan(0);
+  expect(limited.payload).toContain("Demasiados envíos.");
 });

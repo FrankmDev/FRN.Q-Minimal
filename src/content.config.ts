@@ -31,6 +31,19 @@ const projects = defineCollection({
 
       // Commercial narrative
       tagline: z.string().max(160),
+      /**
+       * Compact business reading, rendered before the long case narrative so a
+       * non-technical visitor can grasp business, problem, delivered scope, the
+       * key decision and the verifiable outcome in one block. Kept short on
+       * purpose; the detailed sections below stay the full explanation.
+       */
+      summary: z.object({
+        business: z.string().max(260),
+        challenge: z.string().max(260),
+        delivered: z.string().max(260),
+        decision: z.string().max(260),
+        outcome: z.string().max(260),
+      }),
       context: z.string(),
       problem: z.string(),
       objective: z.string(),
@@ -88,4 +101,55 @@ const projects = defineCollection({
     }),
 });
 
-export const collections = { projects };
+/**
+ * Guides ("/guias/"): lightweight editorial articles that answer a concrete
+ * decision a business faces before hiring. They are not a blog: no categories
+ * archive, no pagination, no author pages, no CMS. Each guide carries its own
+ * metadata, a short summary of decisions, its explicit limits, contrastable
+ * references and a single CTA towards the matching service.
+ *
+ * The Markdown body holds the article; the frontmatter holds the metadata the
+ * page renders around it, so copy is authored once and never duplicated.
+ */
+const guias = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/guias" }),
+  schema: z.object({
+    title: z.string(),
+    h1: z.string(),
+    category: z.string(),
+    /** Editorial dates as ISO calendar days to avoid timezone drift. */
+    published: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    updated: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+    readingTime: z.string(),
+    order: z.number().int().positive(),
+    lead: z.string(),
+    /** Practical takeaway, rendered as a ruled summary before the article. */
+    keyPoints: z.array(z.string()).min(2),
+    /** Explicit boundaries of the advice; rendered as an inverted panel. */
+    limits: z.array(z.string()).min(2),
+    cta: z.object({
+      label: z.string(),
+      href: z.string(),
+      note: z.string(),
+    }),
+    /** Contrastable, public sources. Optional per article. */
+    references: z
+      .array(
+        z.object({
+          label: z.string(),
+          url: z.url(),
+          note: z.string().optional(),
+        }),
+      )
+      .default([]),
+    related: z
+      .array(z.object({ label: z.string(), href: z.string() }))
+      .default([]),
+    seo: z.object({
+      title: z.string().max(65),
+      description: z.string().max(160),
+    }),
+  }),
+});
+
+export const collections = { projects, guias };

@@ -12,6 +12,7 @@
   /* Single restrained accent and its high-contrast ink. */
   --accent: #ffe600;
   --text-on-accent: #111110;
+  --text-accent-inverse: var(--accent);
   --y: var(--accent);
 
   --error: #b91c1c;
@@ -79,6 +80,7 @@
   --text-secondary: #d8d7d1;
   --text-muted: #aaa99f;
   --text-on-accent: #111110;
+  --text-accent-inverse: var(--bg);
 
   --border: #f4f3ef;
   --border-light: rgb(244 243 239 / 18%);

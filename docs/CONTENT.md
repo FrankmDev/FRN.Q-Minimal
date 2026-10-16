@@ -2,13 +2,14 @@
 
 ## Model
 
-frnq.es has four content tiers with different lifecycles:
+frnq.es has five content tiers with different lifecycles:
 
 | Tier | Location | Validation | Lifecycle | Rendering |
 |------|----------|------------|-----------|-----------|
 | **Data** (structured commercial copy) | `src/data/*.ts` | TypeScript interfaces | Hand-authored, stable | Imported in `.astro` |
 | **Solutions** (search-intent landing pages) | `src/data/solutions.ts` + `src/data/services.ts` | TypeScript interfaces | Hand-authored; add only for distinct intent and useful evidence-led scope | Static `/soluciones/<slug>/` routes |
 | **Cases** (file-driven case studies) | `src/content/projects/*.md` | `zod` schema in `src/content.config.ts` | Editorial, per project | Astro Content Collections + `getStaticPaths` |
+| **Guides** (decision-support articles) | `src/content/guias/*.md` | `zod` schema in `src/content.config.ts` | Editorial, evergreen; add only for a real pre-hire question | Astro Content Collections + `render()` at `/guias/<slug>/` |
 | **Form contract** (shared limits/options) | `src/data/contact-contract.ts` | TypeScript constants | Stable contract | Imported by the form and the API |
 
 No CMS. No database. No build-time `fetch` for content.
@@ -20,13 +21,19 @@ All editable commercial copy lives in `src/data/*`:
 | File | Owns |
 |------|------|
 | `site.ts` | Identity, url, email, location, external `STUDIO ↗` link, social links |
-| `projects.ts` | Collection accessor (`getProjects`), category/status labels, case paths |
+| `projects.ts` | Collection accessor (`getProjects`), category/status labels, case groups for `/casos/`, case paths |
+| `guias.ts` | Guides accessor (`getGuides`), `guidePath` and `formatEditorialDate` |
 | `navigation.ts` | Primary navigation and header CTA |
-| `services.ts` | The four commercial areas in priority order and their section copy |
+| `services.ts` | The four commercial areas (Home order: Web corporativa & SEO first), each with its problem, outcome and section copy |
 | `solutions.ts` | The four focused solution pages: unique metadata, audience, process, integration scope, page-specific blocks (`webDetails`, `b2bDetails`), evidence selection, FAQs and cross-links |
-| `web-rescue.ts` | The productized Web Rescue block: process steps, public entry offers, Granada use cases and the "Revisar mi web" CTA (form type `reparacion`) |
+| `pricing.ts` | The public price reference: the published starting points (`START`, `STUDIO`, `PRESENCE`, `BUSINESS`, `SHOPIFY`, `CARE`), the Web Rescue entry offers, the three pricing modes, the written-conditions copy, the `/precios/` FAQ and page copy. Every visible amount comes from here |
+| `support.ts` | The FRN.Q Support page (`/soporte/`) copy: differences, capabilities, scope, onboarding and FAQs. The public CARE starting point is read from `pricing.ts`; `/precios/` remains the full reference |
+| `web-rescue.ts` | Web Rescue data: the productized Home block (process steps, public entry offers, Granada use cases, "Revisar mi web" CTA, form type `reparacion`) and `webRescuePage`, the metadata, problems, diagnosis scope and FAQs for the repair landing `/soluciones/revision-web/`. Rates read from `pricing.ts` and process is reused by reference, never duplicated |
 | `engagement.ts` | Pricing/engagement FAQ, also used in FAQ schema |
 | `contact.ts` | Contact methods |
+| `contact-result.ts` | Native contact response headings, confirmation and navigation copy |
+| `analytics-consent.ts` | Optional analytics notice, accept/reject labels and Footer preferences label |
+| `agency-collaboration.ts` | Agency collaboration landing copy, capabilities, expectations and process |
 
 Rules:
 
@@ -41,13 +48,17 @@ Rules:
 - **Entries (public):** `emilio-faraoni`, `kingbelt`, `grn-urban`, `cien-mares`, `fernando-feijoo`, `mata-psicologia`, `wanda-animalart`, `asercord-energia`, `lucia-millan-psicologia`, `ilifielt`.
 - **Factual source:** frnq.studio holds the canonical project facts; frnq.es may reinterpret commercially but never adds new facts, audiences or outcomes not present in the canonical case.
 - **Routes:** `/casos/` archive and `/casos/<slug>/` detail via `getStaticPaths`; public archive and routes include `status: live` plus selected entries with `status: in-development` and `publicPreview: true` (`getPublishedProjects()` in `src/data/projects.ts`).
-- Optional `serviceArea` connects a published case to `ecommerce`, `b2b` or `sistemas`; solution routes show only matching published cases, and a matched case links directly back to its solution. Only assign it when the case genuinely evidences that service (currently `kingbelt` → `ecommerce`, `emilio-faraoni` → `b2b`).
-- `/soluciones/desarrollo-web/` selects evidence by `category` (`corporate`, `web`, `website`) through `evidenceCategories`, so it can show published corporate-web projects as proof without asserting an unverified `serviceArea`. `corporate` / `web` / `website` cases link back to it from `/casos/<slug>/`, mirroring the evidence list; the `serviceArea`-based back-link remains reserved for `ecommerce`, `b2b` and `sistemas`.
+- Optional `serviceArea` records which solution a case genuinely evidences (`ecommerce`, `b2b`, `sistemas`). Solution routes show the matching published cases, and it also drives the flagship emphasis (`ecommerce` → accent plate, `b2b` → inverted ink plate) on `/casos/`, the Home teaser and the case page. Only assign it when the case genuinely evidences that service (currently `kingbelt` → `ecommerce`, `emilio-faraoni` → `b2b`).
+- **Every published case links to a commercial solution.** `getSolutionForCase()` in `src/data/solutions.ts` resolves `serviceArea` first and otherwise maps the case `category` to the solution it demonstrates (`corporate` / `web` / `website` / `product` / `interactive` → `growth`), so the case page always closes with a solution panel and a `?tipo=` CTA (`solutionContactTypes`). No case page is a dead end.
+- `/soluciones/desarrollo-web/` additionally selects evidence by `category` (`corporate`, `web`, `website`) through `evidenceCategories`, so it can show published corporate-web projects as proof without asserting an unverified `serviceArea`.
+- `/casos/` groups cases by commercial type with `caseGroups` (ecommerce, B2B, web and own product, interactive work) and a static type index with anchors and counts. Grouping is authored in `src/data/projects.ts`; there are no client-side filters.
+- The Home reads the first four published cases in authored order, so it includes the live Cien Mares web case alongside the Ecommerce/B2B references. In-development status remains visible; selection does not turn a preview into a completed launch.
 
 ### Schema (fields)
 
 ```
 title, client, category, sector, year, tagline,
+summary{business,challenge,delivered,decision,outcome},
 context, problem, objective, scope[], solution,
 features[{title,description}], decisions[{title,description}],
 result, metrics[{label,value,note?}]?, technologies[],
@@ -58,6 +69,7 @@ seo{title,description,keywords}
 
 - `category`: `corporate | web | website | product | interactive | ecommerce | b2b` (`web` / `website` render as "Web").
 - `status`: `live | in-development | archived`.
+- `summary`: the compact business reading rendered above the long narrative on `/casos/<slug>/` (Negocio, Reto, Alcance ejecutado, Decisión clave, Resultado verificable). Each field is a single short statement; it must be true and verifiable, never an invented metric or outcome.
 
 ### Case-study model
 
@@ -92,13 +104,14 @@ Both **KingBelt** and **Emilio Faraoni** are published with status `in-developme
 
 ## Engagement and pricing copy
 
-- **Philosophy:** scope-based pricing. Ranges are orientation, never a quote. No guaranteed ROI.
-- **Engagement:** scope agreed after discovery; the on-page FAQ describes pricing and collaboration.
-- **Web Rescue:** the only productized public prices — Diagnóstico Web 360 (99 €, discounted from an eligible repair hired within 30 days) and landing repair (from 299 €); larger repairs are quoted after the review. They are published on the Home `#revision-web` block and in the corporate-web FAQ.
+- **Philosophy:** scope-based pricing. Published starting points orient a defined scope; they are never a universal quote or a fixed total. No guaranteed ROI.
+- **Engagement:** scope agreed after discovery; the on-page FAQ describes pricing and collaboration. Projects are invoiced by milestones fixed in the proposal.
+- **Public price reference:** `src/data/pricing.ts` is the single source of truth, published on `/precios/`. It carries the starting points (`START` from 690 €, `STUDIO` from 990 €, `PRESENCE` from 1.390 €, `BUSINESS` from 1.990 €, `SHOPIFY` from 3.190 €, `CARE` from 49 €/mes), the Web Rescue entry offers and the discovery-led scopes (B2B portals, systems, integrations and custom ecommerce) with no public figure.
+- **Web Rescue:** productized public prices — Diagnóstico Web 360 (99 €, discounted from an eligible repair hired within 30 days) and landing repair (from 299 €); larger repairs are quoted after the review. Amounts live in `pricing.ts`, shown on the Home `#revision-web` block, on `/soluciones/revision-web/`, on `/precios/` and in the corporate-web FAQ.
 - **Budget options:** `CONTACT_BUDGETS` in `src/data/contact-contract.ts` (e.g. "Prefiero comentarlo antes", "Hasta 500 €", "Hasta 2.000 €" … "Más de 10.000 €").
-- **Project types:** `CONTACT_TYPES` (ecommerce, portal, sistema → "Sistema / integración", web, reparacion → "Reparación / mejora web", seo, otro).
+- **Project types:** `CONTACT_TYPES` (ecommerce, portal, sistema → "Sistema / integración", web, reparacion → "Reparación / mejora web", seo, soporte, agencia → "Agencia / white-label", otro). Solution, repair, support and agency CTAs use their matching `?tipo=` value.
 
-The contact form asks for context, not commitment. It must never pressure or imply scarcity.
+The contact form asks for context, not commitment. It must never pressure or imply scarcity. Never write an amount outside `pricing.ts`: the page and its `OfferCatalog` schema read the same numbers, distinguishing fixed `price` from starting `minPrice`, excluding applicable taxes and declaring the CARE monthly period. Diagnosis conditions define the reviewed scope, access, deliverable and when the discount applies; do not imply an unlimited audit or a free repair.
 
 ## Vocabulary
 
@@ -111,7 +124,7 @@ The contact form asks for context, not commitment. It must never pressure or imp
 ### New case study
 
 1. Add images under `src/assets/projects/<case>/`.
-2. Create `src/content/projects/<slug>.md` with the schema above. Set `order` to maintain the intended ranking, `status:"live"` for completed work (or explicit `publicPreview:true` with `in-development` for an in-progress case), and provide a unique `seo.title` (≤ 65 characters) and `seo.description` (≤ 160 characters). Set `serviceArea` only when the case genuinely evidences that service.
+2. Create `src/content/projects/<slug>.md` with the schema above. Write `summary` as the compact business reading (business, challenge, delivered scope, key decision, verifiable outcome), then the full narrative. Set `order` to maintain the intended ranking, `status:"live"` for completed work (or explicit `publicPreview:true` with `in-development` for an in-progress case), and provide a unique `seo.title` (≤ 65 characters) and `seo.description` (≤ 160 characters). Set `serviceArea` only when the case genuinely evidences that service; otherwise the case category already links it to the web solution.
 3. Keep `result` observable and neutral; add `metrics` only if verified.
 4. Run the build and confirm `/casos/<slug>/` is generated.
 
@@ -119,15 +132,25 @@ The contact form asks for context, not commitment. It must never pressure or imp
 
 Edit shared copy in `src/data/*.ts`; edit unique section copy in its component.
 
+### New guide
+
+Guides answer a single pre-hire question and lead to the matching service. They are not a blog: no categories, pagination, comments, author pages or CMS.
+
+1. Create `src/content/guias/<slug>.md`. The slug is the filename and the public path (`/guias/<slug>/`).
+2. Fill the frontmatter required by the `guias` schema: `title`, `h1`, `category`, `published` (ISO `YYYY-MM-DD`), optional `updated`, `readingTime`, `order`, `lead`, `keyPoints` (≥ 2), `limits` (≥ 2), `cta {label, href, note}`, optional `references` (public, verifiable URLs only), optional `related`, and a unique `seo.title` (≤ 65) and `seo.description` (≤ 160).
+3. Write the article in the Markdown body using `##` for the numbered sections, `###` for sub-sections, lists for criteria and reasoned examples.
+4. Keep the CTA pointed at one real service or at the contact form; no invented prices, guarantees or outcomes.
+5. Run the build and confirm `/guias/<slug>/` and its sitemap entry are generated.
+
 ## CURRENT vs FUTURE
 
-**Status: CURRENT.** Home composition is frozen; four search-intent solution routes are part of the static commercial surface.
+**Status: CURRENT.** Home composition is frozen; four search-intent solution routes, a repair landing, a support page, a guides section and a public price reference are part of the static commercial surface.
 
 | Area | Current | Future |
 |------|---------|--------|
-| Commercial surfaces | Single Spanish site; `/`, four `/soluciones/` routes and `/casos/` present; Home includes the Web Rescue block | Further routes only with distinct intent and useful evidence |
+| Commercial surfaces | Single Spanish site; `/`, four `/soluciones/` routes, `/soluciones/revision-web/`, `/soporte/`, `/precios/`, `/guias/`, `/casos/` present; Home includes the Web Rescue block | Further routes only with distinct intent and useful evidence |
 | Cases | 10 cases: 7 live plus 3 explicitly labelled in-development references | Add verified UI captures and measurable outcomes as evidence becomes available |
-| Pricing | Orientation ranges in the form; Web Rescue entry offers are the only public productized prices | No full public price list is planned |
+| Pricing | `/precios/` publishes the scope-specific starting points and the Web Rescue entry offers from `pricing.ts`; B2B, systems, integrations and custom ecommerce stay discovery-led | Keep the published starting points current; no universal price list |
 | i18n | Spanish only | Not planned; `.studio` is the English surface |
 
 Do not document future content as shipped.

@@ -10,6 +10,12 @@ order: 10
 url: "https://ilifielt.es/"
 urlLabel: "Ver web"
 tagline: "Catálogo digital de fieltro para camperización, con selección de material y calculadora de precio por metros."
+summary:
+  business: "Ilifielt presenta soluciones de fieltro y moqueta para revestimientos de furgonetas camperizadas, vehículos comerciales y otros usos compatibles, con productos autoadhesivos y sin adhesivo."
+  challenge: "El comprador necesita diferenciar materiales y calcular la cantidad aproximada antes de solicitar información o preparar un pedido."
+  delivered: "Landing-catálogo con identidad orientada al material, secciones de producto, aplicaciones, indicaciones de instalación y calculadora interactiva de estimación por metros."
+  decision: "Producto y aplicación primero, con HTML estático y JavaScript nativo para mantener el proyecto ligero y los datos provisionales separados."
+  outcome: "El proyecto ofrece una base funcional para explorar referencias y hacer cálculos orientativos; identidad, contenidos y publicación siguen en desarrollo."
 context: "Ilifielt presenta soluciones de fieltro y moqueta para revestimientos de furgonetas camperizadas, vehículos comerciales y otros usos compatibles, con productos autoadhesivos y sin adhesivo."
 problem: "El comprador necesita diferenciar materiales y calcular la cantidad aproximada antes de solicitar información o preparar un pedido."
 objective: "Crear una experiencia digital centrada en el producto, que permita comparar las opciones disponibles y estimar el coste según los metros necesarios."

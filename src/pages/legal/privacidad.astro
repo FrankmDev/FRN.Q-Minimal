@@ -3,6 +3,8 @@ import { siteConfig } from "../../data/site";
 import MainLayout from "../../layouts/MainLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
+import { isGa4MeasurementId } from "../../scripts/analytics";
+const hasAnalytics = isGa4MeasurementId(import.meta.env.PUBLIC_GA4_MEASUREMENT_ID);
 ---
 
 <MainLayout
@@ -50,13 +52,18 @@ import Footer from "../../components/Footer.astro";
             almacén de contadores externo, también en ese almacén, con la única
             finalidad de aplicar el límite. La dirección IP no se guarda en claro.
             La preferencia de tema claro/oscuro se guarda en localStorage del
-            navegador y no se envía al servidor. El sitio no carga cookies de
-            seguimiento ni herramientas de analítica o publicidad externas. Los
-            eventos de medición (por ejemplo, el envío correcto del formulario) se
-            generan en el navegador; solo se enviarían a una herramienta externa si
-            esta se configurara y existiera consentimiento previo, y sin duplicar
-            herramientas.
+            navegador y no se envía al servidor. La analítica opcional se describe
+            a continuación; nunca se envían a ella los datos que escribes en el formulario.
           </p>
+        </section>
+        <section id="analitica">
+          <h2>Analítica y preferencias</h2>
+          {hasAnalytics ? (
+            <p>Google Analytics 4, prestado por Google Ireland Limited, solo se carga si aceptas la analítica. Mide visitas y acciones como consultar un servicio, pulsar un enlace o enviar correctamente el formulario. Puede usar cookies propias de la familia <code>_ga</code> durante un máximo de seis meses e identificadores de dispositivo; no lo uso para publicidad ni le envío nombres, emails, empresa o mensajes. Las URLs enviadas se limitan a rutas públicas conocidas, sin parámetros, fragmentos ni URL de procedencia. Puedes rechazarlo sin perder ninguna función y retirar tu permiso desde «Preferencias de analítica» en el pie. Al retirarlo se detienen los envíos y se eliminan las cookies GA propias accesibles desde este dominio.</p>
+          ) : (
+            <p>No hay un proveedor de analítica activado en esta versión. Los eventos se generan únicamente dentro de la página y no se envían a Google Analytics ni a otra herramienta externa.</p>
+          )}
+          <p>La elección de analítica, si la haces, se conserva en localStorage durante un máximo de seis meses. El contexto de navegación autorizado y la deduplicación de envíos se guardan en sessionStorage de la pestaña y se borran al rechazar. El permiso de analítica es independiente del envío de una consulta. Puedes consultar <a href="https://policies.google.com/privacy?hl=es" target="_blank" rel="noopener noreferrer">la política de privacidad de Google</a> y <a href="https://support.google.com/analytics/answer/11593727?hl=es" target="_blank" rel="noopener noreferrer">sus condiciones de tratamiento de datos en la UE</a>; este proveedor puede tratar datos fuera del Espacio Económico Europeo con las garantías contractuales aplicables.</p>
         </section>
         <section>
           <h2>Finalidad y base legal</h2>
@@ -157,4 +164,5 @@ import Footer from "../../components/Footer.astro";
     font-size: 0.9375rem;
     line-height: 1.7;
   }
+  .legal-body p + p { margin-top: var(--space-md); }
 </style>

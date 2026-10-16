@@ -11,9 +11,10 @@ import {
   CONTACT_OPTIONAL_MAX,
   CONTACT_SUBMISSION_ID_PATTERN,
   CONTACT_TYPES,
-  CONTACT_TYPE_VALUES,
+  isContactType,
 } from "../src/data/contact-contract";
 import { siteConfig } from "../src/data/site";
+import { contactResultCopy } from "../src/data/contact-result";
 
 declare const process: { env: Record<string, string | undefined> };
 declare const crypto: {
@@ -38,6 +39,7 @@ type VercelResponse = {
   setHeader: (name: string, value: string) => void;
   status: (code: number) => VercelResponse;
   json: (body: ContactResponse) => void;
+  send: (body: string) => void;
 };
 
 const GENERIC_ERROR = "No se ha podido enviar el mensaje. Inténtalo de nuevo.";
@@ -196,7 +198,8 @@ async function hashClientKey(raw: string): Promise<string> {
       .map((byte) => byte.toString(16).padStart(2, "0"))
       .join("");
   } catch {
-    return raw;
+    // Fail closed to a shared fallback bucket, never store an unhashed IP.
+    return "hash-unavailable";
   }
 }
 
@@ -241,7 +244,7 @@ function validate(body: Record<string, unknown>):
   if (company.length > CONTACT_COMPANY_MAX) errors.company = "El nombre de empresa es demasiado largo.";
 
   if (!type) errors.type = "Selecciona el tipo de proyecto.";
-  else if (!CONTACT_TYPE_VALUES.includes(type)) errors.type = "Selecciona un tipo de proyecto válido.";
+  else if (!isContactType(type)) errors.type = "Selecciona un tipo de proyecto válido.";
 
   if (message.length < CONTACT_MESSAGE_MIN || message.length > CONTACT_MESSAGE_MAX) {
     errors.message = `El contexto debe tener entre ${CONTACT_MESSAGE_MIN} y ${CONTACT_MESSAGE_MAX} caracteres.`;
@@ -264,19 +267,24 @@ function reply(
   response: VercelResponse,
   status: number,
   payload: ContactResponse,
-  htmlState: "enviado" | "error",
-  ref = "",
+  _htmlState: "enviado" | "error",
 ) {
   if (wantsHtml(request)) {
-    const query = ref
-      ? `?contacto=${htmlState}&ref=${encodeURIComponent(ref)}`
-      : `?contacto=${htmlState}`;
-    response.setHeader("Location", `/${query}#contacto`);
-    return response
-      .status(303)
-      .json(status < 400 ? { success: true } : { success: false, error: "See form." });
+    const title = payload.success ? contactResultCopy.successTitle : contactResultCopy.errorTitle;
+    const body = payload.success ? contactResultCopy.successBody : payload.error;
+    const errors = !payload.success && payload.errors
+      ? `<ul>${Object.values(payload.errors).map((error) => `<li>${escapeHtml(error)}</li>`).join("")}</ul>`
+      : "";
+    response.setHeader("Content-Type", "text/html; charset=utf-8");
+    response.setHeader("X-Robots-Tag", "noindex, nofollow");
+    response.setHeader("Content-Security-Policy", "default-src 'none'; style-src 'self'; base-uri 'none'; frame-ancestors 'none'");
+    return response.status(status).send(`<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow"><title>${escapeHtml(title)} — FRN.Q</title><link rel="stylesheet" href="/contact-result.css"></head><body><main id="main-content"><p class="label">FRN.Q / Contacto</p><h1>${escapeHtml(title)}</h1><p>${escapeHtml(body)}</p>${errors}<a class="back" href="/#contacto">${contactResultCopy.back} →</a><p>${contactResultCopy.alternative}: <a href="mailto:${siteConfig.email}">${siteConfig.email}</a>.</p></main></body></html>`);
   }
   return response.status(status).json(payload);
+}
+
+function escapeHtml(value: string): string {
+  return value.replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]!);
 }
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
@@ -385,7 +393,6 @@ export default async function handler(request: VercelRequest, response: VercelRe
       200,
       { success: true, ref: result.submissionId || undefined },
       "enviado",
-      result.submissionId,
     );
   } catch (error) {
     console.error(

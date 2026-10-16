@@ -1,0 +1,941 @@
+---
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import MainLayout from "../../layouts/MainLayout.astro";
+import { siteConfig } from "../../data/site";
+import { supportCopy, supportPrice } from "../../data/support";
+
+const canonical = new URL(Astro.url.pathname, Astro.site || siteConfig.url);
+const personId = `${canonical.origin}/#person`;
+const brandId = `${canonical.origin}/#brand`;
+
+const supportSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": `${canonical.toString()}#support`,
+  name: supportCopy.eyebrow,
+  serviceType: "Soporte y mantenimiento de webs y sistemas",
+  description: supportCopy.meta.description,
+  url: canonical.toString(),
+  provider: { "@id": personId },
+  areaServed: { "@type": "Country", name: "España" },
+  brand: { "@id": brandId },
+  ...(supportPrice
+    ? {
+        offers: {
+          "@type": "Offer",
+          name: `${supportCopy.eyebrow} — plan ${supportPrice.plan}`,
+          priceCurrency: "EUR",
+          priceSpecification: {
+            "@type": "UnitPriceSpecification",
+            minPrice: supportPrice.amount,
+            priceCurrency: "EUR",
+            billingDuration: "P1M",
+            valueAddedTaxIncluded: false,
+          },
+        },
+      }
+    : {}),
+};
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Inicio",
+      item: new URL("/", Astro.site).toString(),
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: supportCopy.label,
+      item: canonical.toString(),
+    },
+  ],
+};
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: supportCopy.faqs.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+---
+
+<MainLayout title={supportCopy.meta.title} description={supportCopy.meta.description}>
+  <script type="application/ld+json" set:html={JSON.stringify(supportSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+
+  <Header />
+  <main id="main-content" class="support-page">
+    <article>
+      <header class="support-hero">
+        <div class="container">
+          <nav class="support-breadcrumb" aria-label="Ruta de navegación">
+            <a href="/">Inicio</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">{supportCopy.label}</span>
+          </nav>
+          <p class="support-eyebrow">{supportCopy.eyebrow}</p>
+          <h1>
+            {supportCopy.titleLine}<br />
+            <span class="title-mark">{supportCopy.titleHighlight}</span>
+          </h1>
+          <p class="support-intro">{supportCopy.intro}</p>
+          <p class="support-audience">
+            <strong>Para quién:</strong> {supportCopy.audience}
+          </p>
+          <a
+            class="support-cta-text"
+            href={`/?tipo=${supportCopy.cta.type}#contacto`}
+            data-contact-type={supportCopy.cta.type}
+            data-track="cta_click"
+            data-track-location="support_hero"
+          >
+            {supportCopy.cta.label} <span aria-hidden="true">→</span>
+          </a>
+          <nav class="support-jump" aria-label="En esta página">
+            <a href="#tipos">Qué se confunde</a>
+            <a href="#capacidades">Capacidades</a>
+            <a href="#incorporacion">Incorporación</a>
+            <a href="#preguntas">Preguntas frecuentes</a>
+          </nav>
+        </div>
+      </header>
+
+      <section class="support-section" id="tipos" aria-labelledby="differences-title">
+        <div class="container">
+          <span class="section-tag section-tag--inline">{supportCopy.differences.tag}</span>
+          <header class="support-head reveal">
+            <h2 id="differences-title">{supportCopy.differences.title}</h2>
+            <p class="support-lead">{supportCopy.differences.lead}</p>
+          </header>
+          <ul class="difference-list reveal">
+            {
+              supportCopy.differences.items.map((item) => (
+                <li class="difference">
+                  <span class="difference-num mono" aria-hidden="true">{item.num}</span>
+                  <h3 class="difference-title">{item.title}</h3>
+                  <p class="difference-desc">{item.description}</p>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </section>
+
+      <section class="support-section" id="support" aria-labelledby="service-title">
+        <div class="container">
+          <span class="section-tag section-tag--inline">{supportCopy.service.tag}</span>
+          <header class="support-head reveal">
+            <h2 id="service-title">{supportCopy.service.title}</h2>
+          </header>
+          <div class="support-statement reveal">
+            <p class="statement-text">{supportCopy.service.statement}</p>
+          </div>
+          <div class="compat reveal">
+            <h3 class="compat-title mono">{supportCopy.service.compatibilityTitle}</h3>
+            <ul class="compat-list">
+              {
+                supportCopy.service.compatibility.map((item) => (
+                  <li>
+                    <span class="compat-marker" aria-hidden="true" />
+                    {item}
+                  </li>
+                ))
+              }
+            </ul>
+            <p class="compat-note">{supportCopy.service.compatibilityNote}</p>
+          </div>
+          {
+            supportPrice && (
+              <div class="support-price reveal">
+                <div class="support-price-head">
+                  <p class="support-price-tag mono">
+                    {supportCopy.price.tag} · {supportPrice.plan}
+                  </p>
+                  <p class="support-price-value">{supportPrice.label}</p>
+                </div>
+                <p class="support-price-detail">{supportCopy.price.detail}</p>
+              </div>
+            )
+          }
+        </div>
+      </section>
+
+      <section class="support-section" id="capacidades" aria-labelledby="capabilities-title">
+        <div class="container">
+          <span class="section-tag section-tag--inline">{supportCopy.capabilities.tag}</span>
+          <header class="support-head reveal">
+            <h2 id="capabilities-title">{supportCopy.capabilities.title}</h2>
+            <p class="support-lead">{supportCopy.capabilities.lead}</p>
+          </header>
+          <ol class="capability-list reveal">
+            {
+              supportCopy.capabilities.items.map((item) => (
+                <li class:list={["capability", { "capability--detached": item.detached }]}>
+                  <span class="capability-num mono" aria-hidden="true">{item.num}</span>
+                  <div class="capability-body">
+                    <h3 class="capability-title">{item.title}</h3>
+                    <p class="capability-desc">{item.description}</p>
+                  </div>
+                  <span class="capability-scope mono">{item.scope}</span>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </section>
+
+      <section class="support-section" id="alcance" aria-labelledby="scope-title">
+        <div class="container support-grid">
+          <div>
+            <span class="section-tag section-tag--inline">{supportCopy.scope.tag}</span>
+            <h2 id="scope-title">{supportCopy.scope.title}</h2>
+            <p class="support-lead">{supportCopy.scope.lead}</p>
+          </div>
+          <div class="scope-panel reveal">
+            <ul class="scope-list">
+              {
+                supportCopy.scope.items.map((item) => (
+                  <li>
+                    <span class="scope-marker" aria-hidden="true" />
+                    {item}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+        <div class="container">
+          <p class="scope-note">{supportCopy.scope.note}</p>
+        </div>
+      </section>
+
+      <section class="support-section" id="incorporacion" aria-labelledby="onboarding-title">
+        <div class="container">
+          <span class="section-tag section-tag--inline">{supportCopy.onboarding.tag}</span>
+          <header class="support-head reveal">
+            <h2 id="onboarding-title">{supportCopy.onboarding.title}</h2>
+            <p class="support-lead">{supportCopy.onboarding.lead}</p>
+          </header>
+
+          <div class="origin-grid reveal">
+            {
+              supportCopy.onboarding.origins.map((origin) => (
+                <article class="origin-card">
+                  <h3>{origin.title}</h3>
+                  <p>{origin.description}</p>
+                  <ul>
+                    {origin.includes.map((item) => <li>{item}</li>)}
+                  </ul>
+                </article>
+              ))
+            }
+          </div>
+
+          <h3 class="steps-title mono">{supportCopy.onboarding.stepsTitle}</h3>
+          <ol class="support-steps reveal">
+            {
+              supportCopy.onboarding.steps.map((step) => (
+                <li>
+                  <span class="step-num mono" aria-hidden="true">{step.num}</span>
+                  <h4>{step.title}</h4>
+                  <p>{step.description}</p>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </section>
+
+      <section class="support-section support-section--faq" id="preguntas" aria-labelledby="preguntas-title">
+        <div class="container">
+          <span class="section-tag section-tag--inline">Preguntas frecuentes</span>
+          <header class="support-head reveal">
+            <h2 id="preguntas-title">Antes de contratar</h2>
+          </header>
+          <div class="faq-list reveal">
+            {
+              supportCopy.faqs.map((item) => (
+                <details>
+                  <summary>{item.q}</summary>
+                  <p>{item.a}</p>
+                </details>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+      <section class="support-close" aria-labelledby="support-close-title">
+        <div class="container support-close-inner">
+          <div>
+            <h2 id="support-close-title" class="support-close-title">{supportCopy.cta.label}</h2>
+            <p class="support-close-lead">{supportCopy.cta.lead}</p>
+          </div>
+          <a
+            class="support-cta"
+            href={`/?tipo=${supportCopy.cta.type}#contacto`}
+            data-contact-type={supportCopy.cta.type}
+            data-track="cta_click"
+            data-track-location="support_close"
+            data-track-label={supportCopy.cta.label}
+          >
+            <span>{supportCopy.cta.label}</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </section>
+
+      <nav class="support-related" aria-label="Otras páginas">
+        <div class="container support-related-inner">
+          <p>También puede encajar</p>
+          <ul>
+            <li><a href="/soluciones/desarrollo-web/">Diseño y desarrollo web <span aria-hidden="true">→</span></a></li>
+            <li><a href="/soluciones/ecommerce/">Ecommerce & Shopify <span aria-hidden="true">→</span></a></li>
+            <li><a href="/soluciones/sistemas/">Sistemas & Integraciones <span aria-hidden="true">→</span></a></li>
+            <li><a href="/#revision-web">Revisión y reparación web <span aria-hidden="true">→</span></a></li>
+            <li><a href="/precios/">Precios públicos <span aria-hidden="true">→</span></a></li>
+          </ul>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <Footer />
+</MainLayout>
+
+<style>
+  .support-page { padding-top: 120px; }
+
+  .mono { font-family: var(--font-mono); }
+
+  /* ---- Hero ---- */
+  .support-hero {
+    padding: var(--space-2xl) 0 var(--space-3xl);
+    border-bottom: 4px solid var(--border);
+  }
+
+  .support-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-2xl);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .support-breadcrumb a { opacity: 0.65; text-underline-offset: 0.25em; }
+  .support-breadcrumb span { opacity: 0.55; }
+  .support-breadcrumb [aria-current="page"] { opacity: 1; }
+
+  .support-eyebrow {
+    margin-bottom: var(--space-md);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .support-hero h1 {
+    max-width: 17ch;
+    font-size: clamp(2.7rem, 8vw, 7rem);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.065em;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+  }
+
+  .support-intro {
+    max-width: 64ch;
+    margin-top: var(--space-xl);
+    font-size: clamp(1.0625rem, 1.8vw, 1.25rem);
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .support-audience {
+    max-width: 68ch;
+    margin-top: var(--space-lg);
+    line-height: 1.6;
+  }
+
+  .support-cta-text {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-top: var(--space-xl);
+    font-weight: 800;
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+  }
+
+  .support-jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md) var(--space-xl);
+    margin-top: var(--space-2xl);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+  }
+
+  .support-jump a { text-underline-offset: 0.3em; }
+
+  .support-breadcrumb a:focus-visible,
+  .support-jump a:focus-visible,
+  .support-cta-text:focus-visible,
+  .support-related a:focus-visible { outline: 3px solid var(--text); outline-offset: 4px; }
+
+  /* ---- Generic section rhythm ---- */
+  .support-section {
+    padding: clamp(var(--space-2xl), 6vw, var(--space-4xl)) 0;
+    border-top: 2px dashed var(--border-light);
+  }
+
+  /* The hero already closes with a solid rule; avoid a doubled divider. */
+  .support-hero + .support-section { border-top: none; }
+
+  .support-section h2 {
+    max-width: 20ch;
+    font-size: clamp(1.8rem, 4vw, 3.25rem);
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+    text-transform: uppercase;
+  }
+
+  .support-head { margin: var(--space-lg) 0 clamp(var(--space-xl), 4vw, var(--space-2xl)); }
+
+  .support-lead {
+    max-width: 62ch;
+    margin-top: var(--space-lg);
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  /* ---- 01 · Three confused things: numbered definition rows ---- */
+  .difference-list {
+    margin: 0;
+    padding: 0;
+    border-top: 3px solid var(--border);
+    list-style: none;
+  }
+
+  .difference {
+    display: grid;
+    grid-template-columns: 3.5rem minmax(11rem, 0.7fr) minmax(0, 1.3fr);
+    align-items: baseline;
+    gap: var(--space-md) clamp(var(--space-lg), 4vw, var(--space-2xl));
+    padding: var(--space-xl) 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .difference-num {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+
+  .difference-title {
+    font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+  }
+
+  .difference-desc {
+    max-width: 58ch;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  /* ---- FRN.Q Support statement ---- */
+  .support-statement {
+    padding: clamp(var(--space-lg), 3.5vw, var(--space-2xl));
+    border: 3px solid var(--border);
+    border-left-width: 10px;
+    border-left-color: var(--accent);
+    background: var(--bg-alt);
+  }
+
+  .statement-text {
+    max-width: 58ch;
+    font-size: clamp(1.1875rem, 2.6vw, 1.875rem);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.03em;
+  }
+
+  .compat { margin-top: clamp(var(--space-xl), 4vw, var(--space-3xl)); }
+
+  .compat-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .compat-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-md) clamp(var(--space-lg), 4vw, var(--space-2xl));
+    margin: var(--space-lg) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .compat-list li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-md);
+    font-size: clamp(1rem, 1.7vw, 1.125rem);
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .compat-marker {
+    flex: 0 0 auto;
+    width: 0.55rem;
+    height: 0.55rem;
+    align-self: center;
+    background: var(--accent);
+    border: 1px solid currentColor;
+  }
+
+  .compat-note {
+    max-width: 66ch;
+    margin-top: var(--space-xl);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border-light);
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+  }
+
+  /* Public price reference: the one highlighted plate on the page. */
+  .support-price {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-lg) clamp(var(--space-xl), 5vw, var(--space-3xl));
+    margin-top: clamp(var(--space-xl), 4vw, var(--space-3xl));
+    padding: clamp(var(--space-lg), 3vw, var(--space-xl));
+    border: 3px solid var(--border);
+    background: var(--accent);
+    color: var(--text-on-accent);
+    box-shadow: 8px 8px 0 var(--border);
+  }
+
+  .support-price-tag {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+
+  .support-price-value {
+    margin-top: var(--space-sm);
+    font-size: clamp(1.875rem, 4.5vw, 3rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.045em;
+  }
+
+  .support-price-detail {
+    max-width: 48ch;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    opacity: 0.9;
+  }
+
+  /* ---- Capabilities: numbered rows, last one detached ---- */
+  .capability-list {
+    margin: 0;
+    padding: 0;
+    border-top: 3px solid var(--border);
+    list-style: none;
+  }
+
+  .capability {
+    display: grid;
+    grid-template-columns: clamp(3.5rem, 7vw, 6rem) minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-md) clamp(var(--space-lg), 4vw, var(--space-2xl));
+    padding: clamp(var(--space-lg), 3vw, var(--space-xl)) 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .capability-num {
+    font-size: clamp(2rem, 5vw, 3.75rem);
+    font-weight: 800;
+    line-height: 0.85;
+    letter-spacing: -0.08em;
+    opacity: 0.22;
+  }
+
+  .capability-title {
+    max-width: 22ch;
+    font-size: clamp(1.1875rem, 2.2vw, 1.625rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+  }
+
+  .capability-desc {
+    max-width: 60ch;
+    margin-top: var(--space-sm);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  .capability-scope {
+    align-self: start;
+    padding: 0.35rem 0.6rem;
+    border: 2px solid var(--border);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* Separate agreement: inverted plate inside the ruled sequence. */
+  .capability--detached {
+    margin-top: var(--space-sm);
+    padding-inline: clamp(var(--space-md), 3vw, var(--space-xl));
+    border-bottom: none;
+    border: 3px solid var(--border);
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  .capability--detached .capability-desc { color: var(--bg); opacity: 0.78; }
+  .capability--detached .capability-num { opacity: 1; }
+
+  .capability--detached .capability-scope {
+    border-color: currentColor;
+    color: inherit;
+  }
+
+  /* ---- Scope: agreed in writing ---- */
+  .support-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+    gap: clamp(var(--space-xl), 6vw, var(--space-4xl));
+  }
+
+  .scope-panel {
+    padding: clamp(var(--space-lg), 3vw, var(--space-xl));
+    border: 3px solid var(--border);
+    background: var(--bg-elevated);
+  }
+
+  .scope-list {
+    display: grid;
+    gap: var(--space-md);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .scope-list li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-md);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--border-light);
+    font-size: clamp(0.9375rem, 1.6vw, 1.0625rem);
+    font-weight: 600;
+    line-height: 1.45;
+  }
+
+  .scope-list li:last-child { padding-bottom: 0; border-bottom: none; }
+
+  .scope-marker {
+    flex: 0 0 auto;
+    width: 0.55rem;
+    height: 0.55rem;
+    align-self: center;
+    border: 2px solid var(--border);
+  }
+
+  .scope-note {
+    max-width: 72ch;
+    margin-top: clamp(var(--space-xl), 4vw, var(--space-2xl));
+    padding-top: var(--space-md);
+    border-top: 3px solid var(--border);
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  /* ---- Onboarding ---- */
+  .origin-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(var(--space-lg), 4vw, var(--space-2xl));
+  }
+
+  .origin-card {
+    padding: clamp(var(--space-lg), 3vw, var(--space-xl));
+    border: 3px solid var(--border);
+    background: var(--bg);
+    box-shadow: 8px 8px 0 var(--border);
+  }
+
+  .origin-card h3 {
+    font-size: clamp(1.1875rem, 2.2vw, 1.5rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+  }
+
+  .origin-card p {
+    max-width: 46ch;
+    margin-top: var(--space-md);
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  .origin-card ul {
+    display: grid;
+    gap: var(--space-sm);
+    margin: var(--space-lg) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .origin-card li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-sm);
+    font-size: 0.9375rem;
+    line-height: 1.45;
+  }
+
+  .origin-card li::before {
+    content: "+";
+    flex: 0 0 auto;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .steps-title {
+    margin: clamp(var(--space-2xl), 5vw, var(--space-3xl)) 0 var(--space-lg);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .support-steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(var(--space-lg), 4vw, var(--space-2xl));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .support-steps li { padding-top: var(--space-md); border-top: 3px solid var(--border); }
+
+  .step-num {
+    display: block;
+    margin-bottom: var(--space-md);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+  }
+
+  .support-steps h4 {
+    font-size: clamp(1.0625rem, 1.8vw, 1.25rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+  }
+
+  .support-steps p {
+    max-width: 40ch;
+    margin-top: var(--space-sm);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  /* ---- FAQ ---- */
+  .support-section--faq h2 { max-width: 24ch; }
+
+  .faq-list { max-width: 78ch; }
+
+  .faq-list details {
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .faq-list details:first-child { border-top: 3px solid var(--border); }
+
+  .faq-list summary {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-md);
+    cursor: pointer;
+    font-size: clamp(1rem, 1.7vw, 1.125rem);
+    font-weight: 700;
+    line-height: 1.45;
+    list-style: none;
+  }
+
+  .faq-list summary::-webkit-details-marker { display: none; }
+  .faq-list summary::after {
+    content: "+";
+    flex: 0 0 auto;
+    font-family: var(--font-mono);
+    font-weight: 700;
+  }
+
+  .faq-list details[open] summary::after { content: "−"; }
+
+  .faq-list p {
+    max-width: 68ch;
+    margin-top: var(--space-sm);
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .faq-list summary:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+
+  /* ---- Close ---- */
+  .support-close { padding: clamp(var(--space-2xl), 6vw, var(--space-4xl)) 0; }
+
+  .support-close-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-xl);
+    padding: clamp(var(--space-lg), 3.5vw, var(--space-2xl));
+    border: 4px solid var(--border);
+    background: var(--bg);
+    box-shadow: var(--shadow-brutal-lg);
+  }
+
+  .support-close-title {
+    font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.055em;
+    text-transform: uppercase;
+  }
+
+  .support-close-lead {
+    max-width: 52ch;
+    margin-top: var(--space-md);
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  .support-cta {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: var(--space-xl);
+    min-height: 3.25rem;
+    padding: var(--space-sm) var(--space-lg);
+    border: 3px solid var(--border);
+    background: var(--text);
+    color: var(--bg);
+    box-shadow: 6px 6px 0 var(--accent);
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .support-cta:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0 var(--accent); }
+  .support-cta span:last-child { transition: transform var(--transition-fast); }
+  .support-cta:hover span:last-child { transform: translateX(4px); }
+  .support-cta:focus-visible { outline: 3px solid var(--text); outline-offset: 4px; }
+
+  /* ---- Related ---- */
+  .support-related { padding: var(--space-2xl) 0 var(--space-4xl); }
+
+  .support-related-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-lg);
+  }
+
+  .support-related-inner > p {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .support-related ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md) var(--space-xl);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .support-related a { font-weight: 700; text-underline-offset: 0.3em; }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 760px) {
+    .difference {
+      grid-template-columns: 2.5rem minmax(0, 1fr);
+      gap: var(--space-sm) var(--space-md);
+    }
+    .difference-desc { grid-column: 2; }
+    .support-grid { grid-template-columns: 1fr; }
+    .capability {
+      grid-template-columns: 3.5rem minmax(0, 1fr);
+      align-items: start;
+      row-gap: var(--space-md);
+    }
+    .capability-body { grid-column: 2; }
+    .capability-scope { grid-column: 2; justify-self: start; }
+    .support-steps { grid-template-columns: 1fr; gap: var(--space-md); }
+    .support-close-inner { align-items: flex-start; flex-direction: column; }
+    .support-price { align-items: flex-start; flex-direction: column; }
+  }
+
+  @media (max-width: 540px) {
+    .support-page { padding-top: 104px; }
+    .support-breadcrumb { margin-bottom: var(--space-xl); }
+    .compat-list { grid-template-columns: 1fr; gap: var(--space-md); }
+    .origin-grid { grid-template-columns: 1fr; }
+    .support-cta { width: 100%; justify-content: space-between; }
+    .support-related-inner { align-items: flex-start; flex-direction: column; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .support-cta, .support-cta span:last-child { transition: none; }
+  }
+</style>
