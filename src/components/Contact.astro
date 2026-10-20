@@ -35,7 +35,7 @@ import { portfolioLink, siteConfig } from "../data/site";
               href={method.href}
               class="method-card"
               data-track="contact_method_click"
-              data-track-method="email"
+              data-track-method={method.id}
               data-track-location="contact"
             >
               <span class="method-icon" aria-hidden="true">{method.icon}</span>
@@ -53,10 +53,11 @@ import { portfolioLink, siteConfig } from "../data/site";
           href={portfolioLink.href}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label={portfolioLink.title}
           data-track="studio_link_click"
           data-track-location="contact"
         >
-          {portfolioLink.label} <span aria-hidden="true">↗</span>
+          {portfolioLink.label} <span class="portfolio-arrow" aria-hidden="true">↗</span>
         </a>
       </div>
 
@@ -256,46 +257,41 @@ import { portfolioLink, siteConfig } from "../data/site";
       </div>
     </div>
 
-    <section class="faq-section reveal" aria-labelledby="faq-title">
-      <header class="faq-heading">
-        <h3 class="faq-title" id="faq-title">Dudas antes de empezar.</h3>
-        <span class="faq-count mono" aria-hidden="true">
-          {String(faqItems.length).padStart(2, "0")} / FAQ
-        </span>
+    <section class="faq-section" aria-labelledby="faq-title">
+      <header class="faq-heading reveal">
+        <div class="faq-head-main">
+          <p class="faq-kicker">Preguntas frecuentes</p>
+          <h3 class="faq-title" id="faq-title">Dudas antes de empezar.</h3>
+        </div>
+        <div class="faq-side">
+          <span class="faq-count" aria-hidden="true">
+            {String(faqItems.length).padStart(2, "0")} / {String(faqItems.length).padStart(2, "0")}
+          </span>
+          <p class="faq-note">
+            ¿Otra duda? <a class="faq-link" href="#form">Escríbeme directo <span aria-hidden="true">→</span></a>
+          </p>
+        </div>
       </header>
-      <div class="faq-list">
+      <ol class="faq-list">
         {
           faqItems.map((item, i) => (
-            <details class="faq-item" name="contact-faq">
-              <summary class="faq-question">
-                <span class="faq-number mono" aria-hidden="true">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span>{item.q}</span>
-                <span class="faq-icon" aria-hidden="true">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="faq-arrow"
-                  >
-                    <path
-                      d="M3 6L8 11L13 6"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </span>
-              </summary>
-              <p class="faq-answer">{item.a}</p>
-            </details>
+            <li class="faq-row reveal" style={`--reveal-delay: ${100 + i * 70}ms`}>
+              <details class="faq-item" name="contact-faq">
+                <summary class="faq-question">
+                  <span class="faq-num" aria-hidden="true">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span class="faq-q">{item.q}</span>
+                  <span class="faq-mark" aria-hidden="true"></span>
+                </summary>
+                <p class="faq-answer">
+                  <span class="faq-answer-text">{item.a}</span>
+                </p>
+              </details>
+            </li>
           ))
         }
-      </div>
+      </ol>
     </section>
   </div>
 </section>
@@ -380,45 +376,30 @@ import { portfolioLink, siteConfig } from "../data/site";
   .contact-methods {
     display: flex;
     flex-direction: column;
+    align-items: stretch;
     gap: var(--space-md);
-    margin-bottom: var(--space-2xl);
+    margin: var(--space-xl) 0 var(--space-lg);
   }
 
+  /* Direct channel plate: fills the info column at every viewport.
+     Horizontal composition — accent icon square, mono signage, hard arrow. */
   .method-card {
     display: flex;
     align-items: center;
     gap: var(--space-md);
-    padding: var(--space-md) var(--space-lg);
+    width: 100%;
+    padding: var(--space-lg);
     border: 3px solid var(--border);
     background: var(--bg);
-    box-shadow: 8px 8px 0 var(--border);
+    box-shadow: var(--shadow-brutal);
     transition:
-      transform var(--transition-fast),
-      box-shadow var(--transition-fast);
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* Left border sweep on hover */
-  .method-card::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 3px;
-    height: 0;
-    background: var(--text);
-    transition: height 0.4s var(--motion-ease-out);
-    z-index: 2;
-  }
-
-  .method-card:hover::before {
-    height: 100%;
+      transform var(--transition-card),
+      box-shadow var(--transition-card-shadow);
   }
 
   .method-card:hover {
-    transform: translate(-6px, -6px);
-    box-shadow: 12px 12px 0 var(--border);
+    transform: translate(-4px, -4px);
+    box-shadow: 10px 10px 0 var(--accent);
   }
 
   .method-card:focus-visible {
@@ -427,35 +408,48 @@ import { portfolioLink, siteConfig } from "../data/site";
   }
 
   .method-icon {
-    font-size: 1.25rem;
+    display: grid;
     flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    border: 2px solid var(--border);
+    background: var(--accent);
+    color: var(--text-on-accent);
+    font-size: 1.125rem;
   }
 
   .method-info {
-    flex: 1;
+    min-width: 0;
   }
 
   .method-label {
     display: block;
-    font-size: 0.75rem;
-    font-weight: 500;
+    margin-bottom: var(--space-xs);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--text-muted);
-    margin-bottom: 0.25rem;
   }
 
   .method-value {
-    font-weight: 600;
+    display: block;
+    font-size: clamp(1.0625rem, 2vw, 1.25rem);
+    font-weight: 700;
+    overflow-wrap: anywhere;
   }
 
   .method-arrow {
+    flex-shrink: 0;
+    margin-left: auto;
     font-size: 1.125rem;
     transition: transform var(--transition-base);
   }
 
   .method-card:hover .method-arrow {
-    transform: translateX(4px);
+    transform: translate(4px, -4px);
   }
 
   .contact-form-wrapper {
@@ -819,107 +813,6 @@ import { portfolioLink, siteConfig } from "../data/site";
     outline-offset: 3px;
   }
 
-  .faq-section {
-    border-top: 3px solid var(--border);
-    padding-top: var(--space-3xl);
-  }
-
-  .faq-title {
-    font-size: clamp(1.25rem, 3vw, 1.5rem);
-    font-weight: 700;
-    margin-bottom: var(--space-xl);
-  }
-
-  .faq-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-md);
-  }
-
-  .faq-item {
-    border: 3px solid var(--border);
-    background: var(--bg);
-    transition:
-      background var(--transition-fast),
-      border-color var(--transition-fast),
-      transform var(--transition-base),
-      box-shadow var(--transition-base);
-    overflow: hidden;
-  }
-
-  .faq-item:hover {
-    border-color: var(--text);
-    transform: translate(6px, -4px);
-    box-shadow: -6px 8px 0 var(--border);
-  }
-
-  .faq-item[open] {
-    background: var(--bg-alt);
-    transform: none;
-    box-shadow: none;
-  }
-
-  .faq-question {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-md);
-    padding: var(--space-md) var(--space-lg);
-    font-weight: 600;
-    text-align: left;
-    width: 100%;
-    background: transparent;
-    border: none;
-    color: inherit;
-    font-family: inherit;
-    font-size: inherit;
-    transition: background var(--transition-fast);
-    list-style: none;
-    cursor: pointer;
-  }
-
-  .faq-question::-webkit-details-marker { display: none; }
-
-  .faq-question:hover {
-    background: var(--bg-alt);
-  }
-
-  .faq-item[open] .faq-question {
-    background: var(--bg-alt);
-  }
-
-  .faq-question:focus-visible {
-    outline: 3px solid var(--text);
-    outline-offset: -3px;
-  }
-
-  .faq-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    flex-shrink: 0;
-  }
-
-  .faq-arrow {
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    width: 100%;
-    height: 100%;
-  }
-
-  .faq-item[open] .faq-arrow {
-    transform: rotate(180deg);
-  }
-
-  .faq-answer {
-    padding: 0 var(--space-lg) var(--space-lg);
-    font-size: 0.9375rem;
-    line-height: 1.7;
-    opacity: 0.8;
-    margin: 0;
-  }
-
   @media (max-width: 640px) {
     .contact {
       padding: var(--space-3xl) 0;
@@ -964,75 +857,41 @@ import { portfolioLink, siteConfig } from "../data/site";
     line-height: 1.55;
   }
 
-  .contact-methods {
-    align-items: center;
-    gap: var(--space-md);
-    margin: var(--space-xl) 0 var(--space-lg);
-  }
-
-  .method-card {
-    width: 100%;
-    max-width: 34rem;
-    min-height: 10rem;
-    flex-direction: column;
-    justify-content: center;
-    gap: var(--space-sm);
-    padding: var(--space-lg);
-    text-align: center;
-  }
-
-  .method-icon {
-    display: grid;
-    width: 2.5rem;
-    height: 2.5rem;
-    place-items: center;
-    border: 2px solid var(--border);
-    background: var(--accent);
-    color: var(--text-on-accent);
-    font-size: 1.125rem;
-  }
-
-  .method-info {
-    flex: initial;
-    text-align: center;
-  }
-
-  .method-label { margin-bottom: var(--space-xs); }
-
-  .method-value {
-    font-size: clamp(1rem, 2vw, 1.25rem);
-    overflow-wrap: anywhere;
-  }
-
-  .method-arrow {
-    position: absolute;
-    top: var(--space-md);
-    right: var(--space-md);
-  }
-
-  .method-card:hover .method-arrow {
-    transform: translate(4px, -2px);
-  }
-
+  /* Secondary external link as mono signage: bordered tag on the
+     .section-tag metrics. Deliberately plain — no accent, no offset
+     shadow; the highlighted CTA stays HABLEMOS / the form submit. */
   .contact-portfolio {
-    display: block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     width: fit-content;
-    margin: var(--space-lg) auto 0;
+    margin: var(--space-lg) 0 0;
+    padding: 0.5rem 0.75rem;
+    border: 2px solid var(--border);
     color: var(--text-muted);
     font-size: 0.6875rem;
     font-weight: 700;
     letter-spacing: 0.08em;
-    text-decoration: underline;
-    text-decoration-color: var(--border-light);
-    text-underline-offset: 4px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition:
+      color var(--transition-fast),
+      background var(--transition-fast);
   }
 
   .contact-portfolio:hover {
     color: var(--text);
-    text-decoration-color: var(--accent);
+    background: var(--bg-alt);
   }
 
-  .method-card:focus-visible,
+  .portfolio-arrow {
+    transition: transform var(--transition-base);
+  }
+
+  .contact-portfolio:hover .portfolio-arrow {
+    transform: translate(2px, -2px);
+  }
+
   .contact-portfolio:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
@@ -1068,68 +927,188 @@ import { portfolioLink, siteConfig } from "../data/site";
     font-size: 1rem;
   }
 
+  /* ---- FAQ: ruled ledger under the form, deliberately secondary ---- */
   .faq-section {
     margin-top: clamp(var(--space-3xl), 7vw, 7rem);
-    padding-top: var(--space-lg);
+    padding-top: var(--space-xl);
     border-top: 3px solid var(--border);
   }
 
   .faq-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    align-items: end;
+    gap: var(--space-lg) clamp(var(--space-xl), 4vw, var(--space-3xl));
+    margin-bottom: var(--space-2xl);
+  }
+
+  /* Kicker: mono signage with the accent square of the section tag. */
+  .faq-kicker {
     display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-lg);
-    margin-bottom: var(--space-md);
-    padding-bottom: var(--space-md);
+    align-items: center;
+    gap: var(--space-sm);
+    margin: 0 0 var(--space-md);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .faq-kicker::before {
+    width: 0.5rem;
+    aspect-ratio: 1;
+    border: 1px solid var(--border);
+    background: var(--accent);
+    content: "";
   }
 
   .faq-title {
     margin: 0;
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-size: clamp(2rem, 5vw, 3.25rem);
     font-family: var(--font-sans);
     font-weight: 800;
     line-height: 0.95;
     letter-spacing: -0.065em;
+    text-wrap: balance;
+  }
+
+  .faq-side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-sm);
+    text-align: right;
   }
 
   .faq-count {
-    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.625rem;
+    border: 2px solid var(--border);
+    font-family: var(--font-mono);
     font-size: 0.6875rem;
     font-weight: 700;
     letter-spacing: 0.1em;
+    color: var(--text-muted);
   }
 
+  .faq-note {
+    margin: 0;
+    max-width: 28ch;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+  }
+
+  .faq-link {
+    color: var(--text);
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: var(--border-light);
+    text-underline-offset: 0.35em;
+    transition:
+      color var(--transition-fast),
+      text-decoration-color var(--transition-fast);
+  }
+
+  .faq-link span {
+    display: inline-block;
+    transition: transform var(--transition-fast);
+  }
+
+  .faq-link:hover {
+    text-decoration-color: var(--accent);
+  }
+
+  .faq-link:hover span {
+    transform: translateX(4px);
+  }
+
+  .faq-link:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 3px;
+  }
+
+  /* FAQ plates: hard-border plates with hard offset shadows, one column.
+     State progression: closed (paper plate + ink shadow) → hover (the plate
+     lifts, shadow grows) → open (inverted ink plate + accent shadow, the
+     same language as the form submit). */
   .faq-list {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0 var(--space-2xl);
+    gap: var(--space-lg);
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
   .faq-item {
-    border: 0;
-    border-top: 2px solid var(--border);
+    interpolate-size: allow-keywords;
+    border: 3px solid var(--border);
     background: var(--bg);
+    box-shadow: 6px 6px 0 var(--border);
+    transition:
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast),
+      background var(--transition-base),
+      color var(--transition-base);
   }
 
-  .faq-item:hover,
+  .faq-item:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 10px 10px 0 var(--border);
+  }
+
+  /* Open: the plate inverts and takes the accent shadow of the CTAs. */
   .faq-item[open] {
+    background: var(--text);
+    color: var(--bg);
+    box-shadow: 10px 10px 0 var(--accent);
+  }
+
+  .faq-item[open]:hover {
     transform: none;
-    box-shadow: none;
+    box-shadow: 10px 10px 0 var(--accent);
+  }
+
+  /* Native expand/collapse animation where ::details-content is supported;
+     other browsers keep the instant toggle. */
+  .faq-item::details-content {
+    block-size: 0;
+    overflow: clip;
+    transition:
+      block-size var(--transition-base),
+      content-visibility var(--transition-base) allow-discrete;
+  }
+
+  .faq-item[open]::details-content {
+    block-size: auto;
   }
 
   .faq-question {
     display: grid;
-    grid-template-columns: 2rem minmax(0, 1fr) 2rem;
-    min-height: 4rem;
-    padding: var(--space-sm) 0;
+    grid-template-columns: 1.75rem minmax(0, 1fr) 2rem;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-lg) var(--space-xl);
     color: var(--text);
-    font-size: 0.875rem;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.35;
+    text-align: left;
+    list-style: none;
+    cursor: pointer;
+    transition: color var(--transition-base);
   }
 
-  .faq-question:hover,
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+
   .faq-item[open] .faq-question {
-    background: var(--bg-alt);
-    color: var(--text);
+    color: var(--bg);
   }
 
   .faq-question:focus-visible {
@@ -1139,38 +1118,188 @@ import { portfolioLink, siteConfig } from "../data/site";
     outline-offset: 2px;
   }
 
-  .faq-number {
-    align-self: center;
+  /* Inside the inverted plate the ring draws inwards, in paper ink. */
+  .faq-item[open] .faq-question:focus-visible {
+    outline-color: var(--bg);
+    outline-offset: -3px;
+  }
+
+  /* Numbered badge, echoing the inverted-panel numerals. */
+  .faq-num {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 2px solid var(--border);
     color: var(--text-muted);
+    font-family: var(--font-mono);
     font-size: 0.625rem;
     font-weight: 700;
     letter-spacing: 0.05em;
+    transition:
+      color var(--transition-base),
+      border-color var(--transition-base),
+      background var(--transition-base);
   }
 
-  .faq-answer {
-    padding: 0 2.5rem var(--space-md);
-    font-size: 0.875rem;
-    line-height: 1.55;
-    color: var(--text-secondary);
-  }
-
-  .faq-icon {
-    width: 2rem;
-    height: 2rem;
-    border: 2px solid var(--border);
-  }
-
-  .faq-arrow {
+  .faq-question:hover .faq-num {
     color: var(--text);
   }
 
-  .faq-item[open] .faq-icon {
+  /* Open: the numeral fills with accent, like the plate markers. */
+  .faq-item[open] .faq-num {
     border-color: var(--accent);
     background: var(--accent);
+    color: var(--text-on-accent);
   }
 
-  .faq-item[open] .faq-arrow {
+  .faq-q {
+    overflow-wrap: anywhere;
+  }
+
+  /* + closed, − open on the accent plate; the square rotates as it flips. */
+  .faq-mark {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    aspect-ratio: 1;
+    border: 2px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+    transition:
+      transform var(--transition-fast),
+      background var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .faq-mark::before {
+    content: "+";
+  }
+
+  .faq-question:hover .faq-mark {
+    background: var(--accent);
     color: var(--text-on-accent);
+  }
+
+  .faq-item[open] .faq-mark {
+    background: var(--accent);
+    color: var(--text-on-accent);
+    transform: rotate(180deg);
+  }
+
+  .faq-item[open] .faq-mark::before {
+    content: "−";
+  }
+
+  /* Answer: full-width ruled division inside the open plate; symmetric
+     padding so the text keeps the same distance to both plate edges. */
+  .faq-answer {
+    margin: 0;
+    padding: var(--space-lg) var(--space-xl) var(--space-2xl);
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    transition: color var(--transition-base);
+  }
+
+  .faq-answer-text {
+    display: block;
+    text-wrap: pretty;
+  }
+
+  .faq-answer-text::before {
+    margin-right: 0.6em;
+    color: var(--text-accent-inverse);
+    content: "→";
+  }
+
+  .faq-item[open] .faq-answer {
+    border-top: 1px solid color-mix(in srgb, var(--bg) 22%, transparent);
+    color: var(--bg);
+    animation: faq-answer-in var(--transition-base) var(--motion-ease-out) both;
+  }
+
+  @keyframes faq-answer-in {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .faq-heading {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+
+    .faq-side {
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .faq-question {
+      padding: var(--space-lg);
+    }
+
+    .faq-answer {
+      padding: var(--space-lg) var(--space-lg) var(--space-xl);
+    }
+  }
+
+  @media (max-width: 380px) {
+    .faq-question {
+      grid-template-columns: 1.5rem minmax(0, 1fr) 1.75rem;
+      gap: var(--space-sm);
+      padding: var(--space-md);
+    }
+
+    .faq-num {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .faq-mark {
+      width: 1.75rem;
+    }
+
+    .faq-answer {
+      padding: var(--space-md) var(--space-md) var(--space-lg);
+      font-size: 1.0625rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq-item,
+    .faq-item::details-content,
+    .faq-question,
+    .faq-answer,
+    .faq-mark,
+    .faq-num,
+    .faq-link span {
+      transition: none;
+    }
+
+    .faq-item:hover,
+    .faq-item[open]:hover {
+      transform: none;
+    }
+
+    .faq-item[open] .faq-mark {
+      transform: none;
+    }
+
+    .faq-item[open] .faq-answer {
+      animation: none;
+    }
   }
 
   @media (max-width: 899px) {
@@ -1186,29 +1315,32 @@ import { portfolioLink, siteConfig } from "../data/site";
   @media (max-width: 640px) {
     .contact-info {
       display: flex;
-      align-items: flex-start;
       gap: var(--space-md);
     }
 
-    .faq-list {
-      grid-template-columns: 1fr;
-      gap: 0;
+    .contact-methods {
+      margin: var(--space-lg) 0 var(--space-md);
     }
-
-    .faq-heading { align-items: flex-start; }
-    .faq-title { font-size: clamp(2.1rem, 8vw, 2.75rem); }
-    .faq-question { min-height: 4.25rem; font-size: 0.9375rem; }
-
-    .faq-answer { padding-left: 2.5rem; }
 
     .contact-form {
       padding: var(--space-md);
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .faq-arrow {
-      transition: none;
+  /* Narrowest phones: the plate keeps its horizontal composition. */
+  @media (max-width: 380px) {
+    .method-card {
+      gap: var(--space-sm);
+      padding: var(--space-md);
+    }
+
+    .method-icon {
+      width: 2.25rem;
+      height: 2.25rem;
+    }
+
+    .method-value {
+      font-size: 1rem;
     }
   }
 </style>

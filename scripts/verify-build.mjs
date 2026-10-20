@@ -115,7 +115,7 @@ for (const solution of solutionPages) {
 for (const [path, type] of [["/colaboraciones/agencias/", "agencia"], ["/soluciones/revision-web/", "reparacion"], ["/soporte/", "soporte"]]) {
   check(pages.get(path)?.links.includes(`/?tipo=${type}#contacto`), `${path}: CTA sin tipo correcto`);
 }
-for (const slug of ["kingbelt", "emilio-faraoni", "ilifielt"]) check(pages.get(`/casos/${slug}/`)?.text.includes("En desarrollo"), `${slug}: estado no visible`);
+for (const slug of ["kingbelt", "emilio-faraoni", "ilifielt"]) check(pages.get(`/casos/${slug}/`)?.text.includes("Publicado"), `${slug}: estado no visible`);
 const expectedPrices = pricingGroups.flatMap((group) => group.offers.map(lineAmount).filter((amount) => amount !== undefined)).sort((a, b) => a - b);
 const catalog = pages.get("/precios/")?.schemas.find((schema) => schema["@type"] === "OfferCatalog");
 const actualPrices = catalog?.itemListElement.map((offer) => offer.priceSpecification.price ?? offer.priceSpecification.minPrice).sort((a, b) => a - b);

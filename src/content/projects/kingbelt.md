@@ -4,10 +4,9 @@ client: "KingBelt"
 category: "ecommerce"
 sector: "Moda y accesorios de piel"
 year: "2026"
-status: "in-development"
+status: "live"
 url: "https://kingbelt.es/"
 urlLabel: "Ver tienda"
-publicPreview: true
 order: 2
 serviceArea: "ecommerce"
 tagline: "Tienda online a medida para una marca de accesorios de cuero: catálogo, variantes y carrito sobre una arquitectura Shopify."

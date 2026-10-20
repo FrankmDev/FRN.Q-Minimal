@@ -190,7 +190,7 @@ The route allowlist comes from solution data, published cases and guides; unknow
 | Area | Current | Future |
 |------|---------|--------|
 | Commercial surface | `/`, `/soluciones/{ecommerce,b2b,sistemas,desarrollo-web}/`, `/casos/`, Spanish | Further routes only with distinct intent and useful evidence |
-| Cases | 10 published, evidence-based; public routes expose `status: live` plus authorised `in-development` entries (`publicPreview: true`) | Add verified outcomes as evidence becomes available |
+| Cases | 10 published, evidence-based, all `status: live` | Add verified outcomes as evidence becomes available |
 | Commercial copy | Shared identity, navigation, services and solution pages in `src/data/*`; cases in the collection | Evolve as required |
 | i18n | Spanish only | Not planned (`.studio` is the English surface) |
 | Theme | Light by default; persistent light/dark toggle in the header | — |

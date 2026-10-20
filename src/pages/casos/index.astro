@@ -350,6 +350,7 @@ const breadcrumbSchema = {
   }
 
   .type-entry {
+    position: relative;
     display: flex;
     align-items: baseline;
     gap: var(--space-sm);
@@ -357,9 +358,28 @@ const breadcrumbSchema = {
     padding: var(--space-md);
     border: 2px solid var(--border);
     transition:
-      transform var(--transition-fast),
-      box-shadow var(--transition-fast);
+      transform var(--transition-card),
+      box-shadow var(--transition-card-shadow);
   }
+
+  /* Hover signature: the accent rule inks across the top edge, left to right. */
+  .type-entry::after {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 3px;
+    background: var(--accent);
+    content: "";
+    pointer-events: none;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-base);
+  }
+
+  .type-entry:hover::after,
+  .type-entry:focus-visible::after { transform: scaleX(1); }
+
+  .type-entry--primary::after { display: none; }
+  .type-entry--secondary::after { background: var(--bg); }
 
   .type-entry--primary {
     background: var(--accent);
@@ -484,20 +504,38 @@ const breadcrumbSchema = {
   }
 
   .card {
+    position: relative;
     display: flex;
     flex-direction: column;
     height: 100%;
     border: 3px solid var(--border);
     background: var(--bg);
+    box-shadow: 0 0 0 0 var(--border);
     transition:
-      transform var(--transition-fast),
-      box-shadow var(--transition-fast);
+      transform var(--transition-card),
+      box-shadow var(--transition-card-shadow);
   }
 
   .card:hover {
     transform: translate(-6px, -6px);
     box-shadow: 12px 12px 0 var(--border);
   }
+
+  /* Hover signature: the accent rule inks across the top edge, left to right. */
+  .card::after {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 3px;
+    background: var(--accent);
+    content: "";
+    pointer-events: none;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-base);
+  }
+
+  .card:hover::after,
+  .card:focus-visible::after { transform: scaleX(1); }
 
   .card-media {
     position: relative;

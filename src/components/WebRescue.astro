@@ -30,13 +30,15 @@ import { webRescueCopy, webRescuePage } from "../data/web-rescue";
           webRescueCopy.prices.map((price, index) => (
             <li class:list={["rescue-price", { "rescue-price-primary": index === 0 }]}>
               <div class="price-head">
-                <span class="price-index mono" aria-hidden="true">
+                <span class="price-num mono" aria-hidden="true">
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <span class="price-arrow" aria-hidden="true">→</span>
+                <p class="price-value mono">
+                  {price.qualifier && <span class="price-qualifier">{price.qualifier}</span>}
+                  <span class="price-amount">{price.amountLabel ?? price.price}</span>
+                </p>
               </div>
               <h3 class="price-title">{price.title}</h3>
-              <p class="price-value mono">{price.price}</p>
               <p class="price-detail">{price.detail}</p>
             </li>
           ))
@@ -45,16 +47,41 @@ import { webRescueCopy, webRescuePage } from "../data/web-rescue";
 
       <aside class="rescue-market reveal" aria-labelledby="rescue-market-title">
         <div class="market-head">
-          <h3 class="market-title" id="rescue-market-title">{webRescueCopy.market.title}</h3>
-          <span class="market-arrow" aria-hidden="true">↗</span>
+          <h3 class="market-title" id="rescue-market-title">
+            {webRescueCopy.market.titleLine}{" "}
+            <span class="title-mark">{webRescueCopy.market.titleHighlight}</span>
+          </h3>
+          <span class="market-corner" aria-hidden="true">↗</span>
         </div>
-        <p class="market-lead">{webRescueCopy.market.lead}</p>
-        <ul class="market-list">
-          {webRescueCopy.market.cases.map((item) => (
-            <li><span class="market-plus" aria-hidden="true"></span>{item}</li>
+
+        <ul class="market-audience" aria-label="Tipos de negocio">
+          {webRescueCopy.market.audience.map((item) => <li>{item}</li>)}
+        </ul>
+
+        <ul class="market-list" aria-label="Áreas de trabajo">
+          {webRescueCopy.market.cases.map((item, index) => (
+            <li>
+              <span class="market-num mono" aria-hidden="true">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span>{item}</span>
+            </li>
           ))}
         </ul>
+
         <p class="market-note">{webRescueCopy.market.disclaimer}</p>
+
+        <a
+          class="market-action"
+          href="#contacto"
+          data-contact-type={webRescueCopy.market.cta.type}
+          data-track="cta_click"
+          data-track-location="revision_web"
+          data-track-label={webRescueCopy.market.cta.label}
+        >
+          <span>{webRescueCopy.market.cta.label}</span>
+          <span aria-hidden="true">→</span>
+        </a>
       </aside>
     </div>
 
@@ -68,7 +95,7 @@ import { webRescueCopy, webRescuePage } from "../data/web-rescue";
           data-track-location="revision_web"
           data-track-label={webRescuePage.label}
         >
-          {webRescuePage.label}: reparar y mejorar una web existente <span aria-hidden="true">→</span>
+          {webRescuePage.label}: proceso, alcance y precios <span aria-hidden="true">→</span>
         </a>
       </div>
       <a
@@ -177,21 +204,22 @@ import { webRescueCopy, webRescuePage } from "../data/web-rescue";
   .rescue-prices {
     display: grid;
     grid-auto-rows: 1fr;
-    gap: var(--space-md);
+    gap: var(--space-lg);
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
   .rescue-price {
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
-    padding: var(--space-lg);
+    gap: var(--space-md);
+    padding: clamp(var(--space-lg), 2.6vw, var(--space-xl));
     border: 3px solid var(--border);
     background: var(--bg);
     box-shadow: 8px 8px 0 var(--border);
-    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    transition: transform var(--transition-card), box-shadow var(--transition-card-shadow);
   }
 
   .rescue-price:hover {
@@ -199,36 +227,70 @@ import { webRescueCopy, webRescuePage } from "../data/web-rescue";
     box-shadow: 12px 12px 0 var(--border);
   }
 
+  /* Hover signature: the accent rule inks across the top edge, left to right. */
+  .rescue-price::after {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 3px;
+    background: var(--accent);
+    content: "";
+    pointer-events: none;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-base);
+  }
+
+  .rescue-price:hover::after { transform: scaleX(1); }
+
+  /* The accent-filled entry plate already carries the colour. */
+  .rescue-price-primary::after { display: none; }
+
   .rescue-price-primary {
     background: var(--accent);
     color: var(--text-on-accent);
   }
 
+  /* Header row: signage slot (square, numeral, dashed rail) with the amount
+     aligned right, so every plate opens with its price. */
   .price-head {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
+    gap: var(--space-md);
+  }
+
+  .price-num {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    align-items: center;
     gap: var(--space-sm);
-  }
-
-  .price-index {
-    font-size: 0.6875rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    color: var(--text-muted);
-  }
-
-  .price-arrow {
-    font-size: 1rem;
+    font-size: clamp(0.9375rem, 1.4vw, 1.125rem);
+    font-weight: 800;
     line-height: 1;
-    transition: transform var(--transition-fast);
+    letter-spacing: -0.03em;
   }
 
-  .rescue-price:hover .price-arrow { transform: translateX(4px); }
+  .price-num::before {
+    flex: 0 0 auto;
+    width: 0.5rem;
+    height: 0.5rem;
+    border: 1px solid var(--border);
+    background: var(--accent);
+    content: "";
+  }
 
-  .rescue-price-primary .price-index {
-    color: var(--text-on-accent);
-    opacity: 0.7;
+  .price-num::after {
+    flex: 1 1 auto;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--border) 0 8px, transparent 8px 16px);
+    opacity: 0.45;
+    content: "";
+  }
+
+  .rescue-price-primary .price-num::before {
+    border-color: var(--text-on-accent);
+    background: var(--text-on-accent);
   }
 
   .price-title {
@@ -236,35 +298,61 @@ import { webRescueCopy, webRescuePage } from "../data/web-rescue";
     font-size: clamp(1.125rem, 2vw, 1.375rem);
     font-weight: 800;
     letter-spacing: -0.03em;
+    text-wrap: balance;
   }
 
+  /* Qualifier and amount split so the number carries the hierarchy on its own. */
   .price-value {
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 0.35em var(--space-xs);
     margin: 0;
-    font-size: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  .price-qualifier {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  .price-amount {
+    font-size: clamp(1.5rem, 2.4vw, 1.75rem);
     font-weight: 700;
     line-height: 1;
     letter-spacing: -0.03em;
   }
 
   .price-detail {
-    margin: auto 0 0;
-    padding-top: var(--space-md);
-    border-top: 1px solid var(--border-light);
-    max-width: 46ch;
+    margin: 0;
+    max-width: 44ch;
     font-size: 0.9375rem;
     line-height: 1.55;
     opacity: 0.85;
   }
 
   .rescue-market {
+    --market-pad: clamp(var(--space-lg), 3vw, var(--space-2xl));
     display: flex;
     flex-direction: column;
-    padding: clamp(var(--space-lg), 3vw, var(--space-xl));
+    padding: var(--market-pad) var(--market-pad) 0;
     border: 3px solid var(--border);
     border-top: 4px solid var(--accent);
     background: var(--text);
     color: var(--bg);
     box-shadow: 8px 8px 0 var(--border);
+    transition: transform var(--transition-card), box-shadow var(--transition-card-shadow);
+  }
+
+  /* The panel answers the three plates' hover response so the row reads as
+     one composed set of four. */
+  .rescue-market:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0 var(--border);
   }
 
   .market-head {
@@ -272,50 +360,80 @@ import { webRescueCopy, webRescuePage } from "../data/web-rescue";
     align-items: flex-start;
     justify-content: space-between;
     gap: var(--space-md);
-    margin: 0 0 var(--space-md);
+    margin: 0 0 var(--space-lg);
   }
 
   .market-title {
     margin: 0;
-    font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+    font-size: clamp(1.5rem, 2.8vw, 2.25rem);
     font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -0.04em;
-  }
-
-  .market-arrow {
-    flex: 0 0 auto;
-    color: var(--text-accent-inverse);
-    font-size: clamp(1.375rem, 2.6vw, 1.875rem);
-    font-weight: 700;
-    line-height: 1;
+    line-height: 1.02;
     letter-spacing: -0.05em;
+    text-wrap: balance;
   }
 
-  .market-lead {
+  /* Reuse the section-title mark on the panel: muted ink becomes paper on ink. */
+  .market-title .title-mark { color: var(--bg); }
+
+  /* Accent corner plate, tying the panel to the primary plate's yellow. */
+  .market-corner {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    aspect-ratio: 1;
+    border: 2px solid var(--text-on-accent);
+    background: var(--accent);
+    color: var(--text-on-accent);
+    font-size: 1.05rem;
+    line-height: 1;
+  }
+
+  /* Audience signage: mono tags split by accent slashes, ruled off from the list. */
+  .market-audience {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-xs) var(--space-sm);
     margin: 0 0 var(--space-lg);
-    font-size: 0.9375rem;
-    line-height: 1.55;
-    opacity: 0.78;
+    padding: 0 0 var(--space-sm);
+    border-bottom: 1px solid color-mix(in srgb, var(--bg) 22%, transparent);
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .market-audience li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .market-audience li:not(:last-child)::after {
+    color: var(--text-accent-inverse);
+    content: "/";
   }
 
   .market-list {
-    flex: 1;
+    flex: 1 1 auto;
     display: grid;
-    align-content: space-between;
+    grid-auto-rows: 1fr;
     gap: 0;
-    margin: 0 0 var(--space-md);
+    margin: 0;
     padding: 0;
     list-style: none;
   }
 
   .market-list li {
     display: flex;
-    align-items: baseline;
-    gap: var(--space-sm);
-    padding-top: var(--space-sm);
+    align-items: flex-start;
+    gap: var(--space-md);
+    padding: var(--space-sm) 0;
     border-top: 1px solid color-mix(in srgb, var(--bg) 22%, transparent);
-    font-size: 0.9375rem;
+    font-size: 1rem;
     font-weight: 600;
     line-height: 1.4;
   }
@@ -325,23 +443,56 @@ import { webRescueCopy, webRescuePage } from "../data/web-rescue";
     border-top: 0;
   }
 
-  .market-plus {
+  /* Numbered square badge, echoing the About process panel numerals. */
+  .market-num {
     flex: 0 0 auto;
-    width: 0.55rem;
-    height: 0.55rem;
-    align-self: center;
-    background: var(--accent);
-    border: 1px solid currentColor;
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 2px solid var(--accent);
+    background: var(--text);
+    color: var(--text-accent-inverse);
+    font-size: 0.625rem;
+    font-weight: 700;
+    line-height: 1;
   }
 
   .market-note {
-    margin: auto 0 0;
+    margin: var(--space-md) 0 var(--space-lg);
     padding-top: var(--space-md);
     border-top: 1px solid color-mix(in srgb, var(--bg) 24%, transparent);
     font-size: 0.8125rem;
     line-height: 1.5;
     opacity: 0.72;
   }
+
+  /* Full-bleed action band pinned to the panel's foot; accent fill on hover. */
+  .market-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    margin: auto calc(-1 * var(--market-pad)) 0;
+    padding: var(--space-lg) var(--market-pad);
+    border-top: 2px solid currentColor;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+  }
+
+  .market-action span:last-child { transition: transform var(--transition-fast); }
+
+  .market-action:hover {
+    background: var(--accent);
+    color: var(--text-on-accent);
+  }
+
+  .market-action:hover span:last-child { transform: translateX(4px); }
+  .market-action:focus-visible { outline: 3px solid currentColor; outline-offset: -4px; }
 
   .rescue-footer {
     display: flex;
@@ -461,6 +612,8 @@ import { webRescueCopy, webRescuePage } from "../data/web-rescue";
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .rescue-price, .rescue-cta, .rescue-cta span:last-child, .rescue-page-link span, .price-arrow { transition: none; }
+    .rescue-price, .rescue-market, .rescue-cta, .rescue-cta span:last-child, .market-action, .market-action span:last-child, .rescue-page-link span { transition: none; }
+    .rescue-price:hover, .rescue-market:hover { transform: none; }
+    .market-action:hover span:last-child { transform: none; }
   }
 </style>

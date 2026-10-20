@@ -51,7 +51,7 @@ See `docs/ARCHITECTURE.md` for the full tree and responsibilities.
 
 - **Read before significant changes:** `docs/POSITIONING.md` → `docs/PRODUCT.md` → `docs/ARCHITECTURE.md` → `docs/CONTENT.md`.
 - **Single source of truth.** Commercial copy and solution pages live in `src/data/*`; case content lives in `src/content/projects/*`. Do not duplicate.
-- **Evidence only.** No invented metrics, guarantees, testimonials, ratings or outcomes. KingBelt and Emilio Faraoni are public in-development reference cases. Never present them as completed launches or invent sales metrics.
+- **Evidence only.** No invented metrics, guarantees, testimonials, ratings or outcomes. KingBelt, Emilio Faraoni and Ilifielt are published cases. Never invent sales metrics or outcomes.
 - **Commercial hierarchy:** Home acquisition order is Web corporativa & SEO → Ecommerce & Shopify → Portales & Sistemas B2B → Sistemas & Integraciones. Ecommerce and B2B retain their specialisation depth and case emphasis. Design, frontend, SEO, analytics, CRO, accessibility, performance and integrations are supporting capabilities; automation belongs inside Sistemas & Integraciones.
 - **Voice.** Yo / el estudio / FRN.Q. Never "nosotros" implying a team that does not exist.
 - **Load the visual system skill before touching interfaces.** Any change to a page, component, typography, composition, color, spacing, motion or responsive behavior requires loading `.opencode/skills/frnq-business-visual-system/SKILL.md` first (`skill({ name: "frnq-business-visual-system" })`). It is the official design language of frnq.es and the mandatory gate for visual work. Do not modify interfaces without it.

@@ -271,7 +271,7 @@ export const solutionPages: SolutionPage[] = [
     ],
     relatedSolutions: ["b2b", "sistemas"],
     evidenceNote:
-      "KingBelt reúne catálogo, fichas con variantes y contenido de marca sobre una arquitectura Shopify. Es una referencia pública en desarrollo: no se le atribuyen ventas ni resultados comerciales.",
+      "KingBelt reúne catálogo, fichas con variantes y contenido de marca sobre una arquitectura Shopify. Es una referencia pública: no se le atribuyen ventas ni resultados comerciales.",
     ctas: {
       hero: "Hablemos de tu tienda",
       mid: "Cuéntame cómo vendes hoy",
@@ -420,7 +420,7 @@ export const solutionPages: SolutionPage[] = [
       systemsCta: "Si el reto principal está en conectar herramientas o coordinar procesos internos, consulta Sistemas e Integraciones.",
     },
     evidenceNote:
-      "Emilio Faraoni reúne catálogo mayorista, alta y validación de empresas, precios privados protegidos y solicitudes de pedido. Es una referencia pública en desarrollo, sin resultados comerciales atribuidos.",
+      "Emilio Faraoni reúne catálogo mayorista, alta y validación de empresas, precios privados protegidos y solicitudes de pedido. Es una referencia pública, sin resultados comerciales atribuidos.",
     ctas: {
       hero: "Revisemos tu proceso comercial",
       mid: "Cuéntame cómo compran tus clientes",

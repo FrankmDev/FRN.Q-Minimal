@@ -684,6 +684,7 @@ const faqSchema = {
   }
 
   .rv-offer {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: var(--space-sm);
@@ -691,13 +692,30 @@ const faqSchema = {
     border: 3px solid var(--border);
     background: var(--bg);
     box-shadow: 8px 8px 0 var(--border);
-    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    transition: transform var(--transition-card), box-shadow var(--transition-card-shadow);
   }
 
   .rv-offer:hover {
     transform: translate(-4px, -4px);
     box-shadow: 12px 12px 0 var(--border);
   }
+
+  /* Hover signature: the accent rule inks across the top edge, left to right. */
+  .rv-offer::after {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 3px;
+    background: var(--accent);
+    content: "";
+    pointer-events: none;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-base);
+  }
+
+  .rv-offer:hover::after { transform: scaleX(1); }
+
+  .rv-offer--primary::after { display: none; }
 
   .rv-offer--primary {
     justify-content: space-between;

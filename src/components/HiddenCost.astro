@@ -91,7 +91,7 @@ const system = [
     overflow: hidden;
     padding: clamp(var(--space-lg), 4vw, var(--space-2xl));
     border: 3px solid var(--border);
-    transition: transform 300ms var(--motion-ease-out), box-shadow 300ms var(--motion-ease-out);
+    transition: transform var(--transition-card), box-shadow var(--transition-card-shadow);
   }
 
   .comparison-side:hover {
@@ -99,8 +99,24 @@ const system = [
     box-shadow: 10px 10px 0 var(--border);
   }
 
+  /* Hover signature: the accent rule inks across the top edge, left to right. */
+  .comparison-side::after {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 3px;
+    background: var(--accent);
+    content: "";
+    pointer-events: none;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-base);
+  }
+
+  .comparison-side:hover::after { transform: scaleX(1); }
+
   .friction-side { background: var(--bg); color: var(--text); }
   .system-side { background: var(--text); color: var(--bg); box-shadow: 9px 9px 0 var(--accent); }
+  .system-side::after { background: var(--bg); }
 
   .comparison-num {
     align-self: flex-end;

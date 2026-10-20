@@ -20,7 +20,7 @@ Decision-makers in small and medium businesses who need to sell, order or operat
 - Teams whose data and processes live in disconnected tools.
 - Small businesses, local businesses and independent professionals who need a trustworthy website, clear services and accessible contact, whether or not they sell online.
 - Businesses with a website already in place that needs repair, recovery or extension rather than a full rebuild (WordPress, Elementor, WooCommerce).
-- Granada businesses in tourism, accommodation, restaurants, bars, venues and retail that need a working digital presence, a direct sales channel and connected systems.
+- Local businesses in tourism, accommodation, restaurants, bars, venues and retail that need a working digital presence, a direct sales channel and connected systems.
 
 They buy **outcomes and reduced friction**, not technology. They care about their process, their customers and what they can measure.
 
@@ -116,8 +116,8 @@ frnq.studio  English, technical  →  shows craft and evidence (external link)
 
 ## Evidence rules
 
-- Published projects with `status: live` are the only proof of completed work; public previews are evidence of work in progress.
-- KingBelt, Emilio Faraoni and Ilifielt are public **in-development references**, not completed launches. Their state must remain explicit in the archive, detail pages and solution evidence links.
+- Published projects with `status: live` are the only proof of completed work; all ten cases are currently `live`.
+- KingBelt, Emilio Faraoni and Ilifielt are published **reference cases**, with no sales or commercial results attributed.
 - Project copy is factual and neutral: what was built and for whom, never an invented outcome. frnq.studio is the factual source for published projects; frnq.es may reframe commercially but does not add undocumented facts.
 - No testimonials, ratings or reviews unless they are real and attributable.
 
@@ -136,11 +136,11 @@ frnq.studio  English, technical  →  shows craft and evidence (external link)
 
 ## Current status
 
-- **CURRENT.** The Home acquisition order is Web corporativa & SEO → Ecommerce & Shopify → Portales & Sistemas B2B → Sistemas & Integraciones. Its commercial brutalist identity is preserved; the **Revisión y reparación web** block (`#revision-web`) remains the entry offer, with a discreet Granada use-case block (hotels, accommodation, restaurants, bars, venues and retail). This does not remove Ecommerce/B2B depth or evidence.
+- **CURRENT.** The Home acquisition order is Web corporativa & SEO → Ecommerce & Shopify → Portales & Sistemas B2B → Sistemas & Integraciones. Its commercial brutalist identity is preserved; the **Revisión y reparación web** block (`#revision-web`) remains the entry offer, with a discreet block for businesses of any type and sector (retail, hospitality, industry, services, professionals and B2B). This does not remove Ecommerce/B2B depth or evidence.
 - The organic-search scope includes static solution routes for Ecommerce & Shopify, Portales & Sistemas B2B, Sistemas & Integraciones and Web corporativa & SEO (`/soluciones/desarrollo-web/`, covering diseño y desarrollo web a medida, including natural Granada relevance on one canonical page), plus the repair-intent route below; these deepen the existing offer without creating new specialisations or city doorway pages.
 - **Repair landing** (`/soluciones/revision-web/`) is the repair-intent page: fixing, updating and improving an existing website (WordPress, Elementor, WooCommerce), starting from the Diagnóstico Web 360 (99 €, descontable de una reparación elegible) and landing repair (desde 299 €) reused from the Home Web Rescue block. Creating or redesigning a site stays on `/soluciones/desarrollo-web/`.
 - Further routes require distinct search intent and useful evidence-led content; no city doorway pages.
 - **FRN.Q Support** (`/soporte/`) is published as a commercial continuity page (mantenimiento, cambios menores, seguimiento y evolución por acuerdo), linked from the services block, published cases and the footer. It creates no portal, ticket system or SLA.
 - **Precios** (`/precios/`) is the public price reference: the scope-specific starting points, the Web Rescue entry offers and the three pricing modes (precio de partida, alcance definido, presupuesto personalizado), with the written terms on scope changes, external costs, taxes and maintenance, and a pricing/payment FAQ. All amounts read from `src/data/pricing.ts`; B2B portals, systems, integrations and custom ecommerce publish no figure.
-- Public in-development previews require explicit editorial approval and visible status. Only label KingBelt, Emilio Faraoni or Ilifielt as completed after operational acceptance and verifiable evidence.
+- Public previews with `status: in-development` (if any are added) require explicit editorial approval and visible status.
 - No language switch, no "Business Mode", no fabricated metrics, guarantees, testimonials or exclusivity language.

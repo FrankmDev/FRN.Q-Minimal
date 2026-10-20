@@ -6,19 +6,56 @@ import { aboutProcess, directAdvantages } from "../data/about";
 <section class="about" id="sobre-mi" aria-labelledby="about-title">
   <span class="section-tag">Estudio</span>
   <div class="container">
-    <div class="about-intro reveal">
+    <!-- Header: support lead left, display title right. Same section-header
+         convention as Services, Revisión web, Operación and Casos. -->
+    <header class="about-header reveal">
       <div class="about-lead">
         <p class="about-role">Francisco Muñoz · Fundador y responsable directo</p>
-        <h2 id="about-title">Del negocio.<br /><span class="title-mark">Al producto.</span></h2>
-      </div>
-      <div class="about-intro-bottom">
         <p class="about-bio">
           Soy Francisco Muñoz y dirijo FRN.Q, un estudio independiente en Granada. Me encargo del diseño y del desarrollo, y hablas conmigo durante todo el proyecto. Trabajo en remoto con empresas de España y otros países.
         </p>
-        <p class="about-specialities">
+      </div>
+      <h2 id="about-title" class="section-title">Del negocio.<br /><span class="title-mark">Al producto.</span></h2>
+    </header>
+
+    <!-- Argument band: the direct-collaboration ledger carries the width as a
+         ruled sequence; specialities and the actions stay quiet on the right,
+         anchored to the bottom of the band. -->
+    <div class="about-grid reveal">
+      <section class="about-direct" aria-labelledby="about-direct-title">
+        <header class="direct-head">
+          <span class="direct-label">Trabajar directo</span>
+          <h3 id="about-direct-title">Decisiones y ejecución en la misma persona.</h3>
+        </header>
+        <ul class="direct-list">
+          {
+            directAdvantages.map((item) => (
+              <li>
+                <span class="direct-num" aria-hidden="true">{item.num}</span>
+                <h4>{item.title}</h4>
+                <p>{item.desc}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <div class="about-side">
+        <div class="about-specialities">
           <span class="specialities-label">Especialidades</span>
-          <span>{serviceAreas.map((service) => service.title).join(" · ")}</span>
-        </p>
+          <ul class="specialities-list" role="list">
+            {
+              serviceAreas.map((service, index) => (
+                <li>
+                  <span class="spec-num" aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span class="spec-name">{service.title}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
         <div class="about-actions">
           <a
             href="#contacto"
@@ -34,26 +71,6 @@ import { aboutProcess, directAdvantages } from "../data/about";
         </div>
       </div>
     </div>
-
-    <section class="about-direct reveal" aria-labelledby="about-direct-title">
-      <header class="direct-head">
-        <span class="direct-label">Trabajar directo</span>
-        <h3 id="about-direct-title">Decisiones y ejecución en la misma persona.</h3>
-      </header>
-      <ul class="direct-list">
-        {
-          directAdvantages.map((item) => (
-            <li>
-              <span class="direct-num" aria-hidden="true">{item.num}</span>
-              <div>
-                <h4>{item.title}</h4>
-                <p>{item.desc}</p>
-              </div>
-            </li>
-          ))
-        }
-      </ul>
-    </section>
 
     <section class="process-section reveal" aria-labelledby="process-title">
       <header class="process-heading">
@@ -95,26 +112,20 @@ import { aboutProcess, directAdvantages } from "../data/about";
     background: repeating-linear-gradient(90deg, var(--border) 0 18px, transparent 18px 36px);
   }
 
-  .mono { font-family: var(--font-mono); }
-
-  /* ---- Intro: asymmetric editorial split. The eyebrow anchors the top-left,
-     the display title closes the column bottom-left; the support column stacks
-     prose, ruled specialities and the action row anchored at its bottom. ---- */
-  .about-intro {
-    display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(17rem, 0.85fr);
-    align-items: stretch;
-    gap: clamp(var(--space-xl), 5vw, var(--space-4xl));
-    padding: clamp(var(--space-lg), 4vw, var(--space-3xl)) 0;
-    border-top: 3px solid var(--border);
-    border-bottom: 1px solid var(--border-light);
+  /* ---- Header: the shared Home convention — lead left, title right. ---- */
+  .about-header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: clamp(var(--space-xl), 4vw, var(--space-3xl));
   }
 
   .about-lead {
+    order: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    gap: var(--space-xl);
+    gap: var(--space-md);
+    max-width: 34rem;
   }
 
   .about-role {
@@ -137,43 +148,135 @@ import { aboutProcess, directAdvantages } from "../data/about";
     background: var(--accent);
   }
 
-  .about-intro h2 {
-    max-width: 16ch;
-    margin: 0;
-    font-size: clamp(2.8rem, 6.5vw, 6.5rem);
-    font-weight: 800;
-    line-height: 0.92;
-    letter-spacing: -0.08em;
-  }
-
-  .about-intro-bottom {
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
-    gap: var(--space-lg);
-  }
-
   .about-bio {
-    max-width: 36ch;
     margin: 0;
-    font-size: clamp(0.9375rem, 1.5vw, 1.125rem);
-    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
     line-height: 1.55;
   }
 
-  /* Specialities: ruled metadata block, mono for scanability without the
-     uppercase glue of a single joined line. */
+  .about-header h2 {
+    order: 2;
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 4.5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.065em;
+    text-align: right;
+  }
+
+  /* ---- Argument band: ruled ledger (wide) + quiet side column (narrow). ---- */
+  .about-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.18fr) minmax(16rem, 0.82fr);
+    align-items: stretch;
+    gap: clamp(var(--space-xl), 5vw, var(--space-4xl));
+    margin-top: clamp(var(--space-2xl), 5vw, var(--space-3xl));
+  }
+
+  .direct-head h3 {
+    max-width: 24ch;
+    margin: var(--space-md) 0 0;
+    font-size: clamp(1.35rem, 2.4vw, 2rem);
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+  }
+
+  .direct-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .direct-label::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 1.5rem;
+    height: 0.45rem;
+    border: 1px solid var(--border);
+    background: var(--accent);
+  }
+
+  /* Ledger: signage numerals with an accent slab anchor each 3px-ruled row,
+     the same rhythm as the case rows above but text only. Non-interactive, so
+     no hover. The description carries the row and takes the remaining width. */
+  .direct-list {
+    margin: var(--space-xl) 0 0;
+    padding: 0;
+    border-bottom: 3px solid var(--border);
+    list-style: none;
+  }
+
+  .direct-list li {
+    display: grid;
+    grid-template-columns: clamp(3rem, 5vw, 5rem) minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: baseline;
+    gap: var(--space-md) clamp(var(--space-lg), 3vw, var(--space-2xl));
+    padding: var(--space-lg) 0;
+    border-top: 3px solid var(--border);
+  }
+
+  .direct-num {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: clamp(1.75rem, 3vw, 2.75rem);
+    font-weight: 800;
+    line-height: 0.85;
+    letter-spacing: -0.06em;
+  }
+
+  .direct-num::after {
+    content: "";
+    width: 1.6rem;
+    height: 0.4rem;
+    background: var(--accent);
+  }
+
+  .direct-list h4 {
+    margin: 0;
+    font-size: clamp(1.125rem, 1.7vw, 1.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+  }
+
+  .direct-list p {
+    max-width: 52ch;
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: clamp(0.875rem, 1.2vw, 0.9375rem);
+    line-height: 1.55;
+  }
+
+  /* Side column: ruled mono metadata on top, the hard CTA anchored at the
+     bottom so it sits level with the ledger's closing rule. */
+  .about-side {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding-left: clamp(var(--space-xl), 4vw, var(--space-3xl));
+    border-left: 1px solid var(--border-light);
+  }
+
   .about-specialities {
     display: grid;
-    gap: var(--space-xs);
-    width: 100%;
-    max-width: 38ch;
-    margin: 0;
-    padding-top: var(--space-md);
-    border-top: 1px solid var(--border-light);
+    gap: var(--space-sm);
   }
 
   .about-specialities .specialities-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
     font-family: var(--font-mono);
     font-size: 0.625rem;
     font-weight: 700;
@@ -182,31 +285,60 @@ import { aboutProcess, directAdvantages } from "../data/about";
     color: var(--text-muted);
   }
 
-  .about-specialities span:last-child {
+  .about-specialities .specialities-label::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 0.4rem;
+    height: 0.4rem;
+    background: var(--accent);
+  }
+
+  /* Ruled index: one specialty per row, mono numeral + name, echoing the
+     ledger's ruled rhythm at metadata scale. */
+  .specialities-list {
+    margin: 0;
+    padding: 0;
+    border-top: 2px solid var(--border);
+    list-style: none;
+  }
+
+  .specialities-list li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-sm);
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .specialities-list .spec-num {
+    flex: 0 0 auto;
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    line-height: 1.7;
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+
+  .specialities-list .spec-name {
+    font-size: 0.8125rem;
+    font-weight: 700;
     letter-spacing: 0.01em;
+    line-height: 1.4;
     color: var(--text-secondary);
   }
 
-  /* Action row: the hard CTA leads, the agency link is a secondary textual
-     exit. Anchored to the bottom of the column so it sits opposite the title. */
   .about-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-md) var(--space-lg);
+    display: grid;
+    gap: var(--space-md);
     margin-top: auto;
-    padding-top: var(--space-md);
   }
 
   .about-cta {
     display: inline-flex;
     align-items: center;
-    flex: 0 0 auto;
+    justify-content: space-between;
     gap: var(--space-xl);
+    width: 100%;
     min-height: 3.25rem;
     padding: var(--space-sm) var(--space-md);
     border: 3px solid var(--border);
@@ -246,86 +378,7 @@ import { aboutProcess, directAdvantages } from "../data/about";
   .agency-reference:hover { color: var(--text); text-decoration-color: var(--accent); }
   .agency-reference:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
 
-  /* ---- Direct collaboration advantages: quiet ruled band between the loud
-     intro and the inverted process panel. Density contrast is deliberate. ---- */
-  .about-direct {
-    display: grid;
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-    gap: clamp(var(--space-xl), 5vw, var(--space-4xl));
-    margin-top: clamp(var(--space-3xl), 6vw, 6rem);
-    padding-top: clamp(var(--space-lg), 3vw, var(--space-2xl));
-    border-top: 3px solid var(--border);
-  }
-
-  .direct-label {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-sm);
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    font-weight: 700;
-    letter-spacing: 0.11em;
-    text-transform: uppercase;
-  }
-
-  .direct-label::before {
-    content: "";
-    flex: 0 0 auto;
-    width: 1.5rem;
-    height: 0.45rem;
-    border: 1px solid var(--border);
-    background: var(--accent);
-  }
-
-  .direct-head h3 {
-    max-width: 22ch;
-    margin: var(--space-md) 0 0;
-    font-size: clamp(1.4rem, 3vw, 2.5rem);
-    font-weight: 800;
-    line-height: 0.98;
-    letter-spacing: -0.055em;
-  }
-
-  .direct-list {
-    display: grid;
-    gap: var(--space-lg);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .direct-list li {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: var(--space-md);
-    padding-top: var(--space-lg);
-    border-top: 2px solid var(--border);
-  }
-
-  .direct-num {
-    padding-top: 0.2em;
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    font-weight: 700;
-    opacity: 0.55;
-  }
-
-  .direct-list h4 {
-    margin: 0 0 var(--space-xs);
-    font-size: clamp(1.125rem, 1.8vw, 1.375rem);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-  }
-
-  .direct-list p {
-    max-width: 52ch;
-    margin: 0;
-    color: var(--text-secondary);
-    font-size: 0.9375rem;
-    line-height: 1.55;
-  }
-
-  /* ---- Process: inverted panel, the section's signature device. ---- */
+  /* ---- Process: inverted panel, the section's signature close. ---- */
   .process-section {
     position: relative;
     margin-top: clamp(var(--space-3xl), 7vw, 7rem);
@@ -423,7 +476,7 @@ import { aboutProcess, directAdvantages } from "../data/about";
     min-height: 13rem;
     padding: 0 var(--space-lg);
     border-left: 1px solid var(--border-light);
-    transition: background-color var(--transition-fast), transform var(--transition-fast);
+    transition: background-color var(--transition-card), transform var(--transition-card);
   }
 
   .process-item:first-child { padding-left: 0; border-left: 0; }
@@ -463,12 +516,33 @@ import { aboutProcess, directAdvantages } from "../data/about";
     line-height: 1.55;
   }
 
+  @media (max-width: 900px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .about-side {
+      padding-left: 0;
+      border-left: 0;
+      border-top: 1px solid var(--border-light);
+      padding-top: var(--space-lg);
+    }
+    .about-actions { margin-top: 0; }
+  }
+
   @media (max-width: 760px) {
-    .about-intro { grid-template-columns: 1fr; gap: var(--space-xl); }
-    .about-lead { gap: var(--space-lg); }
-    .about-intro h2 { font-size: clamp(2.65rem, 9vw, 4.5rem); }
-    .about-direct { grid-template-columns: 1fr; gap: var(--space-xl); }
+    .about-header { display: block; }
+    .about-lead { max-width: 46ch; margin-bottom: var(--space-lg); }
+    .about-header h2 {
+      font-size: clamp(2.35rem, 9vw, 4.25rem);
+      line-height: 0.9;
+      text-align: left;
+    }
     .direct-head h3 { max-width: 26ch; }
+    .direct-list { margin-top: var(--space-lg); }
+    .direct-list li {
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: var(--space-md);
+      padding: var(--space-md) 0;
+    }
+    .direct-list p { grid-column: 1 / -1; }
     .process-heading h3 { font-size: clamp(1.75rem, 4.5vw, 2.5rem); }
     .process-list { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--space-xl); }
     .process-list::before { display: none; }
@@ -480,9 +554,7 @@ import { aboutProcess, directAdvantages } from "../data/about";
   }
 
   @media (max-width: 560px) {
-    .about-intro { padding-block: var(--space-xl); }
-    .about-intro h2 { font-size: clamp(2.5rem, 11vw, 3.75rem); }
-    .about-cta { width: 100%; justify-content: space-between; }
+    .about-header h2 { font-size: clamp(2.5rem, 11vw, 3.75rem); }
     .process-section { margin-top: var(--space-3xl); box-shadow: 6px 6px 0 var(--border); }
     .process-heading { align-items: flex-start; }
     .process-count { font-size: 1.125rem; }

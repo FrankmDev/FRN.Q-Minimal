@@ -19,6 +19,9 @@ const rescueDiagnosis = rescueOffers[0];
 const rescueLanding = rescueOffers[1];
 const rescueLarger = rescueOffers[2];
 
+/** Amount-only label for the landing offer, reused by `price` and `amountLabel`. */
+const landingAmountLabel = formatPrice(rescueLanding.amount);
+
 export interface RescueStep {
   num: string;
   title: string;
@@ -34,6 +37,13 @@ export interface RescuePrice {
   amount?: number;
   /** True when `amount` is a minimum ("desde"). */
   from?: boolean;
+  /**
+   * Optional qualifier split out of `price` ("desde") for contexts that show
+   * the amount with its own hierarchy (Home price plates).
+   */
+  qualifier?: string;
+  /** Amount-only label shown next to `qualifier`; falls back to `price`. */
+  amountLabel?: string;
 }
 
 export interface WebRescueCopy {
@@ -45,10 +55,12 @@ export interface WebRescueCopy {
   prices: RescuePrice[];
   note: string;
   market: {
-    title: string;
-    lead: string;
+    titleLine: string;
+    titleHighlight: string;
+    audience: string[];
     cases: string[];
     disclaimer: string;
+    cta: { label: string; type: ContactType };
   };
   cta: { label: string; type: ContactType };
 }
@@ -66,13 +78,13 @@ export const webRescueCopy: WebRescueCopy = {
   titleLine: "Tu web ya existe.",
   titleHighlight: "Que trabaje mejor.",
   lead:
-    "Reviso webs en marcha —WordPress, Elementor o WooCommerce— para recuperar lo que dejó de funcionar, mejorar lo que no convierte y ampliar lo que falta, sin rehacerlo todo.",
+    "Reviso webs en marcha —WordPress, Elementor o WooCommerce— para recuperar lo que se rompió, arreglar lo que no convierte y ampliar lo que falta. Sin rehacerlo todo.",
   steps: [
     {
       num: "01",
       title: "Diagnóstico",
       description:
-        "Revisión inicial y acotada: qué falla, qué se puede mejorar y por dónde empezar.",
+        "Revisión acotada: qué falla, qué conviene mejorar y por dónde empezar.",
     },
     {
       num: "02",
@@ -95,9 +107,11 @@ export const webRescueCopy: WebRescueCopy = {
     { ...webRescueDiagnosis },
     {
       title: rescueLanding.name,
-      price: `desde ${formatPrice(rescueLanding.amount)}`,
+      price: `desde ${landingAmountLabel}`,
       amount: rescueLanding.amount,
       from: true,
+      qualifier: "desde",
+      amountLabel: landingAmountLabel,
       detail: rescueLanding.scope,
     },
     {
@@ -109,18 +123,26 @@ export const webRescueCopy: WebRescueCopy = {
   note:
     "El diagnóstico es un punto de partida acotado, no una auditoría ilimitada. El presupuesto se cierra por escrito antes de reparar.",
   market: {
-    title: "También para negocios de Granada",
-    lead:
-      "Desde Granada, puedo ayudarte si gestionas un hotel, alojamiento, restaurante, pub, sala o comercio.",
+    titleLine: "Para todo tipo de",
+    titleHighlight: "negocios",
+    audience: [
+      "Comercios",
+      "Hostelería",
+      "Industria",
+      "Servicios",
+      "Profesionales",
+      "B2B",
+    ],
     cases: [
-      "Presencia digital y web del negocio",
-      "Venta directa y tienda online",
-      "Reservas y pagos integrados",
+      "Mejorar la web del negocio",
+      "Vender directo y online",
+      "Integrar reservas y pagos",
       "Promociones y entradas con proveedores especializados",
-      "Medición de consultas, reservas y ventas",
+      "Medir consultas, reservas y ventas",
     ],
     disclaimer:
-      "Planteo estas soluciones después de estudiar cada negocio. No son productos cerrados ni funciones garantizadas.",
+      "Cada solución se plantea tras estudiar el negocio: no hay paquetes cerrados ni funciones garantizadas.",
+    cta: { label: "Cuéntame tu negocio", type: "reparacion" },
   },
   cta: { label: "Revisar mi web", type: "reparacion" },
 };

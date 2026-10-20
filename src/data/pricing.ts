@@ -119,7 +119,7 @@ export const rescueOffers = [
     amount: 99,
     fit: "Revisar una web en marcha antes de decidir qué reparar, ampliar o dejar como está.",
     scope:
-      "Informe inicial y acotado. Se descuenta de una reparación elegible contratada en los 30 días siguientes.",
+      "Informe inicial con hallazgos y prioridades; se descuenta de una reparación elegible contratada en los 30 días siguientes.",
   },
   {
     name: "Reparación de landing",

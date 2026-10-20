@@ -31,7 +31,7 @@ export const categoryLabels: Record<Project["category"], string> = {
   website: "Web",
   product: "Producto digital",
   interactive: "Experiencia interactiva",
-  // KingBelt and Emilio Faraoni are public in-development references.
+  // KingBelt and Emilio Faraoni are the flagship ecommerce and B2B references.
   ecommerce: "E-commerce D2C",
   b2b: "Portal / Commerce B2B",
 };

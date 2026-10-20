@@ -54,6 +54,11 @@
   --transition-fast: 150ms var(--motion-ease-out);
   --transition-base: 300ms var(--motion-ease-out);
   --transition-slow: 500ms var(--motion-ease-out);
+  /* Card hover: a short mechanical lift that settles just past its target
+     (2.5% overshoot) while the offset shadow trails behind the movement. */
+  --motion-ease-card: cubic-bezier(0.2, 0.85, 0.25, 1.08);
+  --transition-card: 320ms var(--motion-ease-card);
+  --transition-card-shadow: 440ms var(--motion-ease-card);
   --motion-reveal-duration: 650ms;
 
   --radius-none: 0;

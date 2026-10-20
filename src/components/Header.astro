@@ -1,52 +1,118 @@
 ---
-import { navItems, headerCta } from "../data/navigation";
+import {
+  navItems,
+  secondaryNavItems,
+  solutionNav,
+  rescueNav,
+  headerCta,
+} from "../data/navigation";
 import { portfolioLink, siteConfig } from "../data/site";
-const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
+
+const navLinks = navItems;
+const subLinks = secondaryNavItems;
+/** Desktop bar swaps the Soluciones anchor for the dropdown trigger. */
+const desktopItems = navLinks.filter((item) => item.href !== "/#servicios");
+
+/**
+ * Route state for real subpages: exact route marks the page, a route prefix
+ * (e.g. a case inside /casos/) marks its section. Home anchors never hold a
+ * persistent current state — the scroll spy owns them while on the Home.
+ */
+const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
+function currentFor(href: string): "page" | "true" | undefined {
+  if (href.startsWith("/#")) return undefined;
+  const base = href.replace(/\/+$/, "");
+  if (currentPath === base) return "page";
+  return currentPath.startsWith(`${base}/`) ? "true" : undefined;
+}
+
+/** The Soluciones trigger reads as current on any solution route. */
+const solutionsCurrent = currentFor("/soluciones/");
+
+/** Menu signage derived from the same data: index range and location strip. */
+const menuIndex = `01 — ${String(navLinks.length).padStart(2, "0")}`;
+const solutionCount = String(solutionNav.length).padStart(2, "0");
+const menuLocation = `${siteConfig.location.city.toUpperCase()}, ${siteConfig.location.country}`;
 ---
 
 <header class="header" id="header" role="banner">
+  <!-- Industrial top strip: line + offset blocks. The scroll progress fills
+       the line segment in accent ink, left to right. -->
   <div class="header-accent" aria-hidden="true">
-    <div class="accent-line"></div>
+    <div class="accent-line">
+      <div class="progress-fill" id="progress-bar"></div>
+    </div>
     <div class="accent-blocks">
       <span></span><span></span><span></span>
     </div>
   </div>
 
   <div class="container header-inner">
+    <!-- Brand lockup mirrors the footer's canonical mark: heavy wordmark plus
+         the bordered accent square of the section-tag plate. -->
     <a href="/" class="logo" aria-label={`${siteConfig.name} — Inicio`}>
-      <div class="logo-icon" aria-hidden="true">
-        <div class="icon-grid">
-          <span></span><span></span>
-          <span></span><span></span>
-        </div>
-      </div>
-      <span class="logo-text">{siteConfig.name}</span>
+      <span class="logo-mark" aria-hidden="true"></span>
+      <span class="logo-word">{siteConfig.name}</span>
     </a>
 
     <nav class="desktop-nav" aria-label="Navegación principal">
+      <div class="nav-drop" id="nav-drop">
+        <button
+          type="button"
+          class="nav-link nav-drop-trigger"
+          id="drop-trigger"
+          aria-expanded="false"
+          aria-controls="drop-panel"
+          aria-current={solutionsCurrent}
+        >
+          <span class="link-text">Soluciones</span>
+          <span class="drop-caret" aria-hidden="true">+</span>
+        </button>
+
+        <!-- Hard plate: the four solution routes plus the productized
+             entry offer. Click-disclosure, Escape and outside-focus close. -->
+        <div class="drop-panel" id="drop-panel" inert>
+          <div class="drop-head" aria-hidden="true">
+            <span class="drop-tag">Soluciones</span>
+            <span class="drop-count">01 — {solutionCount}</span>
+          </div>
+          <div class="drop-rule" aria-hidden="true"></div>
+          {
+            solutionNav.map((item) => (
+              <a href={item.href} class="drop-link" aria-current={currentFor(item.href)}>
+                <span class="drop-num" aria-hidden="true">{item.num}</span>
+                <span class="drop-body">
+                  <span class="drop-label">{item.label}</span>
+                  <span class="drop-short">{item.short}</span>
+                </span>
+                <span class="drop-arrow" aria-hidden="true">→</span>
+              </a>
+            ))
+          }
+          <div class="drop-rule" aria-hidden="true"></div>
+          <a href={rescueNav.href} class="drop-link drop-rescue" aria-current={currentFor(rescueNav.href)}>
+            <span class="drop-num drop-num--mark" aria-hidden="true">+</span>
+            <span class="drop-body">
+              <span class="drop-label">
+                {rescueNav.label} <span class="drop-flag">{rescueNav.tag}</span>
+              </span>
+              <span class="drop-short">{rescueNav.short}</span>
+            </span>
+            <span class="drop-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+
       {
-        navLinks.map((link) => (
-          <a href={link.href} class="nav-link">
-            <span class="link-bracket" aria-hidden="true">[</span>
+        desktopItems.map((link) => (
+          <a href={link.href} class="nav-link" aria-current={currentFor(link.href)}>
             <span class="link-text">{link.label}</span>
-            <span class="link-bracket" aria-hidden="true">]</span>
           </a>
         ))
       }
     </nav>
 
     <div class="header-actions">
-      <a
-        href={portfolioLink.href}
-        class="studio-link mono"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Visitar FRN.Q Studio en una nueva pestaña"
-        data-track="studio_link_click"
-        data-track-location="header"
-      >
-        {portfolioLink.label} <span aria-hidden="true">↗</span>
-      </a>
       <button
         class="theme-toggle"
         id="theme-toggle"
@@ -67,7 +133,7 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
         </span>
       </button>
       <a
-        href={`/${headerCta.href}`}
+        href={headerCta.href}
         class="header-cta"
         data-track="cta_click"
         data-track-location="header"
@@ -85,49 +151,113 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
         aria-label="Abrir menú"
       >
         <span class="menu-icon" aria-hidden="true">
-          <span class="toggle-line"></span>
-          <span class="toggle-line"></span>
-          <span class="toggle-line"></span>
+          <span class="menu-mark">
+            <span class="toggle-line"></span>
+            <span class="toggle-line"></span>
+            <span class="toggle-line"></span>
+          </span>
         </span>
       </button>
     </div>
   </div>
 
-  <div class="header-progress" aria-hidden="true">
-    <div class="progress-bar" id="progress-bar"></div>
-  </div>
-
   <nav class="mobile-nav" id="mobile-nav" aria-label="Navegación móvil" inert>
-    <div class="container">
+    <div class="container mobile-nav-inner">
+      <div class="mn-meta mn-item" style="--i: 0" aria-hidden="true">
+        <span class="section-tag section-tag--inline">Menú</span>
+        <span class="mn-count">{menuIndex}</span>
+      </div>
+      <div class="mn-rule" aria-hidden="true"></div>
+
       {
-        navLinks.map((link) => (
-          <a href={link.href} class="mobile-link">
-            <span class="ml-bracket" aria-hidden="true">[</span>
-            {link.label}
+        navLinks.map((link, index) => (
+          <a
+            href={link.href}
+            class="mobile-link mn-item"
+            style={`--i: ${index + 1}`}
+            aria-current={currentFor(link.href)}
+          >
+            <span class="ml-index" aria-hidden="true">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span class="ml-label">{link.label}</span>
+            <span class="ml-arrow" aria-hidden="true">→</span>
           </a>
         ))
       }
-      <a
-        href={`/${headerCta.href}`}
-        class="mobile-cta"
-        data-track="cta_click"
-        data-track-location="mobile_menu"
-        data-track-label={headerCta.label}
-      >
-        <span>{headerCta.label}</span>
-        <span class="cta-arrow" aria-hidden="true">→</span>
-      </a>
-      <a
-        href={portfolioLink.href}
-        class="mobile-studio mono"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={portfolioLink.title}
-        data-track="studio_link_click"
-        data-track-location="mobile_menu"
-      >
-        {portfolioLink.label} <span aria-hidden="true">↗</span>
-      </a>
+
+      <!-- Soluciones group: the four routes plus the entry offer, printed as
+           a numbered mono directory (the footer index device). -->
+      <div class="mn-group mn-item" style={`--i: ${navLinks.length + 1}`}>
+        <span class="mn-group-tag" aria-hidden="true">Soluciones</span>
+        <div class="mn-group-list">
+          {
+            [...solutionNav, rescueNav].map((item) => (
+              <a
+                href={item.href}
+                class="mn-sub-link"
+                aria-current={currentFor(item.href)}
+              >
+                <span class="mn-sub-num" aria-hidden="true">
+                  {"num" in item ? item.num : "+"}
+                </span>
+                <span class="mn-sub-label">{item.label}</span>
+                <span class="mn-sub-arrow" aria-hidden="true">→</span>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="mn-group mn-item" style={`--i: ${navLinks.length + 2}`}>
+        <span class="mn-group-tag" aria-hidden="true">Más</span>
+        <div class="mn-group-list mn-group-list--split">
+          {
+            subLinks.map((link) => (
+              <a
+                href={link.href}
+                class="mn-sub-link"
+                aria-current={currentFor(link.href)}
+              >
+                <span class="mn-sub-label">{link.label}</span>
+                <span class="mn-sub-arrow" aria-hidden="true">→</span>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="mn-actions">
+        <a
+          href={headerCta.href}
+          class="mobile-cta mn-item"
+          style={`--i: ${navLinks.length + 3}`}
+          data-track="cta_click"
+          data-track-location="mobile_menu"
+          data-track-label={headerCta.label}
+        >
+          <span>{headerCta.label}</span>
+          <span class="cta-arrow" aria-hidden="true">→</span>
+        </a>
+
+        <div class="mn-foot mn-item" style={`--i: ${navLinks.length + 4}`}>
+          <div class="mn-rule" aria-hidden="true"></div>
+          <div class="mn-foot-row">
+            <a
+              href={portfolioLink.href}
+              class="mobile-studio"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={portfolioLink.title}
+              data-track="studio_link_click"
+              data-track-location="mobile_menu"
+            >
+              {portfolioLink.label} <span aria-hidden="true">↗</span>
+            </a>
+            <span class="mn-loc">{menuLocation}</span>
+          </div>
+        </div>
+      </div>
     </div>
   </nav>
 </header>
@@ -161,56 +291,159 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
   const mobileNav = document.getElementById("mobile-nav");
   const header = document.getElementById("header");
   const progressBar = document.getElementById("progress-bar");
+  const dropWrap = document.getElementById("nav-drop");
+  const dropTrigger = document.getElementById("drop-trigger");
+  const dropPanel = document.getElementById("drop-panel");
+  const desktopQuery = window.matchMedia("(min-width: 1024px)");
+  let previousOverflow = "";
+  let menuOpen = false;
+  let dropOpen = false;
+
+  // Measure the panel's actual edge, including the header rule. Short or
+  // landscape viewports scroll the content instead of forcing a minimum height.
+  function syncMenuHeight() {
+    if (!mobileNav) return;
+    const viewport = window.visualViewport;
+    const bottom = viewport && viewport.scale === 1
+      ? viewport.height + viewport.offsetTop
+      : window.innerHeight;
+    const available = bottom - mobileNav.getBoundingClientRect().top;
+    mobileNav.style.setProperty("--menu-h", `${Math.max(available, 0)}px`);
+  }
 
   function setMenuOpen(open: boolean) {
-    menuButton?.setAttribute("aria-expanded", String(open));
-    menuButton?.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
-    menuButton?.classList.toggle("is-active", open);
-    mobileNav?.toggleAttribute("inert", !open);
-    mobileNav?.classList.toggle("is-open", open);
-    document.body.style.overflow = open ? "hidden" : "";
+    if (!menuButton || !mobileNav || open === menuOpen) return;
+
+    if (open) {
+      previousOverflow = document.body.style.overflow;
+    } else if (mobileNav.contains(document.activeElement) || (desktopQuery.matches && document.activeElement === menuButton)) {
+      // Never leave focus in a closing inert panel, including after link clicks.
+      (desktopQuery.matches ? themeToggle : menuButton)?.focus({ preventScroll: true });
+    }
+
+    menuOpen = open;
+    menuButton.setAttribute("aria-expanded", String(open));
+    menuButton.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+    menuButton.classList.toggle("is-active", open);
+    mobileNav.toggleAttribute("inert", !open);
+    mobileNav.classList.toggle("is-open", open);
+    header?.classList.toggle("is-menu-open", open);
+    document.body.style.overflow = open ? "hidden" : previousOverflow;
 
     // Keyboard focus follows the panel: the menu is operable without tabbing
     // back through the header chrome. preventScroll keeps the page still on
     // touch devices, where the fixed panel is already on screen.
     if (open) {
-      mobileNav?.querySelector<HTMLElement>(".mobile-link")?.focus({ preventScroll: true });
+      syncMenuHeight();
+      mobileNav.scrollTop = 0;
+      mobileNav.querySelector<HTMLElement>(".mobile-link")?.focus({ preventScroll: true });
     }
   }
 
   menuButton?.addEventListener("click", () => {
-    setMenuOpen(menuButton.getAttribute("aria-expanded") !== "true");
+    setMenuOpen(!menuOpen);
   });
 
   mobileNav?.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => setMenuOpen(false));
   });
 
+  // ---- Soluciones dropdown: click disclosure with hard-plate panel ----
+  function setDropOpen(open: boolean, refocus = false) {
+    if (!dropTrigger || !dropPanel || open === dropOpen) return;
+    dropOpen = open;
+    dropTrigger.setAttribute("aria-expanded", String(open));
+    dropPanel.toggleAttribute("inert", !open);
+    dropPanel.classList.toggle("is-open", open);
+    if (!open && refocus) dropTrigger.focus({ preventScroll: true });
+  }
+
+  dropTrigger?.addEventListener("click", () => setDropOpen(!dropOpen));
+
+  dropPanel?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => setDropOpen(false));
+  });
+
+  // Close on outside pointer or focus leaving the dropdown.
+  document.addEventListener("pointerdown", (event) => {
+    if (dropOpen && dropWrap && !dropWrap.contains(event.target as Node)) setDropOpen(false);
+  });
+  document.addEventListener("focusin", (event) => {
+    if (dropOpen && dropWrap && !dropWrap.contains(event.target as Node)) setDropOpen(false);
+  });
+
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && menuButton?.getAttribute("aria-expanded") === "true") {
+    if (event.key === "Escape" && dropOpen) {
+      event.preventDefault();
+      setDropOpen(false, true);
+      return;
+    }
+
+    if (!menuOpen) return;
+
+    if (event.key === "Escape") {
+      event.preventDefault();
       setMenuOpen(false);
-      menuButton.focus();
+      menuButton?.focus({ preventScroll: true });
+    }
+
+    // Keep keyboard navigation on the visible menu and header controls, not on
+    // the scroll-locked page behind them. Theme and close stay within reach.
+    if (event.key === "Tab") {
+      const controls = Array.from(header?.querySelectorAll<HTMLElement>("a[href], button:not([disabled])") ?? [])
+        .filter((control) => control.getClientRects().length > 0);
+      const target = event.shiftKey ? controls.at(-1) : controls[0];
+      const boundary = event.shiftKey ? controls[0] : controls.at(-1);
+
+      if (target && (document.activeElement === boundary || !controls.includes(document.activeElement as HTMLElement))) {
+        event.preventDefault();
+        target.focus({ preventScroll: true });
+      }
     }
   });
 
-  const desktopQuery = window.matchMedia("(min-width: 1024px)");
   desktopQuery.addEventListener("change", (event) => {
-    if (event.matches) setMenuOpen(false);
+    if (event.matches) {
+      setMenuOpen(false);
+      setDropOpen(false);
+    }
   });
 
-  // Scroll: progress bar + bar/plate state (throttled via rAF).
+  // Keep the panel flush with the bottom edge while the menu is open
+  // (rotation, URL-bar collapse and other viewport changes).
+  const syncOpenMenuHeight = () => {
+    if (menuOpen) syncMenuHeight();
+  };
+  window.addEventListener("resize", syncOpenMenuHeight, { passive: true });
+  window.visualViewport?.addEventListener("resize", syncOpenMenuHeight, { passive: true });
+
+  // Scroll: strip progress + auto-hide + bar/plate state (rAF-throttled).
+  // Down past the fold pins the bar away; any rise brings it back. The mobile
+  // panel, the dropdown and keyboard focus inside the header all pin it.
+  let lastY = window.scrollY;
   const syncHeaderOnScroll = () => {
     const scrollY = window.scrollY;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const scrolled = docHeight > 0 ? scrollY / docHeight : 0;
+    const scrolled = docHeight > 0 ? Math.min(scrollY / docHeight, 1) : 0;
 
-    if (progressBar) {
-      progressBar.style.width = `${Math.min(scrolled * 100, 100)}%`;
+    progressBar?.style.setProperty("transform", `scaleX(${scrolled})`);
+
+    const pinned = menuOpen || dropOpen || header?.contains(document.activeElement) === true;
+    const dy = scrollY - lastY;
+    if (scrollY < 140 || dy < -2) {
+      header?.classList.remove("is-hidden");
+    } else if (dy > 2 && !pinned) {
+      header?.classList.add("is-hidden");
     }
+    lastY = scrollY;
+
     // The plate follows the smallest scroll, so the hero's own content never
     // shows through a bare header.
     header?.classList.toggle("is-scrolled", scrollY > 12);
   };
+
+  // Keyboard users tabbing into a hidden bar reveal it immediately.
+  header?.addEventListener("focusin", () => header.classList.remove("is-hidden"));
 
   let ticking = false;
   window.addEventListener(
@@ -225,6 +458,37 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     },
     { passive: true },
   );
+
+  // Scroll spy: on the Home, the anchor destinations light up as their section
+  // crosses the reading band. Route pages keep their static aria-current.
+  const desktopNav = header?.querySelector<HTMLElement>(".desktop-nav");
+  const spyPairs: Array<[HTMLElement | null, HTMLElement | null]> = [
+    [dropTrigger ?? null, document.getElementById("servicios")],
+    [desktopNav?.querySelector<HTMLElement>('a[href="/casos/"]') ?? null, document.getElementById("proyectos")],
+    [desktopNav?.querySelector<HTMLElement>('a[href="/#sobre-mi"]') ?? null, document.getElementById("sobre-mi")],
+    [desktopNav?.querySelector<HTMLElement>('a[href="/#contacto"]') ?? null, document.getElementById("contacto")],
+  ];
+  const spySections = spyPairs
+    .filter((pair): pair is [HTMLElement, HTMLElement] => Boolean(pair[0] && pair[1]))
+    .map(([target, section]) => ({ target, section }));
+
+  if (spySections.length > 0) {
+    const setCurrent = (target: HTMLElement) => {
+      spySections.forEach((s) => s.target.removeAttribute("aria-current"));
+      target.setAttribute("aria-current", "true");
+    };
+    const spy = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const match = spySections.find((s) => s.section === entry.target);
+          if (match) setCurrent(match.target);
+        }
+      },
+      { rootMargin: "-40% 0px -55% 0px" },
+    );
+    spySections.forEach((s) => spy.observe(s.section));
+  }
 
   // Initial state: a restored scroll position or a #fragment landing would
   // otherwise leave the header without its plate over already scrolled content.
@@ -248,7 +512,8 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     transition:
       background var(--transition-base),
       border-color var(--transition-base),
-      box-shadow var(--transition-base);
+      box-shadow var(--transition-base),
+      transform var(--transition-base);
     will-change: transform;
   }
 
@@ -260,7 +525,22 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     box-shadow: 0 4px 24px var(--shadow);
   }
 
-  /* Industrial top strip: line + offset blocks */
+  .header.is-menu-open {
+    background: var(--bg);
+    border-bottom-color: var(--border);
+    box-shadow: none;
+    transform: none;
+  }
+
+  /* Auto-hide rail: scrolling down pins the bar above the viewport; any rise
+     or keyboard focus restores it. The panel and dropdown pin it open. */
+  .header.is-hidden {
+    transform: translateY(-102%);
+  }
+
+  /* Industrial top strip: line + offset blocks. The blocks close on the
+     container's right edge, so the strip reads as part of the composition
+     instead of a viewport decoration. */
   .header-accent {
     position: absolute;
     top: 0;
@@ -268,13 +548,29 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     right: 0;
     height: 4px;
     display: flex;
+    padding-right: max(
+      var(--layout-gutter),
+      calc(50% - (var(--layout-content-width) / 2) + var(--layout-gutter))
+    );
     pointer-events: none;
     z-index: 2;
   }
 
   .accent-line {
+    position: relative;
     flex: 1;
     background: var(--border);
+    overflow: hidden;
+  }
+
+  /* Scroll progress fills the line segment in accent ink. */
+  .progress-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left center;
+    will-change: transform;
   }
 
   .accent-blocks {
@@ -311,24 +607,27 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     min-height: 64px;
   }
 
-  /* ---- Logo badge ---- */
+  /* ---- Brand lockup ---- */
+  /* The footer's canonical mark, scaled to the bar: heavy sans wordmark plus
+     the bordered accent square of the section-tag plate. */
+
   .logo {
-    display: flex;
+    display: inline-flex;
+    flex-shrink: 0;
     align-items: center;
-    gap: var(--space-sm);
-    padding: var(--space-sm) var(--space-md);
+    gap: 0.625rem;
+    padding: 0.625rem 0.875rem;
     border: 2px solid var(--border);
     background: var(--bg);
-    box-shadow: var(--shadow-brutal);
+    box-shadow: 4px 4px 0 var(--border);
     transition:
       transform var(--transition-fast),
       box-shadow var(--transition-fast);
-    position: relative;
   }
 
   .logo:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 7px 7px 0 var(--border);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--border);
   }
 
   .logo:focus-visible {
@@ -336,135 +635,363 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     outline-offset: 3px;
   }
 
-  .logo-icon {
-    width: 22px;
-    height: 22px;
-    border: 2px solid var(--border);
-    padding: 2px;
+  .logo-mark {
+    width: 0.75rem;
+    aspect-ratio: 1;
     flex-shrink: 0;
+    border: 2px solid var(--border);
+    background: var(--accent);
+    transition: transform var(--transition-base);
   }
 
-  .icon-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2px;
-    height: 100%;
+  /* Same diagonal shift as the footer brand square on hover. */
+  .logo:hover .logo-mark,
+  .logo:focus-visible .logo-mark {
+    transform: translate(3px, -3px);
   }
 
-  .icon-grid span {
-    background: var(--border);
-  }
-
-  .logo:hover .icon-grid {
-    transform: rotate(45deg);
-    transition: transform 0.35s var(--motion-ease-out);
-  }
-
-  .icon-grid {
-    transition: transform 0.35s var(--motion-ease-out);
-  }
-
-  .logo-text {
-    font-family: var(--font-mono);
-    font-size: 1.125rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+  .logo-word {
+    font-family: var(--font-sans);
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: -0.055em;
+    line-height: 1;
   }
 
   /* ---- Desktop nav ---- */
+  /* Mono labels with a title-mark slab: the accent underline prints itself on
+     hover and stays on the current route or section. */
+
   .desktop-nav {
     display: none;
     align-items: center;
-    gap: var(--space-sm);
+    gap: clamp(0.75rem, 1.4vw, 1.25rem);
   }
 
   .nav-link {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    font-size: 0.8125rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: var(--space-xs) var(--space-sm);
     position: relative;
-    border: 2px solid transparent;
-    transition: all var(--transition-fast);
-  }
-
-  .link-bracket {
-    opacity: 0;
-    transform: translateX(-4px);
-    transition: all var(--transition-fast);
-    color: var(--text-muted);
+    padding: 0.375rem 0.125rem;
+    font-family: var(--font-mono);
     font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--text-secondary);
+    transition: color var(--transition-fast);
   }
 
-  .nav-link .link-bracket:last-child {
-    transform: translateX(4px);
-  }
-
-  .nav-link:hover .link-bracket,
-  .nav-link:focus .link-bracket {
-    opacity: 0.5;
-    transform: translateX(0);
-    color: var(--bg);
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--transition-fast);
   }
 
   .nav-link:hover,
-  .nav-link:focus-visible {
-    background: var(--text);
-    color: var(--bg);
-    border-color: var(--text);
-    box-shadow: 4px 4px 0 var(--y);
-    transform: translate(-2px, -2px);
+  .nav-link:focus-visible,
+  .nav-link[aria-current] {
+    color: var(--text);
   }
 
-  .nav-link-ext .link-text {
-    font-size: 0.75rem;
+  .nav-link:hover::after,
+  .nav-link:focus-visible::after,
+  .nav-link[aria-current]::after {
+    transform: scaleX(1);
+  }
+
+  a.nav-link:focus-visible,
+  .nav-drop-trigger:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 3px;
+  }
+
+  /* ---- Soluciones dropdown ---- */
+  .nav-drop {
+    position: relative;
+    display: flex;
+  }
+
+  .nav-drop-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  .drop-caret {
+    font-size: 0.875rem;
+    line-height: 1;
+    color: var(--text-muted);
+    transition: transform var(--transition-base), color var(--transition-fast);
+  }
+
+  .nav-drop-trigger:hover .drop-caret,
+  .nav-drop-trigger:focus-visible .drop-caret {
+    color: var(--text);
+  }
+
+  .nav-drop-trigger[aria-expanded="true"] .drop-caret {
+    transform: rotate(45deg);
+    color: var(--text);
+  }
+
+  .drop-panel {
+    position: absolute;
+    top: calc(100% + 14px);
+    left: 0;
+    min-width: min(28rem, calc(100vw - 2 * var(--layout-gutter)));
+    padding: 0;
+    background: var(--bg);
+    border: 3px solid var(--border);
+    box-shadow: 8px 8px 0 var(--accent);
+    opacity: 0;
+    transform: translateY(-6px);
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity var(--transition-fast),
+      transform var(--transition-fast),
+      visibility 0s var(--transition-fast);
+  }
+
+  .drop-panel.is-open {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    pointer-events: auto;
+    transition:
+      opacity var(--transition-fast),
+      transform var(--transition-fast),
+      visibility 0s;
+  }
+
+  /* Signage head: tag + index, printed over the panel's first rule. */
+  .drop-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: 0.85rem 1.25rem 0.7rem;
+  }
+
+  .drop-tag {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .drop-tag::before {
+    width: 0.5rem;
+    aspect-ratio: 1;
+    border: 1px solid var(--border);
+    background: var(--accent);
+    content: "";
+  }
+
+  .drop-count {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+  }
+
+  .drop-link {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-md);
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text);
+    transition:
+      background-color var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .drop-num {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
     letter-spacing: 0.08em;
-    opacity: 0.85;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-muted);
+    transition:
+      background-color var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .drop-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  .drop-label {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    line-height: 1.1;
+  }
+
+  .drop-short {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    color: var(--text-muted);
+    transition: color var(--transition-fast);
+  }
+
+  .drop-arrow {
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition:
+      opacity var(--transition-fast),
+      transform var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .drop-link:is(:hover, :focus-visible) {
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  .drop-link:is(:hover, :focus-visible) .drop-num,
+  .drop-link:is(:hover, :focus-visible) .drop-short {
+    color: var(--bg);
+    opacity: 0.7;
+  }
+
+  .drop-link:is(:hover, :focus-visible) .drop-arrow {
+    opacity: 1;
+    transform: translateX(0);
+    color: var(--text-accent-inverse);
+  }
+
+  .drop-link:focus-visible {
+    outline: 3px solid var(--text-accent-inverse);
+    outline-offset: -3px;
+  }
+
+  /* Current solution route: accent slot numeral plus printed underline. */
+  .drop-link:not(.drop-rescue)[aria-current] .drop-num {
+    background: var(--accent);
+    color: var(--text-on-accent);
+    padding: 0.125rem 0.3rem;
+  }
+
+  .drop-link:not(.drop-rescue)[aria-current] .drop-label {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.3em;
+  }
+
+  /* Dashed industrial separation, inset to the row rhythm. */
+  .drop-rule {
+    height: 2px;
+    margin: 0 1.25rem;
+    background: repeating-linear-gradient(90deg, var(--border) 0 14px, transparent 14px 28px);
+    opacity: 0.5;
+  }
+
+  /* Entry offer: the panel closes on the full-bleed accent plate. */
+  .drop-rescue {
+    border-bottom: 0;
+    background: var(--accent);
+    color: var(--text-on-accent);
+  }
+
+  .drop-rescue .drop-num--mark {
+    color: var(--text-on-accent);
+    font-weight: 800;
+  }
+
+  .drop-rescue .drop-short {
+    color: var(--text-on-accent);
+    opacity: 0.72;
+  }
+
+  .drop-rescue .drop-arrow {
+    opacity: 1;
+    transform: none;
+    color: var(--text-on-accent);
+  }
+
+  .drop-rescue:is(:hover, :focus-visible) {
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  .drop-rescue:is(:hover, :focus-visible) .drop-num--mark,
+  .drop-rescue:is(:hover, :focus-visible) .drop-short {
+    color: var(--bg);
+    opacity: 0.7;
+  }
+
+  .drop-rescue:is(:hover, :focus-visible) .drop-arrow {
+    color: var(--text-accent-inverse);
+  }
+
+  .drop-num--mark {
+    font-size: 0.9375rem;
+  }
+
+  /* Route chip on the accent plate: ink outline, no fill. */
+  .drop-flag {
+    display: inline-block;
+    padding: 0.15em 0.45em;
+    margin-left: 0.4em;
+    border: 1.5px solid currentColor;
+    color: inherit;
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    vertical-align: 0.15em;
   }
 
   /* ---- Actions ---- */
   .header-actions {
     display: flex;
+    flex-shrink: 0;
     align-items: center;
     gap: var(--space-sm);
-  }
-
-  /* Secondary textual link; HABLEMOS is the only highlighted CTA. */
-  .studio-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    color: var(--text-muted);
-    font-size: 0.6875rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    transition: color var(--transition-fast);
-  }
-
-  .studio-link:hover {
-    color: var(--text);
-  }
-
-  .studio-link:focus-visible {
-    outline: 3px solid var(--text);
-    outline-offset: 4px;
   }
 
   .theme-toggle {
     position: relative;
     display: grid;
-    width: 48px;
-    min-width: 48px;
-    height: 48px;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
     flex: 0 0 auto;
     place-items: center;
     overflow: hidden;
     border: 2px solid var(--border);
-    background: var(--bg);
+    background: transparent;
     color: var(--text);
     transition:
       transform var(--transition-fast),
@@ -473,9 +1000,15 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
       color var(--transition-fast);
   }
 
+  /* Ink inversion on hover: outlined at rest, filled on approach — the dark
+     theme starts filled and inverts back to outlined. */
   .theme-toggle:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0 var(--border);
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  .theme-toggle:active {
+    transform: translateY(1px);
   }
 
   .theme-toggle:focus-visible {
@@ -488,6 +1021,11 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
   :global([data-theme="dark"]) .theme-toggle {
     background: var(--text);
     color: var(--bg);
+  }
+
+  :global([data-theme="dark"]) .theme-toggle:hover {
+    background: transparent;
+    color: var(--text);
   }
 
   /* Dark theme: the hamburger inner box turns near-white, so the
@@ -525,11 +1063,11 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     display: none;
     align-items: center;
     gap: var(--space-sm);
-    padding: 0.75rem 1.25rem;
+    padding: 0.75rem 1.3rem;
     font-size: 0.8125rem;
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
     background: var(--text);
     color: var(--bg);
     border: 3px solid var(--text);
@@ -573,14 +1111,13 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
       box-shadow var(--transition-fast);
   }
 
-  .menu-toggle:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0 var(--border);
-  }
-
   .menu-toggle:focus-visible {
     outline: 3px solid var(--text);
     outline-offset: 3px;
+  }
+
+  .menu-toggle:active {
+    transform: translate(1px, 1px);
   }
 
   .toggle-line {
@@ -588,21 +1125,29 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     width: 17px;
     height: 2px;
     background: var(--accent);
-    transition: opacity var(--transition-fast), transform var(--transition-base);
+    transition:
+      opacity var(--transition-fast),
+      transform var(--transition-base),
+      background-color var(--transition-fast);
     transform-origin: center;
   }
 
   .menu-icon {
-    display: flex;
+    display: grid;
     width: 38px;
     height: 38px;
     flex: 0 0 auto;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
+    place-items: center;
     border: 1px solid var(--border);
     background: var(--text);
+    transition: background-color var(--transition-fast);
+  }
+
+  .menu-mark {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: transform var(--transition-slow);
   }
 
   .menu-toggle.is-active .toggle-line:first-child {
@@ -615,115 +1160,328 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     transform: translateY(-6px) rotate(-45deg);
   }
 
-  /* ---- Progress bar ---- */
-  .header-progress {
+  /* Rotate only the mark: the square frame stays aligned throughout the turn. */
+  .menu-toggle.is-active .menu-icon {
+    background: var(--accent);
+  }
+
+  .menu-toggle.is-active .menu-mark {
+    transform: rotate(90deg);
+  }
+
+  .menu-toggle.is-active .toggle-line {
+    background: var(--text-on-accent);
+  }
+
+  /* ---- Mobile nav: guillotine panel ---- */
+  /* Reversible transitions preserve the current frame on rapid toggles. Stagger
+     applies only to entrance properties, never touch/hover feedback. */
+  .mobile-nav {
+    --wipe-open: 460ms;
+    --wipe-close: 260ms;
+    --drop-base: 60ms;
+    --drop-step: 40ms;
+
     position: absolute;
-    bottom: -3px;
+    top: 100%;
     left: 0;
     right: 0;
-    height: 3px;
-    overflow: hidden;
-    pointer-events: none;
-  }
-
-  .progress-bar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 0%;
-    background: var(--y);
-    transition: width 0.1s linear;
-    will-change: width;
-  }
-
-  /* ---- Mobile nav ---- */
-  .mobile-nav {
-    display: grid;
-    max-height: 0;
-    overflow: hidden;
-    visibility: hidden;
+    height: calc(100vh - var(--layout-header-height));
+    height: var(--menu-h, calc(100dvh - var(--layout-header-height)));
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     background: var(--bg);
-    border-bottom: 0 solid var(--border);
+    border-top: 3px solid var(--border);
+    border-bottom: 3px solid var(--border);
+    border-left: 4px solid var(--accent);
+    clip-path: inset(0 0 100% 0);
+    visibility: hidden;
+    pointer-events: none;
     transition:
-      max-height var(--transition-base),
-      border-width var(--transition-fast),
-      visibility var(--transition-base);
+      clip-path var(--wipe-close) var(--motion-ease-out),
+      visibility 0s var(--wipe-close);
   }
 
   .mobile-nav.is-open {
-    /* Fills the screen below the header: the page behind is scroll-locked, so
-       a short panel would leave locked content visible under it. */
-    max-height: calc(100dvh - var(--layout-header-height));
-    border-bottom-width: 3px;
+    clip-path: inset(0 0 0 0);
     visibility: visible;
-    overflow-y: auto;
-    overscroll-behavior: contain;
+    pointer-events: auto;
+    transition:
+      clip-path var(--wipe-open) var(--motion-ease-out),
+      visibility 0s;
   }
 
-  .mobile-nav .container {
+  .mobile-nav-inner {
     display: flex;
     flex-direction: column;
-    gap: 0;
+    min-height: 100%;
     padding-top: var(--space-md);
     padding-bottom: calc(var(--space-lg) + env(safe-area-inset-bottom));
-    /* Fills the panel (minus its 3px bottom rule) so the links stay at the top
-       and the primary action lands on the bottom line, inside thumb reach. */
-    min-height: calc(100dvh - var(--layout-header-height) - 3px);
   }
 
-  .mobile-link {
+  .mobile-nav-inner > * {
+    flex-shrink: 0;
+  }
+
+  .mn-item {
+    --item-delay: 0s;
+    opacity: 0;
+    transform: translateY(calc(-1 * var(--space-md)));
+    transition:
+      opacity var(--transition-fast) var(--item-delay),
+      transform var(--transition-base) var(--item-delay);
+  }
+
+  .mobile-nav.is-open .mn-item {
+    --item-delay: calc(var(--drop-base) + var(--i, 0) * var(--drop-step));
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Signage row: section-tag plate + index count. */
+  .mn-meta {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: var(--space-lg) 0;
-    font-size: 1.0625rem;
-    font-weight: 700;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding-bottom: var(--space-md);
+  }
+
+  .mn-count {
     font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  /* The dashed industrial divider prints itself across on open. */
+  .mn-rule {
+    height: 2px;
+    flex: 0 0 auto;
+    background: repeating-linear-gradient(90deg, var(--border) 0 18px, transparent 18px 36px);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--transition-fast);
+  }
+
+  .mobile-nav.is-open .mn-rule {
+    transform: scaleX(1);
+    transition: transform var(--transition-slow) var(--drop-base);
+  }
+
+  /* Numbered index rows: slot numeral, oversized label, hard arrow. */
+  .mobile-link {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: clamp(var(--space-sm), 2.5vw, var(--space-md));
+    min-height: 3.75rem;
+    padding: var(--space-sm) var(--space-sm);
     border-bottom: 1px solid var(--border-light);
-    opacity: 0;
-    transform: translateX(-16px);
+    color: var(--text);
+    text-decoration: none;
     transition:
-      opacity var(--transition-base),
-      transform var(--transition-base),
-      padding-left var(--transition-fast),
+      opacity var(--transition-fast) var(--item-delay),
+      transform var(--transition-base) var(--item-delay),
+      background-color var(--transition-fast),
+      border-color var(--transition-fast),
       color var(--transition-fast);
   }
 
-  .mobile-nav.is-open .mobile-link {
-    opacity: 0.85;
-    transform: translateX(0);
-  }
-
-  .mobile-nav.is-open .mobile-link:nth-child(1) { transition-delay: 80ms; }
-  .mobile-nav.is-open .mobile-link:nth-child(2) { transition-delay: 140ms; }
-  .mobile-nav.is-open .mobile-link:nth-child(3) { transition-delay: 200ms; }
-  .mobile-nav.is-open .mobile-link:nth-child(4) { transition-delay: 260ms; }
-  .mobile-nav.is-open .mobile-link:nth-child(5) { transition-delay: 320ms; }
-
-  .ml-bracket {
-    opacity: 0;
+  .ml-index {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
     color: var(--text-muted);
-    transition: opacity var(--transition-fast);
+    padding: 0.25rem 0.375rem;
+    border: 1px solid var(--border-light);
+    transition:
+      background-color var(--transition-fast),
+      border-color var(--transition-fast),
+      color var(--transition-fast);
   }
 
-  .mobile-link:hover,
+  /* Current route: the slot numeral takes the accent plate. */
+  .mobile-link[aria-current] .ml-index {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--text-on-accent);
+  }
+
+  .ml-label {
+    font-family: var(--font-sans);
+    font-size: clamp(1.375rem, 5.5vw, 1.75rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    transition: transform var(--transition-fast);
+  }
+
+  .ml-arrow {
+    justify-self: end;
+    font-family: var(--font-mono);
+    font-size: 1.375rem;
+    line-height: 1;
+    color: var(--text-muted);
+    transform: translateX(calc(-1 * var(--space-xs)));
+    transition:
+      transform var(--transition-base),
+      color var(--transition-fast);
+  }
+
+  /* Touch feedback never depends on emulated, sticky hover states. */
+  .mobile-link:is(:focus-visible, :active) {
+    background: var(--text);
+    border-bottom-color: transparent;
+    color: var(--bg);
+  }
+
+  .mobile-link:is(:focus-visible, :active) .ml-label {
+    transform: translateX(var(--space-xs));
+  }
+
+  .mobile-link:is(:focus-visible, :active) .ml-index {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--text-on-accent);
+  }
+
+  .mobile-link:is(:focus-visible, :active) .ml-arrow {
+    transform: translateX(0);
+    color: var(--text-accent-inverse);
+  }
+
   .mobile-link:focus-visible {
-    opacity: 1;
-    padding-left: var(--space-sm);
+    outline: 3px solid var(--text-accent-inverse);
+    outline-offset: -3px;
   }
 
-  .mobile-link:hover .ml-bracket,
-  .mobile-link:focus-visible .ml-bracket {
+  /* ---- Mobile groups: compact mono directories ---- */
+  .mn-group {
+    padding: var(--space-md) var(--space-xs) 0;
+  }
+
+  .mn-group-tag {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: var(--space-xs);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* Accent square of the section-tag signage, at label scale. */
+  .mn-group-tag::before {
+    width: 0.5rem;
+    aspect-ratio: 1;
+    border: 1px solid var(--border);
+    background: var(--accent);
+    content: "";
+  }
+
+  .mn-group-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mn-group-list--split {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 var(--space-lg);
+  }
+
+  .mn-sub-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    min-height: 44px;
+    padding: 0 var(--space-xs);
+    border-bottom: 1px solid var(--border-light);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    transition:
+      color var(--transition-fast),
+      border-color var(--transition-fast);
+  }
+
+  .mn-sub-num {
+    min-width: 1.75em;
+    font-size: 0.625rem;
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-muted);
+    transition:
+      background-color var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .mn-sub-arrow {
+    font-size: 0.875em;
+    color: var(--text-muted);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition:
+      opacity var(--transition-fast),
+      transform var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .mn-sub-link:is(:hover, :focus-visible, :active) {
+    color: var(--text);
+  }
+
+  .mn-sub-link:is(:hover, :focus-visible, :active) .mn-sub-arrow {
     opacity: 1;
+    transform: translateX(0);
+    color: var(--text);
+  }
+
+  .mn-sub-link[aria-current] {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.35em;
+  }
+
+  .mn-sub-link[aria-current] .mn-sub-num {
+    background: var(--accent);
+    color: var(--text-on-accent);
+  }
+
+  .mn-sub-link:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 2px;
+  }
+
+  .mn-actions {
+    margin-top: auto;
+    padding-top: var(--space-xl);
   }
 
   .mobile-cta {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     gap: var(--space-sm);
-    margin-top: auto;
     padding: var(--space-md) var(--space-xl);
     font-weight: 700;
     font-size: 0.875rem;
@@ -733,13 +1491,15 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     box-shadow: 6px 6px 0 var(--y);
     text-transform: uppercase;
     transition:
-      transform var(--transition-fast),
+      opacity var(--transition-fast) var(--item-delay),
+      transform var(--transition-base) var(--item-delay),
+      translate var(--transition-fast),
       box-shadow var(--transition-fast);
   }
 
-  .mobile-cta:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 7px 7px 0 var(--y);
+  .mobile-cta:active {
+    translate: 2px 2px;
+    box-shadow: 2px 2px 0 var(--y);
   }
 
   .mobile-cta:focus-visible {
@@ -747,12 +1507,34 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     outline-offset: 3px;
   }
 
-  .mobile-studio {
+  /* Foot strip: secondary studio link + location under a printed rule. */
+  .mn-foot {
     margin-top: var(--space-md);
+  }
+
+  .mn-foot .mn-rule {
+    margin-bottom: var(--space-xs);
+  }
+
+  .mn-foot-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-xs) var(--space-md);
+  }
+
+  .mobile-studio {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    min-height: 44px;
     color: var(--text-muted);
+    font-family: var(--font-mono);
     font-size: 0.6875rem;
     font-weight: 700;
     letter-spacing: 0.08em;
+    transition: color var(--transition-fast);
   }
 
   .mobile-studio:hover {
@@ -764,6 +1546,60 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     outline-offset: 4px;
   }
 
+  .mn-loc {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: right;
+    margin-left: auto;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .menu-toggle:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 4px 4px 0 var(--border);
+    }
+
+    .menu-toggle:active {
+      transform: translate(1px, 1px);
+      box-shadow: none;
+    }
+
+    .mobile-link:hover {
+      background: var(--text);
+      border-bottom-color: transparent;
+      color: var(--bg);
+    }
+
+    .mobile-link:hover .ml-label {
+      transform: translateX(var(--space-xs));
+    }
+
+    .mobile-link:hover .ml-index {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--text-on-accent);
+    }
+
+    .mobile-link:hover .ml-arrow {
+      transform: translateX(0);
+      color: var(--text-accent-inverse);
+    }
+
+    .mobile-cta:hover {
+      translate: -3px -3px;
+      box-shadow: 7px 7px 0 var(--y);
+    }
+
+    .mobile-cta:active {
+      translate: 2px 2px;
+      box-shadow: 2px 2px 0 var(--y);
+    }
+  }
+
   @media (min-width: 1024px) {
     :root {
       --layout-header-height: 88px;
@@ -773,9 +1609,21 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
       min-height: 84px;
     }
 
+    /* True optical center: the nav sits on the bar's midline, independent of
+       the logo and action widths around it. */
     .desktop-nav {
       display: flex;
-      gap: var(--space-sm);
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+    }
+
+    /* Ruled slot between navigation and the action cluster. */
+    .header-actions {
+      border-left: 1px solid var(--border-light);
+      padding-left: var(--space-md);
     }
 
     .header-cta {
@@ -788,13 +1636,24 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
     }
   }
 
+  /* Narrow desktop band: tighter nav so the centered set clears both edges. */
+  @media (min-width: 1024px) and (max-width: 1279px) {
+    .desktop-nav {
+      gap: 0.625rem;
+    }
+
+    .nav-link {
+      font-size: 0.6875rem;
+      letter-spacing: 0.06em;
+    }
+  }
+
   @media (max-width: 380px) {
     .header-inner { gap: var(--space-sm); }
-    .logo { gap: var(--space-xs); padding: var(--space-xs) var(--space-sm); }
-    .logo-icon { width: 20px; height: 20px; }
-    .logo-text { font-size: 1rem; }
+    .logo { gap: 0.5rem; padding: 0.5rem 0.625rem; }
+    .logo-mark { width: 0.625rem; }
+    .logo-word { font-size: 1rem; }
     .header-actions { gap: var(--space-xs); }
-    .studio-link { font-size: 0.6rem; }
     .theme-toggle { width: 44px; min-width: 44px; height: 44px; }
     .menu-toggle { width: 44px; min-width: 44px; height: 44px; }
     .menu-icon { width: 34px; height: 34px; }
@@ -803,14 +1662,33 @@ const navLinks = navItems.map((item) => ({ ...item, href: `/${item.href}` }));
   @media (prefers-reduced-motion: reduce) {
     .header,
     .logo,
+    .logo-mark,
+    .nav-link,
+    .nav-link::after,
+    .drop-caret,
+    .drop-panel,
+    .drop-link,
+    .drop-arrow,
     .header-cta,
     .menu-toggle,
     .theme-toggle,
     .theme-icon,
+    .menu-icon,
+    .menu-mark,
+    .toggle-line,
     .mobile-nav,
     .mobile-link,
     .mobile-cta,
-    .progress-bar {
+    .mn-sub-link,
+    .mn-sub-arrow,
+    .mn-sub-num,
+    .ml-label,
+    .ml-arrow,
+    .ml-index,
+    .mn-item,
+    .mn-rule,
+    .cta-arrow,
+    .progress-fill {
       transition: none !important;
     }
   }

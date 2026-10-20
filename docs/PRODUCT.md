@@ -81,8 +81,8 @@ Engagement is either a closed project, a continuous (non-retainer) collaboration
 
 - Ten published cases rendered from the `projects` content collection (via `src/data/projects.ts`).
 - Neutral, factual descriptions with no outcome claims.
-- Seven are `status: live`; KingBelt, Emilio Faraoni and Ilifielt are published as `status: in-development` with `publicPreview: true` and a visible status label.
-- The Home includes four selected cases, including the live Cien Mares web case; commercial evidence does not rely only on in-progress Ecommerce/B2B references.
+- All ten are `status: live`, with no in-development previews.
+- The Home includes four selected cases, including the live Cien Mares web case; all ten cases are published as live.
 
 ### CURRENT — Contact and optional measurement
 
@@ -92,7 +92,7 @@ Engagement is either a closed project, a continuous (non-retainer) collaboration
 
 ### FUTURE — prepared, not shipped
 
-- **KingBelt** and **Emilio Faraoni** remain in development: the storefront and the B2B system are publicly visible, but operational validation and commercial metrics are not asserted.
+- **KingBelt** and **Emilio Faraoni** are published: the storefront and the B2B system are publicly visible, with no commercial metrics asserted.
 - Both already expose `serviceArea` (`ecommerce` / `b2b`) so the matching solution route can list them as evidence.
 - Assigned outcomes are added only when real, verifiable evidence exists.
 

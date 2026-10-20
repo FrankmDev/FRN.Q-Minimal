@@ -202,9 +202,9 @@ const breadcrumbSchema = {
     gap: clamp(var(--space-md), 3vw, var(--space-2xl));
     padding: clamp(var(--space-lg), 4vw, var(--space-2xl)) 0;
     transition:
-      color var(--transition-base),
-      background-color var(--transition-base),
-      padding var(--transition-base);
+      color var(--transition-card),
+      background-color var(--transition-card),
+      padding var(--transition-card);
   }
 
   .guide-link::before {
@@ -214,7 +214,7 @@ const breadcrumbSchema = {
     content: "";
     background: var(--text);
     opacity: 0;
-    transition: opacity var(--transition-base);
+    transition: opacity var(--transition-card);
   }
 
   .guide-link:hover,

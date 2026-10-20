@@ -190,8 +190,8 @@ link. Never merge or translate the two surfaces.
   CTA pattern (3px border + accent offset shadow + hover `translate(-4px,-4px)` with
   a larger shadow), mono labels, ruled lists.
 - **Evidence only.** No invented metrics, guarantees, testimonials, ratings or
-  outcomes. KingBelt and Emilio Faraoni are in-development reference cases, not
-  completed launches.
+  outcomes. KingBelt, Emilio Faraoni and Ilifielt are published cases. Never
+  invent sales metrics or outcomes.
 
 ## Motion and interaction
 

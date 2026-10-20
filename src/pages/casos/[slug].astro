@@ -895,18 +895,35 @@ const facts = [
   }
 
   .feature {
+    position: relative;
     padding: var(--space-lg);
     border: 3px solid var(--border);
     background: var(--bg);
+    box-shadow: 0 0 0 0 var(--border);
     transition:
-      transform var(--transition-fast),
-      box-shadow var(--transition-fast);
+      transform var(--transition-card),
+      box-shadow var(--transition-card-shadow);
   }
 
   .feature:hover {
     transform: translate(-4px, -4px);
     box-shadow: 8px 8px 0 var(--border);
   }
+
+  /* Hover signature: the accent rule inks across the top edge, left to right. */
+  .feature::after {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 3px;
+    background: var(--accent);
+    content: "";
+    pointer-events: none;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-base);
+  }
+
+  .feature:hover::after { transform: scaleX(1); }
 
   .feature h3 {
     font-size: 1.125rem;
@@ -1054,10 +1071,10 @@ const facts = [
     background: var(--bg);
     box-shadow: 8px 8px 0 var(--border);
     transition:
-      transform var(--transition-fast),
-      box-shadow var(--transition-fast),
-      background var(--transition-fast),
-      color var(--transition-fast);
+      transform var(--transition-card),
+      box-shadow var(--transition-card-shadow),
+      background var(--transition-card),
+      color var(--transition-card);
   }
 
   .next-case:hover {

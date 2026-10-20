@@ -47,12 +47,12 @@ Rules:
 - **Loader:** `glob({ pattern: "**/*.md", base: "./src/content/projects" })`.
 - **Entries (public):** `emilio-faraoni`, `kingbelt`, `grn-urban`, `cien-mares`, `fernando-feijoo`, `mata-psicologia`, `wanda-animalart`, `asercord-energia`, `lucia-millan-psicologia`, `ilifielt`.
 - **Factual source:** frnq.studio holds the canonical project facts; frnq.es may reinterpret commercially but never adds new facts, audiences or outcomes not present in the canonical case.
-- **Routes:** `/casos/` archive and `/casos/<slug>/` detail via `getStaticPaths`; public archive and routes include `status: live` plus selected entries with `status: in-development` and `publicPreview: true` (`getPublishedProjects()` in `src/data/projects.ts`).
+- **Routes:** `/casos/` archive and `/casos/<slug>/` detail via `getStaticPaths`; all public entries use `status: live` (`getPublishedProjects()` in `src/data/projects.ts` still supports authorised `in-development` entries with `publicPreview: true`).
 - Optional `serviceArea` records which solution a case genuinely evidences (`ecommerce`, `b2b`, `sistemas`). Solution routes show the matching published cases, and it also drives the flagship emphasis (`ecommerce` → accent plate, `b2b` → inverted ink plate) on `/casos/`, the Home teaser and the case page. Only assign it when the case genuinely evidences that service (currently `kingbelt` → `ecommerce`, `emilio-faraoni` → `b2b`).
 - **Every published case links to a commercial solution.** `getSolutionForCase()` in `src/data/solutions.ts` resolves `serviceArea` first and otherwise maps the case `category` to the solution it demonstrates (`corporate` / `web` / `website` / `product` / `interactive` → `growth`), so the case page always closes with a solution panel and a `?tipo=` CTA (`solutionContactTypes`). No case page is a dead end.
 - `/soluciones/desarrollo-web/` additionally selects evidence by `category` (`corporate`, `web`, `website`) through `evidenceCategories`, so it can show published corporate-web projects as proof without asserting an unverified `serviceArea`.
 - `/casos/` groups cases by commercial type with `caseGroups` (ecommerce, B2B, web and own product, interactive work) and a static type index with anchors and counts. Grouping is authored in `src/data/projects.ts`; there are no client-side filters.
-- The Home reads the first four published cases in authored order, so it includes the live Cien Mares web case alongside the Ecommerce/B2B references. In-development status remains visible; selection does not turn a preview into a completed launch.
+- The Home reads the first four published cases in authored order, including Cien Mares and Ilifielt. All ten cases are published as `status: live`.
 
 ### Schema (fields)
 
@@ -96,10 +96,10 @@ Images are part of the same case entry and resolved by Astro `image()`:
 
 ## Ecommerce and B2B reference cases
 
-Both **KingBelt** and **Emilio Faraoni** are published with status `in-development` and `publicPreview: true`, rather than represented as completed launches. Solution evidence links also display the in-development status (including Ilifielt on the web solution). GRN Urban is explicitly a product owned by FRN.Q and an SEO laboratory, with no unverified traffic or growth figures.
+Both **KingBelt** and **Emilio Faraoni** are published with status `live`, with no sales or commercial results attributed. Ilifielt is also published as a live case. GRN Urban is explicitly a product owned by FRN.Q and an SEO laboratory, with no unverified traffic or growth figures.
 
-- **KingBelt:** publicly accessible storefront with catalogue and product UI. Shopify commerce architecture is documented, but operational readiness and commercial metrics are not asserted.
-- **Emilio Faraoni:** catalogue, verified professional access, protected pricing, baskets and order requests implemented in the repository. The new canonical public deployment was not externally reachable at review time.
+- **KingBelt:** publicly accessible storefront with catalogue and product UI. Shopify commerce architecture is documented, but commercial metrics are not asserted.
+- **Emilio Faraoni:** catalogue, verified professional access, protected pricing, baskets and order requests implemented in the repository.
 - Every case now ships five optimised AVIF UI mockups per project (`mockup-01.avif` … `mockup-05.avif`); `mockup-01` is the cover and first gallery image. Source PNGs are not kept in the repository.
 
 ## Engagement and pricing copy
@@ -149,7 +149,7 @@ Guides answer a single pre-hire question and lead to the matching service. They 
 | Area | Current | Future |
 |------|---------|--------|
 | Commercial surfaces | Single Spanish site; `/`, four `/soluciones/` routes, `/soluciones/revision-web/`, `/soporte/`, `/precios/`, `/guias/`, `/casos/` present; Home includes the Web Rescue block | Further routes only with distinct intent and useful evidence |
-| Cases | 10 cases: 7 live plus 3 explicitly labelled in-development references | Add verified UI captures and measurable outcomes as evidence becomes available |
+| Cases | 10 cases, all published as `status: live` | Add verified UI captures and measurable outcomes as evidence becomes available |
 | Pricing | `/precios/` publishes the scope-specific starting points and the Web Rescue entry offers from `pricing.ts`; B2B, systems, integrations and custom ecommerce stay discovery-led | Keep the published starting points current; no universal price list |
 | i18n | Spanish only | Not planned; `.studio` is the English surface |
 
