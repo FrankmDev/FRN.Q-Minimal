@@ -125,6 +125,13 @@ function allowedPages(): Set<string> {
   return new Set(paths.split("|").filter(Boolean));
 }
 
+function referralOrigin(value: string | undefined): string {
+  try {
+    const url = new URL(value ?? "");
+    return url.protocol === "https:" || url.protocol === "http:" ? url.origin : "";
+  } catch { return ""; }
+}
+
 function currentPage(pages = allowedPages()): string {
   // Unknown URLs can contain personal data; never emit them, even on a 404.
   return pages.has(window.location.pathname) ? window.location.pathname : "/404/";
@@ -462,9 +469,9 @@ export function loadAnalyticsProvider(): boolean {
     window.gtag("config", id, {
       send_page_view: false,
       // GA4 also collects automatic parameters, outside our custom props.
-      // Never let it infer a raw URL, query, fragment, referrer or 404 title.
+      // Only a canonical public page and the origin of the referring site are allowed.
       page_location: new URL(currentPage(), siteConfig.url).toString(),
-      page_referrer: "",
+      page_referrer: referralOrigin(document.referrer),
       page_title: pageType(currentPage()),
       cookie_domain: window.location.hostname,
       cookie_path: "/",

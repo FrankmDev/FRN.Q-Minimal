@@ -263,6 +263,7 @@ test("a blocked GA4 script never breaks the page or the local event", () => {
 
 test("GA4 receives Arguments commands and only a canonical allowlisted URL", () => {
   ga4Document([]);
+  document.referrer = "https://frnq.studio/work/alice@example.test/?private=alice#private";
   window.location = { pathname: "/cliente/alice@example.test/", hostname: "frnq.es", search: "?email=alice@example.test", hash: "#private" };
   window.__FRNQ_ANALYTICS__ = { enabled: true, provider: "gtag", measurementId: "G-ABC1234567" };
   setConsent(true);
@@ -270,7 +271,7 @@ test("GA4 receives Arguments commands and only a canonical allowlisted URL", () 
   const config = window.dataLayer.find((entry) => entry[0] === "config");
   expect(Object.prototype.toString.call(config)).toBe("[object Arguments]");
   expect(config[2].page_location).toBe("https://frnq.es/404/");
-  expect(config[2].page_referrer).toBe("");
+  expect(config[2].page_referrer).toBe("https://frnq.studio");
   expect(config[2].page_title).toBe("not_found");
   expect(config[2].send_page_view).toBe(false);
   expect(config[2].allow_google_signals).toBe(false);
