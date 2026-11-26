@@ -24,7 +24,7 @@ export const CONTACT_TYPES = [
   { value: "soporte", label: "Soporte y mantenimiento" },
   { value: "seo", label: "SEO / posicionamiento" },
   { value: "agencia", label: "Agencia / white-label" },
-  { value: "otro", label: "Otro" },
+  { value: "otro", label: "Otro / No lo tengo definido" },
 ] as const;
 
 export type ContactType = (typeof CONTACT_TYPES)[number]["value"];

@@ -350,7 +350,7 @@ function initContactForm(): void {
         window.clearTimeout(timeoutId);
         submitBtn.disabled = false;
         form.removeAttribute("aria-busy");
-        if (submitText) submitText.textContent = "Enviar solicitud";
+        if (submitText) submitText.textContent = "Solicitar valoración";
         formLoading?.classList.add("hidden");
         formLoading?.classList.remove("flex");
       }

@@ -41,11 +41,11 @@ export const serviceAreas: ServiceArea[] = [
     id: "growth",
     title: "Web corporativa & SEO",
     problem:
-      "Tu web no explica lo que haces, no genera consultas o se ha quedado atrás.",
+      "Tu web no refleja tu negocio, no aparece en buscadores o no facilita el contacto.",
     short:
-      "Web nueva, reparada o mejorada: presencia, posicionamiento y medición.",
-    audience: "Empresas que necesitan web",
-    linkLabel: "Cuéntame tu web",
+      "Diseño web, SEO y mejoras para ganar visibilidad y facilitar nuevas consultas.",
+    audience: "Empresas y profesionales",
+    linkLabel: "Ver diseño web y SEO",
     problems: [
       "Web que no comunica lo que haces ni genera consultas",
       "Una web antigua, lenta o rota que conviene recuperar antes de rehacerla",
@@ -67,11 +67,11 @@ export const serviceAreas: ServiceArea[] = [
     id: "ecommerce",
     title: "Ecommerce & Shopify",
     problem:
-      "Vendes online, pero catálogo, stock y pedidos no cuadran.",
+      "Quieres vender online o tu tienda actual dificulta la compra y la gestión.",
     short:
-      "Construyo la tienda y conecto catálogo, pago y pedidos.",
+      "Tiendas Shopify con catálogo organizado, compra clara y gestión conectada.",
     audience: "Marcas que venden online",
-    linkLabel: "Ver tienda online",
+    linkLabel: "Ver soluciones ecommerce",
     problems: [
       "Vender online sin que el catálogo, el stock y los pedidos se descuadren",
       "Depender de una tienda lenta o difícil de gestionar",
@@ -89,11 +89,11 @@ export const serviceAreas: ServiceArea[] = [
     id: "b2b",
     title: "Portales & Sistemas B2B",
     problem:
-      "Los pedidos B2B llegan por teléfono, email y hojas de cálculo.",
+      "Tus clientes profesionales consultan tarifas y hacen pedidos por varios canales.",
     short:
-      "Monto el portal: cada cuenta ve sus precios y hace pedidos.",
+      "Centraliza pedidos mayoristas y protege las tarifas de cada cliente profesional.",
     audience: "Fabricantes y distribuidores",
-    linkLabel: "Ver portal B2B",
+    linkLabel: "Ver soluciones B2B",
     problems: [
       "Dar de alta y validar empresas antes de mostrarles catálogo y precios",
       "Gestionar referencias, tarifas restringidas, roles y condiciones por cuenta",
@@ -112,9 +112,9 @@ export const serviceAreas: ServiceArea[] = [
     id: "sistemas",
     title: "Sistemas & Integraciones",
     problem:
-      "Tus datos viven en herramientas que no se hablan.",
+      "Repites tareas y copias datos entre herramientas desconectadas.",
     short:
-      "Conecto esas herramientas y automatizo tareas repetitivas.",
+      "Integraciones y automatización para reducir trabajo manual y errores.",
     audience: "Equipos con datos dispersos",
     linkLabel: "Ver integraciones",
     problems: [

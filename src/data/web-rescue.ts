@@ -78,7 +78,7 @@ export const webRescueCopy: WebRescueCopy = {
   titleLine: "Tu web ya existe.",
   titleHighlight: "Que trabaje mejor.",
   lead:
-    "Reviso webs en marcha —WordPress, Elementor o WooCommerce— para recuperar lo que se rompió, arreglar lo que no convierte y ampliar lo que falta. Sin rehacerlo todo.",
+    "Recupero y mejoro webs existentes —WordPress, Elementor o WooCommerce—: formularios, errores, rendimiento y problemas de compra. Conservamos lo que funciona.",
   steps: [
     {
       num: "01",
@@ -174,12 +174,12 @@ export const webRescuePage = {
   path: "/soluciones/revision-web/",
   label: "Reparación web",
   title: "Reparación y mejora de webs existentes | FRN.Q",
-  description: `Reparo y mejoro webs en marcha (WordPress, Elementor, WooCommerce): formularios, errores, responsive, rendimiento y SEO técnico. ${webRescueDiagnosis.title} ${webRescueDiagnosis.price}.`,
+  description: `Reparación de webs WordPress, Elementor y WooCommerce: formularios, errores, adaptación móvil, velocidad y SEO. ${webRescueDiagnosis.title} ${webRescueDiagnosis.price}.`,
   h1Line: "Tu web puede",
   h1Highlight: "funcionar mejor.",
   eyebrow: "Reparación, actualización y mejora",
   intro:
-    "Recupero y mejoro webs que ya están en marcha: lo que ha dejado de funcionar, lo que se ve mal, lo que carga lento y lo que no convierte. Trabajo sobre la web existente en lugar de rehacerla desde cero.",
+    "Si tu web tiene errores, pierde consultas o resulta difícil de gestionar, reviso qué conviene corregir antes de invertir en una nueva. Trabajo sobre la web existente siempre que su base técnica lo permita.",
   audience:
     "Empresas y profesionales con una web en marcha que ha envejecido, se ha roto o se ha quedado corta, y que necesitan recuperarla y mejorarla sin empezar de nuevo.",
   platforms: ["WordPress", "Elementor", "WooCommerce", "Web a medida"],

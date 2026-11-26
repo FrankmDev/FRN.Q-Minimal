@@ -142,10 +142,10 @@ export const solutionPages: SolutionPage[] = [
     slug: "ecommerce",
     title: "Tiendas online Shopify y desarrollo ecommerce | FRN.Q",
     description:
-      "Creo, migro y mejoro tiendas online con Shopify o desarrollo a medida: catálogo, variantes, pagos, pedidos, SEO e integraciones.",
+      "Desarrollo y mejora de tiendas Shopify a medida: catálogo, variantes, checkout, pagos, pedidos, SEO ecommerce y analítica.",
     h1: "Desarrollo de tiendas online y Shopify",
     intro:
-      "Construyo tiendas nuevas, migro proyectos que ya no encajan en su plataforma y mejoro tiendas que venden pero arrastran fricciones: catálogo desordenado, compra confusa o una operación que no cuadra. Shopify es una buena base para muchos proyectos; cuando el flujo o las integraciones lo requieren, defino una solución más personalizada.",
+      "Diseño y desarrollo tiendas online para lanzar un canal de venta, migrar desde otra plataforma o mejorar una tienda existente. Organizo el catálogo, simplifico el proceso de compra y adapto la solución a la gestión diaria de tu negocio. Shopify es la base cuando encaja con tus necesidades.",
     audience:
       "Marcas y empresas que venden producto online y necesitan lanzar una tienda, cambiar de plataforma o resolver fricciones concretas sin perder de vista cómo se gestionará después.",
     systemDescription:
@@ -271,7 +271,7 @@ export const solutionPages: SolutionPage[] = [
     ],
     relatedSolutions: ["b2b", "sistemas"],
     evidenceNote:
-      "KingBelt reúne catálogo, fichas con variantes y contenido de marca sobre una arquitectura Shopify. Es una referencia pública: no se le atribuyen ventas ni resultados comerciales.",
+      "KingBelt muestra cómo organizar colecciones, tallas, colores y contenido de marca en una tienda conectada a Shopify. Consulta las decisiones de catálogo y compra.",
     ctas: {
       hero: "Hablemos de tu tienda",
       mid: "Cuéntame cómo vendes hoy",
@@ -323,7 +323,7 @@ export const solutionPages: SolutionPage[] = [
       "Portal B2B y catálogo mayorista para fabricantes y distribuidores: registro de empresas, precios privados, referencias y pedidos online.",
     h1: "Portal B2B para vender a clientes profesionales",
     intro:
-      "Digitalizo el proceso comercial de fabricantes, distribuidores y mayoristas: desde el alta y validación de empresas hasta la consulta de referencias, las solicitudes de presupuesto y los pedidos. Un catálogo privado sencillo y un portal comercial completo comparten piezas, no el mismo alcance.",
+      "Digitalizo la venta mayorista de fabricantes y distribuidores: tus clientes profesionales pueden registrarse, consultar referencias y tarifas autorizadas y preparar pedidos en un mismo portal. El alcance se adapta a tu proceso, desde un catálogo privado hasta un sistema comercial completo.",
     audience:
       "Empresas que venden a otras empresas y necesitan ordenar catálogo, condiciones comerciales y pedidos sin obligar a todos sus clientes a comprar de la misma manera.",
     systemDescription:
@@ -420,7 +420,7 @@ export const solutionPages: SolutionPage[] = [
       systemsCta: "Si el reto principal está en conectar herramientas o coordinar procesos internos, consulta Sistemas e Integraciones.",
     },
     evidenceNote:
-      "Emilio Faraoni reúne catálogo mayorista, alta y validación de empresas, precios privados protegidos y solicitudes de pedido. Es una referencia pública, sin resultados comerciales atribuidos.",
+      "Emilio Faraoni demuestra cómo digitalizar un catálogo mayorista, validar empresas, proteger tarifas y centralizar solicitudes de pedido sin imponer un checkout minorista.",
     ctas: {
       hero: "Revisemos tu proceso comercial",
       mid: "Cuéntame cómo compran tus clientes",
@@ -465,10 +465,10 @@ export const solutionPages: SolutionPage[] = [
     slug: "sistemas",
     title: "Integraciones ERP, CRM y sistemas de empresa | FRN.Q",
     description:
-      "Integro herramientas y datos para ordenar pedidos, stock y procesos internos. El alcance depende de los sistemas y sus interfaces.",
+      "Integraciones ERP y CRM, automatización de pedidos, stock y datos empresariales. Soluciones adaptadas a los sistemas que ya utiliza tu empresa.",
     h1: "Conecta los sistemas y datos de tu empresa",
     intro:
-      "Diseño integraciones, automatizaciones y herramientas internas cuando la información no circula bien entre sistemas o una tarea depende de pasos manuales repetitivos. El trabajo empieza por entender qué se hace a mano hoy, no por decidir una herramienta.",
+      "Conecto las herramientas de tu empresa para reducir tareas repetitivas, duplicidades y errores. Revisamos primero cómo gestionas pedidos, stock, clientes y datos; después definimos qué integrar o automatizar.",
     audience:
       "Equipos que gestionan pedidos, stock, facturación, clientes o reporting en varias herramientas y necesitan entender cómo hacerlas trabajar juntas.",
     systemDescription:
@@ -571,10 +571,10 @@ export const solutionPages: SolutionPage[] = [
     slug: "desarrollo-web",
     title: "Diseño y desarrollo web profesional en Granada | FRN.Q",
     description:
-      "Webs profesionales y corporativas en Granada: creación, rediseño y funciones a medida. Estructura clara, SEO técnico y captación según alcance.",
+      "Diseño web a medida en Granada para empresas: webs corporativas, rediseño, SEO técnico y local, rendimiento y formularios de contacto.",
     h1: "Diseño y desarrollo web a medida",
     intro:
-      "Creo y rediseño webs para que una empresa explique su actividad, presente sus servicios y facilite el contacto. Defino contigo la estructura, los contenidos y las funciones necesarias. Trabajo desde Granada con empresas de toda España; si solo necesitas corregir una web existente, tienes una revisión específica sin plantear de entrada una reconstrucción.",
+      "Diseño y desarrollo webs profesionales para presentar tu negocio, transmitir confianza y facilitar que te encuentren y contacten. Definimos juntos qué necesita tu empresa. Trabajo desde Granada con clientes de toda España, tanto en webs nuevas como en mejoras de sitios existentes.",
     audience:
       "Empresas que necesitan una web propia para presentar su actividad, transmitir confianza y generar consultas, y que quieren una base sólida sobre la que construir su presencia online.",
     systemDescription:
@@ -708,11 +708,11 @@ export const solutionPages: SolutionPage[] = [
     relatedSolutions: ["ecommerce", "sistemas"],
     evidenceCategories: ["corporate", "web", "website"],
     evidenceNote:
-      "Webs corporativas y proyectos publicados en el sitio. Son referencias de trabajo real; no se les atribuyen métricas ni resultados comerciales.",
+      "Consulta webs reales de empresas y profesionales, sus objetivos, decisiones y soluciones de diseño, desarrollo y contacto.",
     ctas: {
       hero: "Hablemos de tu web",
       mid: "Cuéntame qué web necesitas",
-      closing: "Cuéntame cómo quieres tu web",
+      closing: "Valoremos qué necesita tu web",
     },
     jump: [
       { href: "#modos", label: "Punto de partida" },

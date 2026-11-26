@@ -22,11 +22,11 @@ const careAmount = getPublicAmount("care");
 export const faqItems: FaqItem[] = [
   {
     q: "¿Cuánto cuesta un proyecto?",
-    a: "El importe se cierra en una propuesta por escrito, con entregables, calendario y coste. Webs, tiendas y mantenimiento tienen precio de partida publicado en la página de Precios; los portales B2B, los sistemas y el ecommerce a medida se presupuestan tras el discovery.",
+    a: "Consulta los precios de partida para webs, tiendas y mantenimiento. Tras revisar tus necesidades, concretamos una propuesta por escrito con alcance, entregables, calendario y coste. Los portales B2B y sistemas a medida se valoran según el proceso.",
   },
   {
     q: "¿Cuánto tarda un proyecto?",
-    a: "El calendario depende del alcance, los contenidos y las integraciones. Lo concretamos en la propuesta, con hitos y dependencias.",
+    a: "Definimos el calendario antes de empezar, según alcance, contenidos e integraciones. La propuesta recoge las fases y dependencias para que sepas qué esperar.",
   },
   {
     q: "¿Qué pasa después del lanzamiento?",
