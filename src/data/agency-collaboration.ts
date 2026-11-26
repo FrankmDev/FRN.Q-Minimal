@@ -2,10 +2,10 @@ export const agencyCollaboration = {
   path: "/colaboraciones/agencias/",
   meta: {
     title: "Desarrollo técnico para agencias y estudios | FRN.Q",
-    description: "Desarrollo frontend, ecommerce Shopify, portales B2B e integraciones para agencias y estudios. Colaboración técnica con alcance y responsabilidades acordados.",
+    description: "Colaboración white-label para agencias: desarrollo frontend, Shopify, portales B2B e integraciones. Alcance, QA y entrega acordados.",
   },
   title: "Desarrollo técnico para agencias.",
-  description: "Amplía tu capacidad de producción sin ampliar plantilla.",
+  description: "Amplía tu capacidad técnica sin ampliar plantilla, con un colaborador directo.",
   capabilities: [
     { number: "01", title: "Frontend a medida", detail: "Astro · TypeScript · interfaces y experiencias web" },
     { number: "02", title: "Ecommerce", detail: "Shopify · storefronts · catálogo y flujos de compra" },
@@ -31,7 +31,7 @@ export const agencyCollaboration = {
   ],
   process: [
     { number: "01", title: "Envía el briefing", detail: "Contexto, alcance previsto, equipo y calendario deseado." },
-    { number: "02", title: "Revisamos el encaje", detail: "Valoro el reto técnico y la forma de coordinación." },
+    { number: "02", title: "Revisamos el encaje", detail: "Reviso viabilidad, disponibilidad y encaje con tu equipo." },
     { number: "03", title: "Acordamos alcance", detail: "Si encaja, concretamos responsabilidades y propuesta por escrito." },
     { number: "04", title: "Desarrollo y coordinación", detail: "Implemento lo acordado y comparto avances para su revisión." },
     { number: "05", title: "QA y entrega", detail: "Pruebas del alcance, revisión contigo y entrega de código, accesos y documentación acordados." },

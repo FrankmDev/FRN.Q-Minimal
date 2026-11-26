@@ -14,7 +14,7 @@ summary:
   challenge: "Reunir eventos, rutas y guías dispersas en un recorrido fiable hasta la planificación, sin depender de APIs externas en cada despliegue."
   delivered: "Web estática en Astro con agenda, rutas, guías, contenido ES/EN y configurador de itinerarios, alimentada por un proceso de ingestión y resolución de eventos."
   decision: "Construir desde instantáneas locales en lugar de consultar las fuentes en vivo durante el build."
-  outcome: "La guía se publica y se revisa sin depender de APIs externas; es un producto propio y no se atribuyen cifras de tráfico o crecimiento."
+  outcome: "La publicación no depende de APIs en directo. La guía española de Granada Sound registró 3.302 impresiones y 59 clics en Search Console del 28 de mayo al 28 de agosto de 2026."
 context: "GRN Urban es un producto propio y laboratorio SEO de FRN.Q centrado en la cultura, los eventos y la vida urbana de Granada. Reúne contenidos locales en español e inglés y sirve para trabajar estructura editorial, enlazado e indexación. El año registra el origen del proyecto, no la fecha del sistema actual."
 problem: "La información sobre eventos, lugares y recorridos suele estar repartida entre múltiples fuentes. Resulta difícil pasar de descubrir una actividad a planificar una visita con tiempo y contexto."
 objective: "Centralizar contenidos culturales y herramientas de planificación en una plataforma que responda de forma práctica a qué hacer en Granada."
@@ -41,7 +41,7 @@ decisions:
     description: "La tipografía, las referencias de coordenadas y las etiquetas de sección refuerzan la identidad de guía de ciudad contemporánea."
   - title: "Estático primero, interactividad donde aporta"
     description: "Generación estática para el contenido y una interacción más rica reservada al configurador de itinerarios."
-result: "GRN Urban reúne eventos, rutas, guías y un configurador de planes en una plataforma de consulta y planificación. Es un producto propio y laboratorio SEO de FRN.Q, no un encargo externo; no se atribuyen cifras de tráfico o crecimiento sin verificar."
+result: "GRN Urban centraliza eventos, rutas, guías e itinerarios en un producto propio de FRN.Q. Según el histórico de Search Console documentado en el caso de Studio (28 de mayo–28 de agosto de 2026), la guía de Granada Sound en español obtuvo 3.302 impresiones y 59 clics; su versión inglesa, 61 impresiones y 3 clics. Son datos de dos URLs, no tráfico total, sesiones ni resultados comerciales."
 technologies:
   - "Astro"
   - "TypeScript"

@@ -7,7 +7,7 @@ readingTime: "5 min"
 order: 1
 lead: "Reparar y rehacer no son dos grados del mismo trabajo: son dos decisiones distintas. Esta guía ordena los criterios que uso para saber cuál conviene antes de gastar dinero en la opción equivocada."
 keyPoints:
-  - "Reparar es la opción correcta mientras el problema esté acotado: algo concreto dejó de funcionar o frena la conversión."
+  - "Reparar suele convenir cuando el problema es concreto y la base de la web sigue siendo válida."
   - "Rehacer empieza a tener sentido cuando la estructura, la plataforma o el contenido ya no admiten el negocio que tienes hoy."
   - "Antes de decidir, mide tres cosas: qué se rompe, cuánto cuesta mantenerlo así y qué se pierde si cambias."
 limits:

@@ -21,17 +21,17 @@ export const directAdvantages: NumberedItem[] = [
   {
     num: "01",
     title: "Trato directo",
-    desc: "Sin intermediarios ni cambios de interlocutor: hablas siempre conmigo.",
+    desc: "Tratas directamente con quien diseña, desarrolla y mantiene tu proyecto.",
   },
   {
     num: "02",
     title: "El negocio primero",
-    desc: "Empiezo por cómo funciona tu negocio, no por una tecnología ni una plantilla.",
+    desc: "Entiendo tus objetivos y procesos antes de decidir cómo construir la solución.",
   },
   {
     num: "03",
     title: "Sistemas que puedes mantener",
-    desc: "Código, accesos y documentación para que evoluciones sin depender del estudio.",
+    desc: "Recibes los accesos, el código y la documentación acordados para poder evolucionar.",
   },
 ];
 

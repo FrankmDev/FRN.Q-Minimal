@@ -17,7 +17,7 @@ limits:
 cta:
   label: "Cuéntame tu proyecto"
   href: "/#contacto"
-  note: "Después de entender el negocio y el contenido recibes una propuesta por escrito con entregables, calendario y coste. Sin compromiso y sin discurso de venta."
+  note: "Cuéntame qué necesita tu empresa. Revisaremos el alcance y, si encaja, recibirás una propuesta por escrito con entregables, calendario y coste."
 references:
   - label: "Shopify — Planes y precios"
     url: "https://www.shopify.com/es-es/pricing"
@@ -35,7 +35,7 @@ related:
     href: "/precios/"
 seo:
   title: "Cuánto cuesta una web profesional | FRN.Q"
-  description: "Qué factores forman el presupuesto de una web profesional: alcance, contenido, integraciones, rendimiento y mantenimiento, sin tarifas inventadas."
+  description: "Cuánto cuesta una web profesional para empresas: factores de precio, diseño, funciones, integraciones, SEO y mantenimiento."
 ---
 
 ## Por qué no existe un precio único

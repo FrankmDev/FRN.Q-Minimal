@@ -107,19 +107,19 @@ export const supportCopy: SupportCopy = {
   titleLine: "Tu proyecto no",
   titleHighlight: "termina al publicarse.",
   intro:
-    "Publicar es el principio de la vida útil de una web o un sistema, no su final. Después del lanzamiento hay que mantener lo que funciona, corregir lo que aparece y decidir qué evoluciona. FRN.Q Support cubre esa continuidad con un alcance acordado por escrito.",
+    "Tu web, tienda o sistema necesita seguir funcionando después del lanzamiento. FRN.Q Support reúne mantenimiento, correcciones y pequeñas mejoras con un alcance acordado por escrito y un interlocutor directo.",
   audience:
     "Para empresas con una web, una tienda o un sistema ya en marcha que necesitan a alguien que responda y que lleve su mantenimiento y sus mejoras sin volver a empezar de cero.",
   meta: {
     title: "Soporte y mantenimiento web y sistemas | FRN.Q",
     description:
-      "Mantenimiento, cambios menores y evolución para sitios y sistemas ya publicados. Alcance, tiempos y trabajos extraordinarios acordados por escrito.",
+      "Mantenimiento web para empresas, tiendas online y sistemas: actualizaciones, incidencias y pequeñas mejoras con alcance y cuota acordados.",
   },
   differences: {
     tag: "Antes de contratar",
     title: "Tres cosas que se confunden",
     lead:
-      "Garantía de entrega, mantenimiento técnico y mejoras evolutivas son compromisos distintos. Mezclarlos es la causa habitual de expectativas mal calibradas.",
+      "Garantía de entrega, mantenimiento técnico y mejoras evolutivas son compromisos distintos. Distinguirlos te permite contratar solo lo que necesitas.",
     items: [
       {
         num: "01",
@@ -145,7 +145,7 @@ export const supportCopy: SupportCopy = {
     tag: "Continuidad",
     title: "FRN.Q Support",
     statement:
-      "FRN.Q Support mantiene en marcha y en evolución sitios y sistemas compatibles después de la entrega, con un alcance definido por escrito y sin prometer más de lo que el proyecto permite.",
+      "FRN.Q Support ofrece continuidad técnica para tu web o sistema, con revisiones, incidencias y ajustes planificados dentro del alcance contratado.",
     compatibilityTitle: "Con qué proyectos trabajo",
     compatibility: [
       "Proyectos desarrollados por FRN.Q, con el código y la documentación de entrega.",
