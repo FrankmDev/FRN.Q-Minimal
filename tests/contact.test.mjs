@@ -206,10 +206,10 @@ test("a missing mail configuration returns 503 without leaking internal detail",
   const response = await send(request(valid));
   expect(response.status).toBe(503);
   expect(response.payload?.success).toBe(false);
-  expect(response.payload?.error).toBe("El formulario no está disponible ahora mismo.");
+  expect(response.payload?.error).toBe("El formulario no está disponible ahora mismo. Escríbeme a info@frnq.studio.");
 });
 
-test("a Resend failure returns a generic 502 and logs the provider detail", async () => {
+test("a Resend failure returns a generic 502 and logs the provider status without response details", async () => {
   setDeliveryConfig();
   const spy = mock((message) => message);
   const originalError = console.error;
@@ -227,7 +227,7 @@ test("a Resend failure returns a generic 502 and logs the provider detail", asyn
     expect(response.status).toBe(502);
     expect(response.payload).toEqual({
       success: false,
-      error: "No se ha podido enviar el mensaje. Inténtalo de nuevo.",
+      error: "No se ha podido enviar el mensaje. Escríbeme a info@frnq.studio.",
     });
     expect(JSON.stringify(response.payload)).not.toContain("secret");
     expect(spy).toHaveBeenCalled();
@@ -249,7 +249,7 @@ test("a Resend timeout returns 502 instead of hanging", async () => {
   try {
     const response = await send(request(valid));
     expect(response.status).toBe(502);
-    expect(response.payload?.error).toBe("No se ha podido enviar el mensaje. Inténtalo de nuevo.");
+    expect(response.payload?.error).toBe("No se ha podido enviar el mensaje. Escríbeme a info@frnq.studio.");
   } finally {
     console.error = originalError;
   }

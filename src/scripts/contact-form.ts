@@ -296,11 +296,11 @@ function initContactForm(): void {
             if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) throw new Error("Invalid response");
             result = parsed as ContactResponse;
           } catch {
-            showFormError("Respuesta inesperada del servidor. Inténtalo de nuevo.", formErrorBanner, formErrorText, "invalid_response");
+            showFormError("Respuesta inesperada. Inténtalo de nuevo o escribe a info@frnq.studio.", formErrorBanner, formErrorText, "invalid_response");
             return;
           }
         } else if (!res.ok) {
-          showFormError("No se ha podido enviar. Inténtalo de nuevo.", formErrorBanner, formErrorText, responseErrorReason(res.status, false));
+          showFormError("No se ha podido enviar. Escríbeme a info@frnq.studio.", formErrorBanner, formErrorText, responseErrorReason(res.status, false));
           return;
         }
 
@@ -321,7 +321,7 @@ function initContactForm(): void {
         const errorMessage =
           result.error ||
           (res.status >= 500
-            ? "No se ha podido enviar. Inténtalo de nuevo más tarde."
+            ? "No se ha podido enviar. Escríbeme a info@frnq.studio."
             : "Revisa los campos marcados.");
 
         showFormError(errorMessage, formErrorBanner, formErrorText, responseErrorReason(res.status, Boolean(result.errors && Object.keys(result.errors).length)));
@@ -340,11 +340,11 @@ function initContactForm(): void {
         }
       } catch {
         if (requestController.signal.aborted) {
-          showFormError("El envío ha tardado demasiado. Inténtalo de nuevo.", formErrorBanner, formErrorText, "timeout");
+          showFormError("El envío ha tardado demasiado. Escríbeme a info@frnq.studio.", formErrorBanner, formErrorText, "timeout");
         } else if (typeof navigator !== "undefined" && navigator.onLine === false) {
           showFormError("Parece que no hay conexión. Revisa tu red e inténtalo de nuevo.", formErrorBanner, formErrorText, "offline");
         } else {
-          showFormError("Error de conexión. Inténtalo de nuevo.", formErrorBanner, formErrorText, "network");
+          showFormError("Error de conexión. Inténtalo de nuevo o escribe a info@frnq.studio.", formErrorBanner, formErrorText, "network");
         }
       } finally {
         window.clearTimeout(timeoutId);

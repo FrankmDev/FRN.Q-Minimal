@@ -26,7 +26,7 @@ export const siteConfig = {
     country: "ES",
   },
   description:
-    "FRN.Q es el estudio independiente de Francisco Muñoz, en Granada. Web, ecommerce, portales B2B y sistemas para empresas de España y otros países.",
+    "FRN.Q es un estudio independiente en Granada especializado en diseño web, tiendas Shopify, catálogos y portales B2B para empresas.",
 } as const;
 
 /**

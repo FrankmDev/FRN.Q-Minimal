@@ -1,4 +1,12 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "trailingSlash": true
+  "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "frn-q-minimal.vercel.app" }],
+      "destination": "https://frnq.es/:path*",
+      "permanent": true
+    }
+  ]
 }

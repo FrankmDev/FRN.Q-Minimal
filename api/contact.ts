@@ -42,8 +42,8 @@ type VercelResponse = {
   send: (body: string) => void;
 };
 
-const GENERIC_ERROR = "No se ha podido enviar el mensaje. Inténtalo de nuevo.";
-const UNAVAILABLE_ERROR = "El formulario no está disponible ahora mismo.";
+const GENERIC_ERROR = `No se ha podido enviar el mensaje. Escríbeme a ${siteConfig.email}.`;
+const UNAVAILABLE_ERROR = `El formulario no está disponible ahora mismo. Escríbeme a ${siteConfig.email}.`;
 const INVALID_REQUEST_ERROR = "Solicitud no válida.";
 
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
@@ -290,6 +290,7 @@ function escapeHtml(value: string): string {
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   response.setHeader("Content-Type", "application/json");
   response.setHeader("Cache-Control", "no-store");
+  response.setHeader("X-Robots-Tag", "noindex, nofollow");
 
   if (request.method !== "POST") {
     response.setHeader("Allow", "POST");
@@ -305,7 +306,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
   }
 
   const declaredLength = Number(firstHeader(request.headers?.["content-length"]));
-  if (Number.isFinite(declaredLength) && declaredLength > MAX_BODY_BYTES) {
+  if ((Number.isFinite(declaredLength) && declaredLength > MAX_BODY_BYTES) || (typeof request.body === "string" && new TextEncoder().encode(request.body).length > MAX_BODY_BYTES)) {
     return reply(request, response, 413, { success: false, error: INVALID_REQUEST_ERROR }, "error");
   }
 
@@ -342,10 +343,11 @@ export default async function handler(request: VercelRequest, response: VercelRe
     );
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const fromEmail = process.env.CONTACT_FROM_EMAIL;
+  const apiKey = process.env.RESEND_API_KEY?.trim();
+  const fromEmail = process.env.CONTACT_FROM_EMAIL?.trim();
 
   if (!apiKey || !fromEmail || !fromEmail.includes("@")) {
+    console.error("contact: mail configuration unavailable");
     return reply(request, response, 503, { success: false, error: UNAVAILABLE_ERROR }, "error");
   }
 
@@ -379,11 +381,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
     });
 
     if (!resendResponse.ok) {
-      const detail = await resendResponse.text().catch(() => "");
-      console.error("contact: Resend delivery failed", {
-        status: resendResponse.status,
-        detail: detail.slice(0, 400),
-      });
+      console.error("contact: Resend delivery failed", { status: resendResponse.status });
       return reply(request, response, 502, { success: false, error: GENERIC_ERROR }, "error");
     }
 
