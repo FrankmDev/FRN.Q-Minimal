@@ -271,7 +271,7 @@ export const solutionPages: SolutionPage[] = [
     ],
     relatedSolutions: ["b2b", "sistemas"],
     evidenceNote:
-      "KingBelt muestra cómo organizar colecciones, tallas, colores y contenido de marca en una tienda conectada a Shopify. Consulta las decisiones de catálogo y compra.",
+      "KingBelt integra catálogo Shopify, búsqueda, variantes, carrito en servidor y recursos de compra en una plataforma ecommerce propia.",
     ctas: {
       hero: "Hablemos de tu tienda",
       mid: "Cuéntame cómo vendes hoy",
@@ -420,7 +420,7 @@ export const solutionPages: SolutionPage[] = [
       systemsCta: "Si el reto principal está en conectar herramientas o coordinar procesos internos, consulta Sistemas e Integraciones.",
     },
     evidenceNote:
-      "Emilio Faraoni demuestra cómo digitalizar un catálogo mayorista, validar empresas, proteger tarifas y centralizar solicitudes de pedido sin imponer un checkout minorista.",
+      "Emilio Faraoni integra catálogo mayorista, validación empresarial, tarifas protegidas, pedido rápido, reposición y administración comercial en una plataforma B2B propia.",
     ctas: {
       hero: "Revisemos tu proceso comercial",
       mid: "Cuéntame cómo compran tus clientes",
